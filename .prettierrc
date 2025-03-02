@@ -1,0 +1,20 @@
+{
+  "semi": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "htmlWhitespaceSensitivity": "css",
+  "overrides": [
+    {
+      "files": [
+        "*.html",
+        "*.hbs",
+        "*.ejs",
+        "*.pug"
+      ],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ],
+  "embeddedLanguageFormatting": "auto"
+}

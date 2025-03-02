@@ -1,0 +1,13 @@
+{
+  "verbose": true,
+  "ignore": [
+    "frontend/**",
+    "*.test.js",
+    "**/fixtures/**"
+  ],
+  "watch": [
+    "backend/app.ts"
+  ],
+  "ext": "ts",
+  "exec": "ts-node -r @babel/register backend/app.ts"
+}

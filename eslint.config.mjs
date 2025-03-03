@@ -16,7 +16,7 @@ export default [
   {
     rules: {
       "no-unused-vars": "off", // disable eslint's base rule
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ];

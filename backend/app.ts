@@ -1,12 +1,20 @@
+import dotenv from "dotenv";
+dotenv.config();
+import process from "process";
+//import path from "path";
 import express from "express";
 import mysql from "mysql2/promise";
-import dotenv from "dotenv";
 import morgan from "morgan";
-dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080;
+//const port = process.env.PORT || 8080;
+const port = 3000;
 
+//app.set("view engine", "hbs");
+//app.set("views", path.join(process.cwd(), "../frontend/views"));
+//app.use(express.static("frontend/dist"));
+//
+app.use(express.json());
 app.use(morgan("dev"));
 
 const connection = await mysql.createConnection({
@@ -40,12 +48,11 @@ const connection = await mysql.createConnection({
 //  console.log(err);
 //}
 
-// server
 app.get("/", (_req, res) => {
   res.send("Hello, World!");
-  console.log("apfjpsdaj");
 });
 
+// server
 app.listen(port, () => {
   console.log(`----- Server is running on port ${port} -----`);
 });

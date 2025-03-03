@@ -6,10 +6,9 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 export default {
   entry: {
-    app: "./frontend/src/main.ts",
+    app: "./frontend/main.ts",
   },
 
   output: {
@@ -17,7 +16,6 @@ export default {
     path: path.resolve(process.cwd(), "frontend/dist"),
     clean: true,
     assetModuleFilename: "assets/[hash][ext][query]",
-    //publicPath: "/",
   },
 
   watchOptions: {
@@ -33,29 +31,15 @@ export default {
   },
 
   plugins: [
-    //new HtmlWebpackPlugin({
-    //  template: "./src/views/tmux.hbs",
-    //  filename: "tmux.html",
-    //}),
-    //
-    //new HtmlWebpackPlugin({
-    //  template: "./src/views/hyprland.hbs",
-    //  filename: "hyprland.html",
-    //}),
-    //
-    //new HtmlWebpackPlugin{
-    //  template: "./src/views/nvim.hbs",
-    //  filename: "nvim.html",
-    //}),
-    //
-    //new HtmlWebpackPlugin({
-    //  template: "./src/views/index.hbs",
-    //  filename: "index.html",
-    //}),
-    //
-    //new MiniCssExtractPlugin({
-    //  filename: "[name].css",
-    //}),
+    new HtmlWebpackPlugin({
+      template: "/frontend/views/index.hbs",
+
+      filename: "index.html",
+    }),
+
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+    }),
 
     new ESLintPlugin({
       configType: "flat",
@@ -87,7 +71,6 @@ export default {
     //  },
     //}),
 
-    new ForkTsCheckerWebpackPlugin(),
     //new NodePolyfillPlugin(),
   ],
 
@@ -145,14 +128,18 @@ export default {
         use: {
           loader: "ts-loader",
           options: {
+            configFile: path.resolve(
+              process.cwd(),
+              "frontend/configs/tsconfig.json",
+            ),
             // speeds up build by skipping type checking
-            transpileOnly: true,
+            //transpileOnly: true,
             compilerOptions: {
               sourceMap: true,
             },
           },
         },
-        //exclude: [/node_modules/, /backend/],
+        exclude: [/node_modules/, /backend/],
       },
     ],
   },

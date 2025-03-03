@@ -1,17 +1,5 @@
 #### setup:
 
 ```bash
-
-npm install && npm start
-
+npm install && npm run build && npm start:prod
 ```
-
-#### todo:
-
-gen sidebar-items dynamically using nested obj
-
-sidebar-items-branches dropdown
-
-saved scroll pos on ls in main
-
-

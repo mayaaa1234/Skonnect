@@ -1,6 +1,6 @@
 import { merge } from "webpack-merge";
-import common from "./webpack.common.js"; // Ensure this imports the common configuration correctly
+import common from "./webpack.common.js";
 
 export default merge(common, {
-  mode: "production", // production mode optimizes code
+  mode: "production",
 });

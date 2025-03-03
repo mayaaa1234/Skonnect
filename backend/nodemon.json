@@ -9,5 +9,5 @@
     "backend/app.ts"
   ],
   "ext": "ts",
-  "exec": "ts-node -r @babel/register backend/app.ts"
+  "exec": "TS_NODE_PROJECT=backend/configs/tsconfig.json ts-node backend/app.ts"
 }

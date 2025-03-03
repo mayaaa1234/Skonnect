@@ -8,8 +8,8 @@ export default merge(common, {
   devtool: "inline-source-map",
   devServer: {
     port: 8080,
-    static: path.resolve(process.cwd(), "frontend/dist"),
-    watchFiles: ["./src/views/*.hbs"],
+    static: path.resolve(process.cwd(), "frontend/public"),
+    watchFiles: ["./frontend/views/*.hbs"],
     proxy: [
       {
         context: ["/api"],

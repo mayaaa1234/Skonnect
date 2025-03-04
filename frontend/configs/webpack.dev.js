@@ -14,6 +14,7 @@ export default merge(common, {
       {
         context: ["/api"],
         target: "http://localhost:3000",
+        //changeOrigin: true, // Modifies the Host header
         //pathRewrite: { "^/api": "" },
       },
     ],

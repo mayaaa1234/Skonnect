@@ -31,11 +31,10 @@ export default {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "/frontend/views/index.hbs",
-
-      filename: "index.html",
-    }),
+    //new HtmlWebpackPlugin({
+    //  template: "/frontend/views/index.hbs",
+    //  filename: "index.html",
+    //}),
 
     new MiniCssExtractPlugin({
       filename: "[name].css",

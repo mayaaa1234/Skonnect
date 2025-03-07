@@ -1,0 +1,55 @@
+$themes: (
+  "dark": (
+    "primary": #1c1c1c,
+    "secondary": #1b2028,
+    "neutral": #303334,
+    "accent": #3295b6,
+    "foreground": #f3f3f3,
+    "sidebar-tree": #3295b6,
+  ),
+  "light": (
+    "primary": #fcfcfc,
+    "secondary": #e8f1f2,
+    "neutral": #303334,
+    "accent": #3295b6,
+    "foreground": #141216,
+    "sidebar-tree": #141216,
+  ),
+);
+
+$colors: (
+  "info": #326dee,
+  "warn": #f6c31c,
+  "error": #d32752,
+  "tip": #1ac886,
+  "black": black,
+  "white": white,
+  "lightgray": #d3d3d3,
+);
+
+$breakpoints: (
+  "xs": 0,
+  "sm": 475px,
+  "md": 640px,
+  "lg": 760px,
+  "xl": 1024px,
+  "xxl": 1536px,
+);
+
+// spacing
+$base-padding: 0.75rem;
+$base-margin: 0.75rem;
+
+// borders
+$base-border-thickness: 1px;
+$base-border-radius: 10px;
+
+// box-shadow
+$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+
+// font sizes
+$base-font-size: 1rem;
+$font-size-sm: $base-font-size * 0.75;
+$font-size-lg: $base-font-size * 1.5;
+$font-size-xl: $base-font-size * 2;
+$font-size-xxl: $base-font-size * 3;

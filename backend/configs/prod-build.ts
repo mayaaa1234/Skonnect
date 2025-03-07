@@ -1,4 +1,4 @@
-// INFO: this is needed i guess since in prod you wont use nodemon
+// INFO: this is more proper i guess since in prod you wont use nodemon instead just node
 // also less mess in package.json scripts
 
 import { execSync } from "child_process";
@@ -6,7 +6,6 @@ import fs from "fs";
 import path from "path";
 import process from "process";
 
-// Paths
 const backendDist = path.join(process.cwd(), "backend", "dist");
 
 // Webpack Build
@@ -27,17 +26,18 @@ if (fs.existsSync(backendDist)) {
 }
 
 // Lint
-console.log("🔍 Running ESLint on / ...");
-try {
-  execSync("npx eslint_d .", { stdio: "inherit" });
-} catch (error) {
-  console.warn("⚠️ ESLint warnings found.");
-}
+//console.log("🔍 Running ESLint on / ...");
+//try {
+//  execSync("npx eslint_d .", { stdio: "inherit" });
+//} catch (error) {
+//  console.warn("⚠️ ESLint warnings found.");
+//}
 
-// Type-check
-console.log("📏 Running TypeScript type check...");
+// Type-Check
+console.log("📏 Compiling TypeScript on Backend into backed/dist ...");
 try {
   execSync("tsc -p backend/configs/tsconfig.json", { stdio: "inherit" });
+  //execSync("tsc ", { stdio: "inherit" });
 } catch (error) {
   console.error("❌ TypeScript errors found. Fix them first.");
   process.exit(1);

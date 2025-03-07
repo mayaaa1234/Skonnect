@@ -1,127 +1,97 @@
 import path from "path";
 import process from "process";
-//import { glob } from "glob";
-//import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
-export default {
+
+const config = {
   entry: {
-    app: "./frontend/main.ts",
+    app: "./frontend/src/webpack-entry.ts",
   },
 
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(process.cwd(), "frontend/dist"),
-    clean: true,
+    path: path.resolve(process.cwd(), "frontend/public/dist"),
     assetModuleFilename: "assets/[hash][ext][query]",
+    clean: true,
+    publicPath: "/",
   },
 
   watchOptions: {
-    ignored: ["node_modules", "backend"],
+    aggregateTimeout: 200,
+    ignored: ["node_modules"],
   },
 
   resolve: {
-    extensions: [".scss", ".tsx", ".jsx", ".ts", ".js", ".hbs"], // no need to to add file ext when importing
+    extensions: [".scss", ".tsx", ".jsx", ".ts", ".js", ".hbs"],
   },
 
   stats: {
-    loggingDebug: ["sass-loader"], // logs @debugs and types into console
+    loggingDebug: ["sass-loader"],
   },
 
   plugins: [
-    //new HtmlWebpackPlugin({
-    //  template: "/frontend/views/index.hbs",
-    //  filename: "index.html",
-    //}),
-
+    // Uncomment and configure if you need to copy assets
+    // new CopyWebpackPlugin({
+    //   patterns: [{ from: "frontend/src/images", to: "assets" }],
+    // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
-
     new ESLintPlugin({
       configType: "flat",
-      //overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
+      // You can specify an override file if needed:
+      // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
     }),
-
-    //new FaviconsWebpackPlugin({
-    //  logo: "./src/assets/logo.png",
-    //  mode: "webapp",
-    //  devMode: "light",
-    //  outputPath: "assets/favicons",
-    //  prefix: "assets/favicons/",
-    //  favicons: {
-    //    appName: "My App",
-    //    appDescription: "My App Description",
-    //    developerName: "Developer Name",
-    //    developerURL: null,
-    //    background: "#fff",
-    //    theme_color: "#fff",
-    //    appleStartup: false,
-    //    icons: {
-    //      android: [192, 512],
-    //      appleIcon: [180, 192],
-    //      favicons: [64, 128, 256],
-    //      windows: false,
-    //      yandex: false,
-    //      coast: false,
-    //    },
-    //  },
-    //}),
-
-    //new NodePolyfillPlugin(),
+    // Uncomment if you need Node polyfills:
+    // new NodePolyfillPlugin(),
+    // Optionally, add HtmlWebpackPlugin if you generate an HTML file:
+    // new HtmlWebpackPlugin({ template: "./frontend/src/index.html" }),
   ],
 
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif)$/i,
-        type: "asset/resource", // handle as static assets
+        test: /\.(webp|png|jpe?g|gif)$/i,
+        type: "asset/resource",
       },
-
       {
         test: /\.svg/,
         use: {
           loader: "svg-url-loader",
           options: {
-            // make all svg images to work in IE
             iesafe: true,
           },
         },
       },
-
       {
         test: /\.html$/i,
         loader: "html-loader",
       },
-
-      {
-        test: /\.hbs$/,
-        loader: "handlebars-loader",
-        options: {
-          partialDirs: [path.join(process.cwd(), "src/views/partials")],
-          inlineRequires: /(?:png|jpg|jpeg|svg)$/,
-        },
-      },
-
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
-        //use: ["style-loader", "css-loader"],
       },
-
       {
         test: /\.scss$/i,
-        //use: ["style-loader", "css-loader", "sass-loader"],
+        exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
-          "postcss-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                config: path.resolve(
+                  process.cwd(),
+                  "./frontend/configs/postcss.config.js",
+                ),
+              },
+            },
+          },
           "sass-loader",
         ],
       },
-
       {
         test: /\.([cm]?ts|tsx)$/,
         use: {
@@ -131,8 +101,8 @@ export default {
               process.cwd(),
               "frontend/configs/tsconfig.json",
             ),
-            // speeds up build by skipping type checking
-            //transpileOnly: true,
+            // Uncomment the line below to skip type checking for faster builds
+            // transpileOnly: true,
             compilerOptions: {
               sourceMap: true,
             },
@@ -143,3 +113,5 @@ export default {
     ],
   },
 };
+
+export default config;

@@ -1,13 +1,9 @@
 {
   "verbose": true,
   "ignore": [
-    "frontend/**",
-    "*.test.js",
-    "**/fixtures/**"
+    "frontend/public/",
+    "backend/dist/"
   ],
-  "watch": [
-    "backend/app.ts"
-  ],
-  "ext": "ts",
+  "ext": "ts, ejs",
   "exec": "TS_NODE_PROJECT=backend/configs/tsconfig.json ts-node backend/app.ts"
 }

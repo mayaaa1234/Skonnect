@@ -1,0 +1,10 @@
+%footer-layout {
+  display: grid;
+  place-content: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  @extend %footer-layout;
+}

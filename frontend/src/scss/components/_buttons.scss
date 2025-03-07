@@ -1,0 +1,80 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+@use "sass:color";
+
+%gen-btn {
+  // text-decoration: none; // for nested <a> tags
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  // padding: $base-padding $base-padding * 2;
+  // border-radius: $base-border-radius;
+}
+
+// use this if class based theming approach
+@mixin btn($bg-color) {
+  @extend %gen-btn;
+  background-color: $bg-color;
+}
+
+// use this for if using var theming approach
+// and just customize color through vars in a
+// centralized .scss file
+.btn {
+  @extend %gen-btn;
+}
+
+// GENERIC BUTTON COLORS
+
+@each $key, $val in $colors {
+  .btn-#{$key} {
+    @include btn($val);
+    &:hover {
+      background-color: color.adjust($val, $lightness: 5%);
+    }
+  }
+
+  .btn-outlined-#{$key} {
+    @include btn(#fff);
+    border: $base-border-thickness solid $val;
+    &:hover {
+      background-color: $val;
+    }
+  }
+}
+
+// CLASS BASED THEMING
+
+@each $theme, $values in $themes {
+  @each $k, $v in $values {
+    .btn-#{$theme}-theme-#{$k} {
+      @include btn($v);
+
+      &:hover {
+        background-color: color.adjust($v, $lightness: 5%);
+
+        @include mobile {
+          // override browsers weird default hover/bg on mobiles.
+          // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
+          -webkit-tap-highlight-color: #3295b6;
+          background-color: #3295b6 !important;
+        }
+      }
+    }
+
+    .btn-outlined-#{$theme}-theme-#{$k} {
+      @include btn(#fff);
+      border: $base-border-thickness solid $v;
+
+      &:hover {
+        background-color: $v;
+
+        @include mobile {
+          // override browsers weird default hover/bg on mobiles.
+          -webkit-tap-highlight-color: #3295b6;
+          background-color: #3295b6 !important;
+        }
+      }
+    }
+  }
+}

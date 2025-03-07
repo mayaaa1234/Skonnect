@@ -9,12 +9,7 @@ export default {
     autoprefixer,
     postcssNested,
     purgecss.default({
-      content: [
-        "./src/**/*.html",
-        "./src/**/*.js",
-        "./src/**/*.hbs",
-        "./src/**/*.ts",
-      ],
+      content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
       safelist: [/^data-theme/],
     }),
     cssnano({

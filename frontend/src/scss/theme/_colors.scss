@@ -1,0 +1,142 @@
+@use "../abstracts/variables" as *;
+@use "sass:color";
+@use "sass:map";
+
+// NOTE: add hover class
+
+@each $key, $val in $colors {
+  // Generate color classes
+  .text-#{$key} {
+    color: $val;
+  }
+  .bgc-#{$key} {
+    background-color: $val;
+  }
+
+  // Generate hover background color classes
+  .hover-bgc-#{$key} {
+    &:hover {
+      background-color: $val;
+    }
+  }
+
+  // Generate lighter color variant classes
+  @for $i from 1 through 9 {
+    .text-#{$key}-l#{$i} {
+      color: color.mix(white, $val, $i * 10%);
+    }
+
+    .bgc-#{$key}-l#{$i} {
+      background-color: color.mix(white, $val, $i * 10%);
+    }
+
+    .hover-bgc-#{$key}-l#{$i} {
+      &:hover {
+        background-color: color.mix(white, $val, $i * 10%);
+      }
+    }
+  }
+
+  // Generate darker color variant classes
+  @for $i from 1 through 9 {
+    .text-#{$key}-d#{$i} {
+      color: color.mix(black, $val, $i * 10%);
+    }
+
+    .bgc-#{$key}-d#{$i} {
+      background-color: color.mix(black, $val, $i * 10%);
+    }
+
+    .hover-bgc-#{$key}-d#{$i} {
+      &:hover {
+        background-color: color.mix(black, $val, $i * 10%);
+      }
+    }
+  }
+}
+
+// THEMING
+
+@each $theme, $values in $themes {
+  // VARIABLE BASED THEMIMG APPROACH //
+
+  // generate diff data attr theme vals with multiple diff prop-val pairs for each diff themes
+  [data-theme="#{$theme}"] {
+    @each $k, $v in $values {
+      // needs interpolation for the val aswell
+      // when creating custom var with vanilla css syntax
+      --#{$k}: #{$v};
+      // sample output:
+      // --primary: #1c1c1c;
+      // --secondary: #1b2028;
+      // --neutral: #303334;
+      // sample usage:
+      // background-color: var(--secondary);
+      // sampe usage:is:
+      // body {
+      //   background-color: var(--primary);
+      //   color: var(--complement);
+      // }
+
+      // ligh / dark variation (needs aso interpolation for vals)
+      @for $i from 1 through 9 {
+        --#{$k}-light-#{$i}: #{color.mix(white, $v, $i * 10%)};
+      }
+
+      @for $i from 1 through 9 {
+        --#{$k}-dark-#{$i}: #{color.mix(black, $v, $i * 10%)};
+      }
+    }
+  }
+
+  // CLASS BASED THEMING APPROACH //
+
+  // generate theme-specific color classes
+  @each $k, $v in $values {
+    .text-#{$theme}-#{$k} {
+      color: $v; // unlike custom var, val doesnt need interpolation
+    }
+
+    .hover-bgc-#{$theme}-#{$k} {
+      &:hover {
+        background-color: $v;
+      }
+    }
+
+    .bgc-#{$theme}-#{$k} {
+      background-color: $v;
+    }
+
+    @for $i from 1 through 9 {
+      .text-#{$theme}-#{$k}-l#{$i} {
+        color: color.mix(white, $v, $i * 10%);
+      }
+
+      .hover-bgc-#{$theme}-#{$k}-l#{$i} {
+        &:hover {
+          background-color: color.mix(white, $v, $i * 10%);
+        }
+      }
+
+      .bgc-#{$theme}-#{$k}-l#{$i} {
+        background-color: color.mix(white, $v, $i * 10%);
+      }
+    }
+
+    @for $i from 1 through 9 {
+      .text-#{$theme}-#{$k}-d#{$i} {
+        color: color.mix(black, $v, $i * 10%);
+      }
+
+      .hover-bgc-#{$theme}-#{$k}-d#{$i} {
+        &:hover {
+          background-color: color.mix(black, $v, $i * 10%);
+        }
+      }
+
+      .bgc-#{$theme}-#{$k}-d#{$i} {
+        background-color: color.mix(black, $v, $i * 10%);
+      }
+    }
+  }
+}

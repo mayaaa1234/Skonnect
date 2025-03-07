@@ -1,0 +1,40 @@
+// document element data attiribute is being toggled
+// so the changes cascades to all child and ddescendants
+
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
+}
+
+nav {
+  background-color: var(--accent);
+  // color:;
+  button {
+    background-color: var(--accent);
+
+    &:hover {
+      background-color: var(--accent-light-1);
+    }
+  }
+
+  #logo-name {
+    color: #f3f3f3; // white always
+  }
+}
+
+.sidebar {
+  background-color: var(--secondary);
+  // color:;
+
+  .sidebar-item-title {
+    color: var(--accent);
+  }
+
+  .sidebar-item-branches::before {
+    border-left: 1px dashed var(--sidebar-tree);
+  }
+
+  .sidebar-item-branch::before {
+    border-top: 1px dashed var(--sidebar-tree);
+  }
+}

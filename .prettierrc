@@ -6,10 +6,7 @@
   "overrides": [
     {
       "files": [
-        "*.html",
-        "*.hbs",
-        "*.ejs",
-        "*.pug"
+        "*.html"
       ],
       "options": {
         "tabWidth": 4

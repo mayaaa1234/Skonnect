@@ -1,0 +1,220 @@
+@use "variables" as *;
+@use "sass:math";
+@use "sass:map";
+
+$utilities: (
+  "padding": (
+    "prefix": "p",
+    "values": (
+      "0": 0,
+      "1": $base-padding,
+      "2": $base-padding * 2,
+      "3": $base-padding * 4,
+      "4": $base-padding * 6,
+      "5": $base-padding * 8,
+    ),
+  ),
+  "padding-left": (
+    "prefix": "pl",
+    "values": (
+      "0": 0,
+      "1": $base-padding,
+      "2": $base-padding * 2,
+      "3": $base-padding * 4,
+      "4": $base-padding * 6,
+      "5": $base-padding * 8,
+    ),
+  ),
+  "padding-right": (
+    "prefix": "pr",
+    "values": (
+      "0": 0,
+      "1": $base-padding,
+      "2": $base-padding * 2,
+      "3": $base-padding * 4,
+      "4": $base-padding * 6,
+      "5": $base-padding * 8,
+    ),
+  ),
+  "padding-top": (
+    "prefix": "pt",
+    "values": (
+      "0": 0,
+      "1": $base-padding,
+      "2": $base-padding * 2,
+      "3": $base-padding * 4,
+      "4": $base-padding * 6,
+      "5": $base-padding * 8,
+    ),
+  ),
+  "padding-bottom": (
+    "prefix": "pb",
+    "values": (
+      "0": 0,
+      "1": $base-padding,
+      "2": $base-padding * 2,
+      "3": $base-padding * 4,
+      "4": $base-padding * 6,
+      "5": $base-padding * 8,
+    ),
+  ),
+  "margin": (
+    "prefix": "m",
+    "values": (
+      "-auto": "auto",
+      "0": 0,
+      "1": $base-margin,
+      "2": $base-margin * 2,
+      "3": $base-margin * 4,
+      "4": $base-margin * 6,
+      "5": $base-margin * 8,
+    ),
+  ),
+  "margin-left": (
+    "prefix": "ml",
+    "values": (
+      "0": 0,
+      "1": $base-margin,
+      "2": $base-margin * 2,
+      "3": $base-margin * 4,
+      "4": $base-margin * 6,
+      "5": $base-margin * 8,
+    ),
+  ),
+  "margin-right": (
+    "prefix": "mr",
+    "values": (
+      "0": 0,
+      "1": $base-margin,
+      "2": $base-margin * 2,
+      "3": $base-margin * 4,
+      "4": $base-margin * 6,
+      "5": $base-margin * 8,
+    ),
+  ),
+  "margin-top": (
+    "prefix": "mt",
+    "values": (
+      "0": 0,
+      "1": $base-margin,
+      "2": $base-margin * 2,
+      "3": $base-margin * 4,
+      "4": $base-margin * 6,
+      "5": $base-margin * 8,
+    ),
+  ),
+  "margin-bottom": (
+    "prefix": "mb",
+    "values": (
+      "0": 0,
+      "1": $base-margin,
+      "2": $base-margin * 2,
+      "3": $base-margin * 4,
+      "4": $base-margin * 6,
+      "5": $base-margin * 8,
+    ),
+  ),
+
+  "opacity": (
+    "prefix": "o",
+    "values": (
+      "10": 0.1,
+      "20": 0.2,
+      "30": 0.3,
+      "40": 0.4,
+      "50": 0.5,
+      "60": 0.6,
+      "70": 0.7,
+      "80": 0.8,
+      "90": 0.9,
+      "100": 1,
+    ),
+  ),
+  "border-radius": (
+    "prefix": "br",
+    "values": (
+      //default is 5px
+      "default": $base-border-radius,
+      "none": 0,
+      "xxs": $base-border-radius * 2,
+      "xs": $base-border-radius * 3,
+      "sm": $base-border-radius * 4,
+      "md": $base-border-radius * 5,
+      "lg": $base-border-radius * 6,
+      "xl": $base-border-radius * 7,
+      "xxl": $base-border-radius * 8,
+      "full": 50%,
+    ),
+  ),
+  "display": (
+    "prefix": "display",
+    "values": (
+      "n": none,
+      "b": block,
+      "f": flex,
+      "i": inline,
+      "i-b": inline-block,
+    ),
+  ),
+  "font-size": (
+    "prefix": "font",
+    "values": (
+      "sm": $font-size-sm,
+      "md": $base-font-size,
+      "lg": $font-size-lg,
+      "xl": $font-size-xl,
+      "xxl": $font-size-xxl,
+    ),
+  ),
+  // "size": (
+  //   "prefix": "sz",
+  //   "values": (
+  //     "10": 10px,
+  //     "20": $base-font-size,
+  //     "25": $base-font-size,
+  //     "30": $font-size-lg,
+  //     "40": $font-size-xl,
+  //     "50": $font-size-xxl,
+  //   ),
+  // ),
+  // added temporarily for dev shii
+  "cursor": (
+      "prefix": "cs",
+      "values": (
+        "p": pointer,
+      ),
+    ),
+  "border": (
+    "prefix": "bd",
+    "values": (
+      "w": 1px solid #d3d3d3,
+      "b": 1px solid #000000,
+    ),
+  ),
+);
+
+// generate utility classes
+@each $property, $map in $utilities {
+  $prefix: map.get($map, "prefix");
+  $values: map.get($map, "values");
+
+  @each $k, $v in $values {
+    @if ($k == "default") {
+      .#{$prefix} {
+        #{$property}: $v;
+      }
+    } @else {
+      .#{$prefix}-#{$k} {
+        #{$property}: $v;
+      }
+    }
+  }
+}
+
+// @each $utility, $values in $utilities {
+//   @each $key, $value in $values {
+//     .#{$utility}-#{$key} {
+//       #{$utility}: #{$value};
+//     }
+//   }
+// }

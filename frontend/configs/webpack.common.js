@@ -31,10 +31,6 @@ const config = {
   },
 
   plugins: [
-    // Uncomment and configure if you need to copy assets
-    // new CopyWebpackPlugin({
-    //   patterns: [{ from: "frontend/src/images", to: "assets" }],
-    // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
@@ -43,10 +39,7 @@ const config = {
       // You can specify an override file if needed:
       // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
     }),
-    // Uncomment if you need Node polyfills:
     // new NodePolyfillPlugin(),
-    // Optionally, add HtmlWebpackPlugin if you generate an HTML file:
-    // new HtmlWebpackPlugin({ template: "./frontend/src/index.html" }),
   ],
 
   module: {
@@ -93,23 +86,45 @@ const config = {
         ],
       },
       {
-        test: /\.([cm]?ts|tsx)$/,
+        test: /\.[cm]?[jt]sx?$/, // Matches .js, .ts, .jsx, .tsx
+        exclude: /node_modules/,
         use: {
-          loader: "ts-loader",
+          loader: "babel-loader",
           options: {
-            configFile: path.resolve(
-              process.cwd(),
-              "frontend/configs/tsconfig.json",
-            ),
-            // Uncomment the line below to skip type checking for faster builds
-            // transpileOnly: true,
-            compilerOptions: {
-              sourceMap: true,
-            },
+            presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            plugins: [
+              ["@babel/plugin-transform-runtime"], // Avoids regenerator issues
+              [
+                "module-resolver",
+                {
+                  extensions: [".js", ".ts"],
+                  alias: {
+                    "@": "./frontend/src", // Example alias
+                  },
+                },
+              ],
+            ],
           },
         },
-        exclude: [/node_modules/, /backend/],
       },
+      //{
+      //  test: /\.([cm]?ts|tsx)$/,
+      //  use: {
+      //    loader: "ts-loader",
+      //    options: {
+      //      configFile: path.resolve(
+      //        process.cwd(),
+      //        "frontend/configs/tsconfig.json",
+      //      ),
+      //      // uncomment the line below to skip type checking for faster builds
+      //      transpileOnly: true,
+      //      compilerOptions: {
+      //        sourceMap: true,
+      //      },
+      //    },
+      //  },
+      //  exclude: [/node_modules/, /backend/],
+      //},
     ],
   },
 };

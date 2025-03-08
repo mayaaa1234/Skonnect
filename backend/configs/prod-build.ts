@@ -20,10 +20,10 @@ try {
 }
 
 // Clean: Remove old build
-console.log("🧹 Cleaning build ...");
-if (fs.existsSync(backendDist)) {
-  fs.rmSync(backendDist, { recursive: true, force: true });
-}
+//console.log("🧹 Cleaning build ...");
+//if (fs.existsSync(backendDist)) {
+//  fs.rmSync(backendDist, { recursive: true, force: true });
+//}
 
 // Lint
 //console.log("🔍 Running ESLint on / ...");
@@ -40,6 +40,17 @@ try {
   //execSync("tsc ", { stdio: "inherit" });
 } catch (error) {
   console.error("❌ TypeScript errors found. Fix them first.");
+  process.exit(1);
+}
+
+// SWC Build
+console.log("🛠️  Running SWC for transpiling");
+try {
+  execSync("swc src --out-dir backend/dist/", {
+    stdio: "inherit",
+  });
+} catch (error) {
+  console.error("❌ SWC failed.");
   process.exit(1);
 }
 

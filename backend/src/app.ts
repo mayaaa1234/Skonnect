@@ -1,17 +1,30 @@
 import process from "process";
 import path from "path";
 import express from "express";
-import mysql from "mysql2/promise";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import connectDB from "./db/connectDB.ts";
 dotenv.config();
+
+import livereload from "livereload";
+import connectLivereload from "connect-livereload";
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const publicDir = path.join(process.cwd(), "frontend/public");
 
 // INFO : development-mode only middleware and socket
+// this will be remove on prod
 if (process.env.NODE_ENV === "development") {
+  const lrserver = livereload.createServer();
+  lrserver.watch(path.join(process.cwd(), "frontend/public"));
+  lrserver.server.once("connection", () => {
+    setTimeout(() => {
+      lrserver.refresh("/frontend");
+    }, 15);
+  });
+  app.use(connectLivereload());
+
   const { default: devModeMiddleware } = await import(
     "./middlewares/devModeMiddleware.ts"
   );
@@ -32,7 +45,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/test", (_req, res) => {
-  res.send("Hello, World!");
+  res.send("test");
 });
 
 //app.get("/about", (_req, res) => {
@@ -45,13 +58,6 @@ app.use("/api/test", (_req, res) => {
 app.use(express.json());
 app.use(morgan("dev"));
 
-const conn = await mysql.createConnection({
-  host: process.env.SQL_HOST,
-  user: process.env.SQL_USER,
-  password: process.env.SQL_PASS,
-  database: process.env.SQL_DB,
-});
-
 // this works, just comment out for now
 //try {
 //  const [results, fields] = await conn.query(
@@ -63,7 +69,14 @@ const conn = await mysql.createConnection({
 //  console.log(err);
 //}
 
-// server
-app.listen(port, () => {
-  console.log(`----- Server is running on port ${port} -----`);
-});
+const server = async () => {
+  try {
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}....`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+server();

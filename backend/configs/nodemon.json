@@ -5,5 +5,5 @@
     "backend/dist/"
   ],
   "ext": "ts, ejs",
-  "exec": "TS_NODE_PROJECT=backend/configs/tsconfig.json ts-node backend/app.ts"
+  "exec": "TS_NODE_PROJECT=backend/configs/tsconfig.json ts-node backend/src/app.ts"
 }

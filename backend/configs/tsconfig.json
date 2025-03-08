@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2017", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "rootDir": "../", /* Specify the root folder within your source files. */
+    "target": "ES2022",
+    "rootDir": "../",
     "module": "nodenext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "nodenext",
     "typeRoots": [
       "../../node_modules/@types",
     ],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "webpackConfig": [
         "../../frontend/configs/webpack.dev.js"
@@ -16,6 +16,12 @@
     "types": [
       "node"
     ], /* Specify type package names to be included without being referenced in a source file. */
+    "lib": [
+      "esnext"
+    ],
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "sourceMap": true, /* Create source map files for emitted JavaScript files. */
     "outDir": "../dist", /* Specify an output folder for all emitted files. */
     "removeComments": true, /* Disable emitting comments. */

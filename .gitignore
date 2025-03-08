@@ -3,3 +3,5 @@ dist/
 .env
 placeholder.js
 project-tree.md
+.db-schema
+.swc

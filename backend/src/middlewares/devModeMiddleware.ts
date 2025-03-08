@@ -1,6 +1,6 @@
 import path from "path";
-import livereload from "livereload";
-import connectLivereload from "connect-livereload";
+//import livereload from "livereload";
+//import connectLivereload from "connect-livereload";
 import webpack from "webpack";
 import devMiddleware from "webpack-dev-middleware";
 import express from "express";
@@ -14,15 +14,15 @@ const webpackConfig = require(
 
 export default function setupDevMiddleware(app: Application) {
   //INFO: live server for auto refreshing browser using websockets
-  const lrserver = livereload.createServer();
-  lrserver.watch(path.join(process.cwd(), "frontend/public"));
-  lrserver.server.once("connection", () => {
-    setTimeout(() => {
-      lrserver.refresh("/frontend");
-    }, 10);
-  });
+  //const lrserver = livereload.createServer();
+  //lrserver.watch(path.join(process.cwd(), "frontend/public"));
+  //lrserver.server.once("connection", () => {
+  //  setTimeout(() => {
+  //    lrserver.refresh("/frontend");
+  //  }, 10);
+  //});
 
-  app.use(connectLivereload());
+  //app.use(connectLivereload());
 
   //INFO: Webpack dev middleware setup
   const compiler = webpack(webpackConfig.default);

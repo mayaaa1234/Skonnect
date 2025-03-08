@@ -1,0 +1,27 @@
+{
+  "exclude": ["node_modules/", "frontend/"],
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "topLevelAwait": true
+    },
+    "target": "esnext",
+    "baseUrl": ".",
+    "experimental": {
+      "plugins": [
+        [
+          "@swc/plugin-transform-imports",
+          {
+            "^(.*?)(\\.ts)$": {
+              "skipDefaultConversion": true,
+              "transform": "$1.js"
+            }
+          }
+        ]
+      ]
+    }
+  },
+  "module": {
+    "type": "nodenext"
+  }
+}

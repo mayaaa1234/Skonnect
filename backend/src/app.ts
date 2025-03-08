@@ -5,16 +5,16 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import connectDB from "./db/connectDB.ts";
 dotenv.config();
-
-import livereload from "livereload";
-import connectLivereload from "connect-livereload";
+import auth from "./routes/auth.ts";
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const publicDir = path.join(process.cwd(), "frontend/public");
 
-// INFO : development-mode only middleware and socket
-// this will be remove on prod
+// INFO : development-mode only middleware
+// and socket this will be remove on prod
+import livereload from "livereload";
+import connectLivereload from "connect-livereload";
 if (process.env.NODE_ENV === "development") {
   const lrserver = livereload.createServer();
   lrserver.watch(path.join(process.cwd(), "frontend/public"));
@@ -31,32 +31,23 @@ if (process.env.NODE_ENV === "development") {
   devModeMiddleware(app);
 }
 
-// NOTE : src attr path's given to elems from ejs files should be relative to this path
+// NOTE : src attr path's given to elems from
+// ejs files should be relative to this publicDir
 app.use(express.static(publicDir));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("view cache", false);
 app.set("views", path.join(process.cwd(), "frontend/views"));
+app.use(express.json());
+app.use(morgan("dev"));
 
 // serve ejs files for diff routes
 app.get("/", (_req, res) => {
   res.render("index", { title: "" });
 });
 
-app.use("/api/test", (_req, res) => {
-  res.send("test");
-});
-
-//app.get("/about", (_req, res) => {
-//  res.sendFile(path.join(process.cwd(), "../frontend/dist/about.html"));
-//});
-
-//app.set("view engine", "hbs");
-//app.set("views", path.join(process.cwd(), "../frontend/views"));
-
-app.use(express.json());
-app.use(morgan("dev"));
+app.use("/api/v1/auth", auth);
 
 // this works, just comment out for now
 //try {

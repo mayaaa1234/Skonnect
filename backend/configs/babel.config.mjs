@@ -1,4 +1,5 @@
 export default {
+  comments: false,
   presets: [
     "@babel/preset-typescript",
     [
@@ -9,6 +10,7 @@ export default {
         },
       },
     ],
+    "minify",
   ],
   plugins: [
     [

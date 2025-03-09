@@ -8,11 +8,7 @@
       "../../node_modules/@types",
     ],
     "baseUrl": "./",
-    "paths": {
-      "webpackConfig": [
-        "../../frontend/configs/webpack.dev.js"
-      ]
-    },
+    "paths": {},
     "types": [
       "node"
     ], /* Specify type package names to be included without being referenced in a source file. */
@@ -33,10 +29,11 @@
     "noUnusedLocals": false, /* Enable error reporting when local variables aren't read. */
     "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
     "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "noImplicitAny": false,
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "../**/*"
+    "../src/**/*"
   ],
   "exclude": [
     "../../node_modules",

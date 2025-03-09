@@ -1,10 +1,10 @@
 import path from "path";
-import webpack from "webpack";
-import devMiddleware from "webpack-dev-middleware";
-import type { Application } from "express";
-
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
+import webpack from "webpack";
+import devMiddleware from "webpack-dev-middleware";
+import express from "express";
+import type { Application } from "express";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);

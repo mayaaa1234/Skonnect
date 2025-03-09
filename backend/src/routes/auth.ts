@@ -1,9 +1,10 @@
 import express from "express";
+import { signup, login } from "../controllers/auth.ts";
 const router = express.Router();
-import { adduser, auth } from "../controllers/auth.ts";
 
-// "/" === "api/v1/auth"
-router.get("/", auth);
-router.post("/", adduser);
+// INFO:  "/" === "api/v1/auth"
+//router.post("/otp", otp); // idk maybe if it's a requirement
+router.post("/signup", signup);
+router.post("/login", login);
 
 export default router;

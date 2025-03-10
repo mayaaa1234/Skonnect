@@ -1,5 +1,6 @@
-import mysql, { ResultSetHeader } from "mysql2/promise";
-//const { ResultSetHeader } = mysql;
+import mysql from "mysql2/promise";
+import ResultSetHeader from "mysql2/promise";
+
 import pool from "../db/pool.ts";
 import bcrypt from "bcrypt";
 

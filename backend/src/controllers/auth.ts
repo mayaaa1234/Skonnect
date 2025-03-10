@@ -6,13 +6,10 @@ const signup = async (req, res) => {
     console.log("req.body", req.body);
 
     const user = new User(username, email, password, confirmPassword);
-    const err = user.validate();
-    if (err) {
-      throw new Error(err.join(" "));
-    }
-
+    await user.validate(); // user input validation
     await user.save();
-    return res.json({});
+
+    res.status(201).json({ user: { id: user.id, name: user.username } });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ error: error.message });
@@ -21,7 +18,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    return res.json(req.body);
+    res.json(req.body);
   } catch (error) {
     console.error(error);
   }

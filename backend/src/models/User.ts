@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+import mysql, { ResultSetHeader } from "mysql2/promise";
 //const { ResultSetHeader } = mysql;
 import pool from "../db/pool.ts";
 import bcrypt from "bcrypt";
@@ -15,11 +15,11 @@ interface UserTable {
 }
 
 export default class User {
-  private id: number; // maybe useful later
+  id: number; // maybe useful later
   username: string;
   email: string;
   password: string;
-  private confirmPassword?: string;
+  private _confirmPassword?: string;
   isAdmin: boolean = false;
   //private _confirmPassword?: string;
 
@@ -27,73 +27,58 @@ export default class User {
     username: string,
     email: string,
     password: string,
-    confirmPassword?: string,
+    _confirmPassword?: string,
     isAdmin?,
   ) {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.confirmPassword = confirmPassword;
+    this._confirmPassword = _confirmPassword;
     this.isAdmin = isAdmin ?? false;
   }
 
-  // findemail,confirmpass, comparepass
-  validate = () => {
-    const errors: string[] = []; // aggregate err msg's
+  // TODO: getAllUsers?
 
-    if (!this.username || this.username.length < 4) {
-      errors.push("Name must be at least 4 characters long.");
+  validate = async () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!this.username || this.username.length < 4)
+      errors.username = "Username must be at least 4 characters long.";
+
+    if (!this.email || !emailRegex.test(this.email))
+      errors.email = "Email is not valid.";
+
+    if (!this.password || this.password.length < 8)
+      errors.password = "Password must be at least 8 characters long.";
+
+    if (this._confirmPassword && this._confirmPassword !== this.password)
+      errors.confirmPassword = "Password does not match.";
+
+    const [rows] = await pool.execute(
+      `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?)`,
+      [this.email],
+    );
+    const emailExists = Object.values(rows[0])[0]; // returns 1 or 0
+    if (emailExists) errors.email = "Email is already taken.";
+
+    if (Object.keys(errors).length > 0) {
+      throw new Error(JSON.stringify(errors)); // send errors as JSON
     }
-
-    if (!this.email || !emailRegex.test(this.email)) {
-      errors.push("Email is not valid");
-    }
-
-    if (!this.password || this.password.length < 8) {
-      errors.push("Password must be at least 8 characters long.");
-    }
-
-    if (this) if (!this) return errors.length > 0 ? errors : null;
   };
 
   save = async () => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(this.password, salt);
 
-    //const [result] = await pool.execute<ResultSetHeader>(
-    const [result] = await pool.execute(
+    const [rows] = await pool.execute<ResultSetHeader>(
+      //const [rows] = await pool.execute(
       `INSERT INTO users (username, email, password, isAdmin) VALUES (?, ?, ?, ?)`,
       [this.username, this.email, hashedPassword, this.isAdmin],
     );
 
-    console.log({ result });
-    //this.id = result.insertId;
+    console.log({ rows });
+    // get the inserted id from auto increment and put it in this id
+    // so than it can then be sent into client
+    this.id = rows.insertId;
   };
-
-  //static async findByEmail(email: string): Promise<UserSchema | null> {
-  //  //const [rows] = await pool.execute<(UserSchema & RowDataPacket)[]>(
-  //  const [rows] = await pool.execute(
-  //    "SELECT * FROM users WHERE email = ?",
-  //    [email],
-  //  );
-  //
-  //  return rows.length ? rows[0] : null;
-  //}
-
-  //static async getAll(): Promise<UserSchema[]> {
-  //  const [rows] = await pool.execute<(UserSchema & RowDataPacket)[]>(
-  //    "SELECT * FROM users",
-  //  );
-  //
-  //  return rows;
-  //}
-
-  //static async validatePassword(
-  //  email: string,
-  //  plainPassword: string,
-  //): Promise<boolean> {
-  //  const user = await User.findByEmail(email);
-  //  if (!user) return false;
-  //  return bcrypt.compareSync(plainPassword, user.password);
-  //}
 }

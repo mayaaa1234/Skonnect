@@ -16,5 +16,6 @@ const pool = mysql.createPool({
   queueLimit: 0, // unli
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  //jsonStrings: true,
 });
 export default pool;

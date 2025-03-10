@@ -1,5 +1,9 @@
 import mysql from "mysql2/promise";
-import ResultSetHeader from "mysql2/promise";
+import type {
+  ResultSetHeader,
+  RowDataPacket,
+  FieldPacket,
+} from "mysql2/promise";
 
 import pool from "../db/pool.ts";
 import bcrypt from "bcrypt";
@@ -8,20 +12,13 @@ const emailRegex = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 );
 
-interface UserTable {
-  username: string;
-  email: string;
-  password: string;
-  isAdmin: boolean;
-}
-
 export default class User {
   id: number; // maybe useful later
   username: string;
   email: string;
   password: string;
-  private _confirmPassword?: string;
-  isAdmin: boolean = false;
+  private _confirmPassword: string | undefined;
+  isAdmin: boolean;
   //private _confirmPassword?: string;
 
   constructor(
@@ -29,18 +26,18 @@ export default class User {
     email: string,
     password: string,
     _confirmPassword?: string,
-    isAdmin?,
+    isAdmin: boolean = false,
   ) {
     this.username = username;
     this.email = email;
     this.password = password;
     this._confirmPassword = _confirmPassword;
-    this.isAdmin = isAdmin ?? false;
+    this.isAdmin = isAdmin;
   }
 
   // TODO: getAllUsers?
 
-  validate = async () => {
+  signupValidation = async () => {
     const errors: { [key: string]: string } = {};
 
     if (!this.username || this.username.length < 4)
@@ -55,16 +52,38 @@ export default class User {
     if (this._confirmPassword && this._confirmPassword !== this.password)
       errors.confirmPassword = "Password does not match.";
 
-    const [rows] = await pool.execute(
+    const [row] = await pool.execute(
       `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?)`,
       [this.email],
     );
-    const emailExists = Object.values(rows[0])[0]; // returns 1 or 0
+    const emailExists = Object.values(row[0])[0]; // grabs the first val in frist row which results 1 or 0
     if (emailExists) errors.email = "Email is already taken.";
 
     if (Object.keys(errors).length > 0) {
       throw new Error(JSON.stringify(errors)); // send errors as JSON
     }
+  };
+
+  loginValidation = async () => {
+    if (!this.email || !emailRegex.test(this.email))
+      throw new Error("Email is not valid.");
+
+    // grabbed field also for debugging
+    const [row, field]: [RowDataPacket[], FieldPacket[]] = await pool.execute(
+      `SELECT * FROM users WHERE email = ?`,
+      [this.email],
+    );
+    console.log({ row, field });
+
+    if (row.length === 0) throw new Error("Email not found.");
+
+    const storedHashedPassword = row[0].password;
+    const isMatch = await bcrypt.compare(this.password, storedHashedPassword);
+
+    if (!isMatch) throw new Error("Wrong Password, Try again.");
+
+    this.id = row[0].id;
+    this.id = row[0].isAdmin;
   };
 
   save = async () => {

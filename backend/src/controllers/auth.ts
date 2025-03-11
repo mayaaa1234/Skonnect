@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import User from "../models/User.ts";
-import jwt from "jsonwebtoken";
 import { asyncWrapper } from "../middlewares/asyncWrapper.ts";
 import { createCustomError } from "../errors/CustomError.ts";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -23,7 +23,7 @@ const signup = asyncWrapper(
         //return res
         //.status(401)
         //.json({ error: "Can't create an admin. Invalid admin key" });
-        next(createCustomError("Invalid admin key.", 401));
+        return next(createCustomError("Invalid admin key.", 401));
       }
       isAdmin = true;
     }
@@ -31,7 +31,7 @@ const signup = asyncWrapper(
     const user = new User(username, email, password, confirmPassword, isAdmin);
     const errors = await user.signupValidation();
     // passing the errors to errorHandler using next with a custom error
-    if (errors) next(createCustomError(errors, 400));
+    if (errors) return next(createCustomError(errors, 400));
 
     await user.saveDB();
 

@@ -2,29 +2,42 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 import { Request, Response, NextFunction } from "express";
+import { asyncWrapper } from "../middlewares/asyncWrapper.ts";
+import { createCustomError } from "../errors/CustomError.ts";
 
-export const authUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new Error("Authentication Invalid: No Token Provided."); // use error middleware ofr this
-  }
+const authUser = asyncWrapper(
+  async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      next(
+        createCustomError("Authentication Invalid: No Token Provided.", 401),
+      );
+      return;
+    }
+    // Ensure the JWT secret exists
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET not defined in environment variables");
+    }
 
-  const token = authHeader?.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    console.log(decoded);
+    const token = authHeader.split(" ")[1];
+    try {
+      // Verify token with type safety
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string,
+      ) as jwt.JwtPayload;
 
-    //req.user = decoded as jwt.JwtPayload;
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token." });
-  }
-};
+      console.log(decoded);
+      req.user = decoded;
+
+      next();
+    } catch (error) {
+      return next(createCustomError("Invalid or expired token.", 401));
+    }
+  },
+);
+
+export default authUser;
 
 //const jwt = require("jsonwebtoken");
 //const { UnauthenticatedError } = require("../errors");

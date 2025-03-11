@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../middlewares/asyncWrapper.ts";
 import { createCustomError } from "../errors/CustomError.ts";
 

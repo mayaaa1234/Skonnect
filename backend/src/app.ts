@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import connectDB from "./db/connect.ts";
 import auth from "./routes/auth.ts";
+import pages from "./routes/pages.ts";
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
 
@@ -47,11 +48,12 @@ app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
 
 // serve ejs files for diff routes
-app.get("/", (_req, res) => {
-  res.render("index", { title: "" });
-});
+//app.get("/", (_req, res) => {
+//  res.render("index", { title: "" });
+//});
 
 app.use("/api/v1/auth", auth);
+app.use("/", pages);
 
 //errors
 app.use(notFound);

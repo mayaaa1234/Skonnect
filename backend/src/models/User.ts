@@ -37,7 +37,7 @@ export default class User {
 
   // TODO: getAllUsers?
 
-  signupValidation = async () => {
+  signupValidation = async (): Promise<string | null> => {
     const errors: { [key: string]: string } = {};
 
     if (!this.username || this.username.length < 4)
@@ -57,6 +57,9 @@ export default class User {
       [this.email],
     );
     const emailExists = rows[0].emailExists;
+    if (emailExists) {
+      errors.email = "Email already in use.";
+    }
 
     if (Object.keys(errors).length > 0) {
       //throw new Error(JSON.stringify(errors)); // send errors as JSON
@@ -67,24 +70,34 @@ export default class User {
 
   loginValidation = async () => {
     if (!this.email || !emailRegex.test(this.email))
-      throw new Error("Email is not valid.");
+      return "Email is not valid.";
+    //throw new Error("Email is not valid.");
 
     // grabbed field also for debugging
     const [row, field]: [RowDataPacket[], FieldPacket[]] = await pool.execute(
       `SELECT * FROM users WHERE email = ?`,
       [this.email],
     );
+    // no reason for adding field packet
+    // it just so that i can see whats being sent back
+    // and for learning purposes.
     console.log({ row, field });
 
-    if (row.length === 0) throw new Error("Email not found.");
+    //if (row.length === 0) throw new Error("Email not found.");
+    if (row.length === 0) return "Email not found.";
 
     const storedHashedPassword = row[0].password;
     const isMatch = await bcrypt.compare(this.password, storedHashedPassword);
 
-    if (!isMatch) throw new Error("Wrong Password, Try again.");
+    //if (!isMatch) throw new Error("Wrong Password, Try again.");
+    if (!isMatch) return "Wrong Password, Try again.";
 
     this.id = row[0].id;
+    this.username = row[0].username;
+    this.email = row[0].email;
     this.isAdmin = row[0].isAdmin;
+
+    return null;
   };
 
   saveDB = async () => {

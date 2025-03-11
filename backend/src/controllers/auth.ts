@@ -20,9 +20,6 @@ const signup = asyncWrapper(
     let isAdmin = false;
     if (adminKey) {
       if (adminKey !== process.env.ADMIN_KEY) {
-        //return res
-        //.status(401)
-        //.json({ error: "Can't create an admin. Invalid admin key" });
         return next(createCustomError("Invalid admin key.", 401));
       }
       isAdmin = true;
@@ -50,25 +47,30 @@ const signup = asyncWrapper(
     });
   },
 );
-const login = asyncWrapper(async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
-  //TODO:  gen jwt
 
-  const user = new User(username, email, password);
-  await user.loginValidation();
+const login = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { username, email, password } = req.body;
+    //TODO:  gen jwt
 
-  const token = jwt.sign(
-    { id: user.id, email: user.email, isAdmin: user.isAdmin },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: process.env.JWT_LIFETIME as string,
-    } as jwt.SignOptions,
-  );
+    const user = new User(username, email, password);
 
-  res.json({
-    user: { id: user.id, username: user.username, email: user.email },
-    token,
-  });
-});
+    const err = await user.loginValidation();
+    if (err) return next(createCustomError(err, 400));
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: process.env.JWT_LIFETIME as string,
+      } as jwt.SignOptions,
+    );
+
+    res.json({
+      user: { id: user.id, username: user.username, email: user.email },
+      token,
+    });
+  },
+);
 
 export { signup, login };

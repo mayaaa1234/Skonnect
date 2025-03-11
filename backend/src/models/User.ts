@@ -13,7 +13,7 @@ const emailRegex = new RegExp(
 );
 
 export default class User {
-  id: number; // maybe useful later
+  id!: number;
   username: string;
   email: string;
   password: string;
@@ -52,16 +52,17 @@ export default class User {
     if (this._confirmPassword && this._confirmPassword !== this.password)
       errors.confirmPassword = "Password does not match.";
 
-    const [row] = await pool.execute(
-      `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?)`,
+    const [rows] = await pool.execute<RowDataPacket[]>(
+      `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS emailExists`,
       [this.email],
     );
-    const emailExists = Object.values(row[0])[0]; // grabs the first val in frist row which results 1 or 0
-    if (emailExists) errors.email = "Email is already taken.";
+    const emailExists = rows[0].emailExists;
 
     if (Object.keys(errors).length > 0) {
-      throw new Error(JSON.stringify(errors)); // send errors as JSON
+      //throw new Error(JSON.stringify(errors)); // send errors as JSON
+      return JSON.stringify(errors);
     }
+    return null;
   };
 
   loginValidation = async () => {
@@ -83,7 +84,7 @@ export default class User {
     if (!isMatch) throw new Error("Wrong Password, Try again.");
 
     this.id = row[0].id;
-    this.id = row[0].isAdmin;
+    this.isAdmin = row[0].isAdmin;
   };
 
   save = async () => {

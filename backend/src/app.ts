@@ -2,10 +2,13 @@ import process from "process";
 import path from "path";
 import express from "express";
 import morgan from "morgan";
-import dotenv from "dotenv";
 import connectDB from "./db/connect.ts";
-dotenv.config();
 import auth from "./routes/auth.ts";
+import { notFound } from "./middlewares/notFound.ts";
+import { errorHandler } from "./middlewares/errorHandler.ts";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
@@ -49,6 +52,10 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/v1/auth", auth);
+
+//errors
+app.use(notFound);
+app.use(errorHandler);
 
 const server = async () => {
   try {

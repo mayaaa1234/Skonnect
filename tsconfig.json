@@ -6,8 +6,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "typeRoots": [
-      "../../node_modules/@types",
-      "../types/**/*"
+      "node_modules/@types",
     ],
     "baseUrl": "./",
     "paths": {},
@@ -38,12 +37,11 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "../src/**/*"
+    "backend/src/**/*",
+    "frontend/src/**/*"
   ],
   "exclude": [
-    "../../node_modules",
-    "../../frontend/**/*",
-    "../configs/**/*",
-    "../dist/**/*"
+    "node_modules",
+    "*dist*/**/*"
   ]
 }

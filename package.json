@@ -7,7 +7,8 @@
   "scripts": {
     "start": "nodemon --config ./backend/configs/nodemon.json",
     "build": "webpack --config frontend/configs/webpack.prod.js && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
-    "build:ci": "tsc -p backend/configs/tsconfig.json && npm run build",
+    "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
+    "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
     "prod": "node backend/dist/app.js",
     "postinstall": "npm run build"
   },
@@ -23,7 +24,10 @@
     "@eslint/js": "^9.19.0",
     "@fsouza/prettierd": "^0.26.1",
     "@fullhuman/postcss-purgecss": "^7.0.2",
+    "@types/bcrypt": "^5.0.2",
     "@types/connect-livereload": "^0.6.3",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.9",

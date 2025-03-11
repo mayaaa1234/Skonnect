@@ -8,7 +8,6 @@ dotenv.config();
 
 const signup = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    //try {
     const {
       username,
       email,
@@ -34,8 +33,9 @@ const signup = asyncWrapper(
     // passing the errors to errorHandler using next with a custom error
     if (errors) next(createCustomError(errors, 400));
 
-    await user.save(); // to db
+    await user.saveDB();
 
+    //user has id from sql auto increment
     const token = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
       process.env.JWT_SECRET as string,
@@ -48,41 +48,27 @@ const signup = asyncWrapper(
       user: { id: user.id, name: user.username, email: user.email },
       token,
     });
-    //} catch (error) {
-    //  console.error(error);
-    //  res.status(400).json({ error: error.message });
-    //}
   },
 );
-const login = async (req: Request, res: Response) => {
-  try {
-    const { username, email, password } = req.body;
-    //TODO:  gen jwt
+const login = asyncWrapper(async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
+  //TODO:  gen jwt
 
-    const user = new User(username, email, password);
-    await user.loginValidation();
+  const user = new User(username, email, password);
+  await user.loginValidation();
 
-    const sec: string = process.env.JWT_SECRET as string;
-    const token = jwt.sign(
-      { id: user.id, email: user.email, isAdmin: user.isAdmin },
-      sec,
-      {
-        expiresIn: process.env.JWT_LIFETIME as string,
-      } as jwt.SignOptions,
-    );
+  const token = jwt.sign(
+    { id: user.id, email: user.email, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: process.env.JWT_LIFETIME as string,
+    } as jwt.SignOptions,
+  );
 
-    res.json({
-      user: { id: user.id, username: user.username, email: user.email },
-      token,
-    });
-  } catch (error) {
-    console.error(error);
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(400).json({ error: "An unknown error occurred" });
-    }
-  }
-};
+  res.json({
+    user: { id: user.id, username: user.username, email: user.email },
+    token,
+  });
+});
 
 export { signup, login };

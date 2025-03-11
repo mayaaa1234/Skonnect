@@ -87,7 +87,7 @@ export default class User {
     this.isAdmin = row[0].isAdmin;
   };
 
-  save = async () => {
+  saveDB = async () => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(this.password, salt);
 

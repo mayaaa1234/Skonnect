@@ -7,7 +7,7 @@
     "moduleResolution": "nodenext",
     "typeRoots": [
       "../../node_modules/@types",
-      "../types/**/*"
+      "../types",
     ],
     "baseUrl": "./",
     "paths": {},
@@ -38,7 +38,8 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "../src/**/*"
+    "../src/**/*",
+    "../types/**/*"
   ],
   "exclude": [
     "../../node_modules",

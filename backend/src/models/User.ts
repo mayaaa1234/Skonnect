@@ -74,7 +74,7 @@ export default class User {
   // NOTE, unlike signup which aggregates and sends all err's at once so that the user can instantly know which input is wrong based on contstraints.
   // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if conforming to contstraints thus the code:
 
-  // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (securty reasons)
+  // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (security reasons)
   loginValidation = async () => {
     if (this.email && this.username)
       return "Provide only either email or username.";
@@ -92,17 +92,15 @@ export default class User {
         return "Email not found.";
       }
 
-      console.log("passing the valid");
-
       const { id, username, email, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
       if (!isMatch) return "Wrong Password, Try again.";
 
+      // will be sent to the client
       this.id = id;
       this.username = username;
       this.email = email;
-      this.password = password;
     }
 
     if (this.username && !this.email) {
@@ -110,6 +108,7 @@ export default class User {
         `SELECT * FROM users WHERE username = ?`,
         [this.username],
       );
+      console.log({ rows });
 
       if (rows.length === 0) {
         return "Username not found.";
@@ -120,10 +119,10 @@ export default class User {
       const isMatch = await bcrypt.compare(this.password, password);
       if (!isMatch) return "Wrong Password, Try again.";
 
+      // will be sent to the client
       this.id = id;
       this.username = username;
       this.email = email;
-      this.password = password;
     }
 
     return null;

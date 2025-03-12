@@ -16,8 +16,23 @@ const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const publicDir = path.join(process.cwd(), "frontend/public");
 
 // INFO : development-mode only middleware and will be removed on prod
-import devMiddleware from "./middlewares/devModeMiddleware.ts";
-devMiddleware(app);
+import dev from "./middlewares/devModeMiddleware.ts";
+import livereload from "livereload";
+import connectLivereload from "connect-livereload";
+if (process.env.NODE_ENV === "development") {
+  const lrserver = livereload.createServer();
+  //lrserver.watch(path.join(process.cwd(), "frontend/public"));
+  lrserver.watch(path.join(process.cwd(), "frontend/views"));
+  lrserver.server.once("connection", () => {
+    setTimeout(() => {
+      //lrserver.refresh("/frontend/views/**/*");
+      lrserver.refresh("frontend/");
+    }, 5);
+  });
+  app.use(connectLivereload());
+
+  dev(app);
+}
 //import livereload from "livereload";
 //import connectLivereload from "connect-livereload";
 //if (process.env.NODE_ENV === "development") {
@@ -29,12 +44,12 @@ devMiddleware(app);
 //    }, 15);
 //  });
 //  app.use(connectLivereload());
+
+//const { default: devModeMiddleware } = await import(
 //
-//  const { default: devModeMiddleware } = await import(
-//
-//    "./middlewares/devModeMiddleware.ts"
-//  );
-//  devModeMiddleware(app);
+//  "./middlewares/devModeMiddleware.ts"
+//);
+//devModeMiddleware(app);
 //}
 
 // NOTE : src attr path's given to elems from
@@ -57,12 +72,12 @@ app.use("/", pages);
 
 //errors
 app.use(notFound);
-app.use(errorHandler);
+//app.use(errorHandler);
 
 const server = async () => {
   try {
     await connectDB();
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Server is running on port ${port}....`);
     });
   } catch (error) {

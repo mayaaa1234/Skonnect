@@ -27,7 +27,7 @@ const signup = asyncWrapper(
 
     const user = new User(username, email, password, confirmPassword, isAdmin);
     const errors = await user.signupValidation();
-    // passing the errors to errorHandler using next with a custom error
+    //passing the errors to errorHandler using next with a custom error
     if (errors) return next(createCustomError(errors, 400));
 
     await user.saveDB();

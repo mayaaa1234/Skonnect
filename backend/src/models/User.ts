@@ -68,34 +68,63 @@ export default class User {
     return null;
   };
 
+  //SQL CONSTRAINTS: both username and email is unique
+  // FLOW: (1) if email is used as a login method, check if valid email using regex and then check if it exists then check if pass is correct, skipping the username validation.
+  // (2) if username is used as a login method do the same validation and skip the email validation
+  // NOTE, unlike signup which aggregates and sends all err's at once so that the user can instantly know which input is wrong based on contstraints.
+  // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if conforming to contstraints thus the code:
+
+  // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (securty reasons)
   loginValidation = async () => {
-    if (!this.email || !emailRegex.test(this.email))
-      return "Email is not valid.";
-    //throw new Error("Email is not valid.");
+    if (this.email && this.username)
+      return "Provide only either email or username.";
 
-    // grabbed field also for debugging
-    const [row, field]: [RowDataPacket[], FieldPacket[]] = await pool.execute(
-      `SELECT * FROM users WHERE email = ?`,
-      [this.email],
-    );
-    // no reason for adding field packet
-    // it just so that i can see whats being sent back
-    // and for learning purposes.
-    console.log({ row, field });
+    if (this.email && !this.username) {
+      if (!emailRegex.test(this.email)) return "Email is not valid.";
 
-    //if (row.length === 0) throw new Error("Email not found.");
-    if (row.length === 0) return "Email not found.";
+      const [rows] = await pool.execute<RowDataPacket[]>(
+        `SELECT * FROM users WHERE email = ?`,
+        [this.email],
+      );
+      console.log({ rows });
 
-    const storedHashedPassword = row[0].password;
-    const isMatch = await bcrypt.compare(this.password, storedHashedPassword);
+      if (rows.length === 0) {
+        return "Email not found.";
+      }
 
-    //if (!isMatch) throw new Error("Wrong Password, Try again.");
-    if (!isMatch) return "Wrong Password, Try again.";
+      console.log("passing the valid");
 
-    this.id = row[0].id;
-    this.username = row[0].username;
-    this.email = row[0].email;
-    this.isAdmin = row[0].isAdmin;
+      const { id, username, email, password } = rows[0];
+
+      const isMatch = await bcrypt.compare(this.password, password);
+      if (!isMatch) return "Wrong Password, Try again.";
+
+      this.id = id;
+      this.username = username;
+      this.email = email;
+      this.password = password;
+    }
+
+    if (this.username && !this.email) {
+      const [rows] = await pool.execute<RowDataPacket[]>(
+        `SELECT * FROM users WHERE username = ?`,
+        [this.username],
+      );
+
+      if (rows.length === 0) {
+        return "Username not found.";
+      }
+
+      const { id, username, email, password } = rows[0];
+
+      const isMatch = await bcrypt.compare(this.password, password);
+      if (!isMatch) return "Wrong Password, Try again.";
+
+      this.id = id;
+      this.username = username;
+      this.email = email;
+      this.password = password;
+    }
 
     return null;
   };

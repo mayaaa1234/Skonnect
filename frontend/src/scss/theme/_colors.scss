@@ -55,7 +55,7 @@
   }
 }
 
-// THEMING
+// VANILLA CSS VAR THEMING
 
 @each $theme, $values in $themes {
   // VARIABLE BASED THEMIMG APPROACH //
@@ -78,7 +78,7 @@
       //   color: var(--complement);
       // }
 
-      // ligh / dark variation (needs aso interpolation for vals)
+      // light / dark variation (needs aso interpolation for vals)
       @for $i from 1 through 9 {
         --#{$k}-light-#{$i}: #{color.mix(white, $v, $i * 10%)};
       }

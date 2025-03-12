@@ -19,7 +19,7 @@
 
 // use this for if using var theming approach
 // and just customize color through vars in a
-// centralized .scss file
+// centralized .scss file (e.g. themes.scss)
 .btn {
   @extend %gen-btn;
 }

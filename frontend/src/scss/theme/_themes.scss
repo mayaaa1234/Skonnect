@@ -1,24 +1,45 @@
 // document element data attiribute is being toggled
 // so the changes cascades to all child and ddescendants
 
+@use "../abstracts/mixins" as *;
+
 body {
   background-color: var(--primary);
   color: var(--foreground);
 }
 
 nav {
-  background-color: var(--accent);
-  // color:;
-  button {
-    background-color: var(--accent);
+  background-color: var(--primary);
+  // color: var(--foreground);
 
-    &:hover {
-      background-color: var(--accent-light-1);
+  button {
+    background-color: var(--primary);
+
+    // override chrome's weird default hover/bg mobile where
+    // taps triggers the hover effect which in chrome changes
+    // the bg of a btn, which is prob not ideal most of the time.
+    @include mobile {
+      &:hover {
+        -webkit-tap-highlight-color: transparent !important;
+        background-color: transparent !important;
+      }
     }
   }
 
-  #logo-name {
-    color: #f3f3f3; // white always
+  // #logo-name {
+  //   color: #f3f3f3; // white always
+  // }
+
+  .nav-menu-popup {
+    background: color-mix(in srgb, var(--primary) 50%, transparent);
+
+    a {
+      color: var(--foreground);
+    }
+
+    button {
+      background-color: transparent;
+    }
   }
 }
 

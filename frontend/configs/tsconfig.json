@@ -4,6 +4,12 @@
     "module": "nodenext",
     "moduleResolution": "nodenext", /* Specify how TypeScript looks up a file from a given module specifier. */
     "rootDir": "../",
+    "lib": [
+      "es5",
+      "es6",
+      "dom",
+      "esnext"
+    ],
     "typeRoots": [
       "../../node_modules/@types",
     ],

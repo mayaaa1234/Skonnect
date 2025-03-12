@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import authUser from "../middlewares/authUser.ts";
+//import authUser from "../middlewares/authUser.ts";
 import { signup, login } from "../controllers/auth.ts";
 
 // INFO:  "/" === "api/v1/auth"

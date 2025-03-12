@@ -6,12 +6,17 @@
   "overrides": [
     {
       "files": [
-        "*.html"
+        "*.html",
+        "*.ejs",
+        "*.pug"
       ],
       "options": {
         "tabWidth": 4
       }
     }
+  ],
+  "plugins": [
+    "prettier-plugin-ejs"
   ],
   "embeddedLanguageFormatting": "auto"
 }

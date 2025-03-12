@@ -1,4 +1,4 @@
-import CustomError from "../errors/CustomError.ts";
+import { CustomError } from "../errors/CustomError.ts";
 import type { Request, Response, NextFunction } from "express";
 
 export const errorHandler = (
@@ -7,13 +7,10 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  // check if the getting passed  is coming from the custom err
-  // otherwise just use a generic error
   if (err instanceof CustomError) {
     return res.status(err.statusCode).json({ msg: err.message });
+    console.error("Error message:", err.message);
   }
-
-  console.error("Error message:", err.message);
 
   return res
     .status(500)

@@ -1,11 +1,14 @@
 $themes: (
   "dark": (
-    "primary": #1c1c1c,
-    "secondary": #1b2028,
+    "primary": rgb(25, 27, 28),
+    "secondary": rgb(28, 30, 32),
+    "tertiary": #1b2028,
     "neutral": #303334,
-    "accent": #3295b6,
+    // "accent": #3b60e4,
+    "accent": #142e90,
+    // #142E90
+    // #1634A2
     "foreground": #f3f3f3,
-    "sidebar-tree": #3295b6,
   ),
   "light": (
     "primary": #fcfcfc,
@@ -13,7 +16,6 @@ $themes: (
     "neutral": #303334,
     "accent": #3295b6,
     "foreground": #141216,
-    "sidebar-tree": #141216,
   ),
 );
 

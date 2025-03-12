@@ -14,7 +14,8 @@
       "node"
     ], /* Specify type package names to be included without being referenced in a source file. */
     "lib": [
-      "esnext"
+      "esnext",
+      "dom"
     ],
     "noEmit": true,
     "allowImportingTsExtensions": true,

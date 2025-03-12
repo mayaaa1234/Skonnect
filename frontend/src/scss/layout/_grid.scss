@@ -21,8 +21,8 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   // height: auto;
   // padding-left: 0.75rem;
   // padding-right: 0.75rem;
-  padding-right: $base-padding;
-  padding-left: $base-padding;
+  padding-right: $base-padding * 1.5;
+  padding-left: $base-padding * 1.5;
   margin-left: auto;
   margin-right: auto;
 }

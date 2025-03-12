@@ -1,176 +1,131 @@
 @use "../abstracts/mixins" as *;
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-$nav-height: 65px; // used also by sidebar.sccs and home.scss for adjustment
+// used also by sidebar.sccs and home.scss for adjustment
+$nav-height: 55px;
 
 nav {
   display: grid;
   // display: none;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  // yeah these two are actually needed crazy
   align-items: center;
+  align-content: center;
   gap: 0.75rem;
   position: fixed;
-  position: -webkit-fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 9998;
   max-width: 100vw;
   height: $nav-height;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.09);
 
-  // @include xs {
-  //   & {
-  //     max-width: 100vw;
-  //   }
-  // }
+  .logo-container {
+    align-items: center;
+    display: flex;
+    gap: 15px;
+    font-family: Poppins, sans-serif;
+  }
 
-  // general style inside nav
-
-  img {
+  .logo,
+  .close-icon {
     width: 30px;
   }
 
-  :is(button, input):focus {
+  &:is(button, input):focus {
     outline: none;
   }
-}
 
-.menuIcon {
-  width: 33px;
-}
-
-a.logo-container {
-  justify-self: baseline;
-  margin-left: 8px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  -webkit-tap-highlight-color: transparent;
-  text-decoration: none;
-  color: inherit;
-  font-family: "Poppins";
-  font-size: 12px;
-  // font-weight: 700;
-  // border: 1px solid white;
-  position: relative;
-
-  .logo {
-    width: 40px;
-    padding: 5px;
-    // align-self: center;
-  }
-
-  #logo-name {
-    position: absolute;
-    left: 110%;
-    // INFO: origin left makes the left side of the element gets anchored/fixed
-    // while right side shrinks/grows while transitioning scaleX in/out
-    transform-origin: left;
-    transform: scaleX(100%);
-    transition:
-      //  INFO: visibility 1ms delay than transform
-      // so that i't won't interfere with the transition
-      visibility 301ms ease,
-      transform 300ms ease 50ms;
-
-    &.adjust {
-      transform: scaleX(0);
-      visibility: hidden;
-      //  INFO: no need 91ms, 90ms to account for visibility
-      // cause it's not animatable so i'ts auto 0ms or bool on transition out
-      transition-delay: 90ms;
-    }
-  }
-}
-
-.navSearchContainer {
-  position: relative;
-  // margin-right: 1px;
-
-  &.active {
-    .navSearchInput {
-      width: 200px;
-    }
-
-    .navSearchBtn {
-      transform: translateX(-201px);
-    }
-  }
-
-  .navSearchInput {
-    background-color: #fff;
-    z-index: -1;
-    border: 0;
-    padding: 15px;
-    height: 30px;
-    width: 0;
-    transition: width 0.3s ease-in-out;
-  }
-
-  .navSearchBtn {
-    position: absolute;
-    z-index: 2;
-    width: 32px;
-    bottom: 0;
-    right: -1px;
-    // left: -20px;
-    cursor: pointer;
-    height: 30px;
-    transition: transform 0.3s ease-in-out;
-  }
-}
-
-button.toggle-theme-btn {
-  position: relative;
-  height: 30px;
-  width: 30px;
-
-  svg {
-    position: absolute;
-    inset: 0;
-  }
-
-  .light-mode {
-    display: none;
-  }
-
-  &-light {
-    .light-mode {
-      display: block; // show
-    }
-
-    .dark-mode {
-      display: none; // hide initial logo
-    }
-  }
-}
-
-@include max-bp(338px) {
-  nav {
-    grid-template-columns: auto 1fr auto !important;
-  }
-
-  .logo-container {
-    display: none !important;
-  }
-
-  .navSearchContainer {
+  .nav-menu-btn-open {
     justify-self: flex-end;
+
+    // img {
+    //   width: 35px;
+    // }
+
+    &.clicked {
+      display: none;
+    }
   }
 }
 
-// @include min-bp(500px) {
-//
-//   #logo-name {
-//     position: absolute;
-//     left: 110%;
-//     transition: initial;
-//
-//     &.adjust {
-//       transform: scaleX(0);
-//       visibility: initial;
-//       //  INFO: no need 91ms, 90ms to account for visibility
-//       // cause it's not animatable so i'ts auto 0ms or bool on transition out
-//       transition-delay: 90ms;
-//     }
-//   }
-// }
+.nav-menu-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  visibility: hidden;
+  &.open {
+    visibility: visible;
+  }
+
+  .nav-menu-btn-close {
+    align-self: flex-end;
+    height: 55px;
+  }
+
+  .menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-25px) scale(0.95);
+    opacity: 0;
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-out;
+
+    &.animate {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      :nth-last-child(1) {
+        margin-bottom: 20px;
+      }
+
+      li {
+        text-align: center;
+        list-style-type: none;
+
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .dev-icons {
+      width: 30px;
+      fill: white;
+      cursor: pointer;
+    }
+  }
+}
+
+// some defaults on larger screens are quite small on mobiles thus:
+@include mobile() {
+  nav {
+    height: 67px !important;
+
+    .logo,
+    .menu-icon,
+    .close-icon {
+      width: 40px !important;
+    }
+
+    // acting as nav when menu popup is open thus the height
+    .nav-menu-btn-close {
+      height: 67px !important;
+    }
+  }
+}

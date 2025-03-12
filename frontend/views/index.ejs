@@ -1,26 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body class="index">
+        <!--<h1>My Page Title</h1>-->
+        <%- include('./partials/nav.ejs') %>
+        <div>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum,
+            modi. Itaque laudantium voluptatem, asperiores iste distinctio
+            impedit consectetur. Reprehenderit similique aspernatur quasi
+            veritatis placeat unde autem? Expedita saepe aspernatur optio
+            perspiciatis assumenda at distinctio itaque doloremque repellendus
+            ab ad adipisci laborum illo exercitationem aut alias quae,
+            consequatur, aliquid, aperiam eaque dolore consectetur. Possimus
+            veritatis alias unde quaerat illo pariatur illum. Temporibus natus
+            quasi nesciunt dicta sit, commodi id labore sequi similique officia.
+            Sunt tempore suscipit aliquam dolore possimus? Tempora accusamus
+            exercitationem aspernatur facere provident earum magni assumenda
+            impedit beatae. Nam esse delectus saepe maiores qui explicabo ipsum,
+            dignissimos nesciunt obcaecati. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Laborum, modi. Itaque laudantium
+            voluptatem, asperiores iste distinctio impedit consectetur.
+            Reprehenderit similique aspernatur quasi veritatis placeat unde
+            autem? Expedita saepe aspernatur optio perspiciatis assumenda at
+            distinctio itaque doloremque repellendus ab ad adipisci laborum illo
+            exercitationem aut alias quae, consequatur, aliquid, aperiam eaque
+            dolore consectetur. Possimus veritatis alias unde quaerat illo
+            pariatur illum. Temporibus natus quasi nesciunt dicta sit, commodi
+            id labore sequi similique officia. Sunt tempore suscipit aliquam
+            dolore possimus? Tempora accusamus exercitationem aspernatur facere
+            provident earum magni assumenda impedit beatae. Nam esse delectus
+            saepe maiores qui explicabo ipsum, dignissimos nesciunt obcaecati.
+        </div>
 
-  <!--HEAD-->
-  <%- include('./partials/head.ejs') %>
+        <!--FOOTER-->
+        <%- include('./partials/footer.ejs') %>
 
-  <body id="null">
-    <!--<h1>My Page Title</h1>-->
-    <div>
-      <ul>
-        <li><a href="#">tessting emmet</a></li>
-        <li><a href="#">tessting emmet</a></li>
-      </ul>
-
-    </div>
-    <!--<img src="../../frontend/dist/assets/test.webp" alt="">-->
-  <img src="/assets/test1.webp" alt="">
-    <div>test</div>
-
-    <!--FOOTER-->
-    <%- include('./partials/footer.ejs') %>
-
-    <script type="module" src="dist/app.bundle.js"></script>
-
-  </body>
+        <script type="module" src="dist/app.bundle.js"></script>
+    </body>
 </html>

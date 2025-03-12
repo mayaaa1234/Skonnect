@@ -1,4 +1,5 @@
 import path from "path";
+import webpack from "webpack";
 import process from "process";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -6,7 +7,10 @@ import ESLintPlugin from "eslint-webpack-plugin";
 
 const config = {
   entry: {
-    app: "./frontend/src/webpack-entry.ts",
+    app: [
+      "webpack-hot-middleware/client?reload=true&timeout=2000",
+      "./frontend/src/webpack-entry.ts",
+    ],
   },
 
   output: {
@@ -14,7 +18,7 @@ const config = {
     path: path.resolve(process.cwd(), "frontend/public/dist"),
     assetModuleFilename: "assets/[hash][ext][query]",
     clean: true,
-    publicPath: "/",
+    publicPath: "./frontend/public/dist",
   },
 
   watchOptions: {
@@ -31,6 +35,7 @@ const config = {
   },
 
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),

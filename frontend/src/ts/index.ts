@@ -1,3 +1,1 @@
-//import ".";
-
-console.log("test");
+import "./nav/navEvents.ts";

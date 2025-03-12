@@ -1,3 +1,4 @@
+import "express-async-errors";
 import process from "process";
 import path from "path";
 import express from "express";
@@ -72,7 +73,7 @@ app.use("/", pages);
 
 //errors
 app.use(notFound);
-//app.use(errorHandler);
+app.use(errorHandler);
 
 const server = async () => {
   try {

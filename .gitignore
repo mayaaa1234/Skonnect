@@ -1,6 +1,4 @@
 node_modules/
 dist/
 .env
-placeholder.js
-project-tree.md
-.todo
+ignored/

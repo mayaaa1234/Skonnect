@@ -11,8 +11,62 @@
 }
 
 body.index {
+  // border: 1px solid rgba(255, 255, 255, 0.3);
   height: 100vh;
-  min-height: 100%;
-  padding-top: $nav-height; // nav.sccs
+  // min-height: 100%;
+  padding-top: $nav-height; // from nav.sccs
   overflow-y: auto;
+}
+
+.hero {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  @include mobile {
+    height: calc(100dvh - #{$nav-height} + 5px) !important;
+  }
+  height: calc(100vh - #{$nav-height} + 5px);
+
+  .hero-content {
+    // border: 1px solid white;
+    .header-title {
+      font-size: 70px;
+    }
+
+    .hero-links {
+      // border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+main {
+  section.features {
+    // display: grid;
+    // place-content: center;
+    text-align: center;
+
+    .feature-card {
+      height: 500px;
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+      // width: 90%;
+    }
+  }
+
+  section.impact {
+    h1 {
+      font-size: 28px;
+    }
+    display: grid;
+    place-content: center;
+    height: 400px;
+  }
 }

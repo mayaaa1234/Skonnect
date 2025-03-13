@@ -136,24 +136,25 @@ $utilities: (
       //default is 5px
       "default": $base-border-radius,
       "none": 0,
-      "xxs": $base-border-radius * 2,
-      "xs": $base-border-radius * 3,
-      "sm": $base-border-radius * 4,
-      "md": $base-border-radius * 5,
-      "lg": $base-border-radius * 6,
-      "xl": $base-border-radius * 7,
-      "xxl": $base-border-radius * 8,
+      "10": $base-border-radius * 2,
+      "15": $base-border-radius * 3,
+      "20": $base-border-radius * 4,
+      "30": $base-border-radius * 5,
+      "40": $base-border-radius * 6,
+      "50": $base-border-radius * 7,
+      "60": $base-border-radius * 8,
       "full": 50%,
     ),
   ),
   "display": (
-    "prefix": "display",
+    "prefix": "dp",
     "values": (
       "n": none,
       "b": block,
       "f": flex,
       "i": inline,
-      "i-b": inline-block,
+      "ib": inline-block,
+      "if": inline-flex,
     ),
   ),
   "font-size": (
@@ -189,6 +190,12 @@ $utilities: (
     "values": (
       "w": 1px solid #d3d3d3,
       "b": 1px solid #000000,
+    ),
+  ),
+  "text-align": (
+    "prefix": "ta",
+    "values": (
+      "c": center,
     ),
   ),
 );

@@ -4,8 +4,8 @@ $themes: (
     "secondary": rgb(28, 30, 32),
     "tertiary": #1b2028,
     "neutral": #303334,
+    "accent": rgb(0, 130, 159),
     // "accent": #3b60e4,
-    "accent": #142e90,
     // #142E90
     // #1634A2
     "foreground": #f3f3f3,
@@ -44,7 +44,7 @@ $base-margin: 0.75rem;
 
 // borders
 $base-border-thickness: 1px;
-$base-border-radius: 10px;
+$base-border-radius: 5px;
 
 // box-shadow
 $base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);

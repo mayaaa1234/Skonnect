@@ -11,6 +11,7 @@
     rgb(0, 165, 191),
     rgb(0, 108, 166)
   );
+
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -56,13 +57,22 @@ body {
     section.impact {
       // background-color: var(--secondary);
 
+      // background: linear-gradient(
+      //   to right bottom,
+      //   rgb(0, 193, 174) 0%,
+      //   rgb(0, 165, 191) 20%,
+      //   rgb(0, 108, 166) 40%,
+      //   rgba(var(--primary-rgb), 0.8) 60% // var(--primary) 100%
+      // );
       background: linear-gradient(
-        135deg,
-        rgb(0, 193, 174) 0%,
-        rgb(0, 165, 191) 50%,
-        rgb(0, 108, 166) 100%
+        180deg,
+        var(--primary) 0%,
+        // rgb(0, 193, 174) 0%,
+        // rgb(0, 165, 191) 20%,
+        // rgb(0, 108, 166) 40%,
+        var(--primary-light-1) 10%,
+        var(--primary) 80%
       );
-      // background-color: var(--tertiary);
     }
   }
 }

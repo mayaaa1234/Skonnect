@@ -48,6 +48,14 @@ body.index {
 }
 
 main {
+  #skonnect-provides {
+    scroll-margin-top: 100px;
+  }
+
+  img {
+    // mix-blend-mode: multiply;
+  }
+
   section.features {
     // display: grid;
     // place-content: center;
@@ -62,6 +70,7 @@ main {
   }
 
   section.impact {
+    // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
     h1 {
       font-size: 28px;
     }

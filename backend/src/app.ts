@@ -22,8 +22,7 @@ import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 if (process.env.NODE_ENV === "development") {
   const lrserver = livereload.createServer();
-  //lrserver.watch(path.join(process.cwd(), "frontend/public"));
-  lrserver.watch(path.join(process.cwd(), "frontend/views"));
+  lrserver.watch(path.join(process.cwd(), "frontend/public"));
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       //lrserver.refresh("/frontend/views/**/*");
@@ -34,24 +33,6 @@ if (process.env.NODE_ENV === "development") {
 
   dev(app);
 }
-//import livereload from "livereload";
-//import connectLivereload from "connect-livereload";
-//if (process.env.NODE_ENV === "development") {
-//  const lrserver = livereload.createServer();
-//  lrserver.watch(path.join(process.cwd(), "frontend/public"));
-//  lrserver.server.once("connection", () => {
-//    setTimeout(() => {
-//      lrserver.refresh("/frontend");
-//    }, 15);
-//  });
-//  app.use(connectLivereload());
-
-//const { default: devModeMiddleware } = await import(
-//
-//  "./middlewares/devModeMiddleware.ts"
-//);
-//devModeMiddleware(app);
-//}
 
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir

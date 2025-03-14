@@ -63,8 +63,6 @@ main {
 
     .feature-card {
       height: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
       // width: 90%;
       display: grid;
       justify-items: center;
@@ -114,6 +112,11 @@ main {
 @include xl {
   .features-container {
     max-width: 1300px;
+  }
+
+  .header-title {
+    font-size: 130px !important;
+    margin-bottom: -20px;
   }
 
   #skonnect-provides {

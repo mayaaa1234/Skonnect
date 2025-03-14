@@ -3,6 +3,157 @@
 
 @use "../abstracts/mixins" as *;
 
+// INFO: to override chrome's weird default hover/bg mobile where
+// taps triggers the hover effect which in chrome changes
+// the bg of a btn, which is prob not ideal most of the time.
+%override-mobile-hover {
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+nav {
+  background-color: var(--primary);
+  color: var(--foreground);
+
+  // .logo-name {
+  // color: var(--accent);
+  // color: ;
+  // }
+
+  .dev-icons {
+    // fill: var(--accent);
+    fill: white;
+  }
+
+  .nav-menu-btn-close,
+  .nav-menu-btn-open {
+    background-color: transparent;
+    @extend %override-mobile-hover;
+  }
+
+  // @include xl {
+  //   button:hover {
+  //   }
+  // }
+  // .signup-btn {
+  //   color: var(--foreground);
+  //   background-color: transparent;
+  //   border: 1px solid var(--accent);
+  // }
+  //
+  // .login-btn {
+  //   color: var(--foreground);
+  //   background-color: var(--accent);
+  // }
+
+  // INFO: small screen nav popup
+  .nav-menu-popup {
+    background: color-mix(in srgb, var(--primary) 60%, transparent);
+  }
+
+  .nav-link {
+    color: var(--foreground);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+// ---------------------------------------
+
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
+  .hero {
+    // background-color: var(--secondary);
+
+    // &-links {
+    //   :nth-child(1) {
+    //     border: 1px solid var(--accent);
+    //     background-color: var(--primary);
+    //   }
+    //
+    //   a {
+    //     color: var(--foreground);
+    //     background-color: var(--accent);
+    //   }
+    // }
+  }
+
+  main {
+    h1 {
+      // color: var(--accent);
+    }
+
+    span {
+      color: var(--accent);
+    }
+
+    section .feature-card {
+      background-color: var(--secondary);
+
+      & > div {
+        border-left: none;
+
+        @include xl {
+          border-left: 4px solid var(--accent);
+        }
+      }
+
+      h2 {
+        color: var(--accent);
+      }
+    }
+
+    section.impact {
+      background: linear-gradient(
+        180deg,
+        var(--primary) 0%,
+        // rgb(0, 193, 174) 0%,
+        // rgb(0, 165, 191) 20%,
+        // rgb(0, 108, 166) 40%,
+        var(--primary-light-1) 10%,
+        var(--primary) 80%
+      );
+    }
+  }
+}
+
+// ---------------------------------------
+
+// .sidebar {
+//   background-color: var(--secondary);
+//   // color:;
+//
+//   .sidebar-item-title {
+//     color: var(--accent);
+//   }
+//
+//   .sidebar-item-branches::before {
+//     border-left: 1px dashed var(--sidebar-tree);
+//   }
+//
+//   .sidebar-item-branch::before {
+//     border-top: 1px dashed var(--sidebar-tree);
+//   }
+// }
+
+// ---------------------------------------
+
+footer {
+  border-top: 1px solid var(--accent);
+  // color:;
+  .c-notice {
+    color: gray;
+    font-size: 12px;
+  }
+}
+
 // will be used throughout the app
 .gradient-text {
   background-image: linear-gradient(
@@ -18,135 +169,68 @@
   display: inline-block;
 }
 
-body {
-  background-color: var(--primary);
-  color: var(--foreground);
-  .hero {
-    // background-color: var(--secondary);
-
-    &-links {
-      :nth-child(1) {
-        border: 1px solid var(--accent);
-        background-color: var(--primary);
-      }
-
-      a {
-        color: var(--foreground);
-        background-color: var(--accent);
-      }
-    }
-  }
-
-  main {
-    h1 {
-      // color: var(--accent);
-    }
-
-    span {
-      color: var(--accent);
-    }
-
-    section .feature-card {
-      background-color: var(--secondary);
-
-      h2 {
-        color: var(--accent);
-      }
-    }
-
-    section.impact {
-      // background-color: var(--secondary);
-
-      // background: linear-gradient(
-      //   to right bottom,
-      //   rgb(0, 193, 174) 0%,
-      //   rgb(0, 165, 191) 20%,
-      //   rgb(0, 108, 166) 40%,
-      //   rgba(var(--primary-rgb), 0.8) 60% // var(--primary) 100%
-      // );
-      background: linear-gradient(
-        180deg,
-        var(--primary) 0%,
-        // rgb(0, 193, 174) 0%,
-        // rgb(0, 165, 191) 20%,
-        // rgb(0, 108, 166) 40%,
-        var(--primary-light-1) 10%,
-        var(--primary) 80%
-      );
-    }
-  }
+.gradient-border {
+  position: relative;
+  // display: inline-block;
+  // padding: 10px 20px;
+  // border-radius: 8px;
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // background: none;
+  // color: white;
 }
 
-nav {
-  background-color: var(--primary);
-  // color: var(--foreground);
-
-  .logo-name {
-    // color: var(--accent);
-    // color: ;
-  }
-  .dev-icons {
-    // fill: var(--accent);
-    fill: white;
-  }
-
-  .nav-menu-btn-close,
-  .nav-menu-btn-open {
-    background-color: transparent;
-
-    // override chrome's weird default hover/bg mobile where
-    // taps triggers the hover effect which in chrome changes
-    // the bg of a btn, which is prob not ideal most of the time.
-    @include mobile {
-      &:hover {
-        // -webkit-tap-highlight-color: transparent !important;
-        // background-color: transparent !important;
-      }
-    }
-  }
-
-  .signup-btn {
-    color: var(--foreground);
-    background-color: transparent;
-    border: 1px solid var(--accent);
-  }
-
-  .login-btn {
-    color: var(--foreground);
-    background-color: var(--accent);
-  }
-
-  .nav-menu-popup {
-    background: color-mix(in srgb, var(--primary) 50%, transparent);
-
-    a {
-      color: var(--foreground);
-    }
-  }
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
-.sidebar {
-  background-color: var(--secondary);
-  // color:;
-
-  .sidebar-item-title {
-    color: var(--accent);
-  }
-
-  .sidebar-item-branches::before {
-    border-left: 1px dashed var(--sidebar-tree);
-  }
-
-  .sidebar-item-branch::before {
-    border-top: 1px dashed var(--sidebar-tree);
-  }
+.gradient-border-1 {
+  border: 5px solid transparent; /* Transparent border to preserve space */
+  border-image: linear-gradient(
+      to right,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    )
+    1;
 }
 
-footer {
-  border-top: 1px solid var(--accent);
-  // color:;
-  .c-notice {
-    color: gray;
-    font-size: 12px;
-  }
-}
+// .gradient-border::before {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   border-radius: 8px;
+//   padding: 3px; /* Border thickness */
+//   background: linear-gradient(
+//     to right,
+//     rgb(0, 193, 174),
+//     rgb(0, 165, 191),
+//     rgb(0, 108, 166)
+//   );
+//   -webkit-mask:
+//     linear-gradient(#fff 0 0) content-box,
+//     linear-gradient(#fff 0 0);
+//   -webkit-mask-composite: xor;
+//   mask-composite: exclude;
+// }

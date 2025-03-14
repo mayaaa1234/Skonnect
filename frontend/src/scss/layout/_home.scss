@@ -57,15 +57,28 @@ main {
   }
 
   section.features {
-    // display: grid;
-    // place-content: center;
+    display: grid;
+    place-content: center;
     text-align: center;
 
     .feature-card {
-      height: 500px;
+      height: auto;
       border-top: 1px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
       // width: 90%;
+      display: grid;
+      justify-items: center;
+      justify-content: center;
+
+      .card-text-container {
+        // border: 1px solid rgba(white, 0.3);
+        width: 95%;
+      }
+
+      img {
+        border-radius: 8px;
+        justify-self: center;
+      }
     }
   }
 
@@ -77,5 +90,55 @@ main {
     display: grid;
     place-content: center;
     height: 400px;
+  }
+}
+
+@include sm {
+  .feature-card h3 {
+    font-size: 1.5em;
+  }
+}
+
+@include md {
+  #skonnect-provides {
+    // text-align: start;
+    // padding-left: $base-padding;
+    font-size: 2.4em;
+  }
+
+  .feature-card h3 {
+    font-size: 1.9em;
+  }
+}
+
+@include xl {
+  .features-container {
+    max-width: 1300px;
+  }
+
+  #skonnect-provides {
+    font-size: 2.9em;
+  }
+  .feature-card h3 {
+    font-size: 2.5em;
+  }
+
+  .feature-card {
+    display: flex !important;
+    justify-content: center;
+    gap: 20px;
+
+    & > div {
+      // border: 1px dashed white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-text-container {
+      // border: 1px solid rgba(white, 0.3);
+      width: 50% !important;
+    }
   }
 }

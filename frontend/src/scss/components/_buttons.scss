@@ -12,13 +12,17 @@
 }
 
 // use this if class based theming approach
-@mixin btn($bg-color) {
-  @extend %gen-btn;
+@mixin btn($bg-color: #fff) {
+  // @extend %gen-btn;
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
   background-color: $bg-color;
+  color: #fff;
 }
 
 // use this for if using var theming approach
-// and just customize color through vars in a
+// and just customize color and hover color through vars in a
 // centralized .scss file (e.g. themes.scss)
 .btn {
   @extend %gen-btn;
@@ -45,36 +49,40 @@
 
 // CLASS BASED THEMING
 
+// NOTE: temporarily added @ xl will remove/modify again later / on other projs
+
 @each $theme, $values in $themes {
   @each $k, $v in $values {
-    .btn-#{$theme}-theme-#{$k} {
+    // @include xl {
+    .btn-#{$theme}-#{$k} {
       @include btn($v);
 
       &:hover {
         background-color: color.adjust($v, $lightness: 5%);
-
-        @include mobile {
-          // override browsers weird default hover/bg on mobiles.
-          // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
-          -webkit-tap-highlight-color: #3295b6;
-          background-color: #3295b6 !important;
-        }
       }
     }
 
-    .btn-outlined-#{$theme}-theme-#{$k} {
-      @include btn(#fff);
-      border: $base-border-thickness solid $v;
+    .btn-outlined-#{$theme}-#{$k} {
+      @include btn(transparent);
+      border: $base-border-thickness solid $v !important;
 
       &:hover {
-        background-color: $v;
+        background-color: $v !important;
 
-        @include mobile {
-          // override browsers weird default hover/bg on mobiles.
-          -webkit-tap-highlight-color: #3295b6;
-          background-color: #3295b6 !important;
-        }
+        // @include mobile {
+        //   // override browsers weird default hover/bg on mobiles.
+        //   -webkit-tap-highlight-color: #3295b6;
+        //   background-color: #3295b6 !important;
+        // }
       }
     }
+
+    @include mobile {
+      // override browsers weird default hover/bg on mobiles.
+      // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
+      // -webkit-tap-highlight-color: #3295b6;
+      // background-color: #3295b6 !important;
+    }
+    // }
   }
 }

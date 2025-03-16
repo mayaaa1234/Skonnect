@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body class="signup-page">
+        <div class="signup-wrapper container">
+            <form id="signup-form" class="br-20" action="" novalidate>
+                <h1 class="mb-2">Sign Up</h1>
+
+                <div class="input-box">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        minlength="4"
+                        maxlength="40"
+                        placeholder=""
+                    />
+                    <label for="username">Username</label>
+                    <span></span>
+                </div>
+                <div data-error-for="username" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        maxlength="100"
+                        placeholder=""
+                    />
+                    <label for="email">Email</label>
+                    <span></span>
+                </div>
+                <div data-error-for="email" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="password">Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <img
+                            src="assets/svg/visib-on.svg"
+                            alt="Show Password"
+                            class="visib-on"
+                        />
+                        <img
+                            src="assets/svg/visib-off.svg"
+                            alt="Hide Password"
+                            class="visib-off"
+                        />
+                    </button>
+                </div>
+                <div data-error-for="password" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="confirmPassword">Confirm Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <!--<img-->
+                        <!--    src="assets/svg/visib-on.svg"-->
+                        <!--    alt="Show ConfirmPassword"-->
+                        <!--    class="visib-on"-->
+                        <!--/>-->
+                        <!--<img-->
+                        <!--    src="assets/svg/visib-off.svg"-->
+                        <!--    alt="Hide ConfirmPassword"-->
+                        <!--    class="visib-off"-->
+                        <!--/>-->
+                    </button>
+                </div>
+                <div
+                    data-error-for="confirmPassword"
+                    class="signup-error-msg"
+                ></div>
+                <!--<div></div>-->
+                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
+                    Sign Up
+                </button>
+                <div class="gp-10 jc-c dp-f login-link">
+                    <span> Don't have an account? </span>
+                    <a class="text-white fw-bold td-n" href="/login"> Login</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-dark-accent right"></div>
+
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
+
+        <script type="module" src="/app.bundle.js"></script>
+    </body>
+</html>

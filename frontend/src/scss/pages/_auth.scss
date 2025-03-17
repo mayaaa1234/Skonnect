@@ -1,0 +1,147 @@
+@use "../abstracts/mixins" as *;
+
+// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
+// specific customization of each at the bottom
+
+body.auth-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  @include xl {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .auth-wrapper {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+  }
+
+  $bar-width: 500px;
+
+  form {
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+    height: 760px;
+    width: min(850px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // margin: 0 auto;
+    background: transparent;
+    backdrop-filter: blur(10px);
+
+    h1 {
+      text-align: center;
+      margin-bottom: -5px;
+
+      @include xl {
+        font-size: 3em;
+      }
+    }
+
+    h4 {
+      // margin-bottom: 12px;
+    }
+
+    .input-box {
+      position: relative;
+      // border-bottom: 1px solid white;
+      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
+      [data-theme="light"] {
+        border-bottom: black !important;
+      }
+      width: min(90%, $bar-width);
+      margin: 25px 0;
+
+      label {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        // border: 1px solid rgb(255, 255, 255, 0.6);
+        padding: 0 36px 0 5px;
+        color: white;
+        height: 50px;
+        font-size: 1em;
+        outline: none;
+        background-color: transparent;
+
+        // NOTE:
+        // label must be below input in html
+        // for this (sibling selector) to work
+        &:focus ~ label,
+        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
+        // NOTE: input must have placeholder attr even if its empty for this to work
+        &:not(:placeholder-shown) ~ label {
+          top: -5px;
+        }
+      }
+
+      .visib-pass-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .visib-on {
+          display: none;
+        }
+
+        &.active {
+          .visib-on {
+            display: block;
+          }
+
+          .visib-off {
+            display: none;
+          }
+        }
+      }
+    }
+
+    button.submit {
+      width: min(90%, $bar-width);
+      margin: 20px 0;
+    }
+
+    .login-link {
+      span {
+        white-space: nowrap;
+      }
+    }
+
+    .signup-error-msg {
+      color: red;
+      margin-top: -16px;
+    }
+  }
+
+  .auth-filler-bg {
+    display: none;
+
+    @include xl {
+      height: 100vh;
+      display: block;
+    }
+  }
+}
+
+body.auth-page.signup {
+}
+
+body.auth-page.login {
+  grid-template-columns: 1fr 1.5fr;
+}

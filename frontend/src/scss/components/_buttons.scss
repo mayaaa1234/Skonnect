@@ -6,15 +6,13 @@
   cursor: pointer;
   display: inline-block;
   border: 0;
+  outline: none;
   // padding: $base-padding $base-padding;
   // border-radius: $base-border-radius;
 }
 
 @mixin btn($bg-color: #fff) {
   @extend %gen-btn;
-  cursor: pointer;
-  display: inline-block;
-  border: 0;
   background-color: $bg-color;
   // color: $color !important;
   color: var(--foreground);
@@ -76,11 +74,11 @@
       }
     }
 
-    .btn-no-hover-#{$theme}-#{$k} {
+    .btn-no-hover {
       @include btn(transparent);
     }
 
-    .btn-no-hover-outlined-#{$theme}-#{$k} {
+    .btn-no-hover-outlined {
       @include btn(transparent);
       border: $base-border-thickness solid $v !important;
     }

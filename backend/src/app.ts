@@ -4,17 +4,13 @@ import path from "path";
 import express from "express";
 import morgan from "morgan";
 import connectDB from "./db/connect.ts";
-import auth from "./routes/auth.ts";
-import pages from "./routes/pages.ts";
-import { notFound } from "./middlewares/notFound.ts";
-import { errorHandler } from "./middlewares/errorHandler.ts";
-
 import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const publicDir = path.join(process.cwd(), "frontend/public");
+const dist = path.join(process.cwd(), "frontend/dist");
 
 // INFO : development-mode only middleware and will be removed on prod
 import dev from "./middlewares/devModeMiddleware.ts";
@@ -34,9 +30,18 @@ if (process.env.NODE_ENV === "development") {
   dev(app);
 }
 
+// routers
+import auth from "./routes/auth.ts";
+import pages from "./routes/pages.ts";
+
+// middlewares
+import { notFound } from "./middlewares/notFound.ts";
+import { errorHandler } from "./middlewares/errorHandler.ts";
+
 // NOTE : src attr path's given to elems from
-// ejs files should be relative to this publicDir
+// ejs files should be relative to this publicDir or dist
 app.use(express.static(publicDir));
+//app.use("/assets", express.static("frontend/dist"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -44,13 +49,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
 
-// serve ejs files for diff routes
-//app.get("/", (_req, res) => {
-//  res.render("index", { title: "" });
-//});
-
-app.use("/api/v1/auth", auth);
+// routes
 app.use("/", pages);
+app.use("/api/v1/auth", auth);
 
 //errors
 app.use(notFound);

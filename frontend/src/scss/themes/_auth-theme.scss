@@ -1,0 +1,76 @@
+body.auth-page {
+  .theme-btn {
+    &.light {
+      &:hover {
+        .moon {
+          fill: black !important;
+        }
+      }
+      .moon {
+        display: block !important;
+        fill: var(--accent) !important;
+      }
+      .sun {
+        display: none;
+      }
+    }
+
+    &.dark {
+      &:hover {
+        .sun {
+          fill: var(--accent) !important;
+        }
+      }
+
+      .moon {
+        display: none !important;
+      }
+
+      .sun {
+        display: block !important;
+      }
+    }
+
+    svg.moon,
+    svg.sun {
+      transition: fill 0.5s ease !important;
+    }
+  }
+  .nav-menu-btn-open {
+    justify-self: flex-end;
+
+    &.clicked {
+      display: none;
+    }
+  }
+}
+
+// TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
+
+[data-theme="light"] {
+  form {
+    .input-box {
+      border-bottom: 1px solid black !important;
+    }
+
+    .login-link a {
+      color: black;
+    }
+
+    .visib-on,
+    .visib-off {
+      // fill: black !important;
+      fill: black;
+    }
+  }
+
+  .right-auth {
+    h1 {
+      color: #fff;
+    }
+  }
+}
+
+// [data-theme="dark"] {
+
+// }

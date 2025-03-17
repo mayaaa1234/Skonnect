@@ -1,0 +1,12 @@
+footer {
+  border-top: 1px solid var(--accent);
+  // color:;
+  .c-notice {
+    color: gray;
+  }
+
+  .dev-icons {
+    // fill: var(--accent);
+    fill: var(--foreground) !important;
+  }
+}

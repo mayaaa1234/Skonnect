@@ -1,0 +1,69 @@
+@use "../abstracts/mixins" as *;
+
+// INFO: to override chrome's weird default hover/bg mobile where
+// taps triggers the hover effect which in chrome changes
+// the bg of a btn, which is prob not ideal most of the time.
+%override-mobile-hover {
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+nav {
+  background-color: var(--primary);
+  color: var(--foreground);
+
+  // .logo-name {
+  // color: var(--accent);
+  // color: ;
+  // }
+
+  .dev-icons {
+    // fill: var(--accent);
+    fill: var(--foreground);
+  }
+
+  .nav-menu-btn-close,
+  .nav-menu-btn-open {
+    background-color: transparent;
+    @extend %override-mobile-hover;
+  }
+
+  .menu-icon,
+  .close-icon {
+    fill: var(--foreground) !important;
+    // filter: brightness(0) invert(1);
+  }
+
+  // @include xl {
+  //   button:hover {
+  //   }
+  // }
+  // .signup-btn {
+  //   color: var(--foreground);
+  //   background-color: transparent;
+  //   border: 1px solid var(--accent);
+  // }
+  //
+  // .login-btn {
+  //   color: var(--foreground);
+  //   background-color: var(--accent);
+  // }
+
+  // INFO: small screen nav popup
+  .nav-menu-popup {
+    // background: color-mix(in srgb, var(--primary) 60%, transparent);
+    background: transparent;
+  }
+
+  .nav-link {
+    color: var(--foreground);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}

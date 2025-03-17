@@ -22,10 +22,11 @@ body.index {
   display: grid;
   place-content: center;
   text-align: center;
+  height: calc(100vh - #{$nav-height} + 5px);
+
   @include mobile {
     height: calc(100dvh - #{$nav-height} + 5px) !important;
   }
-  height: calc(100vh - #{$nav-height} + 5px);
 
   .hero-content {
     // border: 1px solid white;
@@ -50,10 +51,6 @@ body.index {
 main {
   #skonnect-provides {
     scroll-margin-top: 100px;
-  }
-
-  img {
-    // mix-blend-mode: multiply;
   }
 
   section.features {

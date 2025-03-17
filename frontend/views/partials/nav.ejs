@@ -1,13 +1,13 @@
 <nav class="container p-1">
     <div class="logo-container">
-        <img class="br logo" src="assets/beru.png" alt="" />
+        <img class="br logo" src="assets/img/beru.png" alt="" />
         <h2 class="logo-name">SKonnect</h2>
     </div>
 
     <!--xl screens only (1024w)-->
     <div class="nav-middle">
         <ul class="links">
-            <li><a class="nav-link" href="">Home</a></li>
+            <li><a class="nav-link" href="/">Home</a></li>
             <li><a class="nav-link" href="">About Us</a></li>
             <li><a class="nav-link" href="">News & Events</a></li>
             <li><a class="nav-link" href="">Data Transparency</a></li>
@@ -16,7 +16,7 @@
         </ul>
     </div>
 
-    <button class="theme-btn btn-no-hover-dark-primary">
+    <button class="theme-btn btn-no-hover">
         <svg
             class="sun"
             xmlns="http://www.w3.org/2000/svg"
@@ -79,27 +79,45 @@
         <div class="menu-content">
             <ul>
                 <li><a class="nav-link" href="/">Home</a></li>
-                <li><a class="nav-link" href="">About Us</a></li>
+                <li><a class="nav-link" href="../about">About Us</a></li>
                 <li><a class="nav-link" href="">News & Events</a></li>
                 <li><a class="nav-link" href="">Data Transparency</a></li>
                 <li><a class="nav-link" href="">Submit Suggestions</a></li>
                 <!--<li><a href=""></a></li>-->
 
-                <button class="p-1 signup-btn btn-outlined-dark-accent br-40">
+                <!--<li></li>-->
+                <!--<li></li>-->
+                <a
+                    href="/signup"
+                    class="ta-c td-n p-1 signup-link btn-outlined-dark-accent br-40"
+                >
                     Sign up
-                </button>
-                <button class="p-1 login-btn btn-dark-accent br-40">
+                </a>
+                <a
+                    href="/login"
+                    class="ta-c td-n p-1 login-link btn-dark-accent br-40"
+                >
                     Login
-                </button>
+                </a>
             </ul>
         </div>
     </div>
 
     <!--xl screens only (1024w)-->
     <div class="nav-right">
-        <button class="p-1 signup-btn btn-outlined-dark-accent br-40">
+        <!--<button class="p-1 signup-btn btn-outlined-dark-accent br-40">-->
+        <!--    Sign up-->
+        <!--</button>-->
+
+        <a
+            href="/signup"
+            class="p-1 signup-link btn-outlined-dark-accent br-40"
+        >
             Sign up
-        </button>
-        <button class="p-1 login-btn btn-dark-accent br-40">Login</button>
+        </a>
+        <a href="/login" class="p-1 login-link btn-dark-accent br-40">
+            Login
+        </a>
+        <!--<button class="p-1 login-btn btn-dark-accent br-40">Login</button>-->
     </div>
 </nav>

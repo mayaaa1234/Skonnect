@@ -158,13 +158,44 @@ $utilities: (
     ),
   ),
   "font-size": (
-    "prefix": "font",
+    "prefix": "fs",
     "values": (
       "sm": $font-size-sm,
       "md": $base-font-size,
       "lg": $font-size-lg,
       "xl": $font-size-xl,
       "xxl": $font-size-xxl,
+    ),
+  ),
+  "font-weight": (
+    "prefix": "fw",
+    "values": (
+      "thin": 100,
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900,
+    ),
+  ),
+  "text-decoration": (
+    "prefix": "td",
+    "values": (
+      "n": none,
+      "u": underline,
+      "o": overline,
+      "lt": line-through,
+    ),
+  ),
+  "list-style-type": (
+    "prefix": "lst",
+    "values": (
+      "n": none,
+      "d": disc,
+      "c": circle,
+      "s": square,
+      "dnum": decimal,
+      "rl": roman,
     ),
   ),
   // "size": (
@@ -196,6 +227,158 @@ $utilities: (
     "prefix": "ta",
     "values": (
       "c": center,
+    ),
+  ),
+  "flex-direction": (
+    "prefix": "fd",
+    "values": (
+      "r": row,
+      "rr": row-reverse,
+      "c": column,
+      "cr": column-reverse,
+    ),
+  ),
+  "justify-content": (
+    "prefix": "jc",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "sb": space-between,
+      "sa": space-around,
+      "se": space-evenly,
+    ),
+  ),
+
+  "align-content": (
+    "prefix": "ac",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "sb": space-between,
+      "sa": space-around,
+      "se": space-evenly,
+      "st": stretch,
+    ),
+  ),
+
+  "place-items": (
+    "prefix": "pi",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "st": stretch,
+    ),
+  ),
+
+  "align-items": (
+    "prefix": "ai",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "st": stretch,
+      "b": baseline,
+    ),
+  ),
+
+  "align-self": (
+    "prefix": "as",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "st": stretch,
+      "b": baseline,
+    ),
+  ),
+
+  "justify-items": (
+    "prefix": "ji",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "st": stretch,
+    ),
+  ),
+
+  "justify-self": (
+    "prefix": "js",
+    "values": (
+      "s": start,
+      "e": end,
+      "c": center,
+      "st": stretch,
+    ),
+  ),
+  "gap": (
+    "prefix": "gp",
+    "values": (
+      "5": 5px,
+      "10": 10px,
+      "15": 15px,
+      "20": 20px,
+      "25": 25px,
+      "30": 30px,
+      "35": 35px,
+      "40": 40px,
+      "45": 45px,
+      "50": 50px,
+    ),
+  ),
+  "width": (
+    "prefix": "w",
+    "values": (
+      "5": 5px,
+      "10": 10px,
+      "15": 15px,
+      "20": 20px,
+      "25": 25px,
+      "30": 30px,
+      "35": 35px,
+      "40": 40px,
+      "45": 45px,
+      "50": 50px,
+      "55": 55px,
+      "60": 60px,
+      "65": 65px,
+      "70": 70px,
+      "75": 75px,
+      "80": 80px,
+      "85": 85px,
+      "90": 90px,
+      "95": 95px,
+      "100": 100px,
+      "full": 100%,
+    ),
+  ),
+  "height": (
+    "prefix": "h",
+    "values": (
+      "5": 5px,
+      "10": 10px,
+      "15": 15px,
+      "20": 20px,
+      "25": 25px,
+      "30": 30px,
+      "35": 35px,
+      "40": 40px,
+      "45": 45px,
+      "50": 50px,
+      "55": 55px,
+      "60": 60px,
+      "65": 65px,
+      "70": 70px,
+      "75": 75px,
+      "80": 80px,
+      "85": 85px,
+      "90": 90px,
+      "95": 95px,
+      "100": 100px,
+      "full": 100%,
     ),
   ),
 );

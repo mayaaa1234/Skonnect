@@ -55,7 +55,7 @@
   }
 }
 
-// VANILLA CSS VAR THEMING
+// VANILLA CSS VAR THEMING APPROACH
 
 @each $theme, $values in $themes {
   // VARIABLE BASED THEMIMG APPROACH //
@@ -97,44 +97,46 @@
       color: $v; // unlike custom var, val doesnt need interpolation
     }
 
-    .hover-bgc-#{$theme}-#{$k} {
+    .hover-bg-#{$theme}-#{$k} {
       &:hover {
         background-color: $v;
       }
     }
 
-    .bgc-#{$theme}-#{$k} {
+    .bg-#{$theme}-#{$k} {
       background-color: $v;
     }
 
+    // light variations
     @for $i from 1 through 9 {
       .text-#{$theme}-#{$k}-l#{$i} {
         color: color.mix(white, $v, $i * 10%);
       }
 
-      .hover-bgc-#{$theme}-#{$k}-l#{$i} {
+      .hover-bg-#{$theme}-#{$k}-l#{$i} {
         &:hover {
           background-color: color.mix(white, $v, $i * 10%);
         }
       }
 
-      .bgc-#{$theme}-#{$k}-l#{$i} {
+      .bg-#{$theme}-#{$k}-l#{$i} {
         background-color: color.mix(white, $v, $i * 10%);
       }
     }
 
+    // dark variations
     @for $i from 1 through 9 {
       .text-#{$theme}-#{$k}-d#{$i} {
         color: color.mix(black, $v, $i * 10%);
       }
 
-      .hover-bgc-#{$theme}-#{$k}-d#{$i} {
+      .hover-bg-#{$theme}-#{$k}-d#{$i} {
         &:hover {
           background-color: color.mix(black, $v, $i * 10%);
         }
       }
 
-      .bgc-#{$theme}-#{$k}-d#{$i} {
+      .bg-#{$theme}-#{$k}-d#{$i} {
         background-color: color.mix(black, $v, $i * 10%);
       }
     }

@@ -15,13 +15,18 @@
 // layouts
 @forward "layout/grid";
 @forward "layout/forms";
-
-@forward "layout/home";
 @forward "layout/nav";
-@forward "layout/main";
 @forward "layout/sidebar";
 @forward "layout/footer";
 
+// pages
+@forward "pages/home";
+@forward "pages/auth";
+
 // themes
-@forward "theme/colors";
-@forward "theme/themes";
+@forward "themes/colors";
+@forward "themes/gen-themes";
+@forward "themes/nav-theme";
+@forward "themes/home-theme";
+@forward "themes/auth-theme";
+@forward "themes/footer-theme";

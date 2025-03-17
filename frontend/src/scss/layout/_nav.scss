@@ -13,14 +13,18 @@ nav {
   // yeah these two are actually needed crazy
   align-items: center;
   align-content: center;
-  gap: 0.75rem;
+  gap: 1em;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 9998;
   // max-width: 100vw !important;
   height: $nav-height;
-  border-bottom: 1px solid rgba(250, 250, 250, 0.09);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+  // @include webkit {
+  //   border-bottom: 1px solid rgba(250, 250, 250, 0.3);
+  // }
+
   &:is(button, input):focus {
     outline: none;
   }
@@ -33,12 +37,9 @@ nav {
   }
 
   .logo-container {
-    // border: 1px solid white;
     display: flex;
     align-items: center;
-    // justify-content: center;
     gap: 15px;
-    // font-family: Poppins, sans-serif;
   }
 
   .logo {
@@ -59,9 +60,6 @@ nav {
       .moon {
         display: block !important;
         fill: var(--accent) !important;
-        // :hover {
-        //   fill: black;
-        // }
       }
       .sun {
         display: none;
@@ -84,15 +82,6 @@ nav {
       }
     }
 
-    // &.toggle {
-    //   .sun {
-    //     display: none;
-    //   }
-    //   .moon {
-    //     display: block;
-    //   }
-    // }
-
     svg.moon,
     svg.sun {
       transition: fill 0.5s ease !important;
@@ -100,10 +89,6 @@ nav {
   }
   .nav-menu-btn-open {
     justify-self: flex-end;
-
-    // img {
-    //   width: 35px;
-    // }
 
     &.clicked {
       display: none;
@@ -168,8 +153,8 @@ nav {
       }
     }
 
-    .login-btn,
-    .signup-btn {
+    .login-link,
+    .signup-link {
       width: min(90%, 600px);
     }
 
@@ -181,7 +166,7 @@ nav {
   }
 }
 
-// some defaults on larger screens are quite small on mobiles thus:
+// some defaults on larger screens are quite small on mobiles so:
 @include mobile() {
   nav {
     height: 67px !important;
@@ -204,15 +189,10 @@ nav {
     display: flex;
   }
 
-  // show them on xl
   .nav-middle {
+    display: block !important; // show on xl
     margin: 0 auto;
-    display: block !important;
     justify-self: center;
-  }
-
-  .theme-btn {
-    justify-self: end;
   }
 
   .nav-right {
@@ -222,10 +202,6 @@ nav {
     align-items: center;
     gap: 12px;
     // grid-template-columns: repeat(3, auto);
-  }
-
-  .nav-middle {
-    justify-self: center;
   }
 
   .nav-menu-btn-open,
@@ -245,8 +221,10 @@ nav {
     }
   }
 
-  .signup-btn,
-  .login-btn {
+  .signup-link,
+  .login-link {
+    text-decoration: none;
+    text-align: center;
     width: 100px;
   }
 }

@@ -1,0 +1,100 @@
+// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
+// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
+
+// INFO: here goes components that have class based theming or if var theming can't customize something enough
+
+@use "../abstracts/mixins" as *;
+
+// APPLIES TO ALL PAGES
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
+}
+
+// WILL BE USED THROUGHOUT THE APP
+
+.gradient-text {
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+}
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // background: none;
+  // color: white;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-border-1 {
+  border: 5px solid transparent; /* Transparent border to preserve space */
+  border-image: linear-gradient(
+      to right,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    )
+    1;
+}
+
+// .gradient-border::before {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   border-radius: 8px;
+//   padding: 3px; /* Border thickness */
+//   background: linear-gradient(
+//     to right,
+//     rgb(0, 193, 174),
+//     rgb(0, 165, 191),
+//     rgb(0, 108, 166)
+//   );
+//   -webkit-mask:
+//     linear-gradient(#fff 0 0) content-box,
+//     linear-gradient(#fff 0 0);
+//   -webkit-mask-composite: xor;
+//   mask-composite: exclude;
+// }

@@ -1,4 +1,4 @@
-import { saveState } from "../utils/saveState.ts";
+import { saveState } from "../../utils/saveState.ts";
 
 const openBtn = document.querySelector(".nav-menu-btn-open") as HTMLElement;
 const closeBtn = document.querySelector(".nav-menu-btn-close") as HTMLElement;

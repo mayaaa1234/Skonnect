@@ -3,7 +3,9 @@ import process from "process";
 import path from "path";
 import express from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.ts";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,7 +23,6 @@ if (process.env.NODE_ENV === "development") {
   lrserver.watch(path.join(process.cwd(), "frontend/public"));
   lrserver.server.once("connection", () => {
     setTimeout(() => {
-      //lrserver.refresh("/frontend/views/**/*");
       lrserver.refresh("frontend/");
     }, 5);
   });
@@ -43,6 +44,7 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 app.use(express.static(publicDir));
 //app.use("/assets", express.static("frontend/dist"));
 app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 //app.set("view cache", false);

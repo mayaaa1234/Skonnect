@@ -38,6 +38,14 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     } as jwt.SignOptions,
   );
 
+  res.cookie("authorization", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    signed: true,
+    maxAge: 30 * 24 * 60 * 60 * 1000, //30d
+  });
+
   res.status(201).json({
     user: { id: user.id, name: user.username, email: user.email },
     token,

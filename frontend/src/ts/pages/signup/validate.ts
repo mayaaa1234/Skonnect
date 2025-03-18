@@ -1,4 +1,11 @@
+import createAccount from "./createAccount.ts";
+import autoFillForm from "../scripts/autoFillForm.ts";
+import type { SignupData } from "./createAccount.ts";
+
 document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  autoFillForm();
+
   const form = document.getElementById("signup-form") as HTMLFormElement | null;
   if (!form) return;
 
@@ -92,8 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Form submission handler
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  form.addEventListener("submit", async (e: SubmitEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
 
     // Validate all fields
     let hasErrors = false;
@@ -105,12 +113,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+    if (hasErrors) return;
 
-    if (hasErrors) {
-      return;
-    } else {
-      alert("High five! 🖐️ Form submitted successfully.");
-      form.reset();
-    }
+    const formData = new FormData(form);
+    //console.log({ formData });
+    const jsonData = Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ) as unknown as SignupData;
+
+    //console.log({ jsonData });
+    form.reset();
+    await createAccount(jsonData);
   });
 });

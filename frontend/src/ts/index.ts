@@ -1,12 +1,17 @@
 import "./states/theme.ts";
 
+//INFO:  PAGES
+
 //nav
-import "./nav/navEvents.ts";
+import "./pages/nav/navEvents.ts";
 
 //signup
-import "./signup/toggleVisibPass.ts";
-import "./signup/validate.ts";
+import "./pages/signup/toggleVisibPass.ts";
+import "./pages/signup/validate.ts";
 
 //login
-//import "./login/.ts";
-import "./login/validate.ts";
+import "./pages/login/validate.ts";
+import "./pages/login/login.ts";
+
+//home
+import "./pages/home/events.ts";

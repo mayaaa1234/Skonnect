@@ -3,8 +3,7 @@
 //  <button id="closeModal">Close</button>
 //  <h2>Register Here</h2>
 //</div>
-//
-//<script>
+
 //document.getElementById("openRegister").addEventListener("click", function () {
 //  document.getElementById("registerModal").style.display = "block";
 //  history.pushState({ popup: "register" }, "", "/home/register");
@@ -20,6 +19,3 @@
 //    document.getElementById("registerModal").style.display = "block";
 //  } else {
 //    document.getElementById("registerModal").style.display = "none";
-//  }
-//});
-//</script>

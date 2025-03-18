@@ -1,23 +1,29 @@
 const showNotification = (
   message: string,
   type: "success" | "error" | "warning" | "info",
+  instant = false,
 ) => {
   const container =
     document.getElementById("notification-container") ||
     createNotificationContainer();
 
   const notification = document.createElement("div");
-  notification.className = `notification ${type}`;
+  notification.className = `notification ${type} ${instant ? "no-animation" : ""}`;
   notification.textContent = message;
 
   container.appendChild(notification);
 
-  // Trigger animation
-  requestAnimationFrame(() => notification.classList.add("show"));
+  if (!instant) {
+    requestAnimationFrame(() => notification.classList.add("show"));
+  } else {
+    requestAnimationFrame(() =>
+      notification.classList.add("show.no-animation"),
+    );
+  }
 
   setTimeout(() => {
     notification.classList.add("hide");
-    setTimeout(() => notification.remove(), 500); // waits for css opacity prop time in _notif.scss
+    setTimeout(() => notification.remove(), 500); // this waits for the the opacity fade time set in _notif.scss
   }, 3000);
 };
 
@@ -28,7 +34,14 @@ const createNotificationContainer = () => {
   return container;
 };
 
-const notifySuccess = (msg: string) => showNotification(msg, "success");
-const notifyError = (msg: string) => showNotification(msg, "error");
-const notifyWarning = (msg: string) => showNotification(msg, "warning");
-const notifyInfo = (msg: string) => showNotification(msg, "info");
+export const notifySuccess = (msg: string, instant = false) =>
+  showNotification(msg, "success", instant);
+
+export const notifyError = (msg: string, instant = false) =>
+  showNotification(msg, "error", instant);
+
+export const notifyWarning = (msg: string, instant = false) =>
+  showNotification(msg, "warning", instant);
+
+export const notifyInfo = (msg: string, instant = false) =>
+  showNotification(msg, "info", instant);

@@ -1,7 +1,11 @@
 import type { Request, Response } from "express";
 
+const landingPage = (_req: Request, res: Response): void => {
+  res.render("index", { title: "" });
+};
+
 const homePage = (_req: Request, res: Response): void => {
-  res.render("index", { title: "Home" });
+  res.render("home", { title: "Home" });
 };
 
 const signupPage = (_req: Request, res: Response): void => {
@@ -28,9 +32,10 @@ const accountPage = (_req: Request, res: Response): void => {
 //};
 
 export {
+  landingPage,
+  homePage,
   signupPage,
   loginPage,
-  homePage,
   accountPage,
   //emailVerificationPage,
   aboutPage,

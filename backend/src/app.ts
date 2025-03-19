@@ -44,7 +44,7 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 app.use(express.static(publicDir));
 //app.use("/assets", express.static("frontend/dist"));
 app.use(express.json());
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 //app.set("view cache", false);

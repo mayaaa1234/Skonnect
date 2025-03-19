@@ -43,7 +43,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     signed: true,
-    maxAge: 30 * 24 * 60 * 60 * 1000, //30d
+    maxAge: Number(process.env.COOKIE_MAX_AGE),
   });
 
   res.status(201).json({
@@ -68,10 +68,28 @@ const login = async (req: Request, res: Response) => {
     } as jwt.SignOptions,
   );
 
+  res.cookie("authorization", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    signed: true,
+    maxAge: Number(process.env.COOKIE_MAX_AGE),
+  });
+
   res.json({
     user: { id: user.id, username: user.username, email: user.email },
     token,
   });
 };
 
-export { signup, login };
+const status = async (req: Request, res: Response) => {
+  const token = req.signedCookies.authorization;
+  if (!token) {
+    throw mkCustomError("Authentication Invalid: No Token Provided.", 401);
+    res.status(401).json({ isAuthenticated: false });
+  }
+
+  res.status(200).json({ isAuthenticated: true });
+};
+
+export { signup, login, status };

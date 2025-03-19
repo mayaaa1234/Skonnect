@@ -21,6 +21,18 @@ export default function autofillForm(): void {
     "confirmPassword",
   ) as HTMLInputElement | null;
 
+  // for login
+  const userIdentifierInput = document.getElementById(
+    "user-identifier",
+  ) as HTMLInputElement | null;
+
+  if (userIdentifierInput && passwordInput) {
+    userIdentifierInput.value = "maya";
+    passwordInput.value = "randompass";
+    return;
+  }
+
+  // for signup
   if (usernameInput) usernameInput.value = username;
   if (emailInput) emailInput.value = email;
   if (passwordInput) passwordInput.value = "asdfasdf";

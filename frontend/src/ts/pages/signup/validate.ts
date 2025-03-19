@@ -1,6 +1,9 @@
-import createAccount from "./createAccount.ts";
+import signupUser from "./signupUser.ts";
 import autoFillForm from "../scripts/autoFillForm.ts";
 import type { SignupData } from "./createAccount.ts";
+//import process from "process";
+//import dotenv from "dotenv";
+//dotenv.config();
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
@@ -91,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Attach validation handlers (live validation on input activity)
+  // Attach validation handlers (live validation on input activities)
   for (const field of Array.from(form.elements)) {
     if (field instanceof HTMLInputElement) {
       field.addEventListener("input", () => validateField(field));
@@ -101,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Form submission handler
   form.addEventListener("submit", async (e: SubmitEvent) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
 
     // Validate all fields
     let hasErrors = false;
@@ -123,6 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //console.log({ jsonData });
     form.reset();
-    await createAccount(jsonData);
+    await signupUser(jsonData);
   });
 });

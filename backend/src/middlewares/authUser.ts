@@ -14,7 +14,7 @@ const authUser = async (
   //otherwise just req.cookies.authorization would do
   const authCookie = req.signedCookies.authorization;
 
-  console.log("Cookies:", req.cookies);
+  //console.log("Cookies:", req.cookies);
 
   let token: string | undefined;
   if (authHeader && authHeader.startsWith("Bearer ")) {
@@ -29,7 +29,7 @@ const authUser = async (
     throw mkCustomError("Authentication Invalid: No Token Provided.", 401);
   }
 
-  console.log({ token });
+  //console.log({ token });
   try {
     const decoded = jwt.verify(
       token,

@@ -1,4 +1,8 @@
+// states
 import "./states/theme.ts";
+
+// utils
+import "./utils/redirectIfAuthed.ts";
 
 //INFO:  PAGES
 
@@ -11,7 +15,7 @@ import "./pages/signup/validate.ts";
 
 //login
 import "./pages/login/validate.ts";
-import "./pages/login/login.ts";
+import "./pages/login/loginUser.ts";
 
 //home
 import "./pages/home/events.ts";

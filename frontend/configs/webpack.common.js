@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
 const config = {
   entry: {
@@ -45,7 +46,7 @@ const config = {
       // You can specify an override file if needed:
       // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
     }),
-    // new NodePolyfillPlugin(),
+    new NodePolyfillPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {

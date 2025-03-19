@@ -138,7 +138,9 @@ export default class User {
       [this.username, this.email, hashedPassword, this.isAdmin],
     );
 
-    console.log({ rows });
+    if (rows) {
+      console.log("User Created Successfully:", { rows });
+    }
     // get the inserted id from auto increment and put it in this id
     // so than it can then be sent into client
     this.id = rows.insertId;

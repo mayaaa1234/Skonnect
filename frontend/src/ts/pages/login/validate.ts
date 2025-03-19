@@ -1,4 +1,11 @@
+import autoFillForm from "../scripts/autoFillForm.ts";
+import loginUser from "./loginUser.ts";
+import type { LoginData } from "./loginUser.ts";
+
 document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  autoFillForm();
+
   const form = document.getElementById("login-form") as HTMLFormElement | null;
   if (!form) return;
 
@@ -88,8 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Form submission handler
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     // Validate all fields
     let hasErrors = false;
@@ -101,12 +108,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+    if (hasErrors) return;
 
-    if (hasErrors) {
-      return;
-    } else {
-      alert("High five! 🖐️ Form submitted successfully.");
-      form.reset();
-    }
+    const formData = new FormData(form);
+    //console.log({ formData });
+    const jsonData = Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ) as unknown as LoginData;
+
+    await loginUser(jsonData);
+    form.reset();
   });
 });

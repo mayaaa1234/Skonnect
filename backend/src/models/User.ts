@@ -92,7 +92,7 @@ export default class User {
         return "Email not found.";
       }
 
-      const { id, username, email, password } = rows[0];
+      const { id, username, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
       if (!isMatch) return "Wrong Password, Try again.";
@@ -100,7 +100,6 @@ export default class User {
       // will be sent to the client
       this.id = id;
       this.username = username;
-      this.email = email;
     }
 
     if (this.username && !this.email) {
@@ -114,7 +113,7 @@ export default class User {
         return "Username not found.";
       }
 
-      const { id, username, email, password } = rows[0];
+      const { id, username, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
       if (!isMatch) return "Wrong Password, Try again.";
@@ -122,7 +121,6 @@ export default class User {
       // will be sent to the client
       this.id = id;
       this.username = username;
-      this.email = email;
     }
 
     return null;
@@ -144,5 +142,14 @@ export default class User {
     // get the inserted id from auto increment and put it in this id
     // so than it can then be sent into client
     this.id = rows.insertId;
+  };
+
+  static findById = async (id: number) => {
+    const [rows] = await pool.execute<RowDataPacket[]>(
+      "SELECT * FROM users WHERE id = ?",
+      [id],
+    );
+    console.log("findById rows[0]: ", rows[0]);
+    return rows.length ? rows[0] : null;
   };
 }

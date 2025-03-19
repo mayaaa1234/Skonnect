@@ -1,6 +1,6 @@
 import signupUser from "./signupUser.ts";
 import autoFillForm from "../scripts/autoFillForm.ts";
-import type { SignupData } from "./createAccount.ts";
+import type { SignupData } from "./signupUser.ts";
 //import process from "process";
 //import dotenv from "dotenv";
 //dotenv.config();

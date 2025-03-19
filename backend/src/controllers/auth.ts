@@ -31,7 +31,10 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 
   //user has id from sql auto increment
   const token = jwt.sign(
-    { id: user.id, email: user.email, isAdmin: user.isAdmin },
+    {
+      userId: user.id,
+      username: user.username,
+    },
     process.env.JWT_SECRET as string,
     {
       expiresIn: process.env.JWT_LIFETIME,
@@ -47,7 +50,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   });
 
   res.status(201).json({
-    user: { id: user.id, name: user.username, email: user.email },
+    user: { userId: user.id, name: user.username },
     token,
   });
 };
@@ -61,7 +64,10 @@ const login = async (req: Request, res: Response) => {
   if (err) throw mkCustomError(err, 400);
 
   const token = jwt.sign(
-    { id: user.id, email: user.email, isAdmin: user.isAdmin },
+    {
+      userId: user.id,
+      username: user.username,
+    },
     process.env.JWT_SECRET as string,
     {
       expiresIn: process.env.JWT_LIFETIME as string,
@@ -76,20 +82,10 @@ const login = async (req: Request, res: Response) => {
     maxAge: Number(process.env.COOKIE_MAX_AGE),
   });
 
-  res.json({
-    user: { id: user.id, username: user.username, email: user.email },
+  res.status(200).json({
+    user: { userId: user.id, username: user.username },
     token,
   });
 };
 
-const status = async (req: Request, res: Response) => {
-  const token = req.signedCookies.authorization;
-  if (!token) {
-    throw mkCustomError("Authentication Invalid: No Token Provided.", 401);
-    res.status(401).json({ isAuthenticated: false });
-  }
-
-  res.status(200).json({ isAuthenticated: true });
-};
-
-export { signup, login, status };
+export { signup, login };

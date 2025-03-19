@@ -7,12 +7,16 @@
     "moduleResolution": "nodenext",
     "typeRoots": [
       "node_modules/@types",
+      "./backend/types/**/*",
+      "frontend/types/",
+      "types",
     ],
-    "baseUrl": "./",
+    "baseUrl": "/",
     "paths": {},
     "types": [
-      "node"
-    ], /* Specify type package names to be included without being referenced in a source file. */
+      "node",
+      //"express"
+    ],
     "lib": [
       "esnext",
       "dom"
@@ -39,7 +43,8 @@
   },
   "include": [
     "backend/src/**/*",
-    "frontend/src/**/*"
+    "frontend/src/**/*",
+    "@types"
   ],
   "exclude": [
     "node_modules",

@@ -2,7 +2,7 @@
 import "./states/theme.ts";
 
 // utils
-import "./utils/redirectIfAuthed.ts";
+//import "./utils/redirectIfAuthed.ts";
 
 //INFO:  PAGES
 

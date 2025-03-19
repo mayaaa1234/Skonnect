@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === "development") {
 // routers
 import auth from "./routes/auth.ts";
 import pages from "./routes/pages.ts";
+import user from "./routes/user.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
@@ -42,7 +43,6 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir or dist
 app.use(express.static(publicDir));
-//app.use("/assets", express.static("frontend/dist"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.urlencoded({ extended: true }));
@@ -54,6 +54,7 @@ app.use(morgan("dev"));
 // routes
 app.use("/", pages);
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/user", user);
 
 //errors
 app.use(notFound);

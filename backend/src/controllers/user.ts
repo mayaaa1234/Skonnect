@@ -34,6 +34,12 @@ export const status = async (req: Request, res: Response) => {
 };
 
 export const logout = async (_req: Request, res: Response) => {
+  res.set(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
   res.clearCookie("authorization", {
     path: "/",
     domain: "",

@@ -3,9 +3,9 @@ import { notifySuccess } from "../../utils/showNotif.ts";
 const signupMsg = sessionStorage.getItem("signupSuccessNotif");
 const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
 if (signupMsg) {
-  notifySuccess(signupMsg, true);
+  notifySuccess(signupMsg);
   sessionStorage.removeItem("signupSuccessNotif");
 } else if (loginMsg) {
-  notifySuccess(loginMsg, true);
+  notifySuccess(loginMsg);
   sessionStorage.removeItem("loginWelcomeNotif");
 }

@@ -7,7 +7,7 @@ import type { SignupData } from "./signupUser.ts";
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
-  //autoFillForm();
+  autoFillForm();
 
   const form = document.getElementById("signup-form") as HTMLFormElement | null;
   if (!form) return;

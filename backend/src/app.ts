@@ -13,7 +13,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
-const publicDir = path.join(process.cwd(), "frontend/public");
 //const dist = path.join(process.cwd(), "frontend/dist");
 
 // INFO : development-mode only middleware and will be removed on prod
@@ -23,6 +22,8 @@ import connectLivereload from "connect-livereload";
 if (process.env.NODE_ENV === "development") {
   const lrserver = livereload.createServer();
   lrserver.watch(path.join(process.cwd(), "frontend/public"));
+  lrserver.watch(path.join(process.cwd(), "frontend/dist"));
+
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       lrserver.refresh("frontend/");
@@ -51,7 +52,9 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir
-app.use(express.static(publicDir));
+
+app.use(express.static(path.join(process.cwd(), "frontend/public")));
+app.use(express.static(path.resolve(process.cwd(), "frontend/dist")));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.urlencoded({ extended: true }));

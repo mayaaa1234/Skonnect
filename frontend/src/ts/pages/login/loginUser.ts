@@ -34,9 +34,8 @@ export default async function loginUser(jsonData: LoginData) {
     sessionStorage.setItem("loginWelcomeNotif", "Welcome!");
 
     setState("isLoggedIn", true);
-
     console.log("Login successful", result);
-    notifySuccess("Welcome!");
+    //notifySuccess("Welcome!");
 
     window.location.href = "/home";
   } catch (error) {

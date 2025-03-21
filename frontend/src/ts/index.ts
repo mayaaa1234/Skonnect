@@ -2,4 +2,4 @@
 
 // states
 import "./states/theme.ts";
-import "./states/loggedIn.ts";
+import "./states/isLoggedIn.ts";

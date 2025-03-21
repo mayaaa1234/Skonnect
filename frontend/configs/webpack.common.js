@@ -3,7 +3,7 @@ import webpack from "webpack";
 import process from "process";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import CopyWebpackPlugin from "copy-webpack-plugin";
+//import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
@@ -22,7 +22,7 @@ const config = {
 
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(process.cwd(), "frontend/public"),
+    path: path.resolve(process.cwd(), "frontend/dist"),
     //assetModuleFilename: "assets/[hash][ext][query]",
     clean: true,
     publicPath: "/",
@@ -53,14 +53,14 @@ const config = {
       // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
     }),
     new NodePolyfillPlugin(),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(process.cwd(), "frontend/src/assets"),
-          to: "assets/",
-        },
-      ],
-    }),
+    //new CopyWebpackPlugin({
+    //  patterns: [
+    //    {
+    //      from: path.resolve(process.cwd(), "frontend/src/assets"),
+    //      to: "assets/",
+    //    },
+    //  ],
+    //}),
   ],
 
   module: {

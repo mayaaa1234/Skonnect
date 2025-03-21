@@ -27,6 +27,13 @@ const loginPage = (_req: Request, res: Response): void => {
 };
 
 const homePage = (_req: Request, res: Response): void => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
   res.render("home", {
     title: "Home",
     dataPage: "home",
@@ -35,6 +42,13 @@ const homePage = (_req: Request, res: Response): void => {
 };
 
 const aboutPage = (_req: Request, res: Response): void => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
   res.render("about", {
     title: "About",
     dataPage: "about",
@@ -43,6 +57,13 @@ const aboutPage = (_req: Request, res: Response): void => {
 };
 
 const profilePage = (_req: Request, res: Response): void => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
   res.render("profile", {
     title: "Profile",
     dataPage: "profile",

@@ -1,4 +1,4 @@
-import { toggleNavAuth } from "../../states/loggedIn.ts";
+import { setState } from "../../utils/setGetState.ts";
 
 document.addEventListener("DOMContentLoaded", () => {
   async function logout() {
@@ -13,9 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       console.log("Logout success");
 
-      toggleNavAuth(false);
       window.location.href = "/login";
-      //window.location.reload();
     } catch (error) {
       console.error("Error during logout", error);
     }

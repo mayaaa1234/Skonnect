@@ -37,9 +37,8 @@ const signupUser = async (jsonData: SignupData) => {
     );
 
     setState("isLoggedIn", true);
-
     console.log("Signup successful", result);
-    notifySuccess("Account created successfully!");
+    //notifySuccess("Account created successfully!");
 
     window.location.href = "/home";
   } catch (error) {

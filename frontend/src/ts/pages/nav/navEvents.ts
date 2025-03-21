@@ -1,12 +1,11 @@
-import { saveState } from "../../utils/saveState.ts";
+import { setState } from "../../utils/setGetState.ts";
 
 const openBtn = document.querySelector(".nav-menu-btn-open") as HTMLElement;
 const closeBtn = document.querySelector(".nav-menu-btn-close") as HTMLElement;
 const popup = document.querySelector(".nav-menu-popup") as HTMLElement;
 const content = document.querySelector(".menu-content") as HTMLElement;
 
-// Toggle menu popup (on small screens)
-
+// toggle menu popup (on small screens)
 const menuToggle = () => {
   openBtn?.classList.toggle("clicked");
   popup?.classList.toggle("open");
@@ -23,6 +22,8 @@ const moon = document.querySelector(".moon") as HTMLElement;
 
 // toggle color scheme and icons
 themeBtn?.addEventListener("click", () => {
+  console.log("click");
+
   const currentTheme: string =
     document.documentElement.getAttribute("data-theme") || "dark";
 
@@ -32,5 +33,5 @@ themeBtn?.addEventListener("click", () => {
   themeBtn.classList.remove("dark", "light");
   themeBtn.classList.add(newTheme);
 
-  saveState("theme", newTheme);
+  setState("theme", newTheme);
 });

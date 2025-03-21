@@ -1,4 +1,4 @@
-export function saveState<T>(name: string, state: T): void {
+export function setState<T>(name: string, state: T): void {
   localStorage.setItem(name, JSON.stringify(state));
 }
 

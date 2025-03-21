@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="">
+<html lang="en" data-theme="dark">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body class="home-page">
+    <body data-page="home">
         <!--<h1>My Page Title</h1>-->
         <%- include('./partials/nav.ejs') %>
-        <div class="hero">Welcome To HomePage</div>
+        <!--<div class="hero">Welcome To HomePage</div>-->
+        <div class="gradient-text fs-ivxl hero">
+            home page, wala pa'ko mailagay
+        </div>
 
         <!--FOOTER-->
         <%- include('./partials/footer.ejs') %>
 
         <script type="module" src="app.bundle.js"></script>
+        <script type="module" src="nav.bundle.js"></script>
+        <script type="module" src="home.bundle.js"></script>
     </body>
 </html>

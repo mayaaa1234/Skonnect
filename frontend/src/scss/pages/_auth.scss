@@ -142,6 +142,10 @@ body.auth-page {
 body.auth-page.signup {
 }
 
-body.auth-page.login {
+body[data-page="login"] {
   grid-template-columns: 1fr 1.5fr;
+
+  #login-form h1 {
+    margin-bottom: 60px !important;
+  }
 }

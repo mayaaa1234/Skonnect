@@ -1,0 +1,32 @@
+@use "../abstracts/mixins" as *;
+
+body[data-page="profile"] {
+  // background-color: var(--accent);
+
+  .profile-container {
+    .upper-container,
+    .lower-container {
+      background-color: var(--secondary);
+      color: var(--foreground);
+    }
+
+    .lower-container {
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .upper-container,
+  .lower-container {
+    // border-top: 1px solid rgba(255, 255, 255, 0.4);
+    // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+  }
+}
+
+[data-theme="light"] {
+  .upper-container,
+  .lower-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+}

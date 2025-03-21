@@ -51,7 +51,15 @@ body.auth-page {
   form {
     .input-box {
       border-bottom: 1px solid black !important;
+
+      input {
+        color: black !important;
+      }
     }
+
+    // input {
+    //   color: black !important;
+    // }
 
     .login-link a {
       color: black;

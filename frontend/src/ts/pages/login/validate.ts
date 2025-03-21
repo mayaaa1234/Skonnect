@@ -1,4 +1,4 @@
-import autoFillForm from "../scripts/autoFillForm.ts";
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
 import loginUser from "./loginUser.ts";
 import type { LoginData } from "./loginUser.ts";
 

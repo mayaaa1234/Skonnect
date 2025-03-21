@@ -2,7 +2,7 @@
 <html lang="en" data-theme="">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body class="index">
+    <body data-page="landing">
         <!--<h1>My Page Title</h1>-->
         <%- include('./partials/nav.ejs') %>
 
@@ -21,30 +21,12 @@
                         href="#skonnect-provides"
                         >Learn More</a
                     >
-                    <a class="btn-dark-accent p-1 br-40" href="get-started"
+                    <a class="btn-dark-accent p-1 br-40" href="/signup"
                         >Get Started</a
                     >
                 </div>
             </div>
         </section>
-
-        <!--<main class="container">-->
-        <!--<section class="problem">-->
-        <!--    <h2>Challenges in Youth Governance</h2>-->
-        <!--    <div class="problem-container">-->
-        <!--        <div class="problem-item">-->
-        <!--            📌 Limited access to information-->
-        <!--        </div>-->
-        <!--        <div class="problem-item">📌 Bureaucratic complexities</div>-->
-        <!--        <div class="problem-item">-->
-        <!--            📌 Lack of direct communication with decision-makers-->
-        <!--        </div>-->
-        <!--    </div>-->
-        <!--    <p>-->
-        <!--        SKonnect helps solve these issues by providing a transparent-->
-        <!--        and efficient governance platform.-->
-        <!--    </p>-->
-        <!--</section>-->
 
         <main id="main">
             <h1 id="skonnect-provides" class="ta-c mb-2">
@@ -139,7 +121,7 @@
                     With SKonnect, SK officials and youth can work together
                     efficiently for a better community.
                 </p>
-                <a href="#" class="btn">Join SKonnect</a>
+                <a href="/signup" class="btn">Join SKonnect Now!</a>
             </section>
         </main>
 
@@ -147,5 +129,6 @@
         <%- include('./partials/footer.ejs') %>
 
         <script type="module" src="app.bundle.js"></script>
+        <script type="module" src="nav.bundle.js"></script>
     </body>
 </html>

@@ -1,6 +1,8 @@
 import "express-async-errors";
 import process from "process";
 import path from "path";
+import fs from "fs";
+
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
@@ -12,7 +14,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const publicDir = path.join(process.cwd(), "frontend/public");
-const dist = path.join(process.cwd(), "frontend/dist");
+//const dist = path.join(process.cwd(), "frontend/dist");
 
 // INFO : development-mode only middleware and will be removed on prod
 import dev from "./middlewares/devModeMiddleware.ts";
@@ -40,14 +42,22 @@ import user from "./routes/user.ts";
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
 
+//if (process.env.NODE_ENV === "development") {
+//  app.use((_req, res, next) => {
+//    res.set("Cache-Control", "no-store");
+//    next();
+//  });
+//}
+
 // NOTE : src attr path's given to elems from
-// ejs files should be relative to this publicDir or dist
+// ejs files should be relative to this publicDir
 app.use(express.static(publicDir));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 //app.set("view cache", false);
+app.set("view options", { rmWhitespace: true });
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
 

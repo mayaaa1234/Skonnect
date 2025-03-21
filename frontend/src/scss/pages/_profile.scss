@@ -1,0 +1,13 @@
+@use "../abstracts/mixins" as *;
+@use "../layout/nav" as *;
+
+body[data-page="profile"] {
+  div.profile-container {
+    height: calc(100vh - #{$nav-height}) !important;
+    // height: 800px !important;
+
+    @include mobile {
+      height: calc(100dvh - #{$nav-height}) !important;
+    }
+  }
+}

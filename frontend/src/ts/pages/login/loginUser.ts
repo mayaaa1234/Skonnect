@@ -1,5 +1,5 @@
 import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
-import { saveState } from "../../utils/saveState.ts";
+import { setState } from "../../utils/setGetState.ts";
 
 //TODO: decide if im gonna use global var for isLoggedIn or localStorage
 
@@ -24,16 +24,16 @@ export default async function loginUser(jsonData: LoginData) {
       console.error("Login failed:", result.message || "Unknown error");
       notifyError(result.message || "Login failed");
 
-      saveState("isLoggedIn", false);
-      document.cookie =
-        "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      setState("isLoggedIn", false);
+      //document.cookie =
+      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       return;
     }
 
     // saving this for illusory transcedental notif accross pages
     sessionStorage.setItem("loginWelcomeNotif", "Welcome!");
 
-    saveState("isLoggedIn", true);
+    setState("isLoggedIn", true);
 
     console.log("Login successful", result);
     notifySuccess("Welcome!");
@@ -43,9 +43,9 @@ export default async function loginUser(jsonData: LoginData) {
     console.error("Network error:", error);
     notifyError("Something went wrong, please try again later.");
 
-    saveState("isLoggedIn", false);
-    document.cookie =
-      "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setState("isLoggedIn", false);
+    //document.cookie =
+    //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 }
 

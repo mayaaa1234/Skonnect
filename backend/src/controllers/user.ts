@@ -16,10 +16,31 @@ export const info = async (req: Request, res: Response) => {
   const { id: userId, username, email, password, isAdmin } = user;
 
   res.status(200).json({
-    isAuthenticated: true,
     userId,
     email,
     username,
     isAdmin,
+  });
+};
+
+export const status = async (req: Request, res: Response) => {
+  if (!req.user) {
+    throw mkCustomError("Req user is empty", 404);
+  }
+
+  res.status(200).json({
+    isAuthenticated: true,
+  });
+};
+
+export const logout = async (_req: Request, res: Response) => {
+  res.clearCookie("authorization", {
+    path: "/",
+    domain: "",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
   });
 };

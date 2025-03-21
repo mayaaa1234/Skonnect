@@ -11,8 +11,13 @@ const config = {
   entry: {
     app: [
       "webpack-hot-middleware/client?reload=true&timeout=2000",
-      "./frontend/src/webpack-entry.ts",
+      "./frontend/src/webpack-app-entry.ts",
     ],
+    home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
+    login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
+    signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
+    profile: ["./frontend/src/ts/pages/profile/profileEntry.ts"],
+    nav: ["./frontend/src/ts/pages/nav/navEntry.ts"],
   },
 
   output: {
@@ -39,7 +44,8 @@ const config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
+      //filename: "[name].[contenthash].css",
+      filename: "[name].bundled.css",
     }),
     new ESLintPlugin({
       configType: "flat",

@@ -1,10 +1,12 @@
+<!--TODO: add profile section on popup-->
+
 <nav class="container p-1">
     <div class="logo-container">
         <img class="br logo" src="assets/img/beru.png" alt="" />
         <h2 class="logo-name">SKonnect</h2>
     </div>
 
-    <!--xl screens only (1024w)-->
+    <!--NOTE: xl screens only (1024w and above)-->
     <div class="nav-middle">
         <ul class="links">
             <li><a class="nav-link" href="/">Home</a></li>
@@ -43,6 +45,27 @@
         </svg>
     </button>
 
+    <div class="nav-right">
+        <a href="/profile" class="ml-40 w-35px br-40 btn-no-hover profile">
+            <img
+                class="br-40"
+                src="assets/img/makise.jpg"
+                alt="profile picture"
+            />
+        </a>
+
+        <a
+            href="/signup"
+            class="p-1 signup-link btn-outlined-dark-accent br-40"
+        >
+            Sign up
+        </a>
+        <a href="/login" class="p-1 login-link btn-dark-accent br-40">
+            Login
+        </a>
+    </div>
+
+    <!--NOTE: below are sm screens only (under 1024w)-->
     <button class="nav-menu-btn-open btn">
         <svg
             class="menu-icon"
@@ -75,7 +98,6 @@
             </svg>
         </button>
 
-        <!--<div class="menu-content animate">-->
         <div class="menu-content">
             <ul>
                 <li><a class="nav-link" href="/">Home</a></li>
@@ -101,23 +123,5 @@
                 </a>
             </ul>
         </div>
-    </div>
-
-    <!--xl screens only (1024w)-->
-    <div class="nav-right">
-        <!--<button class="p-1 signup-btn btn-outlined-dark-accent br-40">-->
-        <!--    Sign up-->
-        <!--</button>-->
-
-        <a
-            href="/signup"
-            class="p-1 signup-link btn-outlined-dark-accent br-40"
-        >
-            Sign up
-        </a>
-        <a href="/login" class="p-1 login-link btn-dark-accent br-40">
-            Login
-        </a>
-        <!--<button class="p-1 login-btn btn-dark-accent br-40">Login</button>-->
     </div>
 </nav>

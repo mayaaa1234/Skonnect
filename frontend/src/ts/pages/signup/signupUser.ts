@@ -1,4 +1,4 @@
-import { saveState } from "../../utils/saveState.ts";
+import { setState } from "../../utils/setGetState.ts";
 import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
 
 export interface SignupData {
@@ -24,9 +24,9 @@ const signupUser = async (jsonData: SignupData) => {
       console.error("Signup failed:", result.message || "Unknown error");
       notifyError(result.message || "Signup failed");
 
-      saveState("isLoggedIn", false);
-      document.cookie =
-        "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      setState("isLoggedIn", false);
+      //document.cookie =
+      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       return;
     }
 
@@ -36,7 +36,7 @@ const signupUser = async (jsonData: SignupData) => {
       "Account created successfully!",
     );
 
-    saveState("isLoggedIn", true);
+    setState("isLoggedIn", true);
 
     console.log("Signup successful", result);
     notifySuccess("Account created successfully!");
@@ -46,9 +46,9 @@ const signupUser = async (jsonData: SignupData) => {
     console.error("Network error:", error);
     notifyError("Something went wrong, please try again later.");
 
-    saveState("isLoggedIn", false);
-    document.cookie =
-      "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setState("isLoggedIn", false);
+    //document.cookie =
+    //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     return;
   }
 };

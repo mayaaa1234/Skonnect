@@ -4,10 +4,10 @@
     <%- include('./partials/head.ejs') %>
     <body data-page="signup" class="auth-page signup">
         <div class="auth-wrapper container">
-            <div class="top-left-auth dp-f jc-sb pl-1 pr-1 w-full">
+            <div class="top-left-auth dp-f jc-sb pl-1 pr-1 w-100">
                 <div class="dp-f ai-c gp-15 logo-container">
                     <img
-                        class="w-30 br logo"
+                        class="w-30px br logo"
                         src="assets/img/beru.png"
                         alt=""
                     />
@@ -43,7 +43,7 @@
 
             <form id="signup-form" class="br-20" action="" novalidate>
                 <h1 class="mb-2">Get Started</h1>
-                <h4 class="mb-1">Signup to SKonnect.</h4>
+                <h4 class="mb-3">Signup to SKonnect.</h4>
 
                 <div class="input-box">
                     <input
@@ -137,7 +137,7 @@
 
                 <div class="gp-10 jc-c dp-f login-link">
                     <span> Already have an account? </span>
-                    <a class="text-white fw-bold" href="/login"> Login</a>
+                    <a class="text-white fw-bold" href="/login">Login</a>
                 </div>
             </form>
         </div>
@@ -150,5 +150,6 @@
         <%# include('./partials/footer.ejs') %>
 
         <script type="module" src="/app.bundle.js"></script>
+        <script type="module" src="/signup.bundle.js"></script>
     </body>
 </html>

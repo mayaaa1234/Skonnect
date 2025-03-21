@@ -1,4 +1,4 @@
-import { saveState, getState } from "../utils/saveState.ts";
+import { setState, getState } from "../utils/setGetState.ts";
 const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
 
 // sets initial color scheme

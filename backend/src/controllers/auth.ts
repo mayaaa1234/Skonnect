@@ -47,6 +47,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     sameSite: "strict",
     signed: true,
     maxAge: Number(process.env.COOKIE_MAX_AGE),
+    path: "/",
   });
 
   res.status(201).json({
@@ -80,6 +81,7 @@ const login = async (req: Request, res: Response) => {
     sameSite: "strict",
     signed: true,
     maxAge: Number(process.env.COOKIE_MAX_AGE),
+    path: "/",
   });
 
   res.status(200).json({

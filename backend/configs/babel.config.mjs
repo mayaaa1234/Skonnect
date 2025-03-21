@@ -8,9 +8,10 @@ export default {
         targets: {
           node: "current",
         },
+        modules: false,
       },
     ],
-    "minify",
+    //"minify",
   ],
   plugins: [
     [

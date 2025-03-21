@@ -1,0 +1,139 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+@use "../layout/nav" as *;
+@use "sass:map";
+
+// body[data-page="landing"] {
+//   height: 100vh;
+//   padding-top: $nav-height; // from nav.sccs
+//   overflow-y: auto;
+//   @include mobile {
+//     padding-top: 67px !important;
+//     // height: 100dvh !important;
+//   }
+// }
+
+.hero {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  height: calc(100vh - #{$nav-height} + 5px);
+
+  @include mobile {
+    height: calc(100dvh - #{$nav-height} + 5px) !important;
+  }
+
+  .hero-content {
+    // border: 1px solid white;
+    .header-title {
+      font-size: 70px;
+    }
+
+    .hero-links {
+      // border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+main {
+  #skonnect-provides {
+    scroll-margin-top: 100px;
+  }
+
+  section.features {
+    display: grid;
+    place-content: center;
+    text-align: center;
+
+    .feature-card {
+      height: auto;
+      // width: 90%;
+      display: grid;
+      justify-items: center;
+      justify-content: center;
+
+      .card-text-container {
+        // border: 1px solid rgba(white, 0.3);
+        width: 95%;
+      }
+
+      img {
+        border-radius: 8px;
+        justify-self: center;
+      }
+    }
+  }
+
+  section.impact {
+    // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
+    h1 {
+      font-size: 28px;
+    }
+    display: grid;
+    place-content: center;
+    height: 400px;
+  }
+}
+
+@include sm {
+  .feature-card h3 {
+    font-size: 1.5em;
+  }
+}
+
+@include md {
+  #skonnect-provides {
+    // text-align: start;
+    // padding-left: $base-padding;
+    font-size: 2.4em;
+  }
+
+  .feature-card h3 {
+    font-size: 1.9em;
+  }
+}
+
+@include xl {
+  .features-container {
+    max-width: 1300px;
+  }
+
+  .header-title {
+    font-size: 130px !important;
+    margin-bottom: -20px;
+  }
+
+  #skonnect-provides {
+    font-size: 2.9em;
+  }
+  .feature-card h3 {
+    font-size: 2.5em;
+  }
+
+  .feature-card {
+    display: flex !important;
+    justify-content: center;
+    gap: 20px;
+
+    & > div {
+      // border: 1px dashed white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-text-container {
+      // border: 1px solid rgba(white, 0.3);
+      width: 50% !important;
+    }
+  }
+}

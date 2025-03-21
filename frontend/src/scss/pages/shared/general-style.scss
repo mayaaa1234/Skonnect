@@ -1,0 +1,12 @@
+@use "../../layout/nav" as *;
+@use "../../abstracts/mixins" as *;
+
+body:not([data-page="signup"], [data-page="login"]) {
+  height: 100vh;
+  padding-top: $nav-height;
+  overflow-y: auto;
+
+  @include mobile {
+    padding-top: 67px !important;
+  }
+}

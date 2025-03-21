@@ -1,0 +1,113 @@
+@use "../abstracts/mixins" as *;
+
+body[data-page="landing"] {
+  // .hero {
+  // background-color: var(--secondary);
+
+  // &-links {
+  //   :nth-child(1) {
+  //     border: 1px solid var(--accent);
+  //     background-color: var(--primary);
+  //   }
+  //
+  //   a {
+  //     color: var(--foreground);
+  //     background-color: var(--accent);
+  //   }
+  // }
+  // }
+
+  main {
+    // h1 {
+    //   // color: var(--accent);
+    // }
+
+    span {
+      color: var(--accent);
+    }
+
+    section .feature-card {
+      background-color: var(--secondary);
+
+      & > div {
+        border-left: none;
+
+        @include xl {
+          border-left: 4px solid var(--accent);
+        }
+      }
+
+      h2 {
+        color: var(--accent);
+      }
+    }
+
+    section.impact {
+      background: linear-gradient(
+        180deg,
+        var(--primary) 0%,
+        // rgb(0, 193, 174) 0%,
+        // rgb(0, 165, 191) 20%,
+        // rgb(0, 108, 166) 40%,
+        var(--primary-light-1) 10%,
+        var(--primary) 80%
+      );
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .feature-card {
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+  }
+}
+
+[data-theme="light"] {
+  nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+
+    .nav-menu-popup {
+      background: color-mix(in srgb, var(--secondary) 90%, transparent);
+    }
+  }
+
+  .btn-dark-accent {
+    color: #fff !important;
+  }
+
+  .btn-outlined-dark-accent:hover {
+    color: #fff !important;
+  }
+
+  .feature-card {
+    border-top: none;
+    // background-color: #fff;  // Ensure the card itself is light
+    // border-radius: 8px;
+    // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
+    // 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.1),
+      4px 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// ---------------------------------------
+
+// .sidebar {
+//   background-color: var(--secondary);
+//   // color:;
+//
+//   .sidebar-item-title {
+//     color: var(--accent);
+//   }
+//
+//   .sidebar-item-branches::before {
+//     border-left: 1px dashed var(--sidebar-tree);
+//   }
+//
+//   .sidebar-item-branch::before {
+//     border-top: 1px dashed var(--sidebar-tree);
+//   }
+// }

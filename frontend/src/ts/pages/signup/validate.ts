@@ -1,5 +1,5 @@
 import signupUser from "./signupUser.ts";
-import autoFillForm from "../scripts/autoFillForm.ts";
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
 import type { SignupData } from "./signupUser.ts";
 //import process from "process";
 //import dotenv from "dotenv";
@@ -7,7 +7,7 @@ import type { SignupData } from "./signupUser.ts";
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
+  //autoFillForm();
 
   const form = document.getElementById("signup-form") as HTMLFormElement | null;
   if (!form) return;

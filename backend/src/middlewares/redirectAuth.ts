@@ -4,7 +4,7 @@ dotenv.config();
 import type { Request, Response, NextFunction } from "express";
 import mkCustomError from "../errors/CustomError.ts";
 
-const redirectAuth = (page: "signup" | "login" | "home" | "/") => {
+const redirectAuth = (page: "signup" | "login" | "home" | "/" | "profile") => {
   return async (
     req: Request,
     res: Response,
@@ -28,8 +28,8 @@ const redirectAuth = (page: "signup" | "login" | "home" | "/") => {
       }
     }
 
-    // for protected routes (in this case for now only home), if no valid token, redirect to landing page.
-    if (page === "home") {
+    // for protected routes if no valid token, redirect to landing page.
+    if (page === "home" || page === "profile") {
       if (!token) {
         console.log("No Token, redirecting to login.");
         return res.redirect(302, "/");

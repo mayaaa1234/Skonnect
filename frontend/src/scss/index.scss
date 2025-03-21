@@ -3,6 +3,7 @@
 @forward "abstracts/functions";
 @forward "abstracts/mixins";
 @forward "abstracts/utilities";
+@forward "abstracts/colors";
 
 // base
 @forward "base/reset";
@@ -21,13 +22,18 @@
 @forward "layout/footer";
 
 // pages
-@forward "pages/home";
+@forward "pages/shared/general-style";
+@forward "pages/landing";
 @forward "pages/auth";
+@forward "pages/home";
+@forward "pages/profile";
 
 // themes
-@forward "themes/colors";
+// @forward "themes/colors";
 @forward "themes/gen-themes";
 @forward "themes/nav-theme";
-@forward "themes/home-theme";
+@forward "themes/landing-theme";
 @forward "themes/auth-theme";
+@forward "themes/home-theme";
+@forward "themes/profile-theme";
 @forward "themes/footer-theme";

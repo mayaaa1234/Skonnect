@@ -78,10 +78,10 @@
       @include btn(transparent);
     }
 
-    .btn-no-hover-outlined {
-      @include btn(transparent);
-      border: $base-border-thickness solid $v !important;
-    }
+    // .btn-no-hover-outlined-#{$theme}-#{$k} {
+    //   @include btn(transparent);
+    //   border: $base-border-thickness solid $v !important;
+    // }
 
     @include mobile {
       // override browsers weird default hover/bg on mobiles.

@@ -1,8 +1,7 @@
 ### TODO:
-financial budget display and manipulation if admin
-make @xl right nav toggle through visibility and not display to load faster? 
-dirs like UI with yearly proj tracks each dir  
-remove all classes in body and migrate accordingly
+1. financial budget display and manipulation if admin
+2. dirs like UI with yearly proj tracks each dir  
+3. remove all classes in body and migrate accordingly
 
 #### dev setup:
 

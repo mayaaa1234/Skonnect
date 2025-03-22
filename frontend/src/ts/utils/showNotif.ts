@@ -1,6 +1,6 @@
 const showNotification = (
   message: string,
-  type: "success" | "error" | "warning" | "info",
+  type: "success" | "error" | "warning" | "info" | "gradient",
   instant = false,
 ) => {
   const container =
@@ -23,8 +23,8 @@ const showNotification = (
 
   setTimeout(() => {
     notification.classList.add("hide");
-    setTimeout(() => notification.remove(), 500); // this waits for the the opacity fade time set in _notif.scss
-  }, 3000);
+    setTimeout(() => notification.remove(), 400); // this waits for the the opacity fade time set in _notif.scss
+  }, 2000);
 };
 
 const createNotificationContainer = () => {
@@ -33,6 +33,9 @@ const createNotificationContainer = () => {
   document.body.appendChild(container);
   return container;
 };
+
+export const notifyGradient = (msg: string, instant = false) =>
+  showNotification(msg, "gradient", instant);
 
 export const notifySuccess = (msg: string, instant = false) =>
   showNotification(msg, "success", instant);

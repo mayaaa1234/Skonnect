@@ -1,7 +1,6 @@
 ### TODO:
 1. financial budget display and manipulation if admin
 2. dirs like UI with yearly proj tracks each dir  
-3. remove all classes in body and migrate accordingly
 
 #### dev setup:
 

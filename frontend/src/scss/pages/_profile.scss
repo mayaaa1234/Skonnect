@@ -9,5 +9,10 @@ body[data-page="profile"] {
     @include mobile {
       height: calc(100dvh - #{$nav-height}) !important;
     }
+
+    .lower-container,
+    .upper-container {
+      width: min(100%, 1400px);
+    }
   }
 }

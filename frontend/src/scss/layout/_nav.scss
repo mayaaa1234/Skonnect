@@ -7,11 +7,8 @@ $nav-height: 70px;
 
 nav {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  justify-content: space-between;
-  // yeah these two are actually needed crazy
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  align-content: center;
   gap: 1em;
   position: fixed;
   top: 0;
@@ -28,68 +25,70 @@ nav {
     outline: none;
   }
 
-  // INFO: since the UI is created mobile first
-  // these two are initially hidden
-  .nav-middle,
-  .nav-right {
+  // links for large screens (initially hidden)
+  .nav-links {
     display: none;
   }
+}
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.nav-menu-btn-open {
+  justify-self: flex-end;
+
+  &.clicked {
+    display: none;
   }
+}
 
+.logo-container {
+  justify-self: start;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.theme-btn {
+  svg.moon,
+  svg.sun {
+    transition: fill 0.5s ease !important;
+  }
   .moon {
     display: none;
   }
 
-  .theme-btn {
-    &.light {
-      &:hover {
-        .moon {
-          fill: black !important;
-        }
-      }
+  &.light {
+    &:hover {
       .moon {
-        display: block !important;
-        fill: var(--accent) !important;
-      }
-      .sun {
-        display: none;
+        fill: black !important;
       }
     }
-
-    &.dark {
-      &:hover {
-        .sun {
-          fill: var(--accent) !important;
-        }
-      }
-
-      .moon {
-        display: none !important;
-      }
-
-      .sun {
-        display: block !important;
-      }
+    .moon {
+      display: block !important;
+      fill: var(--accent) !important;
     }
-
-    svg.moon,
-    svg.sun {
-      transition: fill 0.5s ease !important;
-    }
-  }
-  .nav-menu-btn-open {
-    justify-self: flex-end;
-
-    &.clicked {
+    .sun {
       display: none;
     }
   }
+
+  &.dark {
+    &:hover {
+      .sun {
+        fill: var(--accent) !important;
+      }
+    }
+
+    .moon {
+      display: none !important;
+    }
+
+    .sun {
+      display: block !important;
+    }
+  }
 }
+
+// sm screens still
 
 .nav-menu-popup {
   backdrop-filter: blur(10px);
@@ -148,19 +147,19 @@ nav {
       }
     }
 
-    .login-link,
-    .signup-link {
-      width: min(90%, 600px);
+    .login-link-mobile,
+    .signup-link-mobile {
+      width: min(90%, 550px);
     }
 
     .dev-icons {
       width: 30px;
-      // fill: white;
       cursor: pointer;
     }
   }
 }
 
+// NOTE: that below doesnt mean any screen sizes but detect literally if mobile.
 // some defaults on larger screens are quite small on mobiles so:
 @include mobile() {
   nav {
@@ -180,69 +179,65 @@ nav {
 }
 
 @include xl {
-  nav {
-    display: flex !important;
-    align-items: center !important;
-
-    // .nav-right {
-    //   justify-content: center;
-    //   display: block;
-    //   height: 100%;
-    //   justify-self: end;
-    //   display: flex !important;
-    //   align-items: center;
-    //   gap: 12px;
-    //
-    //   > * {
-    //     display: none;
-    //   }
-    // }
-    //
-    // &.isLoggedOut {
-    //   .nav-right > .login-link,
-    //   .signup-link {
-    //     display: block;
-    //   }
-    // }
-    //
-    // &.isLoggedIn {
-    //   .nav-right > .profile {
-    //     display: inline-block !important;
-    //
-    //     // img {
-    //     //   object-fit: cover;
-    //     // }
-    //   }
-    // }
-  }
-
-  .nav-middle {
-    display: block !important; // show on xl
-    margin: 0 auto;
-    justify-self: center;
-  }
-
-  .nav-menu-btn-open,
-  .nav-menu-popup {
-    display: none;
-  }
-
-  .links {
-    display: flex;
-    gap: 34px;
-    list-style-type: none;
-
-    a {
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-    }
-  }
-
   .signup-link,
   .login-link {
-    text-decoration: none;
     text-align: center;
+    display: block;
     width: 100px;
   }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+// --------------------------------------------------------
+
+// INFO: another section of nav style
+// this section is focused on layout changes based on auth state
+// in compliance with the current screen size.
+// specifically created/decoupled with other styles for easier debugging
+
+@include xl {
+  nav {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-areas: "logo links theme signup login";
+    align-content: center;
+
+    .nav-menu-btn-open,
+    .nav-menu-popup {
+      display: none;
+    }
+
+    .logo-container {
+      grid-area: logo;
+    }
+
+    .nav-links {
+      grid-area: links;
+      justify-self: center;
+      display: flex;
+      gap: 34px;
+    }
+
+    .theme-btn {
+      grid-area: theme;
+    }
+
+    .signup-link {
+      grid-area: signup;
+      display: block !important;
+    }
+
+    .login-link {
+      grid-area: login;
+      display: block !important;
+    }
+  }
+}
+
+// NOTE: this is not a class state but a diff ejs partial file itself. this is done to avoid flashing of layout elems when user spams browser refresh. In this ejs file, login and signup btns literally does not exist as html tags and vice versa for normal nav. see: views/partials
+nav.authed {
+  grid-template-columns: auto 1fr auto auto;
 }

@@ -16,10 +16,9 @@ nav {
   background-color: var(--primary);
   color: var(--foreground);
 
-  // .logo-name {
-  // color: var(--accent);
-  // color: ;
-  // }
+  .logo-name {
+    color: var(--foreground);
+  }
 
   .dev-icons {
     // fill: var(--accent);

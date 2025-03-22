@@ -21,8 +21,8 @@ import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 if (process.env.NODE_ENV === "development") {
   const lrserver = livereload.createServer();
-  lrserver.watch(path.join(process.cwd(), "frontend/public"));
   lrserver.watch(path.join(process.cwd(), "frontend/dist"));
+  lrserver.watch(path.join(process.cwd(), "frontend/public"));
 
   lrserver.server.once("connection", () => {
     setTimeout(() => {

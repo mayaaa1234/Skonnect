@@ -23,7 +23,7 @@ const config = {
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(process.cwd(), "frontend/dist"),
-    //assetModuleFilename: "assets/[hash][ext][query]",
+    assetModuleFilename: "assets/[hash][ext][query]",
     clean: true,
     publicPath: "/",
   },

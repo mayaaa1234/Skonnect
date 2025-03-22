@@ -18,8 +18,6 @@ const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
 const sun = document.querySelector(".sun") as HTMLElement;
 const moon = document.querySelector(".moon") as HTMLElement;
 
-// Theme events
-
 // toggle color scheme and icons
 themeBtn?.addEventListener("click", () => {
   console.log("click");

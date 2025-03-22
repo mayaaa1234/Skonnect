@@ -1,11 +1,11 @@
-import { notifySuccess } from "../../utils/showNotif.ts";
+import { notifyGradient } from "../../utils/showNotif.ts";
 
 const signupMsg = sessionStorage.getItem("signupSuccessNotif");
 const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
 if (signupMsg) {
-  notifySuccess(signupMsg);
+  notifyGradient(signupMsg);
   sessionStorage.removeItem("signupSuccessNotif");
 } else if (loginMsg) {
-  notifySuccess(loginMsg);
+  notifyGradient(loginMsg);
   sessionStorage.removeItem("loginWelcomeNotif");
 }

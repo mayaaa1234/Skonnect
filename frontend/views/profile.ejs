@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="">
+<html lang="en" data-theme="dark">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
     <body class="h-100vh" data-page="profile">
-        <%- include('./partials/nav.ejs') %>
+        <%- include('./partials/nav-authed.ejs') %>
         <div class="profile-container container dp-f fd-c ai-c jc-c gp-50">
-            <div class="upper-container jc-c w-80 br-20 dp-f ai-s fd-c p-3">
-                <!--<div class="w-70 upper-wrapper">-->
-                <div class="upper-top p-1 dp-f jc-sb w-100">
-                    <h1 class="mb-1">Profile</h1>
+            <div class="upper-container br-20 dp-f fd-c p-1">
+                <div class="br-20 js-s upper-top p-1 dp-f jc-sb w-100">
+                    <h1 class="">Profile</h1>
                     <button class="p-1 as-s br-40 btn-outlined-dark-accent">
                         Edit profile
                     </button>
                 </div>
 
-                <div class="upper-middle p-1 dp-f ai-c jc-sb">
-                    <div class="avatar">
-                        <!--<h3>Avatar</h3>-->
+                <div class="br-20 w-100 p-1 upper-bottom">
+                    <div class="mb-2 ml-n1 avatar">
                         <img
                             width="150px"
                             class="br-full"
@@ -24,9 +22,7 @@
                             alt=""
                         />
                     </div>
-                </div>
 
-                <div class="p-1 upper-bottom">
                     <div class="mb-2 username">
                         <h3>Username</h3>
                         <div data-username>maya</div>
@@ -42,7 +38,7 @@
                 <!--</div>-->
             </div>
 
-            <div class="lower-container dp-f p-3 jc-sb ai-c br-20 w-80">
+            <div class="lower-container dp-f p-3 jc-sb ai-c br-20">
                 <div>some text</div>
                 <button class="logout btn-dark-accent br-40 p-1 w-100px">
                     Logout

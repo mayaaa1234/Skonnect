@@ -3,7 +3,8 @@
 // INFO: SHARED STYLES OF SIGNUP AND LOGIN.
 // specific customization of each at the bottom
 
-body.auth-page {
+body[data-page="login"],
+body[data-page="signup"] {
   height: 100vh;
   display: flex;
   align-items: center;
@@ -117,12 +118,6 @@ body.auth-page {
       margin: 20px 0;
     }
 
-    .login-link {
-      span {
-        white-space: nowrap;
-      }
-    }
-
     .signup-error-msg {
       color: red;
       margin-top: -16px;
@@ -137,9 +132,6 @@ body.auth-page {
       display: block;
     }
   }
-}
-
-body.auth-page.signup {
 }
 
 body[data-page="login"] {

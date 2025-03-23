@@ -7,7 +7,6 @@
     "moduleResolution": "nodenext",
     "typeRoots": [
       "../../node_modules/@types",
-      "../types",
     ],
     "baseUrl": "./",
     "paths": {},
@@ -39,7 +38,7 @@
   },
   "include": [
     "../src/**/*",
-    //"../types/**/*"
+    "../types/*"
   ],
   "exclude": [
     "../../node_modules",

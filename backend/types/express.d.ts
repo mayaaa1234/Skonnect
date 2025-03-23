@@ -5,14 +5,9 @@ declare global {
     // Extend the Request interface
     interface Request {
       user?: {
-        id: number;
-        email: string;
+        userId: number;
         username: string;
-        isAdmin: boolean;
-        // any additional properties you expect
       };
     }
   }
 }
-
-export {};

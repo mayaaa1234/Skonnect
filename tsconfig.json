@@ -2,17 +2,19 @@
   "compilerOptions": {
     "strict": true,
     "target": "ES2022",
-    "rootDir": "../",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "rootDir": ".",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "typeRoots": [
       "node_modules/@types",
-      "./backend/types/**/*",
-      "frontend/types/",
-      "types",
+      //"types",
     ],
-    "baseUrl": "/",
-    "paths": {},
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "*src/*"
+      ]
+    },
     "types": [
       "node",
       //"express"
@@ -43,11 +45,13 @@
   },
   "include": [
     "backend/src/**/*",
+    "backend/types/*",
     "frontend/src/**/*",
-    "@types"
+    "frontend/types/*",
   ],
   "exclude": [
     "node_modules",
-    "*dist*/**/*"
+    "frontend/dist/",
+    "backend/dist/",
   ]
 }

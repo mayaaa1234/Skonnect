@@ -25,6 +25,7 @@ export const errorHandler = (
   console.error("Message:", err.message);
   console.error("Stack:", err.stack);
   console.error("=====================");
+
   return res
     .status(500)
     .json({ msg: "Something went wrong, please try again later." });

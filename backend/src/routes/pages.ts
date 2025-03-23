@@ -1,9 +1,6 @@
 import express from "express";
-import type { Request, Response } from "express";
 const router = express.Router();
-import authUser from "../middlewares/authUser.ts";
 import redirectAuth from "../middlewares/redirectAuth.ts";
-
 import {
   landingPage,
   homePage,
@@ -11,17 +8,20 @@ import {
   loginPage,
   profilePage,
   aboutPage,
+  budgetAllocationPage,
+  projectsPage,
+  suggestionPage,
 } from "../controllers/pages.ts";
 
-router.get("/", redirectAuth("/"), landingPage);
-router.get("/signup", redirectAuth("signup"), signupPage);
-router.get("/login", redirectAuth("login"), loginPage);
-router.get("/home", redirectAuth("home"), homePage);
-router.get("/profile", redirectAuth("profile"), profilePage);
-//router.get("/signup", signupPage);
-//router.get("/login", loginPage);
-//router.get("/home", homePage);
-router.get("/about", authUser, aboutPage);
-//router.get("/", homePage);
+router.get("/", redirectAuth(), landingPage);
+router.get("/signup", redirectAuth(), signupPage);
+router.get("/login", redirectAuth(), loginPage);
+router.get("/home", redirectAuth(), homePage);
+router.get("/profile", redirectAuth(), profilePage);
+
+router.get("/about", redirectAuth(), aboutPage);
+router.get("/annual-budget-allocation", redirectAuth(), budgetAllocationPage);
+router.get("/projects-and-events", redirectAuth(), projectsPage);
+router.get("/submit-suggestions", redirectAuth(), suggestionPage);
 
 export default router;

@@ -5,8 +5,32 @@
     <body data-page="landing">
         <%- include('./partials/nav.ejs') %>
 
-        <section class="pb-4 hero container">
-            <div class="hero-content">
+        <section class="pb-4 hero">
+            <div class="hero-top">
+                <img
+                    width="75px"
+                    class="sk-logo-1"
+                    src="sk-data/sk.svg"
+                    alt=""
+                />
+                <div class="hero-info ta-c">
+                    <p>Republic of the Philippines</p>
+                    <p>DISTRICT VI, CITY OF MANILA</p>
+                    <p>BARANGAY 633 – ZONE 64</p>
+                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
+                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
+                    <!--<p>Cell # 09617122859</p>-->
+                </div>
+
+                <img
+                    class="sk-logo-2 br-full"
+                    width="75px"
+                    src="sk-data/sk1.svg"
+                    alt=""
+                />
+            </div>
+
+            <div class="hero-bottom">
                 <h1 class="header-title gradient-text">SKonnect</h1>
                 <h2 class="header-text">
                     Enhancing transparency, accountability, and participation in
@@ -18,6 +42,7 @@
                     <a
                         class="p-1 br-40 btn-outlined-dark-accent"
                         href="#skonnect-provides"
+                        8
                         >Learn More</a
                     >
                     <a class="btn-dark-accent p-1 br-40" href="/signup"
@@ -28,7 +53,7 @@
         </section>
 
         <main id="main">
-            <h1 id="skonnect-provides" class="ta-c mb-2">
+            <h1 id="skonnect-provides" class="pt-2 ta-c mb-2">
                 What SKonnect Provides
             </h1>
             <section id="features" class="container features">

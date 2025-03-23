@@ -28,6 +28,30 @@ nav {
   // links for large screens (initially hidden)
   .nav-links {
     display: none;
+
+    .nav-link-dropdown {
+      width: 90px;
+      border: none;
+      cursor: pointer;
+      // &:focus {
+      //   // border-color: red !important;
+      //   // border: 1px solid red !important;
+      //
+      //   border: 1px solid transparent; /* Transparent border to preserve space */
+      //   border-image: linear-gradient(
+      //       to right,
+      //       rgb(0, 193, 174),
+      //       rgb(0, 165, 191),
+      //       rgb(0, 108, 166)
+      //     )
+      //     1;
+      // }
+
+      &::-ms-expand {
+        // Hide default dropdown arrow in IE
+        display: none !important;
+      }
+    }
   }
 }
 
@@ -198,13 +222,62 @@ nav {
 // in compliance with the current screen size.
 // specifically created/decoupled with other styles for easier debugging
 
+// @include xl {
+//   nav {
+//     display: grid;
+//     grid-template-columns: auto 1fr auto auto auto;
+//     grid-template-areas: "logo links theme signup login";
+//     align-content: center;
+//
+//     .nav-menu-btn-open,
+//     .nav-menu-popup {
+//       display: none;
+//     }
+//
+//     .logo-container {
+//       grid-area: logo;
+//     }
+//
+//     .nav-links {
+//       grid-area: links;
+//       justify-self: center;
+//       display: flex;
+//       gap: 34px;
+//     }
+//
+//     .theme-btn {
+//       grid-area: theme;
+//     }
+//
+//     .signup-link {
+//       grid-area: signup;
+//       display: block !important;
+//     }
+//
+//     .login-link {
+//       grid-area: login;
+//       display: block !important;
+//     }
+//
+//     .profile {
+//       display: block !important;
+//     }
+//   }
+// }
+//
+// // NOTE: this is not a class state but a diff ejs partial file itself. this is done to avoid flashing of layout elems when user spams browser refresh. In this ejs file, login and signup btns literally does not exist as html tags and vice versa for normal nav. see: views/partials
+// nav.authed {
+//   grid-template-columns: auto 1fr auto auto;
+// }
+
 @include xl {
   nav {
     display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    grid-template-areas: "logo links theme signup login";
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo links theme action";
     align-content: center;
 
+    // Hide mobile-only elements on xl screens
     .nav-menu-btn-open,
     .nav-menu-popup {
       display: none;
@@ -225,19 +298,12 @@ nav {
       grid-area: theme;
     }
 
-    .signup-link {
-      grid-area: signup;
-      display: block !important;
-    }
-
-    .login-link {
-      grid-area: login;
+    // This "action" area is for either the login/signup links or the profile picture.
+    .signup-link,
+    .login-link,
+    .profile {
+      grid-area: action;
       display: block !important;
     }
   }
-}
-
-// NOTE: this is not a class state but a diff ejs partial file itself. this is done to avoid flashing of layout elems when user spams browser refresh. In this ejs file, login and signup btns literally does not exist as html tags and vice versa for normal nav. see: views/partials
-nav.authed {
-  grid-template-columns: auto 1fr auto auto;
 }

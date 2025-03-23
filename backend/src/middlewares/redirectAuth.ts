@@ -2,59 +2,74 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 import type { Request, Response, NextFunction } from "express";
-import mkCustomError from "../errors/CustomError.ts";
 
-const redirectAuth = (page: "signup" | "login" | "home" | "/" | "profile") => {
+const redirectAuth = () => {
   return async (
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
     const token = req.signedCookies.authorization;
+    const currentPath = req.path; // Get the requested route
 
-    // for these two pages, redirect to home if already authenticated
-    if (page === "signup" || page === "login") {
+    // Define route categories
+    const authRedirectPages = ["/signup", "/login"];
+    const protectedPages = [
+      "/home",
+      "/profile",
+      "/annual-budget-allocation",
+      "/projects-and-events",
+      "/submit-suggestions",
+    ];
+    const publicPages = ["/", "/about"];
+
+    if (authRedirectPages.includes(currentPath)) {
+      // If authenticated, redirect to home
       if (token) {
         try {
           jwt.verify(token, process.env.JWT_SECRET as string);
-          return res.redirect(302, "/home"); // redirect to home
+          return res.redirect(302, "/home");
         } catch (error) {
-          console.log("Invalid token, proceeding to", page);
-          return next(); // no redirection i.e proceed normally to req page
+          console.log("Invalid token, proceeding to", currentPath);
+          return next();
         }
       } else {
-        console.log("No token, proceeding to", page);
-        return next(); // also no redirection if no token
+        console.log("No token, proceeding to", currentPath);
+        return next();
       }
     }
 
-    // for protected routes if no valid token, redirect to landing page.
-    if (page === "home" || page === "profile") {
+    if (protectedPages.includes(currentPath)) {
+      // If not authenticated, redirect to /login
       if (!token) {
         console.log("No Token, redirecting to login.");
-        return res.redirect(302, "/");
+        return res.redirect(302, "/login");
       }
       try {
         jwt.verify(token, process.env.JWT_SECRET as string);
-        return next(); // if valid proceed to protected route
+        return next();
       } catch (error) {
-        console.log("Invalid token on protected route, redirecting to login.");
-        return res.redirect(302, "/");
+        console.log("Invalid token, redirecting to login.");
+        return res.redirect(302, "/login");
       }
     }
 
-    // redirects to homepage if already authed.
-    if (page === "/") {
-      if (!token) {
-        return next(); // do nothing
+    // If landing page and already authenticated, redirect to home
+    //if (publicPages.includes(currentPath)) {
+    if (currentPath === "") {
+      if (token) {
+        try {
+          jwt.verify(token, process.env.JWT_SECRET as string);
+          return res.redirect(302, "/home");
+        } catch (error) {
+          return next();
+        }
       }
-      try {
-        jwt.verify(token, process.env.JWT_SECRET as string);
-        return res.redirect(302, "/home");
-      } catch (error) {
-        return next(); // do nothing
-      }
+      return next();
     }
+
+    return next(); // Default case, proceed normally
   };
 };
+
 export default redirectAuth;

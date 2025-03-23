@@ -1,0 +1,16 @@
+body[data-page="suggestions"] {
+  // .iframe-container {
+  //   display: flex;
+  //   justify-content: center; /* Centers horizontally */
+  //   align-items: center; /* Centers vertically */
+  //   width: 100%;
+  //   height: 100vh; /* Adjusts to viewport height */
+  // }
+  //
+  iframe {
+    // width: 90%;
+    max-width: 600px;
+    // height: 70vh; /* Adjusts height dynamically */
+    border: none;
+  }
+}

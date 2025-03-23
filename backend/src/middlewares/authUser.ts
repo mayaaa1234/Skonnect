@@ -31,10 +31,10 @@ const authUser = async (
 
   //console.log({ token });
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string,
-    ) as jwt.JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      userId: number;
+      username: string;
+    };
 
     console.log({ decoded });
     req.user = decoded;

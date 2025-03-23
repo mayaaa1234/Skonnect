@@ -33,3 +33,28 @@ themeBtn?.addEventListener("click", () => {
 
   setState("theme", newTheme);
 });
+
+// nav services dropdown
+const dropdown = document.querySelector(
+  ".nav-link-dropdown",
+) as HTMLSelectElement;
+
+if (dropdown) {
+  dropdown.addEventListener("change", () => {
+    const selectedValue: string = dropdown.value;
+    if (selectedValue === "/submit-suggestions") {
+      window.open("https://forms.gle/H9YozQFgCx9CWN6d8", "_blank");
+      //window.location.href = "https://forms.gle/H9YozQFgCx9CWN6d8";
+      return;
+    }
+
+    if (selectedValue) {
+      console.log("val", selectedValue);
+      window.location.href = selectedValue; // Redirects to the selected page
+    }
+  });
+  // Reset the dropdown to the default option after a short delay
+  setTimeout(() => {
+    dropdown.value = "";
+  }, 0);
+}

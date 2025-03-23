@@ -64,12 +64,29 @@
 
         <div class="menu-content">
             <ul>
-                <!--<li><a class="nav-link" href="/">Home</a></li>-->
-                <li><a class="nav-link" href="../about">About Us</a></li>
-                <li><a class="nav-link" href="">News & Events</a></li>
-                <li><a class="nav-link" href="">Data Transparency</a></li>
-                <!--<li><a class="nav-link" href="">Submit Suggestions</a></li>-->
-                <!--<li><a href=""></a></li>-->
+                <li><a class="nav-link" href="/">Home</a></li>
+                <li><a class="nav-link" href="/about">About</a></li>
+                <li>
+                    <a class="nav-link" href="/annual-budget-allocation"
+                        >Annual Budget Allocation</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="nav-link"
+                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Projects & Events</a
+                </li>
+                <li>
+                    <a
+                        class="nav-link"
+                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
+                        >Submit Suggestions</a
+                    >
+                </li>
 
                 <a
                     href="/signup"
@@ -89,24 +106,43 @@
 
     <!--xl screens only-->
     <ul class="nav-links">
-        <li class="lst-n"><a class="nav-link" href="">About Us</a></li>
-        <li class="lst-n"><a class="nav-link" href="">News & Events</a></li>
-        <li class="lst-n"><a class="nav-link" href="">Data Transparency</a></li>
-        <!--<li><a class="nav-link" href="">Submit Suggestions</a></li>-->
+        <li class="lst-n"><a class="nav-link" href="/home">Home</a></li>
+        <li class="lst-n"><a class="nav-link" href="/about">About</a></li>
+
+        <li class="lst-n">
+            <select class="nav-link-dropdown">
+                <option value="" selected disabled>Services</option>
+                <option value="/annual-budget-allocation">
+                    Annual Budget Allocation
+                </option>
+                <option value="/projects-and-events">Projects & Events</option>
+                <option value="/submit-suggestions">Submit Suggestions</option>
+                <!--<option value="/services.html#suggestions">Submit Suggestions</option>-->
+            </select>
+        </li>
     </ul>
 
-    <a
-        style="display: none"
-        href="/signup"
-        class="p-1 signup-link btn-outlined-dark-accent br-40"
-    >
-        Sign up
-    </a>
-    <a
-        style="display: none"
-        href="/login"
-        class="p-1 login-link btn-dark-accent br-40"
-    >
-        Login
-    </a>
+    <% if (user) { %>
+      <a href="/profile" class="ml-40 br-40 btn-no-hover profile">
+          <img
+              width="35px"
+              class="br-40"
+              src="assets/img/makise.jpg"
+              alt="profile picture"
+          />
+      </a>
+    <% } else { %>
+      <a
+          href="/signup"
+          class="p-1 signup-link btn-outlined-dark-accent br-40"
+      >
+          Sign up
+      </a>
+      <a
+          href="/login"
+          class="p-1 login-link btn-dark-accent br-40"
+      >
+          Login
+      </a>
+    <% } %>
 </nav>

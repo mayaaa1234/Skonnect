@@ -5,6 +5,8 @@ import fs from "fs";
 
 import express from "express";
 import morgan from "morgan";
+import session from "express-session";
+
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.ts";
 
@@ -42,6 +44,10 @@ import user from "./routes/user.ts";
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
+import {
+  sessionMiddleware,
+  attachSessionData,
+} from "./middlewares/sessionMiddleware.ts";
 
 //if (process.env.NODE_ENV === "development") {
 //  app.use((_req, res, next) => {
@@ -63,6 +69,9 @@ app.set("view engine", "ejs");
 app.set("view options", { rmWhitespace: true });
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
+
+app.use(sessionMiddleware);
+app.use(attachSessionData);
 
 // routes
 app.use("/", pages);

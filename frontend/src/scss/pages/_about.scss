@@ -1,0 +1,165 @@
+@use "../abstracts/mixins" as *;
+
+body[data-page="about"] {
+  &[data-theme="dark"] {
+    .container {
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &[data-theme="light"] {
+    .container {
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+  .intro {
+    background-color: var(--neutral);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--foreground);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+  }
+
+  // Existing styles for header, sections, etc.
+  .about-container {
+    background-color: var(--tertiary);
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 1300px;
+    margin: 2rem auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: var(--foreground);
+    }
+  }
+
+  section {
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        background-color: var(--secondary);
+        // border: 1px solid var(--accent);
+        border-radius: 5px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        color: var(--foreground);
+
+        ul {
+          margin-top: 0.5rem;
+          padding-left: 1.5rem;
+
+          li {
+            background: transparent;
+            border: none;
+            padding: 0.25rem 0;
+            font-size: 0.95rem;
+            color: var(--foreground);
+          }
+        }
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--foreground);
+    }
+  }
+
+  // Responsive adjustments
+  @include mobile {
+    .intro {
+      h2 {
+        font-size: 1.75rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+    }
+
+    header {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+    section {
+      h2 {
+        font-size: 1.75rem;
+      }
+      ul li {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  @include md {
+    .intro {
+      h2 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    header {
+      h1 {
+        font-size: 3rem;
+      }
+      p {
+        font-size: 1.3rem;
+      }
+    }
+    section {
+      h2 {
+        font-size: 2.25rem;
+      }
+      ul li {
+        font-size: 1rem;
+      }
+    }
+  }
+}

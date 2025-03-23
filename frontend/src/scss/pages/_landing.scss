@@ -3,137 +3,212 @@
 @use "../layout/nav" as *;
 @use "sass:map";
 
-// body[data-page="landing"] {
-//   height: 100vh;
-//   padding-top: $nav-height; // from nav.sccs
-//   overflow-y: auto;
-//   @include mobile {
-//     padding-top: 67px !important;
-//     // height: 100dvh !important;
-//   }
-// }
+body[data-page="landing"] {
+  //   height: 100vh;
+  //   padding-top: $nav-height; // from nav.sccs
+  //   overflow-y: auto;
+  //   @include mobile {
+  //     padding-top: 67px !important;
+  //     // height: 100dvh !important;
+  //   }
 
-.hero {
-  display: grid;
-  place-content: center;
-  text-align: center;
-  height: calc(100vh - #{$nav-height} + 5px);
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    // max-width: 1700px;
+    align-content: center;
+    text-align: center;
+    height: calc(100vh - #{$nav-height} + 5px);
 
-  @include mobile {
-    height: calc(100dvh - #{$nav-height} + 5px) !important;
-  }
-
-  .hero-content {
-    // border: 1px solid white;
-    .header-title {
-      font-size: 70px;
+    @include mobile {
+      height: calc(100dvh - #{$nav-height} + 5px) !important;
     }
 
-    .hero-links {
-      // border: 1px solid rgba(255, 255, 255, 0.3);
-      display: inline-flex;
-      align-items: center;
-      text-align: center;
-      gap: 20px;
+    // @include md {
+    //   grid-template: auto 1fr / repeat(3, auto);
+    //   grid-template-areas:
+    //     "logo1 info logo2"
+    //     "bottom bottom bottom";
+    // }
 
-      a {
-        text-decoration: none;
+    // "xs": 0,
+    // "sm": 475px,
+    // "md": 640px,
+    // "lg": 760px,
+    // "xl": 1024px,
+    // "xxl": 1536px,
+
+    .hero-top {
+      grid-row: 1;
+      display: grid;
+      grid-template: repeat(2, auto) / repeat(2, auto);
+      padding: 1rem;
+      align-items: center;
+      gap: 5px;
+
+      .sk-logo-1 {
+        grid: 1 / 1;
+        // border: 1px solid white;
+      }
+
+      .sk-logo-2 {
+        justify-self: end;
+      }
+
+      .hero-info {
+        margin-top: $base-padding * -1;
+        grid-row: 2;
+        grid-column: 1 /3;
+      }
+
+      @include md {
+        grid-template-columns: repeat(3, auto);
+
+        .sk-logo-2,
+        .sk-logo-1 {
+          justify-self: center;
+        }
+
+        .hero-info,
+        .sk-logo-2,
+        .sk-logo-1 {
+          grid-row: initial;
+          grid-column: initial;
+        }
+
+        img {
+          width: 100px;
+        }
+      }
+
+      @include lg {
+        img {
+          width: 125px;
+        }
+      }
+
+      @include xl {
+        img {
+          width: 150px;
+        }
+      }
+    }
+
+    .hero-bottom {
+      // border: 1px solid white;
+      grid-row: 2;
+      align-content: center;
+      .header-title {
+        font-size: 70px;
+      }
+
+      .hero-links {
+        // border: 1px solid rgba(255, 255, 255, 0.3);
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+
+        a {
+          text-decoration: none;
+        }
       }
     }
   }
-}
 
-main {
-  #skonnect-provides {
-    scroll-margin-top: 100px;
+  main {
+    #skonnect-provides {
+      scroll-margin-top: 100px;
+    }
+
+    section.features {
+      display: grid;
+      place-content: center;
+      text-align: center;
+
+      .feature-card {
+        height: auto;
+        // width: 90%;
+        display: grid;
+        justify-items: center;
+        justify-content: center;
+
+        .card-text-container {
+          // border: 1px solid rgba(white, 0.3);
+          width: 95%;
+        }
+
+        img {
+          border-radius: 8px;
+          justify-self: center;
+        }
+      }
+    }
+
+    section.impact {
+      // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
+      h1 {
+        font-size: 28px;
+      }
+      display: grid;
+      place-content: center;
+      height: 400px;
+    }
   }
 
-  section.features {
-    display: grid;
-    place-content: center;
-    text-align: center;
+  @include sm {
+    .feature-card h3 {
+      font-size: 1.5em;
+    }
+  }
+
+  @include md {
+    #skonnect-provides {
+      // text-align: start;
+      // padding-left: $base-padding;
+      font-size: 2.4em;
+    }
+
+    .feature-card h3 {
+      font-size: 1.9em;
+    }
+  }
+
+  @include xl {
+    .features-container {
+      max-width: 1300px;
+    }
+
+    .header-title {
+      font-size: 130px !important;
+      margin-bottom: -20px;
+    }
+
+    #skonnect-provides {
+      font-size: 2.9em;
+    }
+    .feature-card h3 {
+      font-size: 2.5em;
+    }
 
     .feature-card {
-      height: auto;
-      // width: 90%;
-      display: grid;
-      justify-items: center;
+      display: flex !important;
       justify-content: center;
+      gap: 20px;
+
+      & > div {
+        // border: 1px dashed white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
 
       .card-text-container {
         // border: 1px solid rgba(white, 0.3);
-        width: 95%;
+        width: 50% !important;
       }
-
-      img {
-        border-radius: 8px;
-        justify-self: center;
-      }
-    }
-  }
-
-  section.impact {
-    // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
-    h1 {
-      font-size: 28px;
-    }
-    display: grid;
-    place-content: center;
-    height: 400px;
-  }
-}
-
-@include sm {
-  .feature-card h3 {
-    font-size: 1.5em;
-  }
-}
-
-@include md {
-  #skonnect-provides {
-    // text-align: start;
-    // padding-left: $base-padding;
-    font-size: 2.4em;
-  }
-
-  .feature-card h3 {
-    font-size: 1.9em;
-  }
-}
-
-@include xl {
-  .features-container {
-    max-width: 1300px;
-  }
-
-  .header-title {
-    font-size: 130px !important;
-    margin-bottom: -20px;
-  }
-
-  #skonnect-provides {
-    font-size: 2.9em;
-  }
-  .feature-card h3 {
-    font-size: 2.5em;
-  }
-
-  .feature-card {
-    display: flex !important;
-    justify-content: center;
-    gap: 20px;
-
-    & > div {
-      // border: 1px dashed white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card-text-container {
-      // border: 1px solid rgba(white, 0.3);
-      width: 50% !important;
     }
   }
 }

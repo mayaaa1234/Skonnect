@@ -41,6 +41,19 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     } as jwt.SignOptions,
   );
 
+  // attaching username to sesssion
+  req.session.user = {
+    id: user.id,
+    username: user.username,
+  };
+  // saving it
+  await new Promise<void>((resolve, _reject) => {
+    req.session.save((err) => {
+      if (err) throw mkCustomError("Session save failed.", 500);
+      resolve();
+    });
+  });
+
   res.cookie("authorization", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -50,10 +63,13 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     path: "/",
   });
 
+  // can only send one of these two and there's a trade off we'll see about it
   res.status(201).json({
     user: { userId: user.id, name: user.username },
     token,
   });
+
+  //res.redirect(201, "/home");
 };
 
 const login = async (req: Request, res: Response) => {
@@ -75,6 +91,19 @@ const login = async (req: Request, res: Response) => {
     } as jwt.SignOptions,
   );
 
+  // attaching username to sesssion
+  req.session.user = {
+    id: user.id,
+    username: user.username,
+  };
+  // saving it
+  await new Promise<void>((resolve, _reject) => {
+    req.session.save((err) => {
+      if (err) throw mkCustomError("Session save failed.", 500);
+      resolve();
+    });
+  });
+
   res.cookie("authorization", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -88,6 +117,7 @@ const login = async (req: Request, res: Response) => {
     user: { userId: user.id, username: user.username },
     token,
   });
+  //res.redirect(200, "/home");
 };
 
 export { signup, login };

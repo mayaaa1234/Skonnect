@@ -3,32 +3,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SKonnect<%= title ? " - " + title : "" %></title>
 
-    <!--INFO: this is just so that nav layout loads faster when loggin in and out-->
     <style>
         /*avoid white flashing on repeated fast refreshes*/
         html[data-theme="dark"] {
             background-color: rgb(25, 27, 28) !important;
         }
-
-        /*faster nav layout load time*/
-        /*@media (min-width: 1024px) {*/
-        /*    .nav-right {*/
-        /*        display: flex !important;*/
-        /*    }*/
-        /**/
-        /*    .nav-right > * {*/
-        /*        display: none !important;*/
-        /*    }*/
-        /**/
-        /*    .isLoggedIn .nav-right > .profile {*/
-        /*        display: inline-block !important;*/
-        /*    }*/
-        /**/
-        /*    .isLoggedOut .nav-right > .login-link,*/
-        /*    .isLoggedOut .nav-right > .signup-link {*/
-        /*        display: inline-block !important;*/
-        /*    }*/
-        /*}*/
     </style>
 
     <link rel="stylesheet" href="app.bundled.css" />

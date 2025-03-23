@@ -28,6 +28,7 @@
     "@types/connect-livereload": "^0.6.3",
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.9",
@@ -93,6 +94,7 @@
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "mysql2": "^3.12.0"

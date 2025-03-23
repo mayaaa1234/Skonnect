@@ -1,26 +1,25 @@
 import path from "path";
-//import process from "process";
 import webpack from "webpack";
 import devMiddleware from "webpack-dev-middleware";
 import hotMiddleware from "webpack-hot-middleware";
 import type { Application } from "express";
 
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const webpackConfig = require(
-  path.join(process.cwd(), "frontend", "configs", "webpack.dev.js"),
-);
+async function dev(app: Application) {
+  const webpackConfig = (
+    await import(
+      path.join(process.cwd(), "frontend", "configs", "webpack.dev.js")
+    )
+  ).default;
 
-function dev(app: Application) {
-  const compiler = webpack(webpackConfig.default);
+  const compiler = webpack(webpackConfig);
   app.use(
     devMiddleware(compiler, {
       publicPath: webpackConfig.output?.publicPath,
       writeToDisk: true,
-      //writeToDisk: false,
     }),
   );
 
   app.use(hotMiddleware(compiler));
 }
+
 export default dev;

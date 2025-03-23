@@ -5,11 +5,11 @@
   "description": "",
   "main": "",
   "scripts": {
-    "start": "nodemon --config ./backend/configs/nodemon.json",
+    "dev": "nodemon --config ./backend/configs/nodemon.json",
     "build": "webpack --config frontend/configs/webpack.prod.js && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
     "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
-    "prod": "node backend/dist/app.js",
+    "start": "node backend/dist/app.js",
     "postinstall": "npm run build"
   },
   "keywords": [],

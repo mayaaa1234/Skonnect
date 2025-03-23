@@ -18,6 +18,7 @@ const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 //const dist = path.join(process.cwd(), "frontend/dist");
 
 // INFO : development-mode only middleware and will be removed on prod
+
 import dev from "./middlewares/devModeMiddleware.ts";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";

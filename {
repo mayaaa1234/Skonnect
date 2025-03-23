@@ -62,23 +62,11 @@ export default class User {
       errors.email = "Email already in use.";
     }
 
-    //const [rows] = await pool.execute<RowDataPacket[]>(
-    //  `SELECT EXISTS (SELECT * FROM users WHERE email = ?)`,
-    //  [this.email],
-    //);
-    //if (rows.length !== 0) {
-    //  errors.email = "Email already in use.";
-    //}
-
     if (Object.keys(errors).length > 0) {
       //throw new Error(JSON.stringify(errors)); // send errors as JSON
       return JSON.stringify(errors);
-    } else {
-      return null;
     }
-
-    //catch:
-    throw mkCustomError("Signup failed, please try again.", 500);
+    return null;
   };
 
   //SQL CONSTRAINTS: both username and email is unique
@@ -91,10 +79,8 @@ export default class User {
   loginValidation = async () => {
     if (this.email && this.username)
       return "Provide only either email or username.";
-
     console.log("login info:", this.email, this.username);
 
-    //INFO: if user used an email to login
     if (this.email && !this.username) {
       if (!emailRegex.test(this.email)) return "Email is not valid.";
 
@@ -116,38 +102,33 @@ export default class User {
       // will be sent to the client
       this.id = id;
       this.username = username;
-
-      return null;
     }
 
-    //INFO: if user used a username to login
     if (this.username && !this.email) {
       const [rows] = await pool.execute<RowDataPacket[]>(
         `SELECT * FROM users WHERE username = ?`,
         [this.username],
       );
-      //console.log({ rows });
+      console.log({ rows });
 
       if (rows.length === 0) {
         return "Username not found.";
       }
 
-      const { id, username, email, password, isAdmin } = rows[0];
+      const { id, username, email, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
       if (!isMatch) return "Wrong Password, Try again.";
 
       // will be sent to the client
-      //console.log("LOGIN VALIDATION INFO :", { id, username, email, isAdmin });
+      console.log("LOGIN VALIDATION INFO :", { id, username, email });
       this.id = id;
       this.username = username;
-      this.email = email;
-      this.isAdmin = isAdmin;
 
       return null;
     }
 
-    //catch block
+    //return null;
     throw mkCustomError("Login failed, please try again.", 500);
   };
 
@@ -163,16 +144,10 @@ export default class User {
 
     if (rows) {
       console.log("User Created Successfully:", { rows });
-      // get the inserted id from auto increment and put it in this id
-      // so than it can then be sent into client
-      this.id = rows.insertId;
-      return;
     }
-
-    throw mkCustomError(
-      "An error occurred while saving the user to the database.",
-      500,
-    );
+    // get the inserted id from auto increment and put it in this id
+    // so than it can then be sent into client
+    this.id = rows.insertId;
   };
 
   static findById = async (id: number) => {

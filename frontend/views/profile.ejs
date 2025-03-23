@@ -26,13 +26,21 @@
 
                     <div class="mb-2 username">
                         <h3>Username</h3>
-                        <div data-username>maya</div>
+                        <div data-username>
+                            <%= user.username -%>
+                            <% if (user.isAdmin) { %>
+                            (ADMIN)
+                            <% } %>
+                        </div>
                         <!--<input required type="text" />-->
                     </div>
 
                     <div class="mb-2 email">
                         <h3 class="">Email</h3>
-                        <div data-email>example@gmail.com</div>
+                        <!--<div data-email>example@gmail.com</div>-->
+                        <div data-email>
+                            <%= user.email %>
+                        </div>
                         <!--<input required type="text" />-->
                     </div>
                 </div>

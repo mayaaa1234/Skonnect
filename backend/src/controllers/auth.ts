@@ -34,6 +34,8 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     {
       userId: user.id,
       username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET as string,
     {
@@ -42,17 +44,17 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   );
 
   // attaching username to sesssion
-  req.session.user = {
-    id: user.id,
-    username: user.username,
-  };
-  // saving it
-  await new Promise<void>((resolve, _reject) => {
-    req.session.save((err) => {
-      if (err) throw mkCustomError("Session save failed.", 500);
-      resolve();
-    });
-  });
+  //req.session.user = {
+  //  id: user.id,
+  //  username: user.username,
+  //};
+  //// saving it
+  //await new Promise<void>((resolve, _reject) => {
+  //  req.session.save((err) => {
+  //    if (err) throw mkCustomError("Session save failed.", 500);
+  //    resolve();
+  //  });
+  //});
 
   res.cookie("authorization", token, {
     httpOnly: true,
@@ -84,6 +86,8 @@ const login = async (req: Request, res: Response) => {
     {
       userId: user.id,
       username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET as string,
     {
@@ -91,19 +95,28 @@ const login = async (req: Request, res: Response) => {
     } as jwt.SignOptions,
   );
 
-  // attaching username to sesssion
-  req.session.user = {
-    id: user.id,
-    username: user.username,
-  };
-  // saving it
-  await new Promise<void>((resolve, _reject) => {
-    req.session.save((err) => {
-      if (err) throw mkCustomError("Session save failed.", 500);
-      resolve();
-    });
+  console.log("LOGIN USER INFO:", {
+    username: user.username ?? "not used when logging in",
+    email: user.email ?? "not used when logging in",
+    password: user.password,
+    token,
   });
-
+  // attaching username to sesssion
+  //req.session.user = {
+  //  id: user.id,
+  //  username: user.username,
+  //};
+  //// saving it
+  //await new Promise<void>((resolve, _reject) => {
+  //  req.session.save((err) => {
+  //    if (err) throw mkCustomError("Session save failed.", 500);
+  //    resolve();
+  //  });
+  //  console.log("Session saved successfully:", req.session);
+  //});
+  //console.log("SESSION MIDDLEWARE - Session data:", req.session);
+  //console.log("SESSION MIDDLEWARE - Local user:", res.locals.user);
+  //
   res.cookie("authorization", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -115,9 +128,8 @@ const login = async (req: Request, res: Response) => {
 
   res.status(200).json({
     user: { userId: user.id, username: user.username },
-    token,
+    //token,
   });
-  //res.redirect(200, "/home");
 };
 
 export { signup, login };

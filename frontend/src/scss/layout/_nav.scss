@@ -2,14 +2,15 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-// used/imported accross pages for adujstment
+// exported in gen-styles for cross pages for adujstment
 $nav-height: 70px;
 
 nav {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  // grid-template-columns: auto 1fr auto;
+  justify-content: space-between;
   align-items: center;
-  gap: 1em;
+  gap: 1rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -23,6 +24,10 @@ nav {
 
   &:is(button, input):focus {
     outline: none;
+  }
+
+  .nav-auth-container {
+    display: none;
   }
 
   // links for large screens (initially hidden)
@@ -55,16 +60,11 @@ nav {
   }
 }
 
-.nav-menu-btn-open {
-  justify-self: flex-end;
-
-  &.clicked {
-    display: none;
-  }
+.nav-menu-btn-open.clicked {
+  display: none;
 }
 
 .logo-container {
-  justify-self: start;
   flex: 1;
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@ nav {
   }
 }
 
-// sm screens still
+// INFO: the popup on sm screens
 
 .nav-menu-popup {
   backdrop-filter: blur(10px);
@@ -203,81 +203,15 @@ nav {
 }
 
 @include xl {
-  .signup-link,
-  .login-link {
-    text-align: center;
-    display: block;
-    width: 100px;
-  }
-
-  a {
-    text-decoration: none;
-  }
-}
-
-// --------------------------------------------------------
-
-// INFO: another section of nav style
-// this section is focused on layout changes based on auth state
-// in compliance with the current screen size.
-// specifically created/decoupled with other styles for easier debugging
-
-// @include xl {
-//   nav {
-//     display: grid;
-//     grid-template-columns: auto 1fr auto auto auto;
-//     grid-template-areas: "logo links theme signup login";
-//     align-content: center;
-//
-//     .nav-menu-btn-open,
-//     .nav-menu-popup {
-//       display: none;
-//     }
-//
-//     .logo-container {
-//       grid-area: logo;
-//     }
-//
-//     .nav-links {
-//       grid-area: links;
-//       justify-self: center;
-//       display: flex;
-//       gap: 34px;
-//     }
-//
-//     .theme-btn {
-//       grid-area: theme;
-//     }
-//
-//     .signup-link {
-//       grid-area: signup;
-//       display: block !important;
-//     }
-//
-//     .login-link {
-//       grid-area: login;
-//       display: block !important;
-//     }
-//
-//     .profile {
-//       display: block !important;
-//     }
-//   }
-// }
-//
-// // NOTE: this is not a class state but a diff ejs partial file itself. this is done to avoid flashing of layout elems when user spams browser refresh. In this ejs file, login and signup btns literally does not exist as html tags and vice versa for normal nav. see: views/partials
-// nav.authed {
-//   grid-template-columns: auto 1fr auto auto;
-// }
-
-@include xl {
   nav {
+    // changed to grid cause nav-links is at bottom of the html structure
+    // so that it can be inserted as second elem in nav
     display: grid;
     grid-template-columns: auto 1fr auto auto;
     grid-template-areas: "logo links theme action";
     align-content: center;
 
-    // Hide mobile-only elements on xl screens
+    // hide mobile-only elements on xl screens
     .nav-menu-btn-open,
     .nav-menu-popup {
       display: none;
@@ -298,12 +232,30 @@ nav {
       grid-area: theme;
     }
 
-    // This "action" area is for either the login/signup links or the profile picture.
-    .signup-link,
-    .login-link,
+    // both nav-auth continer and profile
+    // has grid area action to put them in that grid cell
+    // whichever is available based on session status
+    .nav-auth-container {
+      grid-area: action;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
     .profile {
       grid-area: action;
       display: block !important;
+    }
+
+    .signup-link,
+    .login-link {
+      text-align: center;
+      display: block;
+      width: 100px;
+    }
+
+    a {
+      text-decoration: none;
     }
   }
 }

@@ -82,12 +82,16 @@
                 </li>
                 <li>
                     <a
+                        rel="noopener noreferrer"
+                        target="_blank"
                         class="nav-link"
                         href="https://forms.gle/H9YozQFgCx9CWN6d8"
-                        >Submit Suggestions</a
+                        >Submit Suggestion</a
                     >
                 </li>
 
+
+        <% if (!user) { %>
                 <a
                     href="/signup"
                     class="ta-c td-n p-1 signup-link-mobile btn-outlined-dark-accent br-40"
@@ -100,6 +104,7 @@
                 >
                     Login
                 </a>
+        <% } %>
             </ul>
         </div>
     </div>
@@ -116,7 +121,7 @@
                     Annual Budget Allocation
                 </option>
                 <option value="/projects-and-events">Projects & Events</option>
-                <option value="/submit-suggestions">Submit Suggestions</option>
+                <option value="/submit-suggestions">Submit Suggestion</option>
                 <!--<option value="/services.html#suggestions">Submit Suggestions</option>-->
             </select>
         </li>
@@ -132,17 +137,19 @@
           />
       </a>
     <% } else { %>
-      <a
-          href="/signup"
-          class="p-1 signup-link btn-outlined-dark-accent br-40"
-      >
-          Sign up
-      </a>
-      <a
-          href="/login"
-          class="p-1 login-link btn-dark-accent br-40"
-      >
-          Login
-      </a>
+      <div class="nav-auth-container">
+          <a
+              href="/signup"
+              class="p-1 signup-link btn-outlined-dark-accent br-40"
+          >
+              Sign up
+          </a>
+          <a
+              href="/login"
+              class="p-1 login-link btn-dark-accent br-40"
+          >
+              Login
+          </a>
+      </div>
     <% } %>
 </nav>

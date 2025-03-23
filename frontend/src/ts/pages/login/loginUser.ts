@@ -1,8 +1,6 @@
 import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
 import { setState } from "../../utils/setGetState.ts";
 
-//TODO: decide if im gonna use global var for isLoggedIn or localStorage
-
 export interface LoginData {
   username?: string;
   email?: string;
@@ -10,6 +8,7 @@ export interface LoginData {
 }
 
 export default async function loginUser(jsonData: LoginData) {
+  console.log({ jsonData });
   try {
     const response = await fetch("/api/v1/auth/login", {
       method: "POST",
@@ -22,9 +21,8 @@ export default async function loginUser(jsonData: LoginData) {
 
     if (!response.ok) {
       console.error("Login failed:", result.message || "Unknown error");
-      notifyError(result.message || "Login failed");
+      notifyError(result.message || "Login failed, please try again later.");
 
-      setState("isLoggedIn", false);
       //document.cookie =
       //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       return;
@@ -33,7 +31,6 @@ export default async function loginUser(jsonData: LoginData) {
     // saving this for illusory transcedental notif accross pages
     sessionStorage.setItem("loginWelcomeNotif", "Welcome!");
 
-    setState("isLoggedIn", true);
     console.log("Login successful", result);
     //notifySuccess("Welcome!");
 
@@ -42,7 +39,6 @@ export default async function loginUser(jsonData: LoginData) {
     console.error("Network error:", error);
     notifyError("Something went wrong, please try again later.");
 
-    setState("isLoggedIn", false);
     //document.cookie =
     //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }

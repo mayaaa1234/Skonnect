@@ -13,12 +13,6 @@
   justify-content: center;
   // outline: 1px solid blue; /* Debug border */
   min-width: 150px;
-  @include md {
-    min-width: 180px !important;
-  }
-  @include xl {
-    min-width: 200px !important;
-  }
   height: 70px;
   padding: 12px 16px;
   border-radius: 5px;
@@ -31,6 +25,13 @@
   transition:
     transform 0.3s ease-out,
     opacity 0.3s ease-out;
+
+  @include md {
+    min-width: 180px !important;
+  }
+  @include xl {
+    min-width: 200px !important;
+  }
 
   &.show {
     transform: translateX(0);

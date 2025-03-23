@@ -6,7 +6,7 @@ import mkCustomError from "../errors/CustomError.ts";
 
 const authUser = async (
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction,
 ): Promise<void> => {
   const authHeader = req.headers.authorization;
@@ -34,11 +34,13 @@ const authUser = async (
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       userId: number;
       username: string;
+      email: string;
+      isAdmin: boolean;
     };
 
     console.log({ decoded });
     req.user = decoded;
-
+    res.locals.user = decoded; // sent to ejs
     next();
   } catch (error) {
     throw mkCustomError("Invalid or expired token.", 401);

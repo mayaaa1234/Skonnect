@@ -64,8 +64,6 @@ const profilePage = (_req: Request, res: Response): void => {
   res.setHeader("Surrogate-Control", "no-store");
   res.render("profile", {
     title: "Profile",
-    dataPage: "profile",
-    homeScript: "profile.bundled.js",
   });
 };
 

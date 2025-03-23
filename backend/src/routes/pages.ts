@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import redirectAuth from "../middlewares/redirectAuth.ts";
+import authUser from "../middlewares/authUser.ts";
 import {
   landingPage,
   homePage,
@@ -16,9 +17,10 @@ import {
 router.get("/", redirectAuth(), landingPage);
 router.get("/signup", redirectAuth(), signupPage);
 router.get("/login", redirectAuth(), loginPage);
-router.get("/home", redirectAuth(), homePage);
-router.get("/profile", redirectAuth(), profilePage);
 
+// protected routes
+router.get("/profile", redirectAuth(), authUser, profilePage);
+router.get("/home", redirectAuth(), homePage);
 router.get("/about", redirectAuth(), aboutPage);
 router.get("/annual-budget-allocation", redirectAuth(), budgetAllocationPage);
 router.get("/projects-and-events", redirectAuth(), projectsPage);

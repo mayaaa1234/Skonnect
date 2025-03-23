@@ -24,7 +24,6 @@ const signupUser = async (jsonData: SignupData) => {
       console.error("Signup failed:", result.message || "Unknown error");
       notifyError(result.message || "Signup failed");
 
-      setState("isLoggedIn", false);
       //document.cookie =
       //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       return;
@@ -36,7 +35,6 @@ const signupUser = async (jsonData: SignupData) => {
       "Account created successfully!",
     );
 
-    setState("isLoggedIn", true);
     console.log("Signup successful", result);
     //notifySuccess("Account created successfully!");
 
@@ -45,7 +43,6 @@ const signupUser = async (jsonData: SignupData) => {
     console.error("Network error:", error);
     notifyError("Something went wrong, please try again later.");
 
-    setState("isLoggedIn", false);
     //document.cookie =
     //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     return;

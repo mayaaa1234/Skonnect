@@ -45,11 +45,11 @@ import user from "./routes/user.ts";
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
-import {
-  sessionMiddleware,
-  attachSessionData,
-} from "./middlewares/sessionMiddleware.ts";
-
+//import {
+//  sessionMiddleware,
+//  attachSessionData,
+//} from "./middlewares/sessionMiddleware.ts";
+//
 //if (process.env.NODE_ENV === "development") {
 //  app.use((_req, res, next) => {
 //    res.set("Cache-Control", "no-store");
@@ -71,8 +71,8 @@ app.set("view options", { rmWhitespace: true });
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
 
-app.use(sessionMiddleware);
-app.use(attachSessionData);
+//app.use(sessionMiddleware);
+//app.use(attachSessionData);
 
 // routes
 app.use("/", pages);

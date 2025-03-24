@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "development") {
   });
   app.use(connectLivereload());
 
-  webpackDevMiddleware(app);
+  await webpackDevMiddleware(app);
 }
 
 // routers

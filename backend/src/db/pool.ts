@@ -2,20 +2,21 @@ import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 dotenv.config();
 
-// INFO: this is to create multiple connections across the project
-// without creating a new connection everytime
+const isDev = process.env.NODE_ENV === "development";
+
 const pool = mysql.createPool({
-  host: process.env.SQL_HOST,
-  user: process.env.SQL_USER,
-  password: process.env.SQL_PASS,
-  database: process.env.SQL_DB,
+  host: isDev ? process.env.SQL_HOST : process.env.MYSQLHOST,
+  user: isDev ? process.env.SQL_USER : process.env.MYSQLUSER,
+  password: isDev ? process.env.SQL_PASS : process.env.MYSQLPASSWORD,
+  database: isDev ? process.env.SQL_DB : process.env.MYSQLDATABASE,
+  port: isDev ? undefined : Number(process.env.MYSQLPORT),
   waitForConnections: true,
   connectionLimit: 10,
   maxIdle: 10, // Maximum number of idle connections
-  idleTimeout: 60000, // 60kms = 1minute
-  queueLimit: 0, // unli
+  idleTimeout: 60000, // 60s = 1 minute
+  queueLimit: 0, // Unlimited queue
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
-  //jsonStrings: true,
 });
+
 export default pool;

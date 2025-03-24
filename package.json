@@ -10,7 +10,7 @@
     "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
     "start": "node backend/dist/app.js",
-    "postinstall": "npm install --omit=dev"
+    "postinstall": "--omit=dev"
   },
   "keywords": [],
   "author": "",

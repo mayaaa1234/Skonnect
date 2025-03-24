@@ -2,6 +2,12 @@ import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("MYSQLHOST:", process.env.MYSQLHOST);
+console.log("MYSQLUSER:", process.env.MYSQLUSER);
+console.log("MYSQLDATABASE:", process.env.MYSQLDATABASE);
+console.log("MYSQLPORT:", process.env.MYSQLPORT);
+
 const connectDB = () => {
   const isDev = process.env.NODE_ENV === "development";
 

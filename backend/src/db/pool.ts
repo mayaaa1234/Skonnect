@@ -24,10 +24,11 @@ if (process.env.NODE_ENV === "development") {
 // prod
 if (process.env.NODE_ENV === "production") {
   pool = mysql.createPool({
-    host: process.env.MYSQLHOST,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE,
+    //host: process.env.MYSQLHOST,
+    //user: process.env.MYSQLUSER,
+    //password: process.env.MYSQLPASSWORD,
+    //database: process.env.MYSQLDATABASE,
+    uri: process.env.MYSQL_PUBLIC_URL as string,
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10, // Maximum number of idle connections

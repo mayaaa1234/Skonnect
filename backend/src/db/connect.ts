@@ -17,7 +17,7 @@ const connectDB = () => {
       database: process.env.SQL_DB,
     });
   }
-  return mysql.createConnection(process.env.MYSQL_URL as string);
+  return mysql.createConnection(process.env.MYSQL_PUBLIC_URL as string);
 };
 
 export default connectDB;

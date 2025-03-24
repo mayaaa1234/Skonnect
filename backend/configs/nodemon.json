@@ -2,8 +2,9 @@
   "verbose": true,
   "ignore": [
     "frontend/public/",
+    "frontend/dist/",
     "backend/dist/"
   ],
-  "ext": "ts, ejs",
-  "exec": "TS_NODE_PROJECT=backend/configs/tsconfig.json ts-node backend/src/app.ts"
+  "ext": "ts,ejs",
+  "exec": "tsx --tsconfig ./backend/configs/tsconfig.json backend/src/app.ts"
 }

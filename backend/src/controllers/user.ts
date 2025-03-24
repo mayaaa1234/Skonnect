@@ -34,29 +34,29 @@ export const status = async (req: Request, res: Response) => {
 };
 
 export const logout = async (
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
-  await new Promise<void>((resolve, _reject) => {
-    req.session.destroy((err) => {
-      if (err) next(mkCustomError("Session destruction failed", 500));
-      resolve();
-    });
+  //await new Promise<void>((resolve, _reject) => {
+  //req.session.destroy((err) => {
+  //  if (err) next(mkCustomError("Session destruction failed", 500));
+  //  resolve();
+  //});
 
-    res.set(
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate",
-    );
-    res.set("Pragma", "no-cache");
-    res.set("Expires", "0");
-    res.clearCookie("authorization", {
-      path: "/",
-      domain: "",
-    });
-
-    res.status(200).json({
-      success: true,
-    });
+  res.set(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  res.clearCookie("authorization", {
+    path: "/",
+    domain: "",
   });
+
+  res.status(200).json({
+    success: true,
+  });
+  //});
 };

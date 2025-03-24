@@ -1,10 +1,10 @@
-import mysql from "mysql2/promise";
+import mysql, { Pool } from "mysql2/promise";
 import dotenv from "dotenv";
 dotenv.config();
 
-// INFO: this is to create multiple connections across the project
-// without creating a new connection everytime
-let pool;
+// Define `pool` with an explicit type
+let pool: Pool | undefined;
+
 if (process.env.NODE_ENV === "development") {
   pool = mysql.createPool({
     host: process.env.SQL_HOST,
@@ -18,16 +18,9 @@ if (process.env.NODE_ENV === "development") {
     queueLimit: 0, // unli
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
-    //jsonStrings: true,
   });
-}
-// prod
-if (process.env.NODE_ENV === "production") {
+} else {
   pool = mysql.createPool({
-    //host: process.env.MYSQLHOST,
-    //user: process.env.MYSQLUSER,
-    //password: process.env.MYSQLPASSWORD,
-    //database: process.env.MYSQLDATABASE,
     uri: process.env.MYSQL_PUBLIC_URL as string,
     waitForConnections: true,
     connectionLimit: 10,
@@ -36,7 +29,9 @@ if (process.env.NODE_ENV === "production") {
     queueLimit: 0, // unli
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
-    //jsonStrings: true,
   });
 }
-export default pool;
+
+// prod
+
+export default pool!;

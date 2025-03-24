@@ -8,7 +8,7 @@ export default {
   plugins: [
     autoprefixer,
     postcssNested,
-    purgecss.default({
+    purgecss({
       content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
       safelist: [/^data-theme/],
     }),

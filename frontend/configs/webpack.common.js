@@ -7,10 +7,19 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
+const mode = process.env.NODE_ENV;
+console.log("webpack mode: ", mode);
+
 const config = {
+  //mode: "development",
   entry: {
     app: [
-      "webpack-hot-middleware/client?reload=true&timeout=2000",
+      //"webpack-hot-middleware/client?reload=true&path=http://" +
+      //  "localhost" +
+      //  ":" +
+      //  3000 +
+      //  "/__webpack_hmr",
+      "webpack-hot-middleware/client?reload=true&timeout=5",
       "./frontend/src/webpack-app-entry.ts",
     ],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
@@ -115,15 +124,15 @@ const config = {
             presets: ["@babel/preset-env", "@babel/preset-typescript"],
             plugins: [
               ["@babel/plugin-transform-runtime"], // Avoids regenerator issues
-              [
-                "module-resolver",
-                {
-                  extensions: [".js", ".ts"],
-                  alias: {
-                    "@": "./frontend/src", // Example alias
-                  },
-                },
-              ],
+              //[
+              //  "module-resolver",
+              //  {
+              //    extensions: [".js", ".ts"],
+              //    alias: {
+              //      "@": "./frontend/src",
+              //    },
+              //  },
+              //],
             ],
           },
         },

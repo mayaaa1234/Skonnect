@@ -5,14 +5,14 @@ import devMiddleware from "webpack-dev-middleware";
 import hotMiddleware from "webpack-hot-middleware";
 import type { Application } from "express";
 
-async function dev(app: Application) {
-  const webpackConfig = (
-    await import(
-      path.join(process.cwd(), "frontend", "configs", "webpack.dev.js")
-    )
-  ).default;
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const webpackConfig = require(
+  path.join(process.cwd(), "frontend", "configs", "webpack.dev.js"),
+);
 
-  const compiler = webpack(webpackConfig);
+function devModeMiddleware(app: Application) {
+  const compiler = webpack(webpackConfig.default);
   app.use(
     devMiddleware(compiler, {
       publicPath: webpackConfig.output?.publicPath,
@@ -20,7 +20,11 @@ async function dev(app: Application) {
     }),
   );
 
-  app.use(hotMiddleware(compiler));
+  app.use(
+    hotMiddleware(compiler, {
+      log: console.log,
+      heartbeat: 1000,
+    }),
+  );
 }
-
-export default dev;
+export default devModeMiddleware;

@@ -14,12 +14,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT ? Number(process.env.PORT) : 8000;
+const port =
+  process.env.NODE_ENV === "development"
+    ? 3000
+    : Number(process.env.PORT) || 3000;
 //const dist = path.join(process.cwd(), "frontend/dist");
 
 // INFO : development-mode only middleware and will be removed on prod
 
-import dev from "./middlewares/devModeMiddleware.ts";
+import webpackDevMiddleware from "./middlewares/devModeMiddleware.ts";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 if (process.env.NODE_ENV === "development") {
@@ -34,7 +37,7 @@ if (process.env.NODE_ENV === "development") {
   });
   app.use(connectLivereload());
 
-  dev(app);
+  webpackDevMiddleware(app);
 }
 
 // routers

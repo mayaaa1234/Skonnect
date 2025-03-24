@@ -6,10 +6,11 @@
   "main": "",
   "scripts": {
     "dev": "nodemon --config ./backend/configs/nodemon.json",
-    "build": "webpack --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
-    "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
-    "start": "node backend/dist/app.js"
+    "build": "typecheck && webpack --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
+    "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
+    "start": "NODE_ENV=production node backend/dist/app.js",
+    "tsx": "tsx watch --tsconfig ./backend/tsconfig.json --exclude \"./frontend/public/**/*\" --exclude \"./backend/dist/**/*\" --include \"./backend/src/**/*\" --include \"./backend/configs/**/*\" backend/src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -78,7 +79,7 @@
     "style-loader": "^4.0.0",
     "svg-url-loader": "^8.0.0",
     "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.22.0",
     "webpack": "^5.94.0",

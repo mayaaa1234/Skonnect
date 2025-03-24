@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ESNext",
+    "target": "ES2022",
+    //"module": "nodenext",
+    "moduleResolution": "nodenext",
     "rootDir": "../",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    // Treat files as modules even if it doesn't use import/export
+    "moduleDetection": "force",
+    // Ignore module structure
+    "module": "Preserve",
     "typeRoots": [
       "../../node_modules/@types",
     ],
@@ -24,6 +28,10 @@
     "removeComments": true, /* Disable emitting comments. */
     "noEmitOnError": true, /* Disable emitting files if any type checking errors are reported. */
     "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
+    // Allow JS files to be imported from TS and vice versa
+    "allowJs": true,
+    // Disallow features that require cross-file awareness
+    "isolatedModules": true,
     "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. */
     "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
     "noUnusedLocals": false, /* Enable error reporting when local variables aren't read. */
@@ -45,5 +53,5 @@
     "../../frontend/**/*",
     "../configs/**/*",
     "../dist/**/*"
-  ]
+  ],
 }

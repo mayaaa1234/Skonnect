@@ -1,5 +1,6 @@
 export default {
   comments: false,
+  ignore: ["**/devModeMiddleware.ts"],
   presets: [
     "@babel/preset-typescript",
     [

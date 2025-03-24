@@ -25,7 +25,7 @@ const port =
 import webpackDevMiddleware from "./middlewares/devModeMiddleware.ts";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
   const lrserver = livereload.createServer();
   lrserver.watch(path.join(process.cwd(), "frontend/dist"));
   lrserver.watch(path.join(process.cwd(), "frontend/public"));

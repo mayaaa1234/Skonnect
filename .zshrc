@@ -1,1 +1,0 @@
-/home/maya/.config/zsh/.zshrc

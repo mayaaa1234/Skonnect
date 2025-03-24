@@ -18,13 +18,22 @@ const config = {
   //  "/__webpack_hmr",
   //mode: "development",
   entry: {
+    //app: [
+    //  //...(isDevelopment
+    //  //  ? [
+    //  //      "webpack-hot-middleware/client?reload=true&timeout=5",
+    //  //      //"webpack/hot/dev-server",
+    //  //    ]
+    //  //  : []),
+    //  "./frontend/src/webpack-app-entry.ts",
+    //],
     app: [
-      //...(isDevelopment
-      //  ? [
-      //      "webpack-hot-middleware/client?reload=true&timeout=5",
-      //      //"webpack/hot/dev-server",
-      //    ]
-      //  : []),
+      ...(isDevelopment
+        ? [
+            "webpack-hot-middleware/client?reload=true&timeout=5",
+            //"webpack/hot/dev-server",
+          ]
+        : []),
       "./frontend/src/webpack-app-entry.ts",
     ],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],

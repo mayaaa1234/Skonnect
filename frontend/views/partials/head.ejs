@@ -12,9 +12,9 @@
 
     <link rel="stylesheet" href="app.bundled.css" />
 
-    <!--<% if (typeof includeHTMX !== "undefined" && includeHTMX) { %>-->
-    <!--  <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4"></script>-->
-    <!--<% } %>-->
+    <% if (env !== 'production') { %>
+    <script src="hmr.bundled.js"></script>
+    <% } %>
 
     <!--<meta-->
     <!--  http-equiv="Content-Security-Policy"-->

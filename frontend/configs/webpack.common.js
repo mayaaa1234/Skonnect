@@ -7,8 +7,8 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
-const mode = process.env.NODE_ENV;
-console.log("webpack mode:", mode);
+const isDevelopment = process.env.NODE_ENV === "development";
+console.log("webpack log: dev mode???", isDevelopment);
 
 const config = {
   //"webpack-hot-middleware/client?reload=true&path=http://" +
@@ -18,12 +18,10 @@ const config = {
   //  "/__webpack_hmr",
   //mode: "development",
   entry: {
-    app: [
-      ...(mode === "development"
-        ? ["webpack-hot-middleware/client?reload=true&timeout=5"]
-        : []),
-      "./frontend/src/webpack-app-entry.ts",
-    ],
+    ...(isDevelopment && {
+      hmr: "webpack-hot-middleware/client?reload=true&timeout=5000",
+    }),
+    app: ["./frontend/src/webpack-app-entry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
@@ -53,6 +51,7 @@ const config = {
   },
 
   plugins: [
+    ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       //filename: "[name].[contenthash].css",
@@ -80,6 +79,7 @@ const config = {
         test: /\.(webp|png|jpe?g|gif)$/i,
         type: "asset/resource",
       },
+
       {
         test: /\.svg/,
         use: {
@@ -89,18 +89,23 @@ const config = {
           },
         },
       },
+
       {
         test: /\.html$/i,
         loader: "html-loader",
       },
+
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
+
       {
         test: /\.scss$/i,
         exclude: /node_modules/,
         use: [
+          //would do this if not for the css sourcing
+          //isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
           MiniCssExtractPlugin.loader,
           "css-loader",
           {

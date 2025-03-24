@@ -77,6 +77,12 @@ app.use(morgan("dev"));
 //app.use(sessionMiddleware);
 //app.use(attachSessionData);
 
+app.use((_req, res, next) => {
+  res.locals.env = process.env.NODE_ENV;
+  console.log("sending locals:", res.locals.env);
+  next();
+});
+
 // routes
 app.use("/", pages);
 app.use("/api/v1/auth", auth);

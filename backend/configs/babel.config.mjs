@@ -12,7 +12,7 @@ export default {
         modules: false,
       },
     ],
-    //"minify",
+    "minify",
   ],
   plugins: [
     [

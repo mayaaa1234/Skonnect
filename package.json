@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "nodemon --config ./backend/configs/nodemon.json",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
-    "build": "NODE_ENV=production webpack --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
+    "build": "webpack --mode production --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
     "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
-    "start": "NODE_ENV=production node backend/dist/app.js",
+    "start": "node backend/dist/app.js",
     "tsx": "tsx watch --tsconfig ./backend/tsconfig.json --exclude \"./frontend/public/**/*\" --exclude \"./backend/dist/**/*\" --include \"./backend/src/**/*\" --include \"./backend/configs/**/*\" backend/src/app.ts"
   },
   "keywords": [],

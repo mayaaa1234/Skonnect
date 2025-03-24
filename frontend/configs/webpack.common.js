@@ -18,10 +18,15 @@ const config = {
   //  "/__webpack_hmr",
   //mode: "development",
   entry: {
-    ...(isDevelopment && {
-      hmr: "webpack-hot-middleware/client?reload=true&timeout=5000",
-    }),
-    app: ["./frontend/src/webpack-app-entry.ts"],
+    app: [
+      //...(isDevelopment
+      //  ? [
+      //      "webpack-hot-middleware/client?reload=true&timeout=5",
+      //      //"webpack/hot/dev-server",
+      //    ]
+      //  : []),
+      "./frontend/src/webpack-app-entry.ts",
+    ],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
@@ -52,9 +57,9 @@ const config = {
 
   plugins: [
     ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
-    new webpack.HotModuleReplacementPlugin(),
+    //new webpack.HotModuleReplacementPlugin(),
+    //
     new MiniCssExtractPlugin({
-      //filename: "[name].[contenthash].css",
       filename: "[name].bundled.css",
     }),
     new ESLintPlugin({

@@ -27,15 +27,7 @@ const config = {
     //  //  : []),
     //  "./frontend/src/webpack-app-entry.ts",
     //],
-    app: [
-      ...(isDevelopment
-        ? [
-            //"webpack-hot-middleware/client?reload=true&timeout=1",
-            //"webpack/hot/dev-server",
-          ]
-        : []),
-      "./frontend/src/webpack-app-entry.ts",
-    ],
+    app: ["./frontend/src/webpack-app-entry.ts"],
     landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],

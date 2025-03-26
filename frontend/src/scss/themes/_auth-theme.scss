@@ -48,34 +48,45 @@ body[data-page="signup"] {
 
 // TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
 
-[data-theme="light"] {
-  form {
-    .input-box {
-      border-bottom: 1px solid black !important;
+[data-theme="dark"] {
+  .signup-link,
+  .login-link {
+    color: white;
+  }
+}
 
-      input {
-        color: black !important;
+[data-theme="light"] {
+  body[data-page="login"],
+  body[data-page="signup"] {
+    form {
+      .input-box {
+        border-bottom: 1px solid black !important;
+
+        input {
+          color: black !important;
+        }
+      }
+
+      // input {
+      //   color: black !important;
+      // }
+
+      .signup-link,
+      .login-link {
+        color: black;
+      }
+
+      .visib-on,
+      .visib-off {
+        // fill: black !important;
+        fill: black;
       }
     }
 
-    // input {
-    //   color: black !important;
-    // }
-
-    .login-link a {
-      color: black;
-    }
-
-    .visib-on,
-    .visib-off {
-      // fill: black !important;
-      fill: black;
-    }
-  }
-
-  .right-auth {
-    h1 {
-      color: #fff;
+    .right-auth {
+      h1 {
+        color: #fff;
+      }
     }
   }
 }

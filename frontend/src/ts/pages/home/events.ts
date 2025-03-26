@@ -21,7 +21,13 @@ const observer = new IntersectionObserver(
       if (manualResizeTrigger) {
         // removing the hidden class effectively
         // removing it too from observed elem
-        entry.target.classList.remove("hidden");
+        const target = entry.target as HTMLElement;
+        target.style.transition = "none";
+        target.style.transform = "translateY(0)";
+        target.classList.remove("hidden");
+        //entry.target.style.transition = "none"
+        //entry.target.classList.remove("hidden");
+        //entry.target.classList.add("show");
         return;
       }
 

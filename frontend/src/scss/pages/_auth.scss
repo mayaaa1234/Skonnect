@@ -134,6 +134,12 @@ body[data-page="signup"] {
   }
 }
 
+// body[data-page="signup"] {
+//   .signup-link,.login-link{
+//     color: black;
+//   }
+// }
+
 body[data-page="login"] {
   grid-template-columns: 1fr 1.5fr;
 

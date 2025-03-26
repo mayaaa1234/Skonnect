@@ -285,6 +285,10 @@ body[data-page="home"] {
   section {
     background-color: var(--tertiary);
   }
+
+  section.events {
+    background-color: var(--secondary);
+  }
 }
 
 [data-theme="dark"] {
@@ -299,6 +303,10 @@ body[data-page="home"] {
 
 [data-theme="light"] {
   body[data-page="home"] {
+    section.events {
+      background-color: var(--secondary);
+    }
+
     border-top: none;
     .card {
       // background-color: #fff;  // Ensure the card itself is light

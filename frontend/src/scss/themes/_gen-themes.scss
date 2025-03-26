@@ -6,9 +6,20 @@
 @use "../abstracts/mixins" as *;
 
 // APPLIES TO ALL PAGES
-body {
-  background-color: var(--primary);
-  color: var(--foreground);
+// this double style's inside diff mode is not accidental
+// this is so that postcss doesnt remove them on build if wrapped inside a data-theme
+[data-theme="light"] {
+  body {
+    background-color: var(--primary);
+    color: var(--foreground);
+  }
+}
+
+[data-theme="dark"] {
+  body {
+    background-color: var(--primary);
+    color: var(--foreground);
+  }
 }
 
 // WILL BE USED THROUGHOUT THE APP

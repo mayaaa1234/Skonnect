@@ -12,7 +12,12 @@ export default {
     postcssNested,
     purgecss({
       content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
-      safelist: [/^data-theme/],
+      //safelist: [/^data-theme/],
+      safelist: {
+        standard: [/data-theme/],
+        deep: [/data-theme/],
+        greedy: [/data-theme/],
+      },
     }),
     cssnano({
       preset: "default",

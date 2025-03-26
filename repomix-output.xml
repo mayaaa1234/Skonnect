@@ -208,233 +208,6 @@ tsconfig.json
 <files>
 This section contains the contents of the repository's files.
 
-<file path="frontend/src/ts/pages/home/slideShow.ts">
-export let manualResizeTrigger = false;
-document.addEventListener("DOMContentLoaded", () => {
-  //document.querySelectorAll("img").forEach((img) => {
-  //  img.setAttribute("loading", "lazy");
-  //});
-
-  //export let manualResizeTrigger = false;
-  let slideIndex = 1;
-
-  showSlides(slideIndex);
-
-  // Next/previous controls
-  function plusSlides(n: number) {
-    manualResizeTrigger = true;
-    showSlides((slideIndex += n));
-  }
-
-  // Thumbnail image controls
-  function currentSlide(n: number) {
-    manualResizeTrigger = true;
-    showSlides((slideIndex = n));
-  }
-
-  function showSlides(n: number) {
-    console.log("slides work");
-
-    let i: number;
-    const slides = document.getElementsByClassName(
-      "mySlides",
-    ) as HTMLCollectionOf<HTMLElement>;
-    const dots = document.getElementsByClassName(
-      "dot",
-    ) as HTMLCollectionOf<HTMLElement>;
-
-    if (n > slides.length) {
-      slideIndex = 1;
-    }
-    if (n < 1) {
-      slideIndex = slides.length;
-    }
-
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
-  }
-
-  const next = document.querySelector(".next") as HTMLElement;
-  const prev = document.querySelector(".prev") as HTMLElement;
-
-  prev.onclick = () => plusSlides(-1);
-  next.onclick = () => plusSlides(1);
-
-  // for when clicking the dots
-  const dots = document.getElementsByClassName(
-    "dot",
-  ) as HTMLCollectionOf<HTMLElement>;
-
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].onclick = () => currentSlide(i + 1);
-  }
-
-  // the number text in top left of pictures
-  const numberText = document.getElementsByClassName(
-    "numbertext",
-  ) as HTMLCollectionOf<HTMLElement>;
-  for (let i = 0; i < numberText.length; i++) {
-    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
-    console.log(numberText[i].innerText);
-  }
-
-  //AUTOMATIC
-  //let slideIndex = 0;
-  //showSlides();
-  //
-  //function showSlides() {
-  //  let i;
-  //  let slides = document.getElementsByClassName("mySlides");
-  //  for (i = 0; i < slides.length; i++) {
-  //    slides[i].style.display = "none";
-  //  }
-  //  slideIndex++;
-  //  if (slideIndex > slides.length) {slideIndex = 1}
-  //  slides[slideIndex-1].style.display = "block";
-  //  setTimeout(showSlides, 2000); // Change image every 2 seconds
-  //}
-
-  //MULTIPLE SLIDESHOW
-  //  let slideIndex = [1,1];
-  //  /* Class the members of each slideshow group with different CSS classes */
-  //  const slideId = ["slides1", "slides2"]
-  //  showSlides(1, 0);
-  //  showSlides(1, 1);
-  //
-  //  function plusSlides(n, no) {
-  //    showSlides(slideIndex[no] += n, no);
-  //  }
-  //
-  //  function showSlides(n, no) {
-  //    let i;
-  //    let x = document.getElementsByClassName(slideId[no]);
-  //    if (n > x.length) {slideIndex[no] = 1}
-  //    if (n < 1) {slideIndex[no] = x.length}
-  //    for (i = 0; i < x.length; i++) {
-  //      x[i].style.display = "none";
-  //    }
-  //    x[slideIndex[no]-1].style.display = "block";
-  //  }
-});
-
-//CODE FOR MULTIPLE:
-//export let manualResizeTrigger = false;
-//
-//document.addEventListener("DOMContentLoaded", () => {
-//  // MULTIPLE SLIDESHOW SETUP
-//  // Define an array to store the current slide index for each slideshow group.
-//  let slideIndices: number[] = [1, 1];
-//  // Define the CSS classes for each slideshow group.
-//  const slideIds: string[] = ["mySlides1", "mySlides2"];
-//
-//  // Initialize each slideshow group.
-//  slideIndices.forEach((_, no) => {
-//    showSlides(slideIndices[no], no);
-//  });
-//
-//  // Next/previous controls for a given slideshow group.
-//  // (Adjust this if you have separate buttons for each slideshow.)
-//  function plusSlides(n: number, no: number) {
-//    manualResizeTrigger = true;
-//    slideIndices[no] += n;
-//    showSlides(slideIndices[no], no);
-//  }
-//
-//  // Set the current slide in a group.
-//  function currentSlide(n: number, no: number) {
-//    manualResizeTrigger = true;
-//    slideIndices[no] = n;
-//    showSlides(slideIndices[no], no);
-//  }
-//
-//  // This function displays the appropriate slide for the given group.
-//  function showSlides(n: number, no: number) {
-//    let i: number;
-//    // Get all slides in the current group.
-//    const slides = document.getElementsByClassName(
-//      slideIds[no]
-//    ) as HTMLCollectionOf<HTMLElement>;
-//
-//    // Wrap the slide index if out-of-bounds.
-//    if (n > slides.length) {
-//      slideIndices[no] = 1;
-//    }
-//    if (n < 1) {
-//      slideIndices[no] = slides.length;
-//    }
-//
-//    // Hide all slides in the group.
-//    for (i = 0; i < slides.length; i++) {
-//      slides[i].style.display = "none";
-//    }
-//
-//    // Display the current slide.
-//    slides[slideIndices[no] - 1].style.display = "block";
-//  }
-//
-//  // Example of binding controls if you have separate controls for each slideshow:
-//  // (Assumes you have elements with data attributes or IDs to target each group.)
-//  const nextButtons = document.querySelectorAll(".next");
-//  const prevButtons = document.querySelectorAll(".prev");
-//
-//  // For simplicity, we assume the first set of buttons control the first slideshow group,
-//  // and the second set (if present) control the second slideshow group.
-//  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
-//    // Bind controls for slideshow group 0.
-//    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
-//    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
-//  }
-//  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
-//    // Bind controls for slideshow group 1.
-//    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
-//    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
-//  }
-//
-//  // OPTIONAL: If you have dot controls for each slideshow, set them up here.
-//  // For example, if each slideshow group has its own set of dots with a unique container
-//  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
-//  /*
-//  const dotGroup0 = document.querySelectorAll("#dotGroup0 .dot") as NodeListOf<HTMLElement>;
-//  dotGroup0.forEach((dot, index) => {
-//    dot.addEventListener("click", () => currentSlide(index + 1, 0));
-//  });
-//
-//  const dotGroup1 = document.querySelectorAll("#dotGroup1 .dot") as NodeListOf<HTMLElement>;
-//  dotGroup1.forEach((dot, index) => {
-//    dot.addEventListener("click", () => currentSlide(index + 1, 1));
-//  });
-//  */
-//});
-//
-</file>
-
-<file path="frontend/src/ts/pages/landing/events.ts">
-// scroll animation
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-      }
-    });
-  },
-  { threshold: 0.2 },
-); // Trigger when 20% of the element is visible
-
-document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
-</file>
-
-<file path="frontend/src/ts/pages/landing/landingEntry.ts">
-import "./events.ts";
-</file>
-
 <file path="backend/configs/register.js">
 import { register } from "node:module";
 import { pathToFileURL } from "node:url";
@@ -751,141 +524,6 @@ fill="#000000" stroke="none">
 }
 </file>
 
-<file path="frontend/src/scss/components/_cards.scss">
-@use "sass:math";
-@use "../abstracts/variables" as *;
-
-.card {
-  // display: block;
-  // padding: $base-padding;
-  // border: $base-border-thickness solid #ddd;
-  // box-shadow: $base-box-shadow;
-  // border-radius: math.div($base-border-radius, 4);
-
-  .card-title {
-    font-size: $base-font-size;
-    // padding-bottom: $base-padding;
-    font-weight: bold;
-  }
-  .card-body {
-    font-size: $base-font-size;
-
-    a {
-      text-decoration: underline;
-    }
-  }
-}
-
-// @debug math.div(10, 3);
-// @debug math.$pi;
-// @debug math.floor(2.6);
-// @debug math.max(1px, 20px, 15px, 12px);
-</file>
-
-<file path="frontend/src/scss/pages/shared/general-style.scss">
-@use "../../layout/nav" as *;
-@use "../../abstracts/mixins" as *;
-
-// adjust height for the fixed nav excpet for signup and login
-// cause they don't have nav bar attached to them
-body:not([data-page="signup"], [data-page="login"]) {
-  height: 100vh;
-  padding-top: $nav-height !important;
-  overflow-y: auto;
-
-  @include mobile {
-    padding-top: 67px !important;
-  }
-}
-
-// <main class="mb-6">
-//     <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
-//         Explore SKonnect
-//     </h2>
-//
-//     <!--<section class="services container pt-2 pb-2 bd-w">-->
-//     <section class="services container pt-2 pb-2 ">
-//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 ">Services</h3>
-//
-//         <div class="f-row gp-30 jc-c pb-2">
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//         </div>
-//     </section>
-//
-//     <section class="events">
-//         <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
-//             Projects & Events
-//         </h2>
-//
-//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 pt-1">Cleaning</h3>
-//         <div class="slideshow-container container ">
-//
-//             <!-- Full-width images with number and caption text -->
-//             <div class="mySlides fade">
-//                 <div class="numbertext">1 / 3</div>
-//                 <!--<img src="sk-data/clean-1.webp" style="width: 100%" />-->
-//
-//                 <img src="sk-data/clean-1.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Text</div>
-//             </div>
-//
-//             <div class="mySlides fade">
-//                 <div class="numbertext">2 / 3</div>
-//                 <!--<img src="sk-data/clean-2.webp" class="br-20" style="width: 100%" />-->
-//
-//                 <img src="sk-data/clean-2.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Two</div>
-//             </div>
-//
-//             <div class="mySlides fade">
-//                 <div class="numbertext">3 / 3</div>
-//                 <img src="sk-data/clean-3.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Three</div>
-//             </div>
-//
-//             <!-- Next and previous buttons -->
-//             <a class="prev">&#10094;</a>
-//             <a class="next">&#10095;</a>
-//         </div>
-//         <br />
-//
-//         <!-- The dots/circles -->
-//         <div style="text-align: center">
-//             <span class="dot" "></span>
-//             <span class="dot" "></span>
-//             <span class="dot" "></span>
-//         </div>
-//     </section>
-// </main>
-</file>
-
 <file path="frontend/src/scss/pages/_about.scss">
 @use "../abstracts/mixins" as *;
 
@@ -1088,109 +726,6 @@ footer {
 }
 </file>
 
-<file path="frontend/src/scss/themes/_gen-themes.scss">
-// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
-// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
-
-// INFO: here goes components that have class based theming or if var theming can't customize something enough
-
-@use "../abstracts/mixins" as *;
-
-// APPLIES TO ALL PAGES
-body {
-  background-color: var(--primary);
-  color: var(--foreground);
-}
-
-// WILL BE USED THROUGHOUT THE APP
-
-.gradient-text {
-  background-image: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  display: inline-block;
-}
-
-.gradient-bg {
-  background: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-}
-
-.gradient-border {
-  position: relative;
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
-  // background: none;
-  // color: white;
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  padding: 1px; /* Border thickness */
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.gradient-border-1 {
-  border: 5px solid transparent; /* Transparent border to preserve space */
-  border-image: linear-gradient(
-      to right,
-      rgb(0, 193, 174),
-      rgb(0, 165, 191),
-      rgb(0, 108, 166)
-    )
-    1;
-}
-
-// .gradient-border::before {
-//   content: "";
-//   position: absolute;
-//   inset: 0;
-//   border-radius: 8px;
-//   padding: 3px; /* Border thickness */
-//   background: linear-gradient(
-//     to right,
-//     rgb(0, 193, 174),
-//     rgb(0, 165, 191),
-//     rgb(0, 108, 166)
-//   );
-//   -webkit-mask:
-//     linear-gradient(#fff 0 0) content-box,
-//     linear-gradient(#fff 0 0);
-//   -webkit-mask-composite: xor;
-//   mask-composite: exclude;
-// }
-</file>
-
 <file path="frontend/src/scss/themes/_profile-theme.scss">
 @use "../abstracts/mixins" as *;
 
@@ -1226,9 +761,24 @@ body[data-page="profile"] {
 }
 </file>
 
-<file path="frontend/src/ts/pages/home/homeEntry.ts">
+<file path="frontend/src/ts/pages/landing/events.ts">
+// scroll animation
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  },
+  { threshold: 0.2 },
+); // Trigger when 20% of the element is visible
+
+document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
+</file>
+
+<file path="frontend/src/ts/pages/landing/landingEntry.ts">
 import "./events.ts";
-import "./slideShow.ts";
 </file>
 
 <file path="frontend/src/ts/pages/login/toggleVisibPass.ts">
@@ -1728,239 +1278,35 @@ export default router;
 // }
 </file>
 
-<file path="frontend/src/scss/base/_typography.scss">
-// @use "sass:map";
-@use "../abstracts/mixins" as *;
-@use "../abstracts/variables" as *;
-
-@import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&display=swap");
-
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
-* {
-  font-family: WorkSans, sans-serif;
-}
-
-// .logo-name {
-// font-family: "Londrina Solid", sans-serif;
-// }
-
-// @include sm {
-// }
-//
-// @include md {
-// }
-//
-// @include lg {
-// }
-//
-// @include lx {
-// }
-
-$font-size: (
-  "n1": 0.8rem,
-  "1": 1rem,
-  "2": 1.5rem,
-  "3": 2rem,
-  "4": 2.5rem,
-  "5": 3rem,
-  "6": 3.5rem,
-  "7": 4rem,
-  "8": 4.5rem,
-);
-
-@each $size, $value in $font-size {
-  @include xs {
-    .fs-#{$size}-xs {
-      font-size: $value;
-    }
-  }
-  @include sm {
-    .fs-#{$size}-sm {
-      font-size: $value;
-    }
-  }
-  @include md {
-    .fs-#{$size}-md {
-      font-size: $value;
-    }
-  }
-  @include lg {
-    .fs-#{$size}-lg {
-      font-size: $value;
-    }
-  }
-  @include xl {
-    .fs-#{$size}-xl {
-      font-size: $value;
-    }
-  }
-}
-// @each $size in $breakpoints {
-//   @include #{size} {
-//     @each $k, $v in $font-size {
-//       .fs-#{$k} {
-//         font-size: $v;
-//       }
-//     }
-//     // .font-size-
-//   }
-// }
-
-// @include xs {
-
-$font-weights: (
-  "light": 300,
-  "normal": 400,
-  "medium": 500,
-  "semibold": 600,
-  "bold": 700,
-  "extrabold": 800,
-);
-
-@each $name, $weight in $font-weights {
-  .fw-#{$name} {
-    font-weight: $weight;
-  }
-}
-
-// Letter Spacing Utilities
-$letter-spacing: (
-  "narrow": -0.05em,
-  "normal": 0,
-  "wide": 0.05em,
-  "wider": 0.1em,
-  "widest": 0.2em,
-);
-
-@each $name, $spacing in $letter-spacing {
-  .ls-#{$name} {
-    letter-spacing: $spacing;
-  }
-}
-
-// Text Transform Utilities
-.text-transform-upper {
-  text-transform: uppercase;
-}
-
-.text-transform-lower {
-  text-transform: lowercase;
-}
-
-.text-transform-capitalize {
-  text-transform: capitalize;
-}
-</file>
-
-<file path="frontend/src/scss/layout/_grid.scss">
+<file path="frontend/src/scss/components/_cards.scss">
 @use "sass:math";
 @use "../abstracts/variables" as *;
-@use "../abstracts/mixins" as *;
 
-$grid-columns: 12;
-$grid-gaps: (
-  "0": 0,
-  "1": 5px,
-  "2": 10px,
-  "3": 15px,
-  "4": 20px,
-  "5": 25px,
-  "6": 30px,
-);
+.card {
+  // display: block;
+  // padding: $base-padding;
+  // border: $base-border-thickness solid #ddd;
+  // box-shadow: $base-box-shadow;
+  // border-radius: math.div($base-border-radius, 4);
 
-$layout-values: flex-start, flex-end, center, space-between, space-around;
-
-.container {
-  width: 100%;
-  // height: auto;
-  // padding-left: 0.75rem;
-  // padding-right: 0.75rem;
-  padding-right: $base-padding * 1.5;
-  padding-left: $base-padding * 1.5;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.f-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.f-row {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-// grid gaps (cant seem to make this work idk)
-// tho still prob better to just use native gap
-@each $key, $val in $grid-gaps {
-  .gap-#{$key} > * {
-    padding: $val !important;
+  .card-title {
+    font-size: $base-font-size;
+    // padding-bottom: $base-padding;
+    font-weight: bold;
   }
-  .gap-#{$key} {
-    margin-left: -$val;
-    margin-right: -$val;
-  }
-}
+  .card-body {
+    font-size: $base-font-size;
 
-// justify content classes
-@each $val in $layout-values {
-  .justify-#{$val} {
-    justify-content: $val;
-  }
-}
-
-// col classes
-@include xs {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i}-xs {
-      box-sizing: border-box;
-      flex-grow: 0;
-      width: math.div($i * 100%, $grid-columns);
+    a {
+      text-decoration: underline;
     }
   }
 }
 
-@include sm {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i}-sm {
-      box-sizing: border-box;
-      flex-grow: 0;
-      width: math.div($i * 100%, $grid-columns);
-    }
-  }
-}
-
-@include md {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i}-md {
-      box-sizing: border-box;
-      flex-grow: 0;
-      width: math.div($i * 100%, $grid-columns);
-    }
-  }
-}
-
-@include lg {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i}-lg {
-      box-sizing: border-box;
-      flex-grow: 0;
-      width: math.div($i * 100%, $grid-columns);
-    }
-  }
-}
-
-@include xl {
-  @for $i from 1 through $grid-columns {
-    .col-#{$i}-xl {
-      box-sizing: border-box;
-      flex-grow: 0;
-      width: math.div($i * 100%, $grid-columns);
-    }
-  }
-}
+// @debug math.div(10, 3);
+// @debug math.$pi;
+// @debug math.floor(2.6);
+// @debug math.max(1px, 20px, 15px, 12px);
 </file>
 
 <file path="frontend/src/scss/layout/_sidebar.scss">
@@ -2145,228 +1491,108 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 // }
 </file>
 
-<file path="frontend/src/scss/pages/_landing.scss">
-@use "../abstracts/mixins" as *;
-@use "../abstracts/variables" as *;
-@use "../layout/nav" as *;
-@use "sass:map";
+<file path="frontend/src/scss/pages/shared/general-style.scss">
+@use "../../layout/nav" as *;
+@use "../../abstracts/mixins" as *;
 
-body[data-page="landing"] {
-  // ------------------------------
-  // for scroll animation
-  .hidden {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
-  }
-  .show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  // ------------------------------
+// adjust height for the fixed nav excpet for signup and login
+// cause they don't have nav bar attached to them
+body:not([data-page="signup"], [data-page="login"]) {
+  height: 100vh;
+  padding-top: $nav-height !important;
+  overflow-y: auto;
 
-  .hero {
-    position: relative;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    // max-width: 1700px;
-    align-content: center;
-    text-align: center;
-    height: calc(100vh - #{$nav-height} + 5px);
-
-    @include mobile {
-      height: calc(100dvh - #{$nav-height} + 5px) !important;
-    }
-
-    // @include md {
-    //   grid-template: auto 1fr / repeat(3, auto);
-    //   grid-template-areas:
-    //     "logo1 info logo2"
-    //     "bottom bottom bottom";
-    // }
-
-    // "xs": 0,
-    // "sm": 475px,
-    // "md": 640px,
-    // "lg": 760px,
-    // "xl": 1024px,
-    // "xxl": 1536px,
-
-    .hero-top {
-      grid-row: 1;
-      display: grid;
-      grid-template: repeat(2, auto) / repeat(2, auto);
-      padding: 1rem;
-      align-items: center;
-      gap: 5px;
-
-      .sk-logo-1 {
-        grid: 1 / 1;
-        // border: 1px solid white;
-      }
-
-      .sk-logo-2 {
-        justify-self: end;
-      }
-
-      .hero-info {
-        margin-top: $base-padding * -1;
-        grid-row: 2;
-        grid-column: 1 /3;
-      }
-
-      @include md {
-        grid-template-columns: repeat(3, auto);
-
-        .sk-logo-2,
-        .sk-logo-1 {
-          justify-self: center;
-        }
-
-        .hero-info,
-        .sk-logo-2,
-        .sk-logo-1 {
-          grid-row: initial;
-          grid-column: initial;
-        }
-
-        img {
-          width: 100px;
-        }
-      }
-
-      @include lg {
-        img {
-          width: 125px;
-        }
-      }
-
-      @include xl {
-        img {
-          width: 150px;
-        }
-      }
-    }
-
-    .hero-bottom {
-      // border: 1px solid white;
-      grid-row: 2;
-      align-content: center;
-      .header-title {
-        font-size: 70px;
-      }
-
-      .hero-links {
-        // border: 1px solid rgba(255, 255, 255, 0.3);
-        display: inline-flex;
-        align-items: center;
-        text-align: center;
-        gap: 20px;
-
-        a {
-          text-decoration: none;
-        }
-      }
-    }
-  }
-
-  main {
-    #skonnect-provides {
-      scroll-margin-top: 100px;
-    }
-
-    section.features {
-      display: grid;
-      place-content: center;
-      text-align: center;
-
-      .feature-card {
-        height: auto;
-        // width: 90%;
-        display: grid;
-        justify-items: center;
-        justify-content: center;
-
-        .card-text-container {
-          // border: 1px solid rgba(white, 0.3);
-          width: 95%;
-        }
-
-        img {
-          border-radius: 8px;
-          justify-self: center;
-        }
-      }
-    }
-
-    section.impact {
-      // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
-      h1 {
-        font-size: 28px;
-      }
-      display: grid;
-      place-content: center;
-      height: 400px;
-    }
-  }
-
-  @include sm {
-    .feature-card h3 {
-      font-size: 1.5em;
-    }
-  }
-
-  @include md {
-    #skonnect-provides {
-      // text-align: start;
-      // padding-left: $base-padding;
-      font-size: 2.4em;
-    }
-
-    .feature-card h3 {
-      font-size: 1.9em;
-    }
-  }
-
-  @include xl {
-    .features-container {
-      max-width: 1300px;
-    }
-
-    .header-title {
-      font-size: 130px !important;
-      margin-bottom: -20px;
-    }
-
-    #skonnect-provides {
-      font-size: 2.9em;
-    }
-    .feature-card h3 {
-      font-size: 2.5em;
-    }
-
-    .feature-card {
-      display: flex !important;
-      justify-content: center;
-      gap: 20px;
-
-      & > div {
-        // border: 1px dashed white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .card-text-container {
-        // border: 1px solid rgba(white, 0.3);
-        width: 50% !important;
-      }
-    }
+  @include mobile {
+    padding-top: 67px !important;
   }
 }
+
+// <main class="mb-6">
+//     <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
+//         Explore SKonnect
+//     </h2>
+//
+//     <!--<section class="services container pt-2 pb-2 bd-w">-->
+//     <section class="services container pt-2 pb-2 ">
+//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 ">Services</h3>
+//
+//         <div class="f-row gp-30 jc-c pb-2">
+//             <div class="card p-2 br-20 col-12-xs col-5-md">
+//                 <div class="p-2 ta-c">
+//                     <strong class="card-title"
+//                         >Annual Budget Allocation</strong
+//                     >
+//                 </div>
+//             </div>
+//             <div class="card p-2 br-20 col-12-xs col-5-md">
+//                 <div class="p-2 ta-c">
+//                     <strong class="card-title"
+//                         >Annual Budget Allocation</strong
+//                     >
+//                 </div>
+//             </div>
+//             <div class="card p-2 br-20 col-12-xs col-5-md">
+//                 <div class="p-2 ta-c">
+//                     <strong class="card-title"
+//                         >Annual Budget Allocation</strong
+//                     >
+//                 </div>
+//             </div>
+//             <div class="card p-2 br-20 col-12-xs col-5-md">
+//                 <div class="p-2 ta-c">
+//                     <strong class="card-title"
+//                         >Annual Budget Allocation</strong
+//                     >
+//                 </div>
+//             </div>
+//         </div>
+//     </section>
+//
+//     <section class="events">
+//         <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
+//             Projects & Events
+//         </h2>
+//
+//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 pt-1">Cleaning</h3>
+//         <div class="slideshow-container container ">
+//
+//             <!-- Full-width images with number and caption text -->
+//             <div class="mySlides fade">
+//                 <div class="numbertext">1 / 3</div>
+//                 <!--<img src="sk-data/clean-1.webp" style="width: 100%" />-->
+//
+//                 <img src="sk-data/clean-1.webp" class="br-20" style="height:600px; width: 100%" />
+//                 <div class="text">Caption Text</div>
+//             </div>
+//
+//             <div class="mySlides fade">
+//                 <div class="numbertext">2 / 3</div>
+//                 <!--<img src="sk-data/clean-2.webp" class="br-20" style="width: 100%" />-->
+//
+//                 <img src="sk-data/clean-2.webp" class="br-20" style="height:600px; width: 100%" />
+//                 <div class="text">Caption Two</div>
+//             </div>
+//
+//             <div class="mySlides fade">
+//                 <div class="numbertext">3 / 3</div>
+//                 <img src="sk-data/clean-3.webp" class="br-20" style="height:600px; width: 100%" />
+//                 <div class="text">Caption Three</div>
+//             </div>
+//
+//             <!-- Next and previous buttons -->
+//             <a class="prev">&#10094;</a>
+//             <a class="next">&#10095;</a>
+//         </div>
+//         <br />
+//
+//         <!-- The dots/circles -->
+//         <div style="text-align: center">
+//             <span class="dot" "></span>
+//             <span class="dot" "></span>
+//             <span class="dot" "></span>
+//         </div>
+//     </section>
+// </main>
 </file>
 
 <file path="frontend/src/scss/pages/_profile.scss">
@@ -2390,129 +1616,322 @@ body[data-page="profile"] {
 }
 </file>
 
-<file path="frontend/src/scss/themes/_landing-theme.scss">
+<file path="frontend/src/scss/themes/_gen-themes.scss">
+// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
+// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
+
+// INFO: here goes components that have class based theming or if var theming can't customize something enough
+
 @use "../abstracts/mixins" as *;
 
-body[data-page="landing"] {
-  // .hero {
-  // background-color: var(--secondary);
-
-  // &-links {
-  //   :nth-child(1) {
-  //     border: 1px solid var(--accent);
-  //     background-color: var(--primary);
-  //   }
-  //
-  //   a {
-  //     color: var(--foreground);
-  //     background-color: var(--accent);
-  //   }
-  // }
-  // }
-
-  .hero-top {
-    background-color: var(--neutral);
-  }
-
-  main {
-    background-color: var(--tertiary);
-    // h1 {
-    //   // color: var(--accent);
-    // }
-
-    span {
-      color: var(--accent);
-    }
-
-    section .feature-card {
-      background-color: var(--secondary);
-
-      & > div {
-        border-left: none;
-
-        @include xl {
-          border-left: 4px solid var(--accent);
-        }
-      }
-
-      h2 {
-        color: var(--accent);
-      }
-    }
-
-    section.impact {
-      background: linear-gradient(
-        180deg,
-        var(--primary) 0%,
-        // rgb(0, 193, 174) 0%,
-        // rgb(0, 165, 191) 20%,
-        // rgb(0, 108, 166) 40%,
-        var(--primary-light-1) 10%,
-        var(--primary) 80%
-      );
-    }
-  }
+// APPLIES TO ALL PAGES
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
 }
 
-[data-theme="dark"] {
-  .hero-top {
-    background-color: var(--tertiary);
-  }
+// WILL BE USED THROUGHOUT THE APP
 
-  .feature-card {
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
-  }
+.gradient-text {
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
-[data-theme="light"] {
-  nav {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
-
-    .nav-menu-popup {
-      background: color-mix(in srgb, var(--secondary) 90%, transparent);
-    }
-  }
-
-  .btn-dark-accent {
-    color: #fff !important;
-  }
-
-  .btn-outlined-dark-accent:hover {
-    color: #fff !important;
-  }
-
-  .feature-card {
-    border-top: none;
-    // background-color: #fff;  // Ensure the card itself is light
-    // border-radius: 8px;
-    // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
-    // 0 8px 16px rgba(0, 0, 0, 0.1);
-    box-shadow:
-      2px 2px 4px rgba(0, 0, 0, 0.1),
-      4px 8px 16px rgba(0, 0, 0, 0.1);
-  }
+.gradient-bg {
+  background: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
 }
 
-// ---------------------------------------
+.gradient-border {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // background: none;
+  // color: white;
+}
 
-// .sidebar {
-//   background-color: var(--secondary);
-//   // color:;
-//
-//   .sidebar-item-title {
-//     color: var(--accent);
-//   }
-//
-//   .sidebar-item-branches::before {
-//     border-left: 1px dashed var(--sidebar-tree);
-//   }
-//
-//   .sidebar-item-branch::before {
-//     border-top: 1px dashed var(--sidebar-tree);
-//   }
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-border-1 {
+  border: 5px solid transparent; /* Transparent border to preserve space */
+  border-image: linear-gradient(
+      to right,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    )
+    1;
+}
+
+// .gradient-border::before {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   border-radius: 8px;
+//   padding: 3px; /* Border thickness */
+//   background: linear-gradient(
+//     to right,
+//     rgb(0, 193, 174),
+//     rgb(0, 165, 191),
+//     rgb(0, 108, 166)
+//   );
+//   -webkit-mask:
+//     linear-gradient(#fff 0 0) content-box,
+//     linear-gradient(#fff 0 0);
+//   -webkit-mask-composite: xor;
+//   mask-composite: exclude;
 // }
+</file>
+
+<file path="frontend/src/ts/pages/home/homeEntry.ts">
+import "./events.ts";
+import "./slideShow.ts";
+</file>
+
+<file path="frontend/src/ts/pages/home/slideShow.ts">
+export let manualResizeTrigger = false;
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("img").forEach((img) => {
+    img.setAttribute("loading", "lazy");
+  });
+
+  //export let manualResizeTrigger = false;
+  let slideIndex = 1;
+
+  showSlides(slideIndex);
+
+  // Next/previous controls
+  function plusSlides(n: number) {
+    manualResizeTrigger = true;
+    showSlides((slideIndex += n));
+  }
+
+  // Thumbnail image controls
+  function currentSlide(n: number) {
+    manualResizeTrigger = true;
+    showSlides((slideIndex = n));
+  }
+
+  function showSlides(n: number) {
+    //console.log("slides work");
+
+    let i: number;
+    const slides = document.getElementsByClassName(
+      "mySlides",
+    ) as HTMLCollectionOf<HTMLElement>;
+    const dots = document.getElementsByClassName(
+      "dot",
+    ) as HTMLCollectionOf<HTMLElement>;
+
+    if (n > slides.length) {
+      slideIndex = 1;
+    }
+    if (n < 1) {
+      slideIndex = slides.length;
+    }
+
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+  }
+
+  const next = document.querySelector(".next") as HTMLElement;
+  const prev = document.querySelector(".prev") as HTMLElement;
+
+  prev.onclick = () => plusSlides(-1);
+  next.onclick = () => plusSlides(1);
+
+  // for when clicking the dots
+  const dots = document.getElementsByClassName(
+    "dot",
+  ) as HTMLCollectionOf<HTMLElement>;
+
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].onclick = () => currentSlide(i + 1);
+  }
+
+  // the number text in top left of pictures
+  const numberText = document.getElementsByClassName(
+    "numbertext",
+  ) as HTMLCollectionOf<HTMLElement>;
+  for (let i = 0; i < numberText.length; i++) {
+    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
+    console.log(numberText[i].innerText);
+  }
+});
+//AUTOMATIC
+//let slideIndex = 0;
+//showSlides();
+//
+//function showSlides() {
+//  let i;
+//  let slides = document.getElementsByClassName("mySlides");
+//  for (i = 0; i < slides.length; i++) {
+//    slides[i].style.display = "none";
+//  }
+//  slideIndex++;
+//  if (slideIndex > slides.length) {slideIndex = 1}
+//  slides[slideIndex-1].style.display = "block";
+//  setTimeout(showSlides, 2000); // Change image every 2 seconds
+//}
+//});
+
+//MULTIPLE SLIDESHOW
+//let slideIndex = [1, 1];
+///* Class the members of each slideshow group with different CSS classes */
+//const slideId = ["slides1", "slides2"];
+//showSlides(1, 0);
+//showSlides(1, 1);
+//
+//function plusSlides(n, no) {
+//  showSlides((slideIndex[no] += n), no);
+//}
+//
+//function showSlides(n, no) {
+//  let i;
+//  let x = document.getElementsByClassName(slideId[no]);
+//  if (n > x.length) {
+//    slideIndex[no] = 1;
+//  }
+//  if (n < 1) {
+//    slideIndex[no] = x.length;
+//  }
+//  for (i = 0; i < x.length; i++) {
+//    x[i].style.display = "none";
+//  }
+//  x[slideIndex[no] - 1].style.display = "block";
+//}
+////CODE FOR MULTIPLE:
+//export let manualResizeTrigger = false;
+//
+//document.addEventListener("DOMContentLoaded", () => {
+//  // MULTIPLE SLIDESHOW SETUP
+//  // Define an array to store the current slide index for each slideshow group.
+//  const slideIndices: number[] = [1, 1];
+//
+//  // all the slide containers
+//  const slideIds: string[] = ["mySlides1", "mySlides2"];
+//
+//  // Initialize each slideshow group.
+//  slideIndices.forEach((_, no) => {
+//    showSlides(slideIndices[no], no);
+//  });
+//  // Next/previous controls for a given slideshow group.
+//  // (Adjust this if you have separate buttons for each slideshow.)
+//  function plusSlides(n: number, no: number) {
+//    manualResizeTrigger = true;
+//    slideIndices[no] += n;
+//    showSlides(slideIndices[no], no);
+//  }
+//
+//  // Set the current slide in a group.
+//  function currentSlide(n: number, no: number) {
+//    manualResizeTrigger = true;
+//    slideIndices[no] = n;
+//    showSlides(slideIndices[no], no);
+//  }
+//
+//  // This function displays the appropriate slide for the given group.
+//  function showSlides(n: number, no: number) {
+//    let i: number;
+//    // Get all slides in the current group.
+//    const slides = document.getElementsByClassName(
+//      slideIds[no],
+//    ) as HTMLCollectionOf<HTMLElement>;
+//
+//    // Wrap the slide index if out-of-bounds.
+//    if (n > slides.length) {
+//      slideIndices[no] = 1;
+//    }
+//    if (n < 1) {
+//      slideIndices[no] = slides.length;
+//    }
+//
+//    // Hide all slides in the group.
+//    for (i = 0; i < slides.length; i++) {
+//      slides[i].style.display = "none";
+//    }
+//
+//    // Display the current slide.
+//    slides[slideIndices[no] - 1].style.display = "block";
+//  }
+//
+//  // Example of binding controls if you have separate controls for each slideshow:
+//  // (Assumes you have elements with data attributes or IDs to target each group.)
+//  const nextButtons = document.querySelectorAll(".next");
+//  const prevButtons = document.querySelectorAll(".prev");
+//
+//  // For simplicity, we assume the first set of buttons control the first slideshow group,
+//  // and the second set (if present) control the second slideshow group.
+//  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
+//    // Bind controls for slideshow group 0.
+//    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
+//    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
+//  }
+//  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
+//    // Bind controls for slideshow group 1.
+//    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
+//    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
+//  }
+//
+//  // For example, if each slideshow group has its own set of dots with a unique container
+//  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
+//  const dotGroup0 = document.querySelectorAll(
+//    "#dotGroup0 .dot",
+//  ) as NodeListOf<HTMLElement>;
+//  dotGroup0.forEach((dot, index) => {
+//    dot.addEventListener("click", () => currentSlide(index + 1, 0));
+//  });
+//
+//  const dotGroup1 = document.querySelectorAll(
+//    "#dotGroup1 .dot",
+//  ) as NodeListOf<HTMLElement>;
+//  dotGroup1.forEach((dot, index) => {
+//    dot.addEventListener("click", () => currentSlide(index + 1, 1));
+//  });
+//});
 </file>
 
 <file path="frontend/src/ts/pages/login/loginEntry.ts">
@@ -2561,50 +1980,6 @@ const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
 const theme = (getState("theme") as string) || "dark";
 document.documentElement.setAttribute("data-theme", theme);
 themeBtn?.classList.add(theme); // which toggle icon to show
-</file>
-
-<file path="frontend/src/ts/utils/scripts/autoFillForm.ts">
-function generateRandomString(length: number): string {
-  return Math.random()
-    .toString(36)
-    .substring(2, 2 + length);
-}
-
-export default function autofillForm(): void {
-  const username = `user_${generateRandomString(5)}`;
-  const email = `random-${generateRandomString(5)}@example.com`;
-
-  const usernameInput = document.getElementById(
-    "username",
-  ) as HTMLInputElement | null;
-  const emailInput = document.getElementById(
-    "email",
-  ) as HTMLInputElement | null;
-  const passwordInput = document.getElementById(
-    "password",
-  ) as HTMLInputElement | null;
-  const confirmPasswordInput = document.getElementById(
-    "confirmPassword",
-  ) as HTMLInputElement | null;
-
-  // for login
-  const userIdentifierInput = document.getElementById(
-    "user-identifier",
-  ) as HTMLInputElement | null;
-
-  if (userIdentifierInput && passwordInput) {
-    userIdentifierInput.value = "maya";
-    passwordInput.value = "randomPassword";
-    return;
-  }
-
-  // for signup
-  if (usernameInput) usernameInput.value = username;
-  //if (emailInput) emailInput.value = email;
-  if (emailInput) emailInput.value = "maya123@gmail.com";
-  if (passwordInput) passwordInput.value = "asdfasdf";
-  if (confirmPasswordInput) confirmPasswordInput.value = "asdfasdf";
-}
 </file>
 
 <file path="frontend/views/partials/nav-authed.ejs">
@@ -3015,162 +2390,248 @@ h6 {
 }
 </file>
 
-<file path="frontend/src/scss/pages/_auth.scss">
+<file path="frontend/src/scss/base/_typography.scss">
+// @use "sass:map";
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  font-family: WorkSans, sans-serif;
+}
+
+// .logo-name {
+// font-family: "Londrina Solid", sans-serif;
+// }
+
+// @include sm {
+// }
+//
+// @include md {
+// }
+//
+// @include lg {
+// }
+//
+// @include lx {
+// }
+
+$font-size: (
+  "n1": 0.8rem,
+  "1": 1rem,
+  "2": 1.5rem,
+  "3": 2rem,
+  "4": 2.5rem,
+  "5": 3rem,
+  "6": 3.5rem,
+  "7": 4rem,
+  "8": 4.5rem,
+);
+
+@each $size, $value in $font-size {
+  @include xs {
+    .fs-#{$size}-xs {
+      font-size: $value;
+    }
+  }
+  @include sm {
+    .fs-#{$size}-sm {
+      font-size: $value;
+    }
+  }
+  @include md {
+    .fs-#{$size}-md {
+      font-size: $value;
+    }
+  }
+  @include lg {
+    .fs-#{$size}-lg {
+      font-size: $value;
+    }
+  }
+  @include xl {
+    .fs-#{$size}-xl {
+      font-size: $value;
+    }
+  }
+}
+// @each $size in $breakpoints {
+//   @include #{size} {
+//     @each $k, $v in $font-size {
+//       .fs-#{$k} {
+//         font-size: $v;
+//       }
+//     }
+//     // .font-size-
+//   }
+// }
+
+// @include xs {
+
+$font-weights: (
+  "light": 300,
+  "normal": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extrabold": 800,
+);
+
+@each $name, $weight in $font-weights {
+  .fw-#{$name} {
+    font-weight: $weight;
+  }
+}
+
+// Letter Spacing Utilities
+$letter-spacing: (
+  "narrow": -0.05em,
+  "normal": 0,
+  "wide": 0.05em,
+  "wider": 0.1em,
+  "widest": 0.2em,
+);
+
+@each $name, $spacing in $letter-spacing {
+  .ls-#{$name} {
+    letter-spacing: $spacing;
+  }
+}
+
+// Text Transform Utilities
+.text-transform-upper {
+  text-transform: uppercase;
+}
+
+.text-transform-lower {
+  text-transform: lowercase;
+}
+
+.text-transform-capitalize {
+  text-transform: capitalize;
+}
+</file>
+
+<file path="frontend/src/scss/layout/_grid.scss">
+@use "sass:math";
+@use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 
-// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
-// specific customization of each at the bottom
+$grid-columns: 12;
+$grid-gaps: (
+  "0": 0,
+  "1": 5px,
+  "2": 10px,
+  "3": 15px,
+  "4": 20px,
+  "5": 25px,
+  "6": 30px,
+);
 
-body[data-page="login"],
-body[data-page="signup"] {
-  height: 100vh;
+$layout-values: flex-start, flex-end, center, space-between, space-around;
+
+.container {
+  width: 100%;
+  // height: auto;
+  // padding-left: 0.75rem;
+  // padding-right: 0.75rem;
+  padding-right: $base-padding * 1.5;
+  padding-left: $base-padding * 1.5;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.f-col {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
 
-  @include xl {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
+.f-row {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+// grid gaps (cant seem to make this work idk)
+// tho still prob better to just use native gap
+@each $key, $val in $grid-gaps {
+  .gap-#{$key} > * {
+    padding: $val !important;
   }
-
-  .auth-wrapper {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    // border: 1px solid rgb(255, 255, 255, 0.6);
+  .gap-#{$key} {
+    margin-left: -$val;
+    margin-right: -$val;
   }
+}
 
-  $bar-width: 500px;
-
-  form {
-    // border: 1px solid rgb(255, 255, 255, 0.6);
-    height: 760px;
-    width: min(850px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    // margin: 0 auto;
-    background: transparent;
-    backdrop-filter: blur(10px);
-
-    h1 {
-      text-align: center;
-      margin-bottom: -5px;
-
-      @include xl {
-        font-size: 3em;
-      }
-    }
-
-    h4 {
-      // margin-bottom: 12px;
-    }
-
-    .input-box {
-      position: relative;
-      // border-bottom: 1px solid white;
-      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
-      [data-theme="light"] {
-        border-bottom: black !important;
-      }
-      width: min(90%, $bar-width);
-      margin: 25px 0;
-
-      label {
-        position: absolute;
-        left: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-      }
-
-      input {
-        width: 100%;
-        border: 0;
-        // border: 1px solid rgb(255, 255, 255, 0.6);
-        padding: 0 36px 0 5px;
-        color: white;
-        height: 50px;
-        font-size: 1em;
-        outline: none;
-        background-color: transparent;
-
-        // NOTE:
-        // label must be below input in html
-        // for this (sibling selector) to work
-        &:focus ~ label,
-        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
-        // NOTE: input must have placeholder attr even if its empty for this to work
-        &:not(:placeholder-shown) ~ label {
-          top: -5px;
-        }
-      }
-
-      .visib-pass-btn {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-
-        .visib-on {
-          display: none;
-        }
-
-        &.active {
-          .visib-on {
-            display: block;
-          }
-
-          .visib-off {
-            display: none;
-          }
-        }
-      }
-    }
-
-    button.submit {
-      width: min(90%, $bar-width);
-      margin: 20px 0;
-    }
-
-    .signup-error-msg {
-      color: red;
-      margin-top: -16px;
-    }
+// justify content classes
+@each $val in $layout-values {
+  .justify-#{$val} {
+    justify-content: $val;
   }
+}
 
-  .auth-filler-bg {
-    display: none;
-
-    @include xl {
-      height: 100vh;
-      display: block;
+// col classes
+@include xs {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i}-xs {
+      box-sizing: border-box;
+      flex-grow: 0;
+      width: math.div($i * 100%, $grid-columns);
     }
   }
 }
 
-body[data-page="login"] {
-  grid-template-columns: 1fr 1.5fr;
+@include sm {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i}-sm {
+      box-sizing: border-box;
+      flex-grow: 0;
+      width: math.div($i * 100%, $grid-columns);
+    }
+  }
+}
 
-  #login-form h1 {
-    margin-bottom: 60px !important;
+@include md {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i}-md {
+      box-sizing: border-box;
+      flex-grow: 0;
+      width: math.div($i * 100%, $grid-columns);
+    }
+  }
+}
+
+@include lg {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i}-lg {
+      box-sizing: border-box;
+      flex-grow: 0;
+      width: math.div($i * 100%, $grid-columns);
+    }
+  }
+}
+
+@include xl {
+  @for $i from 1 through $grid-columns {
+    .col-#{$i}-xl {
+      box-sizing: border-box;
+      flex-grow: 0;
+      width: math.div($i * 100%, $grid-columns);
+    }
   }
 }
 </file>
 
-<file path="frontend/src/scss/pages/_home.scss">
+<file path="frontend/src/scss/pages/_landing.scss">
 @use "../abstracts/mixins" as *;
 @use "../abstracts/variables" as *;
-// @use "../layout/nav" as *;
+@use "../layout/nav" as *;
+@use "sass:map";
 
-body[data-page="home"] {
-  &[data-theme="light"] {
-    background-color: var(--tertiary);
-  }
-
+body[data-page="landing"] {
   // ------------------------------
   // for scroll animation
   .hidden {
@@ -3186,309 +2647,375 @@ body[data-page="home"] {
   }
   // ------------------------------
 
-  .hero-top {
+  .hero {
+    position: relative;
     display: grid;
-    grid-template: repeat(2, auto) / repeat(2, auto);
-    padding: 1rem;
-    align-items: center;
-    gap: 5px;
-    background-color: var(--neutral);
+    grid-template-rows: auto 1fr;
+    // max-width: 1700px;
+    align-content: center;
+    text-align: center;
+    height: calc(100vh - #{$nav-height} + 5px);
 
-    .sk-logo-1 {
-      grid: 1 / 1;
+    @include mobile {
+      height: calc(100dvh - #{$nav-height} + 5px) !important;
+    }
+
+    // @include md {
+    //   grid-template: auto 1fr / repeat(3, auto);
+    //   grid-template-areas:
+    //     "logo1 info logo2"
+    //     "bottom bottom bottom";
+    // }
+
+    // "xs": 0,
+    // "sm": 475px,
+    // "md": 640px,
+    // "lg": 760px,
+    // "xl": 1024px,
+    // "xxl": 1536px,
+
+    .hero-top {
+      grid-row: 1;
+      display: grid;
+      grid-template: repeat(2, auto) / repeat(2, auto);
+      padding: 1rem;
+      align-items: center;
+      gap: 5px;
+
+      .sk-logo-1 {
+        grid: 1 / 1;
+        // border: 1px solid white;
+      }
+
+      .sk-logo-2 {
+        justify-self: end;
+      }
+
+      .hero-info {
+        margin-top: $base-padding * -1;
+        grid-row: 2;
+        grid-column: 1 /3;
+      }
+
+      @include md {
+        grid-template-columns: repeat(3, auto);
+
+        .sk-logo-2,
+        .sk-logo-1 {
+          justify-self: center;
+        }
+
+        .hero-info,
+        .sk-logo-2,
+        .sk-logo-1 {
+          grid-row: initial;
+          grid-column: initial;
+        }
+
+        img {
+          width: 100px;
+        }
+      }
+
+      @include lg {
+        img {
+          width: 125px;
+        }
+      }
+
+      @include xl {
+        img {
+          width: 150px;
+        }
+      }
+    }
+
+    .hero-bottom {
       // border: 1px solid white;
-    }
-
-    .sk-logo-2 {
-      justify-self: end;
-    }
-
-    .hero-info {
-      margin-top: $base-padding * -1;
       grid-row: 2;
-      grid-column: 1 /3;
-    }
-
-    @include md {
-      grid-template-columns: repeat(3, auto);
-
-      .sk-logo-2,
-      .sk-logo-1 {
-        justify-self: center;
+      align-content: center;
+      .header-title {
+        font-size: 70px;
       }
 
-      .hero-info,
-      .sk-logo-2,
-      .sk-logo-1 {
-        grid-row: initial;
-        grid-column: initial;
-      }
+      .hero-links {
+        // border: 1px solid rgba(255, 255, 255, 0.3);
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
 
-      img {
-        width: 100px;
-      }
-    }
-
-    @include lg {
-      img {
-        width: 125px;
-      }
-    }
-
-    @include xl {
-      img {
-        width: 150px;
+        a {
+          text-decoration: none;
+        }
       }
     }
   }
 
   main {
-    section {
-      background-color: var(--tertiary);
+    #skonnect-provides {
+      scroll-margin-top: 100px;
     }
 
-    h3 {
-      // border-bottom: 1 solid rgba(var(--accent), 0.1);
+    section.features {
+      display: grid;
+      place-content: center;
+      text-align: center;
 
-      @include lg {
-        text-align: center;
+      .feature-card {
+        height: auto;
+        // width: 90%;
+        display: grid;
+        justify-items: center;
+        justify-content: center;
+
+        .card-text-container {
+          // border: 1px solid rgba(white, 0.3);
+          width: 95%;
+        }
+
+        img {
+          border-radius: 8px;
+          justify-self: center;
+        }
       }
     }
 
-    .card {
-      background-color: var(--secondary);
-      cursor: pointer;
-      perspective: 1000px;
-      transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-
-      &:hover {
-        transform: scale(1.05) rotateY(10deg) rotateX(10deg);
-        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+    section.impact {
+      // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
+      h1 {
+        font-size: 28px;
       }
-    }
-    .card > div:first-child {
-      border-left: 4px solid var(--accent);
-    }
-
-    strong {
-      white-space: nowrap;
+      display: grid;
+      place-content: center;
+      height: 400px;
     }
   }
 
-  /* Slideshow container */
-  .slideshow-container {
-    max-width: 600px;
-    position: relative;
-    // margin: auto;
-
-    img {
-      min-width: 300px;
+  @include sm {
+    .feature-card h3 {
+      font-size: 1.5em;
     }
   }
 
-  /* Hide the images by default */
-  .mySlides {
-    display: none;
-  }
+  @include md {
+    #skonnect-provides {
+      // text-align: start;
+      // padding-left: $base-padding;
+      font-size: 2.4em;
+    }
 
-  /* Next & previous buttons */
-  .prev,
-  .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-
-    &:hover {
-      border-radius: 8px;
-      opacity: 0.8;
-      background-color: var(--accent);
+    .feature-card h3 {
+      font-size: 1.9em;
     }
   }
 
-  .next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-  }
-
-  /* Caption text */
-  .text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Number text (1/3 etc) */
-  .numbertext {
-    color: black;
-    // font-size: 14px;
-    padding: 8px 12px;
-    position: absolute;
-    top: 0;
-  }
-
-  /* The dots/bullets/indicators */
-  .dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-
-    &.active {
-      background-color: var(--accent);
+  @include xl {
+    .features-container {
+      max-width: 1300px;
     }
 
-    &:hover {
-      background-color: #717171;
+    .header-title {
+      font-size: 130px !important;
+      margin-bottom: -20px;
     }
-  }
 
-  /* Fading animation */
-  .fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
-  }
-
-  @keyframes fade {
-    from {
-      opacity: 0.4;
+    #skonnect-provides {
+      font-size: 2.9em;
     }
-    to {
-      opacity: 1;
+    .feature-card h3 {
+      font-size: 2.5em;
     }
-  }
-}
 
-[data-theme="dark"] {
-  body[data-page="home"] {
-    .card {
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
-      // background-color: var(--secondary);
-    }
-  }
-}
+    .feature-card {
+      display: flex !important;
+      justify-content: center;
+      gap: 20px;
 
-[data-theme="light"] {
-  body[data-page="home"] {
-    border-top: none;
-    .card {
-      // background-color: #fff;  // Ensure the card itself is light
-      // border-radius: 8px;
-      // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
-      // 0 8px 16px rgba(0, 0, 0, 0.1);
-      //   box-shadow:
-      //     2px 2px 4px rgba(0, 0, 0, 0.1),
-      //     4px 8px 16px rgba(0, 0, 0, 0.1);
+      & > div {
+        // border: 1px dashed white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-text-container {
+        // border: 1px solid rgba(white, 0.3);
+        width: 50% !important;
+      }
     }
   }
 }
 </file>
 
-<file path="frontend/src/scss/themes/_auth-theme.scss">
-body[data-page="login"],
-body[data-page="signup"] {
-  .theme-btn {
-    &.light {
-      &:hover {
-        .moon {
-          fill: black !important;
-        }
-      }
-      .moon {
-        display: block !important;
-        fill: var(--accent) !important;
-      }
-      .sun {
-        display: none;
-      }
-    }
+<file path="frontend/src/scss/themes/_landing-theme.scss">
+@use "../abstracts/mixins" as *;
 
-    &.dark {
-      &:hover {
-        .sun {
-          fill: var(--accent) !important;
-        }
-      }
+body[data-page="landing"] {
+  // .hero {
+  // background-color: var(--secondary);
 
-      .moon {
-        display: none !important;
-      }
+  // &-links {
+  //   :nth-child(1) {
+  //     border: 1px solid var(--accent);
+  //     background-color: var(--primary);
+  //   }
+  //
+  //   a {
+  //     color: var(--foreground);
+  //     background-color: var(--accent);
+  //   }
+  // }
+  // }
 
-      .sun {
-        display: block !important;
-      }
-    }
-
-    svg.moon,
-    svg.sun {
-      transition: fill 0.5s ease !important;
-    }
+  .hero-top {
+    background-color: var(--neutral);
   }
-  .nav-menu-btn-open {
-    justify-self: flex-end;
 
-    &.clicked {
-      display: none;
-    }
-  }
-}
-
-// TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
-
-[data-theme="light"] {
-  form {
-    .input-box {
-      border-bottom: 1px solid black !important;
-
-      input {
-        color: black !important;
-      }
-    }
-
-    // input {
-    //   color: black !important;
+  main {
+    background-color: var(--tertiary);
+    // h1 {
+    //   // color: var(--accent);
     // }
 
-    .login-link a {
-      color: black;
+    span {
+      color: var(--accent);
     }
 
-    .visib-on,
-    .visib-off {
-      // fill: black !important;
-      fill: black;
-    }
-  }
+    section .feature-card {
+      background-color: var(--secondary);
 
-  .right-auth {
-    h1 {
-      color: #fff;
+      & > div {
+        border-left: none;
+
+        @include xl {
+          border-left: 4px solid var(--accent);
+        }
+      }
+
+      h2 {
+        color: var(--accent);
+      }
+    }
+
+    section.impact {
+      background: linear-gradient(
+        180deg,
+        var(--primary) 0%,
+        // rgb(0, 193, 174) 0%,
+        // rgb(0, 165, 191) 20%,
+        // rgb(0, 108, 166) 40%,
+        var(--primary-light-1) 10%,
+        var(--primary) 80%
+      );
     }
   }
 }
 
-// [data-theme="dark"] {
+[data-theme="dark"] {
+  .hero-top {
+    background-color: var(--tertiary);
+  }
 
+  .feature-card {
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+  }
+}
+
+[data-theme="light"] {
+  nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+
+    .nav-menu-popup {
+      background: color-mix(in srgb, var(--secondary) 90%, transparent);
+    }
+  }
+
+  .btn-dark-accent {
+    color: #fff !important;
+  }
+
+  .btn-outlined-dark-accent:hover {
+    color: #fff !important;
+  }
+
+  .feature-card {
+    border-top: none;
+    // background-color: #fff;  // Ensure the card itself is light
+    // border-radius: 8px;
+    // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
+    // 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.1),
+      4px 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// ---------------------------------------
+
+// .sidebar {
+//   background-color: var(--secondary);
+//   // color:;
+//
+//   .sidebar-item-title {
+//     color: var(--accent);
+//   }
+//
+//   .sidebar-item-branches::before {
+//     border-left: 1px dashed var(--sidebar-tree);
+//   }
+//
+//   .sidebar-item-branch::before {
+//     border-top: 1px dashed var(--sidebar-tree);
+//   }
 // }
+</file>
+
+<file path="frontend/src/ts/utils/scripts/autoFillForm.ts">
+function generateRandomString(length: number): string {
+  return Math.random()
+    .toString(36)
+    .substring(2, 2 + length);
+}
+
+export default function autofillForm(): void {
+  const username = `user_${generateRandomString(5)}`;
+  const email = `random-${generateRandomString(5)}@example.com`;
+
+  const usernameInput = document.getElementById(
+    "username",
+  ) as HTMLInputElement | null;
+  const emailInput = document.getElementById(
+    "email",
+  ) as HTMLInputElement | null;
+  const passwordInput = document.getElementById(
+    "password",
+  ) as HTMLInputElement | null;
+  const confirmPasswordInput = document.getElementById(
+    "confirmPassword",
+  ) as HTMLInputElement | null;
+
+  // for login
+  const userIdentifierInput = document.getElementById(
+    "user-identifier",
+  ) as HTMLInputElement | null;
+
+  if (userIdentifierInput && passwordInput) {
+    userIdentifierInput.value = "maya";
+    passwordInput.value = "randomPassword";
+    return;
+  }
+
+  // for signup
+  if (usernameInput) usernameInput.value = username;
+  //if (emailInput) emailInput.value = email;
+  if (emailInput) emailInput.value = "maya123@gmail.com";
+  if (passwordInput) passwordInput.value = "asdfasdf";
+  if (confirmPasswordInput) confirmPasswordInput.value = "asdfasdf";
+}
 </file>
 
 <file path="frontend/src/ts/utils/showNotif.ts">
@@ -3753,6 +3280,690 @@ export default {
     }),
   ],
 };
+</file>
+
+<file path="frontend/src/scss/components/_notif.scss">
+@use "../abstracts/mixins" as *;
+
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10000;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // outline: 1px solid blue; /* Debug border */
+  min-width: 150px;
+  height: 70px;
+  padding: 12px 16px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  opacity: 0;
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+
+  @include md {
+    min-width: 180px !important;
+  }
+  @include xl {
+    min-width: 200px !important;
+  }
+
+  &.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  &.hide {
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+  }
+
+  &.no-animation {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Notification Colors
+
+  &.gradient {
+    background: linear-gradient(
+      to right bottom,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    );
+  }
+
+  &.success {
+    background: #4caf50;
+  }
+
+  &.error {
+    background: #f44336;
+  }
+
+  &.warning {
+    background: #ffc107;
+  }
+
+  &.info {
+    background: #2196f3;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/pages/_auth.scss">
+@use "../abstracts/mixins" as *;
+
+// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
+// specific customization of each at the bottom
+
+body[data-page="login"],
+body[data-page="signup"] {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  @include xl {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .auth-wrapper {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+  }
+
+  $bar-width: 500px;
+
+  form {
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+    height: 760px;
+    width: min(850px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // margin: 0 auto;
+    background: transparent;
+    backdrop-filter: blur(10px);
+
+    h1 {
+      text-align: center;
+      margin-bottom: -5px;
+
+      @include xl {
+        font-size: 3em;
+      }
+    }
+
+    h4 {
+      // margin-bottom: 12px;
+    }
+
+    .input-box {
+      position: relative;
+      // border-bottom: 1px solid white;
+      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
+      [data-theme="light"] {
+        border-bottom: black !important;
+      }
+      width: min(90%, $bar-width);
+      margin: 25px 0;
+
+      label {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        // border: 1px solid rgb(255, 255, 255, 0.6);
+        padding: 0 36px 0 5px;
+        color: white;
+        height: 50px;
+        font-size: 1em;
+        outline: none;
+        background-color: transparent;
+
+        // NOTE:
+        // label must be below input in html
+        // for this (sibling selector) to work
+        &:focus ~ label,
+        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
+        // NOTE: input must have placeholder attr even if its empty for this to work
+        &:not(:placeholder-shown) ~ label {
+          top: -5px;
+        }
+      }
+
+      .visib-pass-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .visib-on {
+          display: none;
+        }
+
+        &.active {
+          .visib-on {
+            display: block;
+          }
+
+          .visib-off {
+            display: none;
+          }
+        }
+      }
+    }
+
+    button.submit {
+      width: min(90%, $bar-width);
+      margin: 20px 0;
+    }
+
+    .signup-error-msg {
+      color: red;
+      margin-top: -16px;
+    }
+  }
+
+  .auth-filler-bg {
+    display: none;
+
+    @include xl {
+      height: 100vh;
+      display: block;
+    }
+  }
+}
+
+// body[data-page="signup"] {
+//   .signup-link,.login-link{
+//     color: black;
+//   }
+// }
+
+body[data-page="login"] {
+  grid-template-columns: 1fr 1.5fr;
+
+  #login-form h1 {
+    margin-bottom: 60px !important;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/themes/_auth-theme.scss">
+body[data-page="login"],
+body[data-page="signup"] {
+  .theme-btn {
+    &.light {
+      &:hover {
+        .moon {
+          fill: black !important;
+        }
+      }
+      .moon {
+        display: block !important;
+        fill: var(--accent) !important;
+      }
+      .sun {
+        display: none;
+      }
+    }
+
+    &.dark {
+      &:hover {
+        .sun {
+          fill: var(--accent) !important;
+        }
+      }
+
+      .moon {
+        display: none !important;
+      }
+
+      .sun {
+        display: block !important;
+      }
+    }
+
+    svg.moon,
+    svg.sun {
+      transition: fill 0.5s ease !important;
+    }
+  }
+  .nav-menu-btn-open {
+    justify-self: flex-end;
+
+    &.clicked {
+      display: none;
+    }
+  }
+}
+
+// TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
+
+[data-theme="dark"] {
+  .signup-link,
+  .login-link {
+    color: white;
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="login"],
+  body[data-page="signup"] {
+    form {
+      .input-box {
+        border-bottom: 1px solid black !important;
+
+        input {
+          color: black !important;
+        }
+      }
+
+      // input {
+      //   color: black !important;
+      // }
+
+      .signup-link,
+      .login-link {
+        color: black;
+      }
+
+      .visib-on,
+      .visib-off {
+        // fill: black !important;
+        fill: black;
+      }
+    }
+
+    .right-auth {
+      h1 {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// [data-theme="dark"] {
+
+// }
+</file>
+
+<file path="frontend/src/scss/themes/_nav-theme.scss">
+@use "../abstracts/mixins" as *;
+
+// INFO: to override chrome's weird default hover/bg mobile where
+// taps triggers the hover effect which in chrome changes
+// the bg of a btn, which is prob not ideal most of the time.
+%override-mobile-hover {
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+nav {
+  background-color: var(--primary);
+  color: var(--foreground);
+
+  .logo-name {
+    color: var(--foreground);
+  }
+
+  .dev-icons {
+    // fill: var(--accent);
+    fill: var(--foreground);
+  }
+
+  .nav-menu-btn-close,
+  .nav-menu-btn-open {
+    background-color: transparent;
+    @extend %override-mobile-hover;
+  }
+
+  .menu-icon,
+  .close-icon {
+    fill: var(--foreground) !important;
+    // filter: brightness(0) invert(1);
+  }
+
+  // .nav-right a.profile {
+  //   border: 1px solid var(--foreground);
+  // }
+
+  // INFO: small screen nav popup
+  .nav-menu-popup {
+    background: color-mix(in srgb, var(--primary) 90%, transparent);
+  }
+
+  .nav-link,
+  .nav-link-dropdown {
+    color: var(--foreground);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  .nav-link-dropdown {
+    background-color: var(--primary);
+  }
+}
+</file>
+
+<file path="frontend/src/ts/pages/login/validate.ts">
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
+import loginUser from "./loginUser.ts";
+import type { LoginData } from "./loginUser.ts";
+
+const emailRegex = new RegExp(
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+);
+
+document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  autoFillForm();
+
+  const form = document.getElementById("login-form") as HTMLFormElement | null;
+  if (!form) return;
+
+  // Helper function to show error
+  function showError(input: HTMLInputElement, message: string) {
+    const errorDiv = document.querySelector(
+      `.error[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = message;
+    }
+    input.classList.add("invalid");
+  }
+
+  // Helper function to clear error
+  function clearError(input: HTMLInputElement) {
+    const errorDiv = document.querySelector(
+      `.error[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = "";
+    }
+    input.classList.remove("invalid");
+  }
+
+  function validateField(field: HTMLInputElement) {
+    const value = field.value.trim();
+
+    //check if value is email or username
+    // and overwrite generic user-identifier name attribute
+    // and type of text if email.
+    if (field.name === "user-identifier") {
+      if (emailRegex.test(value)) {
+        field.name = "email";
+        field.type = "email";
+      } else {
+        field.name = "username";
+        //field.type = "text"; // already text in html
+      }
+    }
+
+    console.log("name: ", field.name);
+    console.log("type: ", field.type);
+
+    switch (field.name) {
+      case "username":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          //showError(field, "field must be at least 4 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          showError(field, "not a valid email.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (value.length < 8) {
+          showError(field, "password must be at least 8 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // Attach validation handlers (live validation on input activity)
+  for (const field of Array.from(form.elements)) {
+    if (field instanceof HTMLInputElement) {
+      field.addEventListener("input", () => validateField(field));
+    }
+  }
+
+  // Form submission handler
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Validate all fields
+    let hasErrors = false;
+    for (const field of Array.from(form.elements)) {
+      if (field instanceof HTMLInputElement) {
+        validateField(field);
+        if (!field.validity.valid || field.classList.contains("invalid")) {
+          hasErrors = true;
+        }
+      }
+    }
+    if (hasErrors) return;
+
+    const formData = new FormData(form);
+    //console.log({ formData });
+    const jsonData = Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ) as unknown as LoginData;
+
+    await loginUser(jsonData);
+    form.reset();
+  });
+});
+</file>
+
+<file path="frontend/src/ts/pages/nav/navEvents.ts">
+import { setState } from "../../utils/setGetState.ts";
+
+const openBtn = document.querySelector(".nav-menu-btn-open") as HTMLElement;
+const closeBtn = document.querySelector(".nav-menu-btn-close") as HTMLElement;
+const popup = document.querySelector(".nav-menu-popup") as HTMLElement;
+const content = document.querySelector(".menu-content") as HTMLElement;
+
+// toggle menu popup (on small screens)
+const menuToggle = () => {
+  openBtn?.classList.toggle("clicked");
+  popup?.classList.toggle("open");
+  content?.classList.toggle("animate");
+};
+openBtn?.addEventListener("click", () => menuToggle());
+closeBtn?.addEventListener("click", () => menuToggle());
+
+const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
+const sun = document.querySelector(".sun") as HTMLElement;
+const moon = document.querySelector(".moon") as HTMLElement;
+
+// toggle color scheme and icons
+themeBtn?.addEventListener("click", () => {
+  console.log("click");
+
+  const currentTheme: string =
+    document.documentElement.getAttribute("data-theme") || "dark";
+
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", newTheme);
+
+  themeBtn.classList.remove("dark", "light");
+  themeBtn.classList.add(newTheme);
+
+  setState("theme", newTheme);
+});
+
+// nav services dropdown
+const dropdown = document.querySelector(
+  ".nav-link-dropdown",
+) as HTMLSelectElement;
+
+if (dropdown) {
+  dropdown.addEventListener("change", () => {
+    const selectedValue: string = dropdown.value;
+    if (selectedValue === "/submit-suggestions") {
+      window.open("https://forms.gle/H9YozQFgCx9CWN6d8", "_blank");
+      //window.location.href = "https://forms.gle/H9YozQFgCx9CWN6d8";
+      return;
+    }
+
+    if (selectedValue) {
+      console.log("val", selectedValue);
+      window.location.href = selectedValue; // Redirects to the selected page
+    }
+  });
+  // Reset the dropdown to the default option after a short delay
+  setTimeout(() => {
+    dropdown.value = "";
+  }, 0);
+}
+</file>
+
+<file path="backend/configs/babel.config.mjs">
+export default {
+  comments: false,
+  ignore: ["**/devModeMiddleware.ts"],
+  presets: [
+    "@babel/preset-typescript",
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          node: "current",
+        },
+        modules: false,
+      },
+    ],
+    "minify",
+  ],
+  plugins: [
+    [
+      "module-resolver",
+      {
+        extensions: [".js", ".ts"],
+        alias: {},
+        resolvePath: (sourcePath) => {
+          return sourcePath.replace(/\.ts$/, ".js");
+        },
+      },
+    ],
+  ],
+};
+</file>
+
+<file path="frontend/configs/tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext", /* Specify how TypeScript looks up a file from a given module specifier. */
+    "rootDir": "../",
+    "lib": [
+      "es5",
+      "es6",
+      "dom",
+      "esnext"
+    ],
+    "typeRoots": [
+      "../../node_modules/@types",
+    ],
+    "types": [
+      "node"
+    ], /* Specify type package names to be included without being referenced in a source file. */
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+    "outDir": "../dist", /* Specify an output folder for all emitted files. */
+    "removeComments": true,
+    "noEmitOnError": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+  },
+  "include": [
+    "../src/**/*",
+    "../main.ts",
+  ],
+  "exclude": [
+    "../../node_modules",
+    "../../backend/**/*",
+    "../configs/**/*"
+  ],
+}
+</file>
+
+<file path="frontend/configs/webpack.dev.js">
+import process from "process";
+import path from "path";
+import { merge } from "webpack-merge";
+import common from "./webpack.common.js";
+
+export default merge(common, {
+  mode: "development",
+  devtool: "eval-source-map",
+  //devServer: {
+  //  static: "./frontend/dist",
+  //  hot: true,
+  //},
+});
 </file>
 
 <file path="frontend/src/scss/abstracts/_utilities.scss">
@@ -4262,149 +4473,82 @@ $utilities: (
 // }
 </file>
 
-<file path="frontend/src/scss/components/_notif.scss">
-@use "../abstracts/mixins" as *;
-
-#notification-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 10000;
+<file path="frontend/src/scss/layout/_footer.scss">
+%footer-layout {
+  display: grid;
+  place-content: center;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  margin-top: 30px;
 }
 
-.notification {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // outline: 1px solid blue; /* Debug border */
-  min-width: 150px;
-  height: 70px;
-  padding: 12px 16px;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transform: translateX(-100%);
-  opacity: 0;
-  transition:
-    transform 0.3s ease-out,
-    opacity 0.3s ease-out;
+footer {
+  // position: absolute;
+  // bottom: 0;
+  box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
+  @extend %footer-layout;
 
-  @include md {
-    min-width: 180px !important;
+  .socials {
+    margin-bottom: 80px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .dev-icons {
+      display: inline-block;
+      width: 30px;
+      fill: white;
+    }
   }
-  @include xl {
-    min-width: 200px !important;
-  }
-
-  &.show {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  &.hide {
-    opacity: 0;
-    transition: opacity 0.4s ease-out;
-  }
-
-  &.no-animation {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  // Notification Colors
-
-  &.gradient {
-    background: linear-gradient(
-      to right bottom,
-      rgb(0, 193, 174),
-      rgb(0, 165, 191),
-      rgb(0, 108, 166)
-    );
-  }
-
-  &.success {
-    background: #4caf50;
-  }
-
-  &.error {
-    background: #f44336;
-  }
-
-  &.warning {
-    background: #ffc107;
-  }
-
-  &.info {
-    background: #2196f3;
+  .c-notice {
+    font-size: 14px;
   }
 }
 </file>
 
-<file path="frontend/src/scss/themes/_nav-theme.scss">
-@use "../abstracts/mixins" as *;
+<file path="frontend/src/scss/index.scss">
+// abstracts
+@forward "abstracts/variables";
+@forward "abstracts/functions";
+@forward "abstracts/mixins";
+@forward "abstracts/utilities";
+@forward "abstracts/colors";
 
-// INFO: to override chrome's weird default hover/bg mobile where
-// taps triggers the hover effect which in chrome changes
-// the bg of a btn, which is prob not ideal most of the time.
-%override-mobile-hover {
-  @include mobile {
-    &:hover {
-      -webkit-tap-highlight-color: transparent !important;
-      background-color: transparent !important;
-    }
-  }
-}
+// base
+@forward "base/reset";
+@forward "base/typography";
 
-nav {
-  background-color: var(--primary);
-  color: var(--foreground);
+// components
+@forward "components/cards";
+@forward "components/buttons";
+@forward "components/notif";
 
-  .logo-name {
-    color: var(--foreground);
-  }
+// layouts
+@forward "layout/grid";
+@forward "layout/forms";
+@forward "layout/nav";
+@forward "layout/sidebar";
+@forward "layout/footer";
 
-  .dev-icons {
-    // fill: var(--accent);
-    fill: var(--foreground);
-  }
+// pages
+@forward "pages/shared/general-style";
+@forward "pages/landing";
+@forward "pages/auth";
+@forward "pages/home";
+@forward "pages/profile";
+@forward "pages/about";
+// @forward "pages/profile";
+// @forward "pages/profile";
 
-  .nav-menu-btn-close,
-  .nav-menu-btn-open {
-    background-color: transparent;
-    @extend %override-mobile-hover;
-  }
-
-  .menu-icon,
-  .close-icon {
-    fill: var(--foreground) !important;
-    // filter: brightness(0) invert(1);
-  }
-
-  // .nav-right a.profile {
-  //   border: 1px solid var(--foreground);
-  // }
-
-  // INFO: small screen nav popup
-  .nav-menu-popup {
-    background: color-mix(in srgb, var(--primary) 90%, transparent);
-  }
-
-  .nav-link,
-  .nav-link-dropdown {
-    color: var(--foreground);
-
-    &:hover {
-      color: var(--accent);
-    }
-  }
-
-  .nav-link-dropdown {
-    background-color: var(--primary);
-  }
-}
+// themes
+// @forward "themes/colors";
+@forward "themes/gen-themes";
+@forward "themes/nav-theme";
+@forward "themes/landing-theme";
+@forward "themes/auth-theme";
+@forward "themes/home-theme";
+@forward "themes/profile-theme";
+@forward "themes/footer-theme";
 </file>
 
 <file path="frontend/src/ts/pages/login/loginUser.ts">
@@ -4468,199 +4612,6 @@ export default async function loginUser(jsonData: LoginData) {
 //    console.error("Invalid token", error);
 //  }
 //}
-</file>
-
-<file path="frontend/src/ts/pages/login/validate.ts">
-import autoFillForm from "../../utils/scripts/autoFillForm.ts";
-import loginUser from "./loginUser.ts";
-import type { LoginData } from "./loginUser.ts";
-
-const emailRegex = new RegExp(
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-);
-
-document.addEventListener("DOMContentLoaded", () => {
-  //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
-
-  const form = document.getElementById("login-form") as HTMLFormElement | null;
-  if (!form) return;
-
-  // Helper function to show error
-  function showError(input: HTMLInputElement, message: string) {
-    const errorDiv = document.querySelector(
-      `.error[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = message;
-    }
-    input.classList.add("invalid");
-  }
-
-  // Helper function to clear error
-  function clearError(input: HTMLInputElement) {
-    const errorDiv = document.querySelector(
-      `.error[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = "";
-    }
-    input.classList.remove("invalid");
-  }
-
-  function validateField(field: HTMLInputElement) {
-    const value = field.value.trim();
-
-    //check if value is email or username
-    // and overwrite generic user-identifier name attribute
-    // and type of text if email.
-    if (field.name === "user-identifier") {
-      if (emailRegex.test(value)) {
-        field.name = "email";
-        field.type = "email";
-      } else {
-        field.name = "username";
-        //field.type = "text"; // already text in html
-      }
-    }
-
-    console.log("name: ", field.name);
-    console.log("type: ", field.type);
-
-    switch (field.name) {
-      case "username":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          //showError(field, "field must be at least 4 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "email":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (value.length < 8) {
-          showError(field, "password must be at least 8 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  // Attach validation handlers (live validation on input activity)
-  for (const field of Array.from(form.elements)) {
-    if (field instanceof HTMLInputElement) {
-      field.addEventListener("input", () => validateField(field));
-    }
-  }
-
-  // Form submission handler
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Validate all fields
-    let hasErrors = false;
-    for (const field of Array.from(form.elements)) {
-      if (field instanceof HTMLInputElement) {
-        validateField(field);
-        if (!field.validity.valid || field.classList.contains("invalid")) {
-          hasErrors = true;
-        }
-      }
-    }
-    if (hasErrors) return;
-
-    const formData = new FormData(form);
-    //console.log({ formData });
-    const jsonData = Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ) as unknown as LoginData;
-
-    await loginUser(jsonData);
-    form.reset();
-  });
-});
-</file>
-
-<file path="frontend/src/ts/pages/nav/navEvents.ts">
-import { setState } from "../../utils/setGetState.ts";
-
-const openBtn = document.querySelector(".nav-menu-btn-open") as HTMLElement;
-const closeBtn = document.querySelector(".nav-menu-btn-close") as HTMLElement;
-const popup = document.querySelector(".nav-menu-popup") as HTMLElement;
-const content = document.querySelector(".menu-content") as HTMLElement;
-
-// toggle menu popup (on small screens)
-const menuToggle = () => {
-  openBtn?.classList.toggle("clicked");
-  popup?.classList.toggle("open");
-  content?.classList.toggle("animate");
-};
-openBtn?.addEventListener("click", () => menuToggle());
-closeBtn?.addEventListener("click", () => menuToggle());
-
-const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
-const sun = document.querySelector(".sun") as HTMLElement;
-const moon = document.querySelector(".moon") as HTMLElement;
-
-// toggle color scheme and icons
-themeBtn?.addEventListener("click", () => {
-  console.log("click");
-
-  const currentTheme: string =
-    document.documentElement.getAttribute("data-theme") || "dark";
-
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", newTheme);
-
-  themeBtn.classList.remove("dark", "light");
-  themeBtn.classList.add(newTheme);
-
-  setState("theme", newTheme);
-});
-
-// nav services dropdown
-const dropdown = document.querySelector(
-  ".nav-link-dropdown",
-) as HTMLSelectElement;
-
-if (dropdown) {
-  dropdown.addEventListener("change", () => {
-    const selectedValue: string = dropdown.value;
-    if (selectedValue === "/submit-suggestions") {
-      window.open("https://forms.gle/H9YozQFgCx9CWN6d8", "_blank");
-      //window.location.href = "https://forms.gle/H9YozQFgCx9CWN6d8";
-      return;
-    }
-
-    if (selectedValue) {
-      console.log("val", selectedValue);
-      window.location.href = selectedValue; // Redirects to the selected page
-    }
-  });
-  // Reset the dropdown to the default option after a short delay
-  setTimeout(() => {
-    dropdown.value = "";
-  }, 0);
-}
 </file>
 
 <file path="frontend/src/ts/pages/signup/signupUser.ts">
@@ -4765,274 +4716,119 @@ export default signupUser;
 </footer>
 </file>
 
-<file path="frontend/views/home.ejs">
+<file path="frontend/views/profile.ejs">
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body data-page="home">
+    <body class="h-100vh" data-page="profile">
         <%- include('./partials/nav.ejs') %>
 
-        <section class="hero mb-2">
-            <div class="hero-top">
-                <img
-                    width="75px"
-                    class="sk-logo-1"
-                    src="sk-data/sk.svg"
-                    alt=""
-                />
-                <div class="hero-info ta-c">
-                    <p>Republic of the Philippines</p>
-                    <p>DISTRICT VI, CITY OF MANILA</p>
-                    <p>BARANGAY 633 – ZONE 64</p>
-                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
-                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
-                    <!--<p>Cell # 09617122859</p>-->
+        <div class="profile-container container dp-f fd-c ai-c jc-c gp-50">
+            <div class="upper-container br-20 dp-f fd-c p-1">
+                <div class="br-20 js-s upper-top p-1 dp-f jc-sb w-100">
+                    <h1 class="">Profile</h1>
+                    <button class="p-1 as-s br-40 btn-outlined-dark-accent">
+                        Edit profile
+                    </button>
                 </div>
 
-                <img
-                    class="sk-logo-2 br-full"
-                    width="75px"
-                    src="sk-data/sk1.svg"
-                    alt=""
-                />
+                <div class="br-20 w-100 p-1 upper-bottom">
+                    <div class="mb-2 ml-n1 avatar">
+                        <img
+                            width="150px"
+                            class="br-full"
+                            src="assets/img/makise.jpg"
+                            alt=""
+                        />
+                    </div>
+
+                    <div class="mb-2 username">
+                        <h3>Username</h3>
+                        <div data-username>
+                            <%= user.username -%>
+                            <% if (user.isAdmin) { %>
+                            (ADMIN)
+                            <% } %>
+                        </div>
+                        <!--<input required type="text" />-->
+                    </div>
+
+                    <div class="mb-2 email">
+                        <h3 class="">Email</h3>
+                        <!--<div data-email>example@gmail.com</div>-->
+                        <div data-email>
+                            <%= user.email %>
+                        </div>
+                        <!--<input required type="text" />-->
+                    </div>
+                </div>
+                <!--</div>-->
             </div>
-        </section>
 
-        <main class="mb-6">
-            <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
-                Explore SKonnect
-            </h2>
-
-            <!--<section class="services container pt-2 pb-2 bd-w">-->
-            <section class="services container pt-2 pb-2">
-                <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2">Services</h3>
-
-                <div class="f-row gp-30 jc-c pb-2">
-                    <div class="card p-2 br-20 col-12-xs col-5-md">
-                        <div class="dp-f jc-c ai-c gp-15 p-2">
-                            <strong class="card-title"
-                                >Annual Budget Allocation</strong
-                            >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                width="24"
-                                height="24"
-                                stroke-width="2"
-                                style="--darkreader-inline-stroke: currentColor"
-                                data-darkreader-inline-stroke=""
-                            >
-                                <path
-                                    d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
-                                ></path>
-                                <path
-                                    d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
-                                ></path>
-                                <path
-                                    d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
-                                ></path>
-                                <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card p-2 br-20 col-12-xs col-5-md">
-                        <div class="dp-f jc-c ai-c gp-15 p-2">
-                            <strong class="card-title"
-                                >Concerns or Suggestions</strong
-                            >
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="24px"
-                                viewBox="0 -960 960 960"
-                                width="24px"
-                                fill="#e8eaed"
-                            >
-                                <path
-                                    d="M480-560h200v-80H480v80Zm0 240h200v-80H480v80ZM360-520q33 0 56.5-23.5T440-600q0-33-23.5-56.5T360-680q-33 0-56.5 23.5T280-600q0 33 23.5 56.5T360-520Zm0 240q33 0 56.5-23.5T440-360q0-33-23.5-56.5T360-440q-33 0-56.5 23.5T280-360q0 33 23.5 56.5T360-280ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card p-2 br-20 col-12-xs col-5-md">
-                        <div class="dp-f jc-c ai-c gp-15 p-2">
-                            <strong class="card-title"
-                                >SK Council Information</strong
-                            >
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="24px"
-                                viewBox="0 -960 960 960"
-                                width="24px"
-                                fill="#e8eaed"
-                            >
-                                <path
-                                    d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card p-2 br-20 col-12-xs col-5-md">
-                        <div class="dp-f jc-c ai-c gp-15 p-2">
-                            <strong class="card-title"
-                                >Some Random Feature</strong
-                            >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                width="28"
-                                height="28"
-                                stroke-width="2"
-                                style="--darkreader-inline-stroke: currentColor"
-                                data-darkreader-inline-stroke=""
-                            >
-                                <path
-                                    d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
-                                ></path>
-                                <path
-                                    d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
-                                ></path>
-                                <path
-                                    d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
-                                ></path>
-                                <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
-                                <path d="M3 11c0 .888 .772 1.45 2 2"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="events container">
-                <h2
-                    class="hidden fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2"
-                >
-                    Projects & Events
-                </h2>
-
-                <div class="slideshow-container container">
-                    <h3 class="hidden fs-2-xs fs-3-lg col-12-xs pb-2 pt-1">
-                        Clean-up drive
-                    </h3>
-
-                    <!-- Full-width images with number and caption text -->
-                    <div class="hidden slides1 fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-1.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <div class="hidden mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-2.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Two</div>
-                    </div>
-
-                    <div class="hidden mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-3.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Three</div>
-                    </div>
-
-                    <div class="hidden mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-5.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <div class="hidden mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-6.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <!-- Next and previous buttons -->
-                    <a class="prev">&#10094;</a>
-                    <a class="next">&#10095;</a>
-                </div>
-                <br />
-                <!-- The dots/circles -->
-                <div style="text-align: center">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                </div>
-            </section>
-        </main>
+            <div class="lower-container dp-f p-3 jc-sb ai-c br-20">
+                <div>some text</div>
+                <button class="logout btn-dark-accent br-40 p-1 w-100px">
+                    Logout
+                </button>
+            </div>
+        </div>
 
         <!--FOOTER-->
         <%- include('./partials/footer.ejs') %>
 
         <script type="module" src="app.bundle.js"></script>
         <script type="module" src="nav.bundle.js"></script>
-        <script type="module" src="home.bundle.js"></script>
+        <script type="module" src="profile.bundle.js"></script>
     </body>
 </html>
 </file>
 
-<file path="backend/configs/babel.config.mjs">
-export default {
-  comments: false,
-  ignore: ["**/devModeMiddleware.ts"],
-  presets: [
-    "@babel/preset-typescript",
-    [
-      "@babel/preset-env",
-      {
-        targets: {
-          node: "current",
-        },
-        modules: false,
-      },
-    ],
-    "minify",
-  ],
-  plugins: [
-    [
-      "module-resolver",
-      {
-        extensions: [".js", ".ts"],
-        alias: {},
-        resolvePath: (sourcePath) => {
-          return sourcePath.replace(/\.ts$/, ".js");
-        },
-      },
-    ],
-  ],
-};
+<file path=".gitignore">
+node_modules/
+dist/
+.env
+ignored/
+</file>
+
+<file path="backend/src/db/pool.ts">
+import mysql, { Pool } from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Define `pool` with an explicit type
+let pool: Pool | undefined;
+
+if (process.env.NODE_ENV === "development") {
+  pool = mysql.createPool({
+    host: process.env.SQL_HOST,
+    user: process.env.SQL_USER,
+    password: process.env.SQL_PASS,
+    database: process.env.SQL_DB,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+} else {
+  pool = mysql.createPool({
+    uri: process.env.MYSQL_PUBLIC_URL as string,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+}
+
+// prod
+
+export default pool!;
 </file>
 
 <file path="backend/src/middlewares/errorHandler.ts">
@@ -5070,246 +4866,361 @@ export const errorHandler = (
 };
 </file>
 
-<file path="frontend/configs/tsconfig.json">
-{
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext", /* Specify how TypeScript looks up a file from a given module specifier. */
-    "rootDir": "../",
-    "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "esnext"
-    ],
-    "typeRoots": [
-      "../../node_modules/@types",
-    ],
-    "types": [
-      "node"
-    ], /* Specify type package names to be included without being referenced in a source file. */
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "sourceMap": true, /* Create source map files for emitted JavaScript files. */
-    "outDir": "../dist", /* Specify an output folder for all emitted files. */
-    "removeComments": true,
-    "noEmitOnError": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    /* Type Checking */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-  },
-  "include": [
-    "../src/**/*",
-    "../main.ts",
-  ],
-  "exclude": [
-    "../../node_modules",
-    "../../backend/**/*",
-    "../configs/**/*"
-  ],
-}
-</file>
+<file path="frontend/src/scss/pages/_home.scss">
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+// @use "../layout/nav" as *;
 
-<file path="frontend/configs/webpack.dev.js">
-import process from "process";
-import path from "path";
-import { merge } from "webpack-merge";
-import common from "./webpack.common.js";
+body[data-page="home"] {
+  &[data-theme="light"] {
+    background-color: var(--tertiary);
+  }
 
-export default merge(common, {
-  mode: "development",
-  devtool: "eval-source-map",
-  //devServer: {
-  //  static: "./frontend/dist",
-  //  hot: true,
-  //},
-});
-</file>
+  // all captions on the page
+  .caption {
+    font-weight: bold;
+    padding-left: 7px;
+    padding-bottom: 5px;
 
-<file path="frontend/src/scss/abstracts/_variables.scss">
-$themes: (
-  "dark": (
-    "primary": rgb(25, 27, 28),
-    "secondary": rgb(28, 30, 32),
-    "neutral": rgb(31, 33, 37),
-    // "tertiary": rgb(36, 38, 41),
-    "accent": rgb(0, 130, 159),
-    // "accent": #3b60e4,
-    "foreground": #f3f3f3,
-  ),
-  "light": (
-    "primary": #fcfcfc,
-    "secondary": #e8f1f2,
-    "tertiary": #f5f5f5,
-    "neutral": rgb(230, 230, 230),
-    "accent": rgb(0, 130, 159),
-    "foreground": #141216,
-  ),
-);
+    @include xs {
+      font-size: $font-size-lg;
+    }
 
-$colors: (
-  "info": #326dee,
-  "warn": #f6c31c,
-  "error": #d32752,
-  "tip": #1ac886,
-  "black": black,
-  "white": white,
-  "lightgray": #d3d3d3,
-);
-
-$breakpoints: (
-  "xs": 0,
-  "sm": 475px,
-  "md": 640px,
-  "lg": 760px,
-  "xl": 1024px,
-  "xxl": 1536px,
-);
-
-// spacing
-$base-padding: 0.75rem;
-$base-margin: 0.75rem;
-
-// borders
-$base-border-thickness: 1px;
-$base-border-radius: 5px;
-
-// box-shadow
-$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
-
-// font sizes
-$base-font-size: 1rem;
-$font-size-sm: $base-font-size * 0.75;
-$font-size-lg: $base-font-size * 1.5;
-$font-size-xl: $base-font-size * 2;
-$font-size-xxl: $base-font-size * 3;
-</file>
-
-<file path="frontend/src/scss/layout/_footer.scss">
-%footer-layout {
-  display: grid;
-  place-content: center;
-  padding-top: 40px;
-  padding-bottom: 20px;
-  margin-top: 30px;
-}
-
-footer {
-  // position: absolute;
-  // bottom: 0;
-  box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
-  @extend %footer-layout;
-
-  .socials {
-    margin-bottom: 80px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-
-    .dev-icons {
-      display: inline-block;
-      width: 30px;
-      fill: white;
+    @include xl {
+      font-size: $font-size-xl;
+      text-align: center;
     }
   }
-  .c-notice {
-    font-size: 14px;
+
+  // ------------------------------
+  // for scroll animation
+  .hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  // ------------------------------
+
+  .hero-top {
+    display: grid;
+    grid-template: repeat(2, auto) / repeat(2, auto);
+    padding: 1rem;
+    align-items: center;
+    gap: 5px;
+    background-color: var(--neutral);
+
+    .sk-logo-1 {
+      grid: 1 / 1;
+      // border: 1px solid white;
+    }
+
+    .sk-logo-2 {
+      justify-self: end;
+    }
+
+    .hero-info {
+      margin-top: $base-padding * -1;
+      grid-row: 2;
+      grid-column: 1 /3;
+    }
+
+    @include md {
+      grid-template-columns: repeat(3, auto);
+
+      .sk-logo-2,
+      .sk-logo-1 {
+        justify-self: center;
+      }
+
+      .hero-info,
+      .sk-logo-2,
+      .sk-logo-1 {
+        grid-row: initial;
+        grid-column: initial;
+      }
+
+      img {
+        width: 100px;
+      }
+    }
+
+    @include lg {
+      img {
+        width: 125px;
+      }
+    }
+
+    @include xl {
+      img {
+        width: 150px;
+      }
+    }
+  }
+
+  section {
+    background-color: var(--tertiary);
+  }
+
+  section.services {
+    h3 {
+      // border-bottom: 1 solid rgba(var(--accent), 0.1);
+
+      @include lg {
+        text-align: center;
+      }
+    }
+
+    .cards-container {
+      margin-inline: auto;
+      max-width: 1300px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      // justify-items: center;
+
+      @include max-bp(660px) {
+        p {
+          justify-self: center !important;
+        }
+      }
+
+      p {
+        margin-bottom: -30px;
+        justify-self: start;
+        grid-column: 1 / -1;
+      }
+
+      .card {
+        // margin-inline: auto;
+        background-color: var(--secondary);
+        cursor: pointer;
+        perspective: 1000px;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+
+        @include max-bp(660px) {
+          width: min(100%, 450px);
+          margin: 0 auto;
+        }
+
+        @include md {
+          // max-width: unset;
+        }
+
+        &:hover {
+          transform: scale(1.05) rotateY(10deg) rotateX(10deg);
+          box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+        & > div:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          border-left: 4px solid var(--accent);
+          height: 80px;
+          // border: 1px solid white;
+        }
+
+        // strong {
+        // }
+        // svg {
+        //   // border: 1px solid white;
+        //   // flex: 0 1 100%;
+        // }
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+
+  section.events {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+
+    h2 {
+      //  60px gap + 12px mb which is 72px
+      // (matches with explore skconnect text mb px)
+      margin-bottom: 12px;
+    }
+
+    .dummy,
+    .clean-up {
+      flex-basis: 600px;
+    }
+
+    .slideshow-container {
+      position: relative;
+
+      img {
+        min-width: 350px;
+      }
+    }
+
+    /* Hide the images by default */
+    .mySlides {
+      display: none;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      margin-top: -22px;
+      padding: 16px;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+
+      &:hover {
+        border-radius: 8px;
+        opacity: 0.8;
+        background-color: var(--accent);
+      }
+    }
+
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    /* Caption text */
+    .text {
+      color: #f2f2f2;
+      font-size: 15px;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+      color: black;
+      // font-size: 14px;
+      padding: 8px 12px;
+      position: absolute;
+      top: 0;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+
+      &.active {
+        background-color: var(--accent);
+      }
+
+      &:hover {
+        background-color: #717171;
+      }
+    }
+
+    /* Fading animation */
+    .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+      to {
+        opacity: 1;
+      }
+    }
   }
 }
-</file>
 
-<file path="frontend/src/scss/index.scss">
-// abstracts
-@forward "abstracts/variables";
-@forward "abstracts/functions";
-@forward "abstracts/mixins";
-@forward "abstracts/utilities";
-@forward "abstracts/colors";
+[data-theme="dark"] {
+  body[data-page="home"] {
+    .card {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+      // background-color: var(--secondary);
+    }
+  }
+}
 
-// base
-@forward "base/reset";
-@forward "base/typography";
+[data-theme="light"] {
+  body[data-page="home"] {
+    border-top: none;
+    .card {
+      // background-color: #fff;  // Ensure the card itself is light
+      // border-radius: 8px;
+      // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
+      // 0 8px 16px rgba(0, 0, 0, 0.1);
+      //   box-shadow:
+      //     2px 2px 4px rgba(0, 0, 0, 0.1),
+      //     4px 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    svg:not(.default) {
+      fill: black;
+    }
 
-// components
-@forward "components/cards";
-@forward "components/buttons";
-@forward "components/notif";
+    .dummy {
+      border: 1px solid black;
+      border-radius: 20px;
+    }
+  }
+}
 
-// layouts
-@forward "layout/grid";
-@forward "layout/forms";
-@forward "layout/nav";
-@forward "layout/sidebar";
-@forward "layout/footer";
+// skeleton screen before load
+body[data-page="home"]:not(.loaded) .card::after,
+body[data-page="home"]:not(.loaded) nav::after,
+// body[data-page="home"]:not(.loaded) .hero-top::after,
+body[data-page="home"]:not(.loaded) .mySlides::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 
-// pages
-@forward "pages/shared/general-style";
-@forward "pages/landing";
-@forward "pages/auth";
-@forward "pages/home";
-@forward "pages/profile";
-@forward "pages/about";
-// @forward "pages/profile";
-// @forward "pages/profile";
+  &.loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
 
-// themes
-// @forward "themes/colors";
-@forward "themes/gen-themes";
-@forward "themes/nav-theme";
-@forward "themes/landing-theme";
-@forward "themes/auth-theme";
-@forward "themes/home-theme";
-@forward "themes/profile-theme";
-@forward "themes/footer-theme";
-</file>
+  &.loaded .card::after,
+  &.loaded .mySlides::after {
+    display: none;
+  }
 
-<file path="frontend/src/ts/pages/home/events.ts">
-import { notifyGradient } from "../../utils/showNotif.ts";
-import { manualResizeTrigger } from "./slideShow.ts";
-//
-//// notif message
-//const signupMsg = sessionStorage.getItem("signupSuccessNotif");
-//const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
-//if (signupMsg) {
-//  notifyGradient(signupMsg);
-//  sessionStorage.removeItem("signupSuccessNotif");
-//} else if (loginMsg) {
-//  notifyGradient(loginMsg);
-//  sessionStorage.removeItem("loginWelcomeNotif");
-//}
-
-// scroll animation
-const observer = new IntersectionObserver(
-  (entries, _obs) => {
-    entries.forEach((entry) => {
-      // dont trigger animation if slideShow event is hit
-      console.log("resize trigger: ", manualResizeTrigger);
-      if (manualResizeTrigger) {
-        // removing the hidden class effectively
-        // removing it too from observed elem
-        entry.target.classList.remove("hidden");
-        return;
-      }
-
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-        // this doesnt work so i guess the workarond for now (immport var state)
-        //_obs.unobserve(entry.target); // Stop observing once shown
-      }
-    });
-  },
-  { threshold: 0.2 },
-);
-
-// Observe elements
-document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
 </file>
 
 <file path="frontend/src/ts/pages/signup/validate.ts">
@@ -5549,7 +5460,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <div class="gp-10 jc-c dp-f">
                     <span> Don't have an account? </span>
-                    <a class="text-white fw-bold" href="/signup">Signup</a>
+                    <a class="signup-link fw-bold" href="/signup">Signup</a>
                 </div>
             </form>
         </div>
@@ -5560,272 +5471,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <script type="module" src="/app.bundle.js"></script>
         <script type="module" src="/nav.bundle.js"></script>
         <script type="module" src="/login.bundle.js"></script>
-    </body>
-</html>
-</file>
-
-<file path="frontend/views/profile.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body class="h-100vh" data-page="profile">
-        <%- include('./partials/nav.ejs') %>
-
-        <div class="profile-container container dp-f fd-c ai-c jc-c gp-50">
-            <div class="upper-container br-20 dp-f fd-c p-1">
-                <div class="br-20 js-s upper-top p-1 dp-f jc-sb w-100">
-                    <h1 class="">Profile</h1>
-                    <button class="p-1 as-s br-40 btn-outlined-dark-accent">
-                        Edit profile
-                    </button>
-                </div>
-
-                <div class="br-20 w-100 p-1 upper-bottom">
-                    <div class="mb-2 ml-n1 avatar">
-                        <img
-                            width="150px"
-                            class="br-full"
-                            src="assets/img/makise.jpg"
-                            alt=""
-                        />
-                    </div>
-
-                    <div class="mb-2 username">
-                        <h3>Username</h3>
-                        <div data-username>
-                            <%= user.username -%>
-                            <% if (user.isAdmin) { %>
-                            (ADMIN)
-                            <% } %>
-                        </div>
-                        <!--<input required type="text" />-->
-                    </div>
-
-                    <div class="mb-2 email">
-                        <h3 class="">Email</h3>
-                        <!--<div data-email>example@gmail.com</div>-->
-                        <div data-email>
-                            <%= user.email %>
-                        </div>
-                        <!--<input required type="text" />-->
-                    </div>
-                </div>
-                <!--</div>-->
-            </div>
-
-            <div class="lower-container dp-f p-3 jc-sb ai-c br-20">
-                <div>some text</div>
-                <button class="logout btn-dark-accent br-40 p-1 w-100px">
-                    Logout
-                </button>
-            </div>
-        </div>
-
-        <!--FOOTER-->
-        <%- include('./partials/footer.ejs') %>
-
-        <script type="module" src="app.bundle.js"></script>
-        <script type="module" src="nav.bundle.js"></script>
-        <script type="module" src="profile.bundle.js"></script>
-    </body>
-</html>
-</file>
-
-<file path=".gitignore">
-node_modules/
-dist/
-.env
-ignored/
-</file>
-
-<file path="backend/src/db/pool.ts">
-import mysql, { Pool } from "mysql2/promise";
-import dotenv from "dotenv";
-dotenv.config();
-
-// Define `pool` with an explicit type
-let pool: Pool | undefined;
-
-if (process.env.NODE_ENV === "development") {
-  pool = mysql.createPool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASS,
-    database: process.env.SQL_DB,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-} else {
-  pool = mysql.createPool({
-    uri: process.env.MYSQL_PUBLIC_URL as string,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-}
-
-// prod
-
-export default pool!;
-</file>
-
-<file path="frontend/views/signup.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body data-page="signup" class="">
-        <div class="auth-wrapper container">
-            <div class="dp-f jc-s mt-1 w-100">
-                <button class="bd-w theme-btn btn-no-hover">
-                    <svg
-                        class="sun"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
-                        />
-                    </svg>
-                    <svg
-                        class="moon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-
-            <form id="signup-form" class="br-20" action="" novalidate>
-                <h1 class="mb-2">Get Started</h1>
-                <h4 class="mb-3">Signup to SKonnect.</h4>
-
-                <div class="input-box">
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        required
-                        minlength="4"
-                        maxlength="40"
-                        placeholder=""
-                    />
-                    <label for="username">Username</label>
-                    <span></span>
-                </div>
-                <div data-error-for="username" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
-                        maxlength="100"
-                        placeholder=""
-                    />
-                    <label for="email">Email</label>
-                    <span></span>
-                </div>
-                <div data-error-for="email" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="password">Password</label>
-                    <button class="btn-no-hover visib-pass-btn" type="button">
-                        <svg
-                            class="visib-on"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
-                            />
-                        </svg>
-                        <svg
-                            class="visib-off"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <div data-error-for="password" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        name="confirmPassword"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="confirmPassword">Confirm Password</label>
-                </div>
-                <div
-                    data-error-for="confirmPassword"
-                    class="signup-error-msg"
-                ></div>
-
-                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Sign up
-                </button>
-
-                <div class="gp-10 jc-c dp-f">
-                    <span> Already have an account? </span>
-                    <a class="text-white fw-bold" href="/login">Login</a>
-                </div>
-            </form>
-        </div>
-
-        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
-            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
-        </div>
-
-        <!--FOOTER --commented out -->
-        <%# include('./partials/footer.ejs') %>
-
-        <script type="module" src="/app.bundle.js"></script>
-        <script type="module" src="/signup.bundle.js"></script>
-        <script type="module" src="/nav.bundle.js"></script>
     </body>
 </html>
 </file>
@@ -6110,6 +5755,157 @@ export default router;
 }
 </file>
 
+<file path="frontend/views/signup.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="signup" class="">
+        <div class="auth-wrapper container">
+            <div class="dp-f jc-s mt-1 w-100">
+                <button class="bd-w theme-btn btn-no-hover">
+                    <svg
+                        class="sun"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="30px"
+                        viewBox="0 -960 960 960"
+                        width="30px"
+                        fill="#e8eaed"
+                    >
+                        <path
+                            d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
+                        />
+                    </svg>
+                    <svg
+                        class="moon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="30px"
+                        viewBox="0 -960 960 960"
+                        width="30px"
+                        fill="#e8eaed"
+                    >
+                        <path
+                            d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+                        />
+                    </svg>
+                </button>
+            </div>
+
+            <form id="signup-form" class="br-20" action="" novalidate>
+                <h1 class="mb-2">Get Started</h1>
+                <h4 class="mb-3">Signup to SKonnect.</h4>
+
+                <div class="input-box">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        minlength="4"
+                        maxlength="40"
+                        placeholder=""
+                    />
+                    <label for="username">Username</label>
+                    <span></span>
+                </div>
+                <div data-error-for="username" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        maxlength="100"
+                        placeholder=""
+                    />
+                    <label for="email">Email</label>
+                    <span></span>
+                </div>
+                <div data-error-for="email" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="password">Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <svg
+                            class="visib-on"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                            />
+                        </svg>
+                        <svg
+                            class="visib-off"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div data-error-for="password" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="confirmPassword">Confirm Password</label>
+                </div>
+                <div
+                    data-error-for="confirmPassword"
+                    class="signup-error-msg"
+                ></div>
+
+                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
+                    Sign up
+                </button>
+
+                <div class="gp-10 jc-c dp-f">
+                    <span> Already have an account? </span>
+                    <a class="login-link fw-bold" href="/login">Login</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
+            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
+        </div>
+
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
+
+        <script type="module" src="/app.bundle.js"></script>
+        <script type="module" src="/signup.bundle.js"></script>
+        <script type="module" src="/nav.bundle.js"></script>
+    </body>
+</html>
+</file>
+
 <file path="README.md">
 ### TODO:
 1. financial budget display and manipulation if admin
@@ -6187,26 +5983,309 @@ const authUser = async (
 export default authUser;
 </file>
 
-<file path="frontend/views/partials/head.ejs">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SKonnect<%= title ? " - " + title : "" %></title>
+<file path="frontend/src/scss/abstracts/_variables.scss">
+$themes: (
+  "dark": (
+    "primary": rgb(25, 27, 28),
+    "secondary": rgb(28, 30, 32),
+    "neutral": rgb(31, 33, 37),
+    // "tertiary": rgb(36, 38, 41),
+    "accent": rgb(0, 130, 159),
+    // "accent": #3b60e4,
+    "foreground": #f3f3f3,
+  ),
+  "light": (
+    "primary": #fcfcfc,
+    "secondary": #e3eef0,
 
-    <style>
-        /*avoid white flashing on repeated fast refreshes*/
-        html[data-theme="dark"] {
-            background-color: rgb(25, 27, 28) !important;
-        }
-    </style>
+    "tertiary": #f5f5f5,
+    "neutral": rgb(230, 230, 230),
+    "accent": rgb(0, 130, 159),
+    // "foreground": #141216,
+    "foreground": black,
+  ),
+);
 
-    <link rel="stylesheet" href="app.bundled.css" />
+$colors: (
+  "info": #326dee,
+  "warn": #f6c31c,
+  "error": #d32752,
+  "tip": #1ac886,
+  "black": black,
+  "white": white,
+  "lightgray": #d3d3d3,
+);
 
-    <!--<meta-->
-    <!--  http-equiv="Content-Security-Policy"-->
-    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
-    <!--/>-->
-</head>
+$breakpoints: (
+  "xs": 0,
+  "sm": 475px,
+  "md": 640px,
+  "lg": 760px,
+  "xl": 1024px,
+  "xxl": 1536px,
+);
+
+// spacing
+$base-padding: 0.75rem;
+$base-margin: 0.75rem;
+
+// borders
+$base-border-thickness: 1px;
+$base-border-radius: 5px;
+
+// box-shadow
+$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+
+// font sizes
+$base-font-size: 1rem;
+$font-size-sm: $base-font-size * 0.75;
+$font-size-lg: $base-font-size * 1.5;
+$font-size-xl: $base-font-size * 2;
+$font-size-xxl: $base-font-size * 3;
+</file>
+
+<file path="frontend/views/home.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="home">
+        <%- include('./partials/nav.ejs') %>
+
+        <section class="hero">
+            <div class="hero-top">
+                <img
+                    width="75px"
+                    class="sk-logo-1"
+                    src="sk-data/sk.svg"
+                    alt=""
+                />
+                <div class="hero-info ta-c">
+                    <p>Republic of the Philippines</p>
+                    <p>DISTRICT VI, CITY OF MANILA</p>
+                    <p>BARANGAY 633 – ZONE 64</p>
+                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
+                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
+                    <!--<p>Cell # 09617122859</p>-->
+                </div>
+
+                <img
+                    class="sk-logo-2 br-full"
+                    width="75px"
+                    src="sk-data/sk1.svg"
+                    alt=""
+                />
+            </div>
+        </section>
+
+        <section class="services container pt-2 pb-2">
+            <h2 class="fs-3-xs fs-4-md ta-c col-12-xs gradient-text mb-4 pt-2">
+                Explore SKonnect
+            </h2>
+
+            <div class="gp-30 pb-2 cards-container">
+                <p class="hidden caption">Services</p>
+
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >Annual Budget Allocation</strong
+                        >
+                        <svg
+                            class="default"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            width="24"
+                            height="24"
+                            stroke-width="2"
+                            style="--darkreader-inline-stroke: currentColor"
+                            data-darkreader-inline-stroke=""
+                        >
+                            <path
+                                d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
+                            ></path>
+                            <path
+                                d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
+                            ></path>
+                            <path
+                                d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
+                            ></path>
+                            <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
+                            <path d="M3 11c0 .888 .772 1.45 2 2"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >Concerns or Suggestions</strong
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            stroke="currentColor"
+                            fill="white"
+                        >
+                            <path
+                                d="M480-560h200v-80H480v80Zm0 240h200v-80H480v80ZM360-520q33 0 56.5-23.5T440-600q0-33-23.5-56.5T360-680q-33 0-56.5 23.5T280-600q0 33 23.5 56.5T360-520Zm0 240q33 0 56.5-23.5T440-360q0-33-23.5-56.5T360-440q-33 0-56.5 23.5T280-360q0 33 23.5 56.5T360-280ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >SK Council Information</strong
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="28px"
+                            viewBox="0 -960 960 960"
+                            width="28px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20 d">
+                    <div class="">
+                        <strong class="card-title">Some Random Feature</strong>
+                        <svg
+                            class="default"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            width="28"
+                            height="28"
+                            stroke-width="2"
+                            style="--darkreader-inline-stroke: currentColor"
+                            data-darkreader-inline-stroke=""
+                        >
+                            <path
+                                d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
+                            ></path>
+                            <path
+                                d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
+                            ></path>
+                            <path
+                                d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
+                            ></path>
+                            <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
+                            <path d="M3 11c0 .888 .772 1.45 2 2"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="events container pt-2 pb-2">
+            <h2
+                class="hidden fs-3-xs fs-4-md ta-c col-12-xs gradient-text pt-2"
+            >
+                Projects & Events
+            </h2>
+
+            <div class="clean-up">
+                <p class="hidden caption">Clean-up drive</p>
+
+                <div class="slideshow-container">
+                    <div class="mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-1.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-2.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Two</div>
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-3.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Three</div>
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-5.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-6.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev">&#10094;</a>
+                    <a class="next">&#10095;</a>
+                </div>
+                <br />
+                <!-- The dots/circles -->
+                <div style="text-align: center">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <div class="dummy">
+                <div class="bd-w h-600px"></div>
+            </div>
+
+            <div class="dummy">
+                <div class="bd-w h-600px"></div>
+            </div>
+        </section>
+
+        <!--temporary elem -->
+        <!--<div class="mb-6"></div>-->
+
+        <!--FOOTER-->
+        <%- include('./partials/footer.ejs') %>
+
+        <script defer type="module" src="app.bundle.js"></script>
+        <script defer type="module" src="nav.bundle.js"></script>
+        <script defer type="module" src="home.bundle.js"></script>
+    </body>
+</html>
 </file>
 
 <file path="backend/src/middlewares/devModeMiddleware.ts">
@@ -6288,8 +6367,33 @@ import "./states/theme.ts";
 //import "./states/authState.ts";
 </file>
 
-<file path="command list-panes: too many arguments (need at most 0)">
-Ptmux;_Gq=2,d=a,a=d\\
+<file path="frontend/views/partials/head.ejs">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKonnect<%= title ? " - " + title : "" %></title>
+
+    <!--<link-->
+    <!--    rel="preload"-->
+    <!--    href="app.bundled.css"-->
+    <!--    as="style"-->
+    <!--    onload="this.rel='stylesheet'"-->
+    <!--/>-->
+    <link rel="stylesheet" href="app.bundled.css" />
+    <!--<style>-->
+    <!--avoid white flashing on repeated fast refreshes-->
+    <!--html[data-theme="dark"] {-->
+    <!--background-color: rgb(25, 27, 28) !important;-->
+    <!--}-->
+    <!--</style>-->
+
+    <!--<noscript><link rel="stylesheet" href="app.bundled.css" /></noscript>-->
+
+    <!--<meta-->
+    <!--  http-equiv="Content-Security-Policy"-->
+    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
+    <!--/>-->
+</head>
 </file>
 
 <file path="backend/configs/tsconfig.json">
@@ -6352,166 +6456,64 @@ import "./states/theme.ts";
 }
 </file>
 
-<file path="frontend/views/index.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body data-page="landing">
-        <%- include('./partials/nav.ejs') %>
+<file path="frontend/src/ts/pages/home/events.ts">
+import { notifyGradient } from "../../utils/showNotif.ts";
+import { manualResizeTrigger } from "./slideShow.ts";
 
-        <section class="pb-4 hero">
-            <div class="hero-top">
-                <img
-                    width="75px"
-                    class="sk-logo-1"
-                    src="sk-data/sk.svg"
-                    alt=""
-                />
-                <div class="hero-info ta-c">
-                    <p>Republic of the Philippines</p>
-                    <p>DISTRICT VI, CITY OF MANILA</p>
-                    <p>BARANGAY 633 – ZONE 64</p>
-                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
-                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
-                    <!--<p>Cell # 09617122859</p>-->
-                </div>
+// undo skeleton layout after page load
+document.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+  });
+});
 
-                <img
-                    class="sk-logo-2 br-full"
-                    width="75px"
-                    src="sk-data/sk1.svg"
-                    alt=""
-                />
-            </div>
+//// notif message
+//const signupMsg = sessionStorage.getItem("signupSuccessNotif");
+//const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
+//if (signupMsg) {
+//  notifyGradient(signupMsg);
+//  sessionStorage.removeItem("signupSuccessNotif");
+//} else if (loginMsg) {
+//  notifyGradient(loginMsg);
+//  sessionStorage.removeItem("loginWelcomeNotif");
+//}
 
-            <div class="hero-bottom">
-                <h1 class="header-title gradient-text">SKonnect</h1>
-                <h2 class="header-text">
-                    Enhancing transparency, accountability, and participation in
-                    the Sangguniang Kabataan.
-                </h2>
-                <!--<a href="#features" class="btn">Learn More</a>-->
+// scroll animation
+const observer = new IntersectionObserver(
+  (entries, _obs) => {
+    entries.forEach((entry) => {
+      // dont trigger animation if slideShow event is hit
+      console.log("resize trigger: ", manualResizeTrigger);
+      if (manualResizeTrigger) {
+        // removing the hidden class effectively
+        // removing it too from observed elem
+        const target = entry.target as HTMLElement;
+        //target.style.transition = "none";
+        //target.style.transform = "translateY(0)";
+        target.classList.remove("hidden");
+        //void target.offsetHeight;
+        //entry.target.style.transition = "none"
+        //entry.target.classList.remove("hidden");
+        //entry.target.classList.add("show");
+        return;
+      }
 
-                <div class="mt-2 hero-links">
-                    <a
-                        class="p-1 br-40 btn-outlined-dark-accent"
-                        href="#skonnect-provides"
-                        8
-                        >Learn More</a
-                    >
-                    <a class="btn-dark-accent p-1 br-40" href="/signup"
-                        >Get Started</a
-                    >
-                </div>
-            </div>
-        </section>
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        // this doesnt work so i guess the workarond for now (immport var state)
+        //_obs.unobserve(entry.target); // Stop observing once shown
+      }
+    });
+  },
+  { threshold: 0.2 },
+);
 
-        <main id="main">
-            <h1 id="hidden skonnect-provides" class="pt-2 ta-c mb-2">
-                What SKonnect Provides
-            </h1>
-            <section id="features" class="container features">
-                <div class="features-container">
-                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
-                        <div class="pl-2">
-                            <h3 class="gradient-text">
-                                Digital Record-Keeping
-                            </h3>
-                            <div
-                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
-                            >
-                                <h4>"Paperwork? Never heard of it."</h4>
-                                <p class="">
-                                    Easily store, access, and manage SK council
-                                    documents in one secure digital hub. Say
-                                    goodbye to clutter and lost files—your
-                                    records are just a click away.
-                                </p>
-                            </div>
-                        </div>
+// Observe elements
+document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
+</file>
 
-                        <img height="400" src="//unsplash.it/400/401" alt="" />
-                    </div>
-
-                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
-                        <div class="pl-2">
-                            <h3 class="gradient-text">Financial Tracking</h3>
-                            <div
-                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
-                            >
-                                <h4>"Where did the budget go? Right here."</h4>
-                                <p>
-                                    Keep track of every peso with real-time fund
-                                    management and transparent financial
-                                    reports. No more mystery spending—just
-                                    accountability at its finest.
-                                </p>
-                            </div>
-                        </div>
-                        <img height="400" src="//unsplash.it/400/400" alt="" />
-                    </div>
-
-                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
-                        <div class="pl-2">
-                            <h3 class="gradient-text">Project Monitoring</h3>
-                            <div
-                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
-                            >
-                                <h4>"Track it. Report it. Get it done."</h4>
-                                <p>
-                                    Ensure SK initiatives stay on course with
-                                    live updates and progress tracking. From
-                                    planning to execution, monitor every step
-                                    without the paperwork headache.
-                                </p>
-                            </div>
-                        </div>
-                        <img height="400" src="//unsplash.it/400/402" alt="" />
-                    </div>
-
-                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
-                        <div class="pl-2">
-                            <h3 class="gradient-text">
-                                Communication Platform
-                            </h3>
-                            <div
-                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
-                            >
-                                <h4 class="hidden">
-                                    "Bridging the gap, one message at a time."
-                                </h4>
-                                <p>
-                                    Engage with SK officials and the youth
-                                    through direct, real-time communication. No
-                                    more bureaucratic roadblocks—just open
-                                    dialogue and instant feedback.
-                                </p>
-                            </div>
-                        </div>
-                        <img height="400" src="//unsplash.it/400/403" alt="" />
-                    </div>
-                </div>
-            </section>
-
-            <section class="p-1 ta-c impact hidden container">
-                <h2 class="mb-1">Modernizing Youth Governance</h2>
-                <p class="mb-1">
-                    With SKonnect, SK officials and youth can work together
-                    efficiently for a better community.
-                </p>
-                <a href="/signup" class="btn">Join SKonnect Now!</a>
-            </section>
-        </main>
-
-        <!--FOOTER-->
-        <%- include('./partials/footer.ejs') %>
-
-        <script type="module" src="app.bundle.js"></script>
-        <script type="module" src="landing.bundle.js"></script>
-        <script type="module" src="nav.bundle.js"></script>
-    </body>
-</html>
+<file path="command list-panes: too many arguments (need at most 0)">
+Ptmux;_Ga=d,q=2,d=a\\
 </file>
 
 <file path="frontend/src/scss/layout/_nav.scss">
@@ -6936,6 +6938,168 @@ nav {
 </nav>
 </file>
 
+<file path="frontend/views/index.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="landing">
+        <%- include('./partials/nav.ejs') %>
+
+        <section class="pb-4 hero">
+            <div class="hero-top">
+                <img
+                    width="75px"
+                    class="sk-logo-1"
+                    src="sk-data/sk.svg"
+                    alt=""
+                />
+                <div class="hero-info ta-c">
+                    <p>Republic of the Philippines</p>
+                    <p>DISTRICT VI, CITY OF MANILA</p>
+                    <p>BARANGAY 633 – ZONE 64</p>
+                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
+                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
+                    <!--<p>Cell # 09617122859</p>-->
+                </div>
+
+                <img
+                    class="sk-logo-2 br-full"
+                    width="75px"
+                    src="sk-data/sk1.svg"
+                    alt=""
+                />
+            </div>
+
+            <div class="hero-bottom">
+                <h1 class="header-title gradient-text">SKonnect</h1>
+                <h4 class="header-text">
+                    Enhancing transparency, accountability, and participation in
+                    the Sangguniang Kabataan.
+                </h4>
+                <!--<a href="#features" class="btn">Learn More</a>-->
+
+                <div class="mt-2 hero-links">
+                    <a
+                        class="p-1 br-40 btn-outlined-dark-accent"
+                        href="#skonnect-provides"
+                        8
+                        >Learn More</a
+                    >
+                    <a class="btn-dark-accent p-1 br-40" href="/signup"
+                        >Get Started</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <main id="main">
+            <h1 id="hidden skonnect-provides" class="pt-2 ta-c mb-2">
+                What SKonnect Provides
+            </h1>
+            <section id="features" class="container features">
+                <div class="features-container">
+                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
+                        <div class="pl-2">
+                            <h3 class="gradient-text">
+                                Digital Record-Keeping
+                            </h3>
+                            <div
+                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
+                            >
+                                <h4>"Paperwork? Never heard of it."</h4>
+                                <p class="">
+                                    Easily store, access, and manage SK council
+                                    documents in one secure digital hub. Say
+                                    goodbye to clutter and lost files—your
+                                    records are just a click away.
+                                </p>
+                            </div>
+                        </div>
+
+                        <img height="400" src="//unsplash.it/400/401" alt="" />
+                    </div>
+
+                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
+                        <div class="pl-2">
+                            <h3 class="gradient-text">Financial Tracking</h3>
+                            <div
+                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
+                            >
+                                <h4>"Where did the budget go? Right here."</h4>
+                                <p>
+                                    Keep track of every peso with real-time fund
+                                    management and transparent financial
+                                    reports. No more mystery spending—just
+                                    accountability at its finest.
+                                </p>
+                            </div>
+                        </div>
+                        <img height="400" src="//unsplash.it/400/400" alt="" />
+                    </div>
+
+                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
+                        <div class="pl-2">
+                            <h3 class="gradient-text">Project Monitoring</h3>
+                            <div
+                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
+                            >
+                                <h4>"Track it. Report it. Get it done."</h4>
+                                <p>
+                                    Ensure SK initiatives stay on course with
+                                    live updates and progress tracking. From
+                                    planning to execution, monitor every step
+                                    without the paperwork headache.
+                                </p>
+                            </div>
+                        </div>
+                        <img height="400" src="//unsplash.it/400/402" alt="" />
+                    </div>
+
+                    <div class="p-2 br-20 mb-5 pb-2 pt-2 hidden feature-card">
+                        <div class="pl-2">
+                            <h3 class="gradient-text">
+                                Communication Platform
+                            </h3>
+                            <div
+                                class="gradient-border mb-1 br-20 p-1 card-text-container mt-1 mb-2"
+                            >
+                                <h4 class="hidden">
+                                    "Bridging the gap, one message at a time."
+                                </h4>
+                                <p>
+                                    Engage with SK officials and the youth
+                                    through direct, real-time communication. No
+                                    more bureaucratic roadblocks—just open
+                                    dialogue and instant feedback.
+                                </p>
+                            </div>
+                        </div>
+                        <img height="400" src="//unsplash.it/400/403" alt="" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="p-1 ta-c impact hidden container">
+                <h2 class="mb-1">Modernizing Youth Governance</h2>
+                <p class="mb-1">
+                    With SKonnect, SK officials and youth can work together
+                    efficiently for a better community.
+                </p>
+                <a href="/signup" class="btn">Join SKonnect Now!</a>
+            </section>
+        </main>
+
+        <!--FOOTER-->
+        <%- include('./partials/footer.ejs') %>
+
+        <script type="module" src="app.bundle.js"></script>
+        <script type="module" src="landing.bundle.js"></script>
+        <script type="module" src="nav.bundle.js"></script>
+    </body>
+</html>
+</file>
+
 <file path="backend/src/models/User.ts">
 import type {
   ResultSetHeader,
@@ -7293,15 +7457,7 @@ const config = {
     //  //  : []),
     //  "./frontend/src/webpack-app-entry.ts",
     //],
-    app: [
-      ...(isDevelopment
-        ? [
-            "webpack-hot-middleware/client?reload=true&timeout=1",
-            //"webpack/hot/dev-server",
-          ]
-        : []),
-      "./frontend/src/webpack-app-entry.ts",
-    ],
+    app: ["./frontend/src/webpack-app-entry.ts"],
     landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],

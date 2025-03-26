@@ -21,12 +21,34 @@ const signupUser = async (jsonData: SignupData) => {
     const result = await response.json();
 
     if (!response.ok) {
-      console.error("Signup failed:", result.message || "Unknown error");
-      notifyError(result.message || "Signup failed");
+      let errMsg = "Signup failed";
+      const err = result.err;
+      console.log(typeof err);
+
+      if (err) {
+        if (typeof err === "string") {
+          errMsg = err;
+        } else if (typeof err === "object") {
+          // Extract first error message from the object
+          const firstKey = Object.keys(err)[0];
+          errMsg = err[firstKey] || errMsg;
+        }
+      }
+
+      console.log("err msg: ", errMsg);
+      notifyError(errMsg);
+      //console.log("signup err: ", result.err);
+      //const errMsg = result.err
+      //  ? typeof result.err === "string"
+      //    ? result.err
+      //    : JSON.stringify(result.err)
+      //  : "Signup failed";
+      //notifyError(errMsg);
+      //notifyError(errMsg || "Signup failed");
+      return;
 
       //document.cookie =
       //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      return;
     }
 
     // saving this for illusory transcedental notif accross pages

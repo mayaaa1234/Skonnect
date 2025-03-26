@@ -12,10 +12,10 @@ export const errorHandler = (
   if (err instanceof CustomError) {
     console.error("Error message:", err.message);
     return res.status(err.statusCode).json({
-      msg:
-        process.env.NODE_ENV === "production"
-          ? "Something went wrong, please try again later."
-          : err.message,
+      err: err.message,
+      //process.env.NODE_ENV === "production"
+      //? "Something went wrong, please try again later."
+      //: err.message,
     });
   }
 
@@ -28,5 +28,5 @@ export const errorHandler = (
 
   return res
     .status(500)
-    .json({ msg: "Something went wrong, please try again later." });
+    .json({ err: "Something went wrong, please try again later." });
 };

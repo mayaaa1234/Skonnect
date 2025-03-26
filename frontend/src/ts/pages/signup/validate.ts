@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ) as unknown as SignupData;
 
     //console.log({ jsonData });
-    form.reset();
     await signupUser(jsonData);
+    form.reset();
   });
 });

@@ -5,30 +5,228 @@
     <body data-page="home">
         <%- include('./partials/nav.ejs') %>
 
-        <a href="/budget-allocation"></a>
+        <section class="hero">
+            <div class="hero-top">
+                <img
+                    width="75px"
+                    class="sk-logo-1"
+                    src="sk-data/sk.svg"
+                    alt=""
+                />
+                <div class="hero-info ta-c">
+                    <p>Republic of the Philippines</p>
+                    <p>DISTRICT VI, CITY OF MANILA</p>
+                    <p>BARANGAY 633 – ZONE 64</p>
+                    <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>
+                    <p>Quintina Street, Sta Mesa, Manila 1016</p>
+                    <!--<p>Cell # 09617122859</p>-->
+                </div>
 
-        <!--<header class="container">-->
-        <!--    <div class="dp-f jc-sb pl-1 pr-1 mt-4 mb-1 hero-left">-->
-        <!--        <img width="75px" src="sk-data/sk.svg" alt="" />-->
-        <!--        <img-->
-        <!--            class="br-full"-->
-        <!--            width="75px"-->
-        <!--            src="sk-data/sk1.svg"-->
-        <!--            alt=""-->
-        <!--        />-->
-        <!--    </div>-->
-        <!---->
-        <!--    <div class="hero-middle ta-c">-->
-        <!--        <p>Republic of the Philippines</p>-->
-        <!--        <p>DISTRICT VI, CITY OF MANILA</p>-->
-        <!--        <p>BARANGAY 633 – ZONE 64</p>-->
-        <!--        <p>OFFICE OF THE SANGGUNIANG KABATAAN</p>-->
-        <!--        <p>Quintina Street, Sta Mesa, Manila 1016</p>-->
-        <!--        <!--<p>Cell # 09617122859</p>-->
-        <!--    </div>-->
-        <!---->
-        <!--    <div class="hero-right"></div>-->
-        <!--</header>-->
+                <img
+                    class="sk-logo-2 br-full"
+                    width="75px"
+                    src="sk-data/sk1.svg"
+                    alt=""
+                />
+            </div>
+        </section>
+
+        <section class="services container pt-2 pb-2">
+            <h2 class="fs-3-xs fs-4-md ta-c col-12-xs gradient-text mb-4 pt-2">
+                Explore SKonnect
+            </h2>
+
+            <div class="gp-30 pb-2 cards-container">
+                <p class="hidden caption">Services</p>
+
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >Annual Budget Allocation</strong
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            width="24"
+                            height="24"
+                            stroke-width="2"
+                            style="--darkreader-inline-stroke: currentColor"
+                            data-darkreader-inline-stroke=""
+                        >
+                            <path
+                                d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
+                            ></path>
+                            <path
+                                d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
+                            ></path>
+                            <path
+                                d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
+                            ></path>
+                            <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
+                            <path d="M3 11c0 .888 .772 1.45 2 2"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >Concerns or Suggestions</strong
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M480-560h200v-80H480v80Zm0 240h200v-80H480v80ZM360-520q33 0 56.5-23.5T440-600q0-33-23.5-56.5T360-680q-33 0-56.5 23.5T280-600q0 33 23.5 56.5T360-520Zm0 240q33 0 56.5-23.5T440-360q0-33-23.5-56.5T360-440q-33 0-56.5 23.5T280-360q0 33 23.5 56.5T360-280ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20">
+                    <div class="">
+                        <strong class="card-title"
+                            >SK Council Information</strong
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="28px"
+                            viewBox="0 -960 960 960"
+                            width="28px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
+                            />
+                        </svg>
+                    </div>
+                </div>
+                <div class="card hidden p-2 br-20 d">
+                    <div class="">
+                        <strong class="card-title">Some Random Feature</strong>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            width="28"
+                            height="28"
+                            stroke-width="2"
+                            style="--darkreader-inline-stroke: currentColor"
+                            data-darkreader-inline-stroke=""
+                        >
+                            <path
+                                d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
+                            ></path>
+                            <path
+                                d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4"
+                            ></path>
+                            <path
+                                d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
+                            ></path>
+                            <path d="M3 6v10c0 .888 .772 1.45 2 2"></path>
+                            <path d="M3 11c0 .888 .772 1.45 2 2"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="events container pt-2 pb-2">
+            <h2
+                class="hidden fs-3-xs fs-4-md ta-c col-12-xs gradient-text pt-2"
+            >
+                Projects & Events
+            </h2>
+
+            <div class="clean-up">
+                <p class="hidden caption">Clean-up drive</p>
+
+                <div class="slideshow-container">
+                    <div class="hidden mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-1.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <div class="hidden mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-2.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Two</div>
+                    </div>
+
+                    <div class="hidden mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-3.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Three</div>
+                    </div>
+
+                    <div class="hidden mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-5.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <div class="hidden mySlides fade">
+                        <div class="numbertext"></div>
+                        <img
+                            src="sk-data/clean-6.webp"
+                            class="br-20"
+                            style="height: 600px; width: 100%"
+                        />
+                        <div class="text">Caption Text</div>
+                    </div>
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev">&#10094;</a>
+                    <a class="next">&#10095;</a>
+                </div>
+                <br />
+                <!-- The dots/circles -->
+                <div style="text-align: center">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <div class="dummy">
+                <div class="bd-w h-600px"></div>
+            </div>
+
+            <div class="dummy">
+                <div class="bd-w h-600px"></div>
+            </div>
+        </section>
+
+        <!--temporary elem -->
+        <!--<div class="mb-6"></div>-->
 
         <!--FOOTER-->
         <%- include('./partials/footer.ejs') %>

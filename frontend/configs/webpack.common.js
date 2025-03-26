@@ -30,12 +30,13 @@ const config = {
     app: [
       ...(isDevelopment
         ? [
-            "webpack-hot-middleware/client?reload=true&timeout=5",
+            "webpack-hot-middleware/client?reload=true&timeout=1",
             //"webpack/hot/dev-server",
           ]
         : []),
       "./frontend/src/webpack-app-entry.ts",
     ],
+    landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],

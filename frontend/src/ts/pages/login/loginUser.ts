@@ -28,11 +28,8 @@ export default async function loginUser(jsonData: LoginData) {
       return;
     }
 
-    // saving this for illusory transcedental notif accross pages
-    sessionStorage.setItem("loginWelcomeNotif", "Welcome!");
-
+    sessionStorage.setItem("loginWelcomeNotif", "Welcome Back!");
     console.log("Login successful", result);
-    //notifySuccess("Welcome!");
 
     window.location.href = "/home";
   } catch (error) {

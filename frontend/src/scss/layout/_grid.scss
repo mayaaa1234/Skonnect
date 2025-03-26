@@ -3,7 +3,6 @@
 @use "../abstracts/mixins" as *;
 
 $grid-columns: 12;
-
 $grid-gaps: (
   "0": 0,
   "1": 5px,
@@ -37,10 +36,11 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   flex-flow: row wrap;
 }
 
-// grid gaps
+// grid gaps (cant seem to make this work idk)
+// tho still prob better to just use native gap
 @each $key, $val in $grid-gaps {
   .gap-#{$key} > * {
-    padding: $val;
+    padding: $val !important;
   }
   .gap-#{$key} {
     margin-left: -$val;

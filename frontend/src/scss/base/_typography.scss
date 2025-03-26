@@ -1,3 +1,7 @@
+// @use "sass:map";
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+
 @import url("https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&display=swap");
 
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
@@ -7,5 +11,112 @@
 }
 
 // .logo-name {
-//   font-family: "Londrina Solid", sans-serif;
+// font-family: "Londrina Solid", sans-serif;
 // }
+
+// @include sm {
+// }
+//
+// @include md {
+// }
+//
+// @include lg {
+// }
+//
+// @include lx {
+// }
+
+$font-size: (
+  "n1": 0.8rem,
+  "1": 1rem,
+  "2": 1.5rem,
+  "3": 2rem,
+  "4": 2.5rem,
+  "5": 3rem,
+  "6": 3.5rem,
+  "7": 4rem,
+  "8": 4.5rem,
+);
+
+@each $size, $value in $font-size {
+  @include xs {
+    .fs-#{$size}-xs {
+      font-size: $value;
+    }
+  }
+  @include sm {
+    .fs-#{$size}-sm {
+      font-size: $value;
+    }
+  }
+  @include md {
+    .fs-#{$size}-md {
+      font-size: $value;
+    }
+  }
+  @include lg {
+    .fs-#{$size}-lg {
+      font-size: $value;
+    }
+  }
+  @include xl {
+    .fs-#{$size}-xl {
+      font-size: $value;
+    }
+  }
+}
+// @each $size in $breakpoints {
+//   @include #{size} {
+//     @each $k, $v in $font-size {
+//       .fs-#{$k} {
+//         font-size: $v;
+//       }
+//     }
+//     // .font-size-
+//   }
+// }
+
+// @include xs {
+
+$font-weights: (
+  "light": 300,
+  "normal": 400,
+  "medium": 500,
+  "semibold": 600,
+  "bold": 700,
+  "extrabold": 800,
+);
+
+@each $name, $weight in $font-weights {
+  .fw-#{$name} {
+    font-weight: $weight;
+  }
+}
+
+// Letter Spacing Utilities
+$letter-spacing: (
+  "narrow": -0.05em,
+  "normal": 0,
+  "wide": 0.05em,
+  "wider": 0.1em,
+  "widest": 0.2em,
+);
+
+@each $name, $spacing in $letter-spacing {
+  .ls-#{$name} {
+    letter-spacing: $spacing;
+  }
+}
+
+// Text Transform Utilities
+.text-transform-upper {
+  text-transform: uppercase;
+}
+
+.text-transform-lower {
+  text-transform: lowercase;
+}
+
+.text-transform-capitalize {
+  text-transform: capitalize;
+}

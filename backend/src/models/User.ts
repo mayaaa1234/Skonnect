@@ -37,7 +37,7 @@ export default class User {
 
   // TODO: getAllUsers?
 
-  signupValidation = async (): Promise<string | null> => {
+  signupValidation = async (): Promise<{ [key: string]: string } | null> => {
     const errors: { [key: string]: string } = {};
 
     if (!this.username || this.username.length < 4)
@@ -71,7 +71,7 @@ export default class User {
 
     if (Object.keys(errors).length > 0) {
       //throw new Error(JSON.stringify(errors)); // send errors as JSON
-      return JSON.stringify(errors);
+      return errors;
     } else {
       return null;
     }
@@ -87,15 +87,16 @@ export default class User {
   // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if conforming to contstraints thus the code:
 
   // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (security reasons)
-  loginValidation = async () => {
+  loginValidation = async (): Promise<{ [key: string]: string } | null> => {
     if (this.email && this.username)
-      return "Provide only either email or username.";
+      return { err: "Provide only either email or username." };
 
     console.log("login info:", this.email, this.username);
 
     //INFO: if user used an email to login
     if (this.email && !this.username) {
-      if (!emailRegex.test(this.email)) return "Email is not valid.";
+      if (!emailRegex.test(this.email))
+        return { notValid: "Email is not valid." };
 
       const [rows] = await pool.execute<RowDataPacket[]>(
         `SELECT * FROM users WHERE email = ?`,
@@ -104,13 +105,13 @@ export default class User {
       console.log({ rows });
 
       if (rows.length === 0) {
-        return "Email not found.";
+        return { emailNotFound: "Email not found." };
       }
 
       const { id, username, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return "Wrong Password, Try again.";
+      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
 
       // will be sent to the client
       this.id = id;
@@ -128,13 +129,13 @@ export default class User {
       //console.log({ rows });
 
       if (rows.length === 0) {
-        return "Username not found.";
+        return { userNotFound: "Username not found." };
       }
 
       const { id, username, email, password, isAdmin } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return "Wrong Password, Try again.";
+      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
 
       // will be sent to the client
       //console.log("LOGIN VALIDATION INFO :", { id, username, email, isAdmin });

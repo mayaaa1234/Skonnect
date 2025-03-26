@@ -4,13 +4,20 @@
 @use "sass:map";
 
 body[data-page="landing"] {
-  //   height: 100vh;
-  //   padding-top: $nav-height; // from nav.sccs
-  //   overflow-y: auto;
-  //   @include mobile {
-  //     padding-top: 67px !important;
-  //     // height: 100dvh !important;
-  //   }
+  // ------------------------------
+  // for scroll animation
+  .hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  // ------------------------------
 
   .hero {
     position: relative;

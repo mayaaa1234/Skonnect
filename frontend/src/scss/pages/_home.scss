@@ -1,5 +1,313 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+// @use "../layout/nav" as *;
+
 body[data-page="home"] {
-  // header {
-  //   display: flex;
-  // }
+  &[data-theme="light"] {
+    background-color: var(--tertiary);
+  }
+
+  // all captions on the page
+  .caption {
+    font-weight: bold;
+    padding-left: 7px;
+    padding-bottom: 5px;
+
+    @include xs {
+      font-size: $font-size-lg;
+    }
+
+    @include xl {
+      font-size: $font-size-xl;
+      text-align: center;
+    }
+  }
+
+  // ------------------------------
+  // for scroll animation
+  .hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  // ------------------------------
+
+  .hero-top {
+    display: grid;
+    grid-template: repeat(2, auto) / repeat(2, auto);
+    padding: 1rem;
+    align-items: center;
+    gap: 5px;
+    background-color: var(--neutral);
+
+    .sk-logo-1 {
+      grid: 1 / 1;
+      // border: 1px solid white;
+    }
+
+    .sk-logo-2 {
+      justify-self: end;
+    }
+
+    .hero-info {
+      margin-top: $base-padding * -1;
+      grid-row: 2;
+      grid-column: 1 /3;
+    }
+
+    @include md {
+      grid-template-columns: repeat(3, auto);
+
+      .sk-logo-2,
+      .sk-logo-1 {
+        justify-self: center;
+      }
+
+      .hero-info,
+      .sk-logo-2,
+      .sk-logo-1 {
+        grid-row: initial;
+        grid-column: initial;
+      }
+
+      img {
+        width: 100px;
+      }
+    }
+
+    @include lg {
+      img {
+        width: 125px;
+      }
+    }
+
+    @include xl {
+      img {
+        width: 150px;
+      }
+    }
+  }
+
+  section {
+    background-color: var(--tertiary);
+  }
+
+  section.services {
+    h3 {
+      // border-bottom: 1 solid rgba(var(--accent), 0.1);
+
+      @include lg {
+        text-align: center;
+      }
+    }
+
+    .cards-container {
+      margin-inline: auto;
+      max-width: 1300px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      // justify-items: center;
+
+      @include max-bp(660px) {
+        p {
+          justify-self: center !important;
+        }
+      }
+
+      p {
+        margin-bottom: -30px;
+        justify-self: start;
+        grid-column: 1 / -1;
+      }
+
+      .card {
+        // margin-inline: auto;
+        background-color: var(--secondary);
+        cursor: pointer;
+        perspective: 1000px;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+
+        @include max-bp(660px) {
+          width: min(100%, 450px);
+          margin: 0 auto;
+        }
+
+        @include md {
+          // max-width: unset;
+        }
+
+        &:hover {
+          transform: scale(1.05) rotateY(10deg) rotateX(10deg);
+          box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+        & > div:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          border-left: 4px solid var(--accent);
+          height: 80px;
+          // border: 1px solid white;
+        }
+
+        // strong {
+        // }
+        // svg {
+        //   // border: 1px solid white;
+        //   // flex: 0 1 100%;
+        // }
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+
+  section.events {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+
+    h2 {
+      //  60px gap + 12px mb which is 72px
+      // (matches with explore skconnect text mb px)
+      margin-bottom: 12px;
+    }
+
+    .dummy,
+    .clean-up {
+      flex-basis: 600px;
+    }
+
+    .slideshow-container {
+      position: relative;
+
+      img {
+        min-width: 350px;
+      }
+    }
+
+    /* Hide the images by default */
+    .mySlides {
+      display: none;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      margin-top: -22px;
+      padding: 16px;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+
+      &:hover {
+        border-radius: 8px;
+        opacity: 0.8;
+        background-color: var(--accent);
+      }
+    }
+
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    /* Caption text */
+    .text {
+      color: #f2f2f2;
+      font-size: 15px;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+      color: black;
+      // font-size: 14px;
+      padding: 8px 12px;
+      position: absolute;
+      top: 0;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+
+      &.active {
+        background-color: var(--accent);
+      }
+
+      &:hover {
+        background-color: #717171;
+      }
+    }
+
+    /* Fading animation */
+    .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+[data-theme="dark"] {
+  body[data-page="home"] {
+    .card {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+      // background-color: var(--secondary);
+    }
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="home"] {
+    border-top: none;
+    .card {
+      // background-color: #fff;  // Ensure the card itself is light
+      // border-radius: 8px;
+      // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
+      // 0 8px 16px rgba(0, 0, 0, 0.1);
+      //   box-shadow:
+      //     2px 2px 4px rgba(0, 0, 0, 0.1),
+      //     4px 8px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
 }

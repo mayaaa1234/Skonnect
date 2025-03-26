@@ -22,9 +22,10 @@ const observer = new IntersectionObserver(
         // removing the hidden class effectively
         // removing it too from observed elem
         const target = entry.target as HTMLElement;
-        target.style.transition = "none";
-        target.style.transform = "translateY(0)";
+        //target.style.transition = "none";
+        //target.style.transform = "translateY(0)";
         target.classList.remove("hidden");
+        void target.offsetHeight;
         //entry.target.style.transition = "none"
         //entry.target.classList.remove("hidden");
         //entry.target.classList.add("show");

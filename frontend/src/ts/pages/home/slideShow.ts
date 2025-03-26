@@ -1,8 +1,8 @@
 export let manualResizeTrigger = false;
 document.addEventListener("DOMContentLoaded", () => {
-  //document.querySelectorAll("img").forEach((img) => {
-  //  img.setAttribute("loading", "lazy");
-  //});
+  document.querySelectorAll("img").forEach((img) => {
+    img.setAttribute("loading", "lazy");
+  });
 
   //export let manualResizeTrigger = false;
   let slideIndex = 1;

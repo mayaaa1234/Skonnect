@@ -30,7 +30,7 @@ const config = {
     app: [
       ...(isDevelopment
         ? [
-            "webpack-hot-middleware/client?reload=true&timeout=1",
+            //"webpack-hot-middleware/client?reload=true&timeout=1",
             //"webpack/hot/dev-server",
           ]
         : []),

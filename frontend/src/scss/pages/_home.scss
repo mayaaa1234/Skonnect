@@ -94,10 +94,6 @@ body[data-page="home"] {
     }
   }
 
-  section {
-    background-color: var(--tertiary);
-  }
-
   section.services {
     h3 {
       // border-bottom: 1 solid rgba(var(--accent), 0.1);
@@ -284,6 +280,10 @@ body[data-page="home"] {
         opacity: 1;
       }
     }
+  }
+
+  section {
+    background-color: var(--tertiary);
   }
 }
 

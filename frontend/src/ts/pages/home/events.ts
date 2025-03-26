@@ -25,7 +25,7 @@ const observer = new IntersectionObserver(
         //target.style.transition = "none";
         //target.style.transform = "translateY(0)";
         target.classList.remove("hidden");
-        void target.offsetHeight;
+        //void target.offsetHeight;
         //entry.target.style.transition = "none"
         //entry.target.classList.remove("hidden");
         //entry.target.classList.add("show");

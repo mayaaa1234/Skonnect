@@ -309,5 +309,13 @@ body[data-page="home"] {
       //     2px 2px 4px rgba(0, 0, 0, 0.1),
       //     4px 8px 16px rgba(0, 0, 0, 0.1);
     }
+    svg:not(.default) {
+      fill: black;
+    }
+
+    .dummy {
+      border: 1px solid black;
+      border-radius: 20px;
+    }
   }
 }

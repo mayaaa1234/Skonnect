@@ -8,7 +8,7 @@ const emailRegex = new RegExp(
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
+  //autoFillForm();
 
   const form = document.getElementById("login-form") as HTMLFormElement | null;
   if (!form) return;

@@ -2,13 +2,14 @@
 @use "../layout/nav" as *;
 
 body[data-page="profile"] {
+  @include mobile {
+    height: 100dvh !important;
+  }
+  height: 100vh;
+
   div.profile-container {
     height: calc(100vh - #{$nav-height}) !important;
     // height: 800px !important;
-
-    @include mobile {
-      height: calc(100dvh - #{$nav-height}) !important;
-    }
 
     .lower-container,
     .upper-container {

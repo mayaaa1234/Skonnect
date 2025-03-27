@@ -1,13 +1,10 @@
 import signupUser from "./signupUser.ts";
 import autoFillForm from "../../utils/scripts/autoFillForm.ts";
 import type { SignupData } from "./signupUser.ts";
-//import process from "process";
-//import dotenv from "dotenv";
-//dotenv.config();
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
+  //autoFillForm();
 
   const form = document.getElementById("signup-form") as HTMLFormElement | null;
   if (!form) return;
@@ -103,6 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Form submission handler
   form.addEventListener("submit", async (e: SubmitEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains("theme-btn")) {
+      e.preventDefault();
+      return;
+    }
+
     e.preventDefault();
 
     // Validate all fields

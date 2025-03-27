@@ -53,6 +53,12 @@
   }
 }
 
+@mixin pc {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
 @mixin webkit {
   @media screen and (-webkit-min-device-pixel-ratio: 0) {
     @content;

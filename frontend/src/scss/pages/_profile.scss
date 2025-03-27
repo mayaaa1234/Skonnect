@@ -2,10 +2,10 @@
 @use "../layout/nav" as *;
 
 body[data-page="profile"] {
+  height: 100vh;
   @include mobile {
     height: 100dvh !important;
   }
-  height: 100vh;
 
   div.profile-container {
     height: calc(100vh - #{$nav-height}) !important;

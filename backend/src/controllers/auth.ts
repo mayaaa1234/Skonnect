@@ -18,15 +18,13 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   let isAdmin = false;
   if (adminKey) {
     if (adminKey !== process.env.ADMIN_KEY) {
-      throw mkCustomError("Invalid admin key.", 401);
+      throw mkCustomError({ status: 401, msg: "Invalid admin key." });
     }
     isAdmin = true;
   }
 
   const user = new User(username, email, password, confirmPassword, isAdmin);
-  const errors = await user.signupValidation();
-  if (errors) throw mkCustomError(errors, 400);
-
+  await user.signupValidation();
   await user.saveDB();
 
   //user has id from sql auto increment
@@ -79,8 +77,7 @@ const login = async (req: Request, res: Response) => {
 
   const user = new User(username, email, password);
 
-  const err = await user.loginValidation();
-  if (err) throw mkCustomError(err, 400);
+  await user.loginValidation();
 
   const token = jwt.sign(
     {

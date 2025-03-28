@@ -4,13 +4,14 @@ import User from "../models/User.ts";
 
 export const info = async (req: Request, res: Response) => {
   if (!req.user) {
-    throw mkCustomError("Req user is empty", 404);
+    throw mkCustomError({ status: 404, msg: "req.user not found." });
   }
+
   const { userId } = req.user;
 
   const user = await User.findById(userId);
   if (!user) {
-    throw mkCustomError("User not found", 404);
+    throw mkCustomError({ status: 404, msg: "User not found." });
   }
 
   const { userId: id, username, email, password, isAdmin } = user;
@@ -25,7 +26,7 @@ export const info = async (req: Request, res: Response) => {
 
 export const status = async (req: Request, res: Response) => {
   if (!req.user) {
-    throw mkCustomError("Req user is empty", 404);
+    throw mkCustomError({ status: 404, msg: "User not found." });
   }
 
   res.status(200).json({

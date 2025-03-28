@@ -37,20 +37,20 @@ export default class User {
 
   // TODO: getAllUsers?
 
-  signupValidation = async (): Promise<{ [key: string]: string } | null> => {
-    const errors: { [key: string]: string } = {};
+  signupValidation = async (): Promise<void> => {
+    const errs: { [key: string]: string } = {};
 
     if (!this.username || this.username.length < 4)
-      errors.username = "Username must be at least 4 characters long.";
+      errs.username = "username must be at least 4 characters long.";
 
     if (!this.email || !emailRegex.test(this.email))
-      errors.email = "Email is not valid.";
+      errs.email = "email is not valid.";
 
     if (!this.password || this.password.length < 8)
-      errors.password = "Password must be at least 8 characters long.";
+      errs.password = "password must be at least 8 characters long.";
 
     if (this._confirmPassword && this._confirmPassword !== this.password)
-      errors.confirmPassword = "Password does not match.";
+      errs.confirmPassword = "Password does not match.";
 
     const [rows] = await pool.execute<RowDataPacket[]>(
       `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS emailExists`,
@@ -58,7 +58,7 @@ export default class User {
     );
     const emailExists = rows[0].emailExists;
     if (emailExists) {
-      errors.email = "Email already in use.";
+      errs.email = "email already in use.";
     }
 
     //const [rows] = await pool.execute<RowDataPacket[]>(
@@ -69,34 +69,40 @@ export default class User {
     //  errors.email = "Email already in use.";
     //}
 
-    if (Object.keys(errors).length > 0) {
-      //throw new Error(JSON.stringify(errors)); // send errors as JSON
-      return errors;
-    } else {
-      return null;
+    console.log({ errs });
+    if (Object.keys(errs).length > 0) {
+      throw mkCustomError({ status: 400, errs });
     }
-
-    //catch:
-    throw mkCustomError("Signup failed, please try again.", 500);
   };
 
   //SQL CONSTRAINTS: both username and email is unique
   // FLOW: (1) if email is used as a login method, check if valid email using regex and then check if it exists then check if pass is correct, skipping the username validation.
   // (2) if username is used as a login method do the same validation and skip the email validation
   // NOTE, unlike signup which aggregates and sends all err's at once so that the user can instantly know which input is wrong based on contstraints.
-  // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if conforming to contstraints thus the code:
-
-  // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (security reasons)
-  loginValidation = async (): Promise<{ [key: string]: string } | null> => {
+  // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if user is conforming to contstraints. Thus, the code:
+  loginValidation = async (): Promise<void> => {
     if (this.email && this.username)
-      return { err: "Provide only either email or username." };
+      throw mkCustomError({
+        status: 400,
+        msg: "provide only either email or username.",
+      });
+    //return { err: "Provide only either email or username." };
+
+    //INFO: unlike signup, login's logic and especially considering ux, sends
+    // only one err at a time. So this will only send a string unlike the signup
+    // that sends an json obj.
 
     console.log("login info:", this.email, this.username);
 
     //INFO: if user used an email to login
     if (this.email && !this.username) {
       if (!emailRegex.test(this.email))
-        return { notValid: "Email is not valid." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            email: "email is not valid.",
+          },
+        });
 
       const [rows] = await pool.execute<RowDataPacket[]>(
         `SELECT * FROM users WHERE email = ?`,
@@ -105,19 +111,29 @@ export default class User {
       console.log({ rows });
 
       if (rows.length === 0) {
-        return { emailNotFound: "Email not found." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            email: "email does not exist.",
+          },
+        });
       }
 
       const { id, username, password } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
 
+      throw mkCustomError({
+        status: 404,
+        errs: {
+          password: "wrong password, please try again.",
+        },
+      });
       // will be sent to the client
       this.id = id;
       this.username = username;
 
-      return null;
+      //return null;
     }
 
     //INFO: if user used a username to login
@@ -129,13 +145,25 @@ export default class User {
       //console.log({ rows });
 
       if (rows.length === 0) {
-        return { userNotFound: "Username not found." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            username: "username does not exist.",
+          },
+        });
       }
 
       const { id, username, email, password, isAdmin } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
+      if (!isMatch) {
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            password: "wrong password, please try again.",
+          },
+        });
+      }
 
       // will be sent to the client
       //console.log("LOGIN VALIDATION INFO :", { id, username, email, isAdmin });
@@ -144,11 +172,8 @@ export default class User {
       this.email = email;
       this.isAdmin = isAdmin;
 
-      return null;
+      //return null;
     }
-
-    //catch block
-    throw mkCustomError("Login failed, please try again.", 500);
   };
 
   saveDB = async () => {
@@ -169,10 +194,10 @@ export default class User {
       return;
     }
 
-    throw mkCustomError(
-      "An error occurred while saving the user to the database.",
-      500,
-    );
+    throw mkCustomError({
+      status: 500,
+      msg: "An error occurred while saving the user to the database.",
+    });
   };
 
   static findById = async (id: number) => {

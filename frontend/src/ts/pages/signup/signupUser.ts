@@ -6,7 +6,6 @@ export interface SignupData {
   email: string;
   password: string;
   confirmPassword: string;
-  adminKey?: string;
 }
 
 const signupUser = async (jsonData: SignupData) => {
@@ -17,38 +16,49 @@ const signupUser = async (jsonData: SignupData) => {
       body: JSON.stringify(jsonData),
       credentials: "include",
     });
+
     console.log({ response });
     const result = await response.json();
 
+    //INFO: if validation failed on the BE it sends an json obj
     if (!response.ok) {
-      let errMsg = "Signup failed";
-      const err = result.err;
-      console.log(typeof err);
+      console.log("signup validation failed");
 
-      if (err) {
-        if (typeof err === "string") {
-          errMsg = err;
-        } else if (typeof err === "object") {
-          // Extract first error message from the object
-          const firstKey = Object.keys(err)[0];
-          errMsg = err[firstKey] || errMsg;
-        }
+      if (result.errs && typeof result.errs === "object") {
+        // clear prev errs
+        document
+          .querySelectorAll(".signup-error-msg")
+          .forEach((el) => (el.textContent = ""));
+
+        Object.entries(result.errs).forEach(([fieldName, message]) => {
+          const errorDiv = document.querySelector(
+            `.signup-error-msg[data-error-for="${fieldName}"]`,
+          ) as HTMLElement | null;
+
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+
+          // Add invalid class to the input field
+          // this is useful when:
+          // .invalid {
+          //  border: 2px solid red;
+          //  background-color: #ffe6e6;
+          //}
+
+          //tho not gonna use it in this project
+
+          //const inputField = document.querySelector(
+          //  `input[name="${fieldName}"]`,
+          //) as HTMLInputElement | null;
+          //
+          //if (inputField) {
+          //  inputField.classList.add("invalid");
+          //}
+        });
       }
 
-      console.log("err msg: ", errMsg);
-      notifyError(errMsg);
-      //console.log("signup err: ", result.err);
-      //const errMsg = result.err
-      //  ? typeof result.err === "string"
-      //    ? result.err
-      //    : JSON.stringify(result.err)
-      //  : "Signup failed";
-      //notifyError(errMsg);
-      //notifyError(errMsg || "Signup failed");
       return;
-
-      //document.cookie =
-      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
 
     // saving this for illusory transcedental notif accross pages

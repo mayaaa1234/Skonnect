@@ -26,7 +26,10 @@ const authUser = async (
   }
 
   if (!token) {
-    throw mkCustomError("Authentication Invalid: No Token Provided.", 401);
+    throw mkCustomError({
+      status: 401,
+      msg: "Authentication Invalid: No Token Provided.",
+    });
   }
 
   //console.log({ token });
@@ -43,7 +46,7 @@ const authUser = async (
     res.locals.user = decoded; // sent to ejs
     next();
   } catch (error) {
-    throw mkCustomError("Invalid or expired token.", 401);
+    throw mkCustomError({ status: 401, msg: "Invalid or expired token." });
   }
 };
 

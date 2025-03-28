@@ -6,10 +6,12 @@ const emailRegex = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 );
 
+//const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
   if (process.env.NODE_ENV !== "production") {
-    autoFillForm();
+    //autoFillForm();
   }
 
   const form = document.getElementById("login-form") as HTMLFormElement | null;
@@ -42,38 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateField(field: HTMLInputElement) {
     const value = field.value.trim();
 
-    //check if value is email or username
-    // and overwrite generic user-identifier name attribute
-    // and type of text if email.
-    if (field.name === "user-identifier") {
-      if (emailRegex.test(value)) {
-        field.name = "email";
-        field.type = "email";
-      } else {
-        field.name = "username";
-        //field.type = "text"; // already text in html
-      }
-    }
-
+    //console.log("name: ", field.attributes);
     console.log("name: ", field.name);
     console.log("type: ", field.type);
 
     switch (field.name) {
-      case "username":
+      case "user-identifier":
         if (!value) {
           showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          //showError(field, "field must be at least 4 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "email":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
+          //} else if (!field.validity.valid) {
+          //  //showError(field, "field must be at least 4 characters long.");
         } else {
           clearError(field);
         }
@@ -117,13 +97,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (hasErrors) return;
 
-    const formData = new FormData(form);
-    //console.log({ formData });
-    const jsonData = Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ) as unknown as LoginData;
+    const userIdentifier = form.querySelector(
+      "#user-identifier",
+    ) as HTMLInputElement;
+    const value = userIdentifier.value.trim();
 
-    await loginUser(jsonData);
-    form.reset();
+    const passwordInput = form.querySelector(
+      'input[name="password"]',
+    ) as HTMLInputElement;
+
+    const loginData: LoginData = {
+      password: passwordInput.value,
+    };
+
+    // if the value matches the email regex, add it as an email,
+    // otherwise as username.
+    if (emailRegex.test(value)) {
+      loginData.email = value;
+    } else {
+      loginData.username = value;
+    }
+
+    await loginUser(loginData);
   });
 });

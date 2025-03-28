@@ -19,12 +19,52 @@ export default async function loginUser(jsonData: LoginData) {
     console.log({ response });
     const result = await response.json();
 
-    if (!response.ok) {
-      console.error("Login failed:", result.message || "Unknown error");
-      notifyError(result.message || "Login failed, please try again later.");
+    //if (!response.ok) {
+    //  console.error("Login failed:", result.message || "Unknown error");
+    //  notifyError(result.message || "Login failed, please try again later.");
+    //
+    //  //document.cookie =
+    //  //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    //  return;
+    //
+    //}
+    //
 
-      //document.cookie =
-      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    if (!response.ok) {
+      console.log("login validation failed");
+      console.log({ result });
+
+      if (result.errs && typeof result.errs === "object") {
+        // clear prev errs
+        document
+          .querySelectorAll(".error") // yeah, name of the err div of login ejs
+          .forEach((el) => (el.textContent = ""));
+
+        const fieldName = Object.keys(result.errs)[0]; // get the first (and only) key
+        const message = result.errs[fieldName]; // get the msg in the key
+
+        console.log({ fieldName });
+        console.log({ message });
+        if (fieldName !== "password") {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="user-identifier"]`,
+          ) as HTMLElement | null;
+
+          console.log(errorDiv);
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        } else {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="password"]`,
+          ) as HTMLElement | null;
+
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        }
+      }
+
       return;
     }
 

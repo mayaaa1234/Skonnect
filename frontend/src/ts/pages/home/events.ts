@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //// notif message
-//const signupMsg = sessionStorage.getItem("signupSuccessNotif");
-//const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
-//if (signupMsg) {
-//  notifyGradient(signupMsg);
-//  sessionStorage.removeItem("signupSuccessNotif");
-//} else if (loginMsg) {
-//  notifyGradient(loginMsg);
-//  sessionStorage.removeItem("loginWelcomeNotif");
-//}
+const signupMsg = sessionStorage.getItem("signupSuccessNotif");
+const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
+if (signupMsg) {
+  notifyGradient(signupMsg);
+  sessionStorage.removeItem("signupSuccessNotif");
+} else if (loginMsg) {
+  notifyGradient(loginMsg);
+  sessionStorage.removeItem("loginWelcomeNotif");
+}
 
 // scroll animation
 const observer = new IntersectionObserver(

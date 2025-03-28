@@ -130,6 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //console.log({ jsonData });
     await signupUser(jsonData);
-    form.reset();
+    //form.reset();
   });
 });

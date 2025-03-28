@@ -2,13 +2,11 @@
   "compilerOptions": {
     "strict": true,
     "target": "ES2022",
-    //"module": "nodenext",
+    "module": "nodenext",
     "moduleResolution": "nodenext",
     "rootDir": "../",
     // Treat files as modules even if it doesn't use import/export
     "moduleDetection": "force",
-    // Ignore module structure
-    "module": "Preserve",
     "typeRoots": [
       "../../node_modules/@types",
     ],

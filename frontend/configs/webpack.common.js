@@ -7,7 +7,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV;
 console.log("webpack log: dev mode???", isDevelopment);
 
 const config = {

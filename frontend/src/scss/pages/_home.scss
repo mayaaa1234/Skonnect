@@ -343,37 +343,3 @@ body[data-page="home"] {
     }
   }
 }
-
-// skeleton screen before load
-body[data-page="home"]:not(.loaded) .card::after,
-// body[data-page="home"]:not(.loaded) nav::after,
-// body[data-page="home"]:not(.loaded) .hero-top::after,
-body[data-page="home"]:not(.loaded) .mySlides::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  // background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background: linear-gradient(90deg, #e0e0e0 25%, #cfcfcf 50%, #e0e0e0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-
-  &.loaded {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
-
-  &.loaded .card::after,
-  &.loaded .mySlides::after {
-    display: none;
-  }
-
-  @keyframes shimmer {
-    to {
-      background-position: -200% 0;
-    }
-  }
-}

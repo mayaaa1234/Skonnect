@@ -1,14 +1,7 @@
 import { notifyGradient } from "../../utils/showNotif.ts";
 import { manualResizeTrigger } from "./slideShow.ts";
 
-// undo skeleton layout after page load
-document.addEventListener("DOMContentLoaded", () => {
-  window.addEventListener("load", () => {
-    document.body.classList.add("loaded");
-  });
-});
-
-//// notif message
+// notif message
 const signupMsg = sessionStorage.getItem("signupSuccessNotif");
 const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
 if (signupMsg) {

@@ -1,4 +1,5 @@
 @use "../../layout/nav" as *;
+// @use "../abstracts/variables" as *;
 @use "../../abstracts/mixins" as *;
 
 // adjust height for the fixed nav excpet for signup and login
@@ -12,3 +13,49 @@ body:not([data-page="signup"], [data-page="login"]) {
     padding-top: 67px !important;
   }
 }
+
+//mixin for skeleton screen before load
+@mixin page-loader($page, $components...) {
+  body[data-page="#{$page}"]:not(.loaded) {
+    @each $component in $components {
+      #{$component}::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          var(--secondary) 0,
+          var(--primary) 50%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        z-index: 10;
+      }
+    }
+  }
+
+  body[data-page="#{$page}"].loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+
+    @each $component in $components {
+      #{$component}::after {
+        display: none;
+      }
+    }
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+@include page-loader("signup", "form");
+@include page-loader("login", "form");
+@include page-loader("home", ".card", ".mySlides");

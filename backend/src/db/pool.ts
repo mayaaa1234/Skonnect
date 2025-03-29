@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Define `pool` with an explicit type
-let pool: Pool | undefined;
+let pool: Pool;
 
 if (process.env.NODE_ENV === "development") {
   pool = mysql.createPool({

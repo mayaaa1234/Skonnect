@@ -210,6 +210,47 @@ tsconfig.json
 <files>
 This section contains the contents of the repository's files.
 
+<file path="backend/configs/register.js">
+import { register } from "node:module";
+import { pathToFileURL } from "node:url";
+
+register("ts-node/esm", pathToFileURL("./"));
+</file>
+
+<file path="backend/scripts/NOTE.txt">
+WARN:
+  the scripts purpose inside this dir is to be executed only once. They're
+  not supposed to be part of the system flow and should not be imported to other files
+
+INFO: 
+  creating a table with query is fine but for almost
+  anything else preapred statements is more secure
+    see: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
+
+run a specific script with:
+  ❯ npx ts-node --transpileOnly backend/src/db/tables/foo.ts
+
+// install ts-node if not installed yet
+</file>
+
+<file path="backend/types/session.d.ts">
+import session from "express-session";
+
+declare module "express-session" {
+  interface SessionData {
+    user?: {
+      id: number;
+      username: string;
+      //email: string;
+    };
+  }
+}
+</file>
+
+<file path="backend/types/webpack-config.d.ts">
+declare module "*";
+</file>
+
 <file path="frontend/configs/webpack.subProd.js">
 import path from "path";
 import webpack from "webpack";
@@ -370,47 +411,6 @@ const config = {
 };
 
 export default config;
-</file>
-
-<file path="backend/configs/register.js">
-import { register } from "node:module";
-import { pathToFileURL } from "node:url";
-
-register("ts-node/esm", pathToFileURL("./"));
-</file>
-
-<file path="backend/scripts/NOTE.txt">
-WARN:
-  the scripts purpose inside this dir is to be executed only once. They're
-  not supposed to be part of the system flow and should not be imported to other files
-
-INFO: 
-  creating a table with query is fine but for almost
-  anything else preapred statements is more secure
-    see: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
-
-run a specific script with:
-  ❯ npx ts-node --transpileOnly backend/src/db/tables/foo.ts
-
-// install ts-node if not installed yet
-</file>
-
-<file path="backend/types/session.d.ts">
-import session from "express-session";
-
-declare module "express-session" {
-  interface SessionData {
-    user?: {
-      id: number;
-      username: string;
-      //email: string;
-    };
-  }
-}
-</file>
-
-<file path="backend/types/webpack-config.d.ts">
-declare module "*";
 </file>
 
 <file path="frontend/public/assets/img/docs.svg">
@@ -1816,29 +1816,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </html>
 </file>
 
-<file path=";w">
-import { setState, getState } from "../utils/setGetState.ts";
-
-//const theme = (getState("theme") as string) || "dark";
-//document.documentElement.setAttribute("data-theme", theme);
-
-console.log("theme state");
-
-//on load get the color saved scheme if nothing then set a default one
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = getState("theme");
-
-  const theme = (getState("theme") as string) || "dark";
-  document.documentElement.setAttribute("data-theme", theme);
-  setState("theme", theme);
-
-  console.log("theme", theme);
-
-  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
-  themeBtn?.classList.add(theme); // which toggle icon to show
-});
-</file>
-
 <file path="backend/configs/prod-build.ts">
 // INFO: this is more proper i guess since in prod you wont use nodemon instead just node
 // also less mess in package.json scripts
@@ -1954,31 +1931,6 @@ declare global {
     }
   }
 }
-</file>
-
-<file path="frontend/configs/webpack.prod.js">
-import { merge } from "webpack-merge";
-import subProd from "./webpack.subProd.js";
-//import TerserPlugin from "terser-webpack-plugin";
-
-export default merge(subProd, {
-  mode: "production",
-  optimization: {
-    minimize: true,
-    //minimizer: new TerserPlugin({
-    //  terserOptions: {
-    //    keep_fnames: true,
-    //    keep_classnames: true,
-    //  },
-    //}),
-
-    //[new TerserPlugin()],
-    //
-    //splitChunks: {
-    //  chunks: "all",
-    //},
-  },
-});
 </file>
 
 <file path="frontend/src/scss/abstracts/_mixins.scss">
@@ -2551,112 +2503,6 @@ body[data-page="landing"] {
 }
 </file>
 
-<file path="frontend/src/scss/themes/_gen-themes.scss">
-// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
-// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
-
-// INFO: here goes components that have class based theming or if var theming can't customize something enough
-
-@use "../abstracts/mixins" as *;
-
-// APPLIES TO ALL PAGES
-// [data-theme="light"],
-// [data-theme="dark"] {
-body {
-  background-color: var(--primary);
-  color: var(--foreground);
-}
-// }
-
-// WILL BE USED THROUGHOUT THE APP
-
-.gradient-text {
-  background-image: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  display: inline-block;
-}
-
-.gradient-bg {
-  background: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-}
-
-.gradient-border {
-  position: relative;
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
-  // background: none;
-  // color: white;
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  padding: 1px; /* Border thickness */
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.gradient-border-1 {
-  border: 5px solid transparent; /* Transparent border to preserve space */
-  border-image: linear-gradient(
-      to right,
-      rgb(0, 193, 174),
-      rgb(0, 165, 191),
-      rgb(0, 108, 166)
-    )
-    1;
-}
-
-// .gradient-border::before {
-//   content: "";
-//   position: absolute;
-//   inset: 0;
-//   border-radius: 8px;
-//   padding: 3px; /* Border thickness */
-//   background: linear-gradient(
-//     to right,
-//     rgb(0, 193, 174),
-//     rgb(0, 165, 191),
-//     rgb(0, 108, 166)
-//   );
-//   -webkit-mask:
-//     linear-gradient(#fff 0 0) content-box,
-//     linear-gradient(#fff 0 0);
-//   -webkit-mask-composite: xor;
-//   mask-composite: exclude;
-// }
-</file>
-
 <file path="frontend/src/scss/themes/_landing-theme.scss">
 @use "../abstracts/mixins" as *;
 
@@ -2782,217 +2628,6 @@ body[data-page="landing"] {
 // }
 </file>
 
-<file path="frontend/src/ts/pages/home/slideShow.ts">
-//export let manualResizeTrigger = false;
-//document.addEventListener("DOMContentLoaded", () => {
-//  document.querySelectorAll("img").forEach((img) => {
-//    img.setAttribute("loading", "lazy");
-//  });
-//
-//  //export let manualResizeTrigger = false;
-//  let slideIndex = 1;
-//
-//  showSlides(slideIndex);
-//
-//  // Next/previous controls
-//  function plusSlides(n: number) {
-//    manualResizeTrigger = true;
-//    showSlides((slideIndex += n));
-//  }
-//
-//  // Thumbnail image controls
-//  function currentSlide(n: number) {
-//    manualResizeTrigger = true;
-//    showSlides((slideIndex = n));
-//  }
-//
-//  function showSlides(n: number) {
-//    //console.log("slides work");
-//
-//    let i: number;
-//    const slides = document.getElementsByClassName(
-//      "mySlides",
-//    ) as HTMLCollectionOf<HTMLElement>;
-//    const dots = document.getElementsByClassName(
-//      "dot",
-//    ) as HTMLCollectionOf<HTMLElement>;
-//
-//    if (n > slides.length) {
-//      slideIndex = 1;
-//    }
-//    if (n < 1) {
-//      slideIndex = slides.length;
-//    }
-//
-//    for (i = 0; i < slides.length; i++) {
-//      slides[i].style.display = "none";
-//    }
-//
-//    for (i = 0; i < dots.length; i++) {
-//      dots[i].className = dots[i].className.replace(" active", "");
-//    }
-//    slides[slideIndex - 1].style.display = "block";
-//    dots[slideIndex - 1].className += " active";
-//  }
-//
-//  const next = document.querySelector(".next") as HTMLElement;
-//  const prev = document.querySelector(".prev") as HTMLElement;
-//
-//  prev.onclick = () => plusSlides(-1);
-//  next.onclick = () => plusSlides(1);
-//
-//  // for when clicking the dots
-//  const dots = document.getElementsByClassName(
-//    "dot",
-//  ) as HTMLCollectionOf<HTMLElement>;
-//
-//  for (let i = 0; i < dots.length; i++) {
-//    dots[i].onclick = () => currentSlide(i + 1);
-//  }
-//
-//  // the number text in top left of pictures
-//  const numberText = document.getElementsByClassName(
-//    "numbertext",
-//  ) as HTMLCollectionOf<HTMLElement>;
-//  for (let i = 0; i < numberText.length; i++) {
-//    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
-//    console.log(numberText[i].innerText);
-//  }
-//});
-
-//AUTOMATIC
-//let slideIndex = 0;
-//showSlides();
-//
-//function showSlides() {
-//  let i;
-//  let slides = document.getElementsByClassName("mySlides");
-//  for (i = 0; i < slides.length; i++) {
-//    slides[i].style.display = "none";
-//  }
-//  //slideIndex++;
-//  if (slideIndex > slides.length) {slideIndex = 1}
-//  slides[slideIndex-1].style.display = "block";
-//  setTimeout(showSlides, 2000); // Change image every 2 seconds
-//}
-//});
-
-//MULTIPLE SLIDESHOW
-//const slideIndex = [1, 1];
-///* Class the members of each slideshow group with different CSS classes */
-//const slideId = ["slides1", "slides2"];
-//showSlides(1, 0);
-//showSlides(1, 1);
-//
-//function plusSlides(n, no) {
-//  showSlides((slideIndex[no] += n), no);
-//}
-//
-//function showSlides(n, no) {
-//  let i;
-//  let x = document.getElementsByClassName(slideId[no]);
-//  if (n > x.length) {
-//    slideIndex[no] = 1;
-//  }
-//  if (n < 1) {
-//    slideIndex[no] = x.length;
-//  }
-//  for (i = 0; i < x.length; i++) {
-//    x[i].style.display = "none";
-//  }
-//  x[slideIndex[no] - 1].style.display = "block";
-//}
-
-// MULTIPLE SLIDESHOW SETUP
-export let manualResizeTrigger = false;
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Define an array to store the current slide index for each slideshow group.
-  const slideIndices: number[] = [1, 1];
-
-  // all the slide containers
-  const slideIds: string[] = ["mySlides1", "mySlides2"];
-
-  // Initialize each slideshow group.
-  slideIndices.forEach((_, no) => {
-    showSlides(slideIndices[no], no);
-  });
-  // Next/previous controls for a given slideshow group.
-  // (Adjust this if you have separate buttons for each slideshow.)
-  function plusSlides(n: number, no: number) {
-    manualResizeTrigger = true;
-    slideIndices[no] += n;
-    showSlides(slideIndices[no], no);
-  }
-
-  // Set the current slide in a group.
-  function currentSlide(n: number, no: number) {
-    manualResizeTrigger = true;
-    slideIndices[no] = n;
-    showSlides(slideIndices[no], no);
-  }
-
-  // This function displays the appropriate slide for the given group.
-  function showSlides(n: number, no: number) {
-    let i: number;
-    // Get all slides in the current group.
-    const slides = document.getElementsByClassName(
-      slideIds[no],
-    ) as HTMLCollectionOf<HTMLElement>;
-
-    // Wrap the slide index if out-of-bounds.
-    if (n > slides.length) {
-      slideIndices[no] = 1;
-    }
-    if (n < 1) {
-      slideIndices[no] = slides.length;
-    }
-
-    // Hide all slides in the group.
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-
-    // Display the current slide.
-    slides[slideIndices[no] - 1].style.display = "block";
-  }
-
-  // Example of binding controls if you have separate controls for each slideshow:
-  // (Assumes you have elements with data attributes or IDs to target each group.)
-  const nextButtons = document.querySelectorAll(".next");
-  const prevButtons = document.querySelectorAll(".prev");
-
-  // For simplicity, we assume the first set of buttons control the first slideshow group,
-  // and the second set (if present) control the second slideshow group.
-  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
-    // Bind controls for slideshow group 0.
-    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
-    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
-  }
-  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
-    // Bind controls for slideshow group 1.
-    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
-    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
-  }
-
-  // For example, if each slideshow group has its own set of dots with a unique container
-  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
-  const dotGroup0 = document.querySelectorAll(
-    "#dotGroup0 .dot",
-  ) as NodeListOf<HTMLElement>;
-  dotGroup0.forEach((dot, index) => {
-    dot.addEventListener("click", () => currentSlide(index + 1, 0));
-  });
-
-  const dotGroup1 = document.querySelectorAll(
-    "#dotGroup1 .dot",
-  ) as NodeListOf<HTMLElement>;
-  dotGroup1.forEach((dot, index) => {
-    dot.addEventListener("click", () => currentSlide(index + 1, 1));
-  });
-});
-</file>
-
 <file path="frontend/src/ts/utils/scripts/autoFillForm.ts">
 function generateRandomString(length: number): string {
   return Math.random()
@@ -3088,6 +2723,29 @@ export const notifyWarning = (msg: string, instant = false) =>
 
 export const notifyInfo = (msg: string, instant = false) =>
   showNotification(msg, "info", instant);
+</file>
+
+<file path=";w">
+import { setState, getState } from "../utils/setGetState.ts";
+
+//const theme = (getState("theme") as string) || "dark";
+//document.documentElement.setAttribute("data-theme", theme);
+
+console.log("theme state");
+
+//on load get the color saved scheme if nothing then set a default one
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = getState("theme");
+
+  const theme = (getState("theme") as string) || "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  setState("theme", theme);
+
+  console.log("theme", theme);
+
+  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
+  themeBtn?.classList.add(theme); // which toggle icon to show
+});
 </file>
 
 <file path=".prettierrc">
@@ -3312,6 +2970,112 @@ h6 {
 }
 </file>
 
+<file path="frontend/src/scss/themes/_gen-themes.scss">
+// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
+// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
+
+// INFO: here goes components that have class based theming or if var theming can't customize something enough
+
+@use "../abstracts/mixins" as *;
+
+// APPLIES TO ALL PAGES
+// [data-theme="light"],
+// [data-theme="dark"] {
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
+}
+// }
+
+// WILL BE USED THROUGHOUT THE APP
+
+.gradient-text {
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+}
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // background: none;
+  // color: white;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-border-1 {
+  border: 5px solid transparent; /* Transparent border to preserve space */
+  border-image: linear-gradient(
+      to right,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    )
+    1;
+}
+
+// .gradient-border::before {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   border-radius: 8px;
+//   padding: 3px; /* Border thickness */
+//   background: linear-gradient(
+//     to right,
+//     rgb(0, 193, 174),
+//     rgb(0, 165, 191),
+//     rgb(0, 108, 166)
+//   );
+//   -webkit-mask:
+//     linear-gradient(#fff 0 0) content-box,
+//     linear-gradient(#fff 0 0);
+//   -webkit-mask-composite: xor;
+//   mask-composite: exclude;
+// }
+</file>
+
 <file path="frontend/src/scss/themes/_nav-theme.scss">
 @use "../abstracts/mixins" as *;
 
@@ -3376,6 +3140,217 @@ nav {
 }
 </file>
 
+<file path="frontend/src/ts/pages/home/slideShow.ts">
+//export let manualResizeTrigger = false;
+//document.addEventListener("DOMContentLoaded", () => {
+//  document.querySelectorAll("img").forEach((img) => {
+//    img.setAttribute("loading", "lazy");
+//  });
+//
+//  //export let manualResizeTrigger = false;
+//  let slideIndex = 1;
+//
+//  showSlides(slideIndex);
+//
+//  // Next/previous controls
+//  function plusSlides(n: number) {
+//    manualResizeTrigger = true;
+//    showSlides((slideIndex += n));
+//  }
+//
+//  // Thumbnail image controls
+//  function currentSlide(n: number) {
+//    manualResizeTrigger = true;
+//    showSlides((slideIndex = n));
+//  }
+//
+//  function showSlides(n: number) {
+//    //console.log("slides work");
+//
+//    let i: number;
+//    const slides = document.getElementsByClassName(
+//      "mySlides",
+//    ) as HTMLCollectionOf<HTMLElement>;
+//    const dots = document.getElementsByClassName(
+//      "dot",
+//    ) as HTMLCollectionOf<HTMLElement>;
+//
+//    if (n > slides.length) {
+//      slideIndex = 1;
+//    }
+//    if (n < 1) {
+//      slideIndex = slides.length;
+//    }
+//
+//    for (i = 0; i < slides.length; i++) {
+//      slides[i].style.display = "none";
+//    }
+//
+//    for (i = 0; i < dots.length; i++) {
+//      dots[i].className = dots[i].className.replace(" active", "");
+//    }
+//    slides[slideIndex - 1].style.display = "block";
+//    dots[slideIndex - 1].className += " active";
+//  }
+//
+//  const next = document.querySelector(".next") as HTMLElement;
+//  const prev = document.querySelector(".prev") as HTMLElement;
+//
+//  prev.onclick = () => plusSlides(-1);
+//  next.onclick = () => plusSlides(1);
+//
+//  // for when clicking the dots
+//  const dots = document.getElementsByClassName(
+//    "dot",
+//  ) as HTMLCollectionOf<HTMLElement>;
+//
+//  for (let i = 0; i < dots.length; i++) {
+//    dots[i].onclick = () => currentSlide(i + 1);
+//  }
+//
+//  // the number text in top left of pictures
+//  const numberText = document.getElementsByClassName(
+//    "numbertext",
+//  ) as HTMLCollectionOf<HTMLElement>;
+//  for (let i = 0; i < numberText.length; i++) {
+//    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
+//    console.log(numberText[i].innerText);
+//  }
+//});
+
+//AUTOMATIC
+//let slideIndex = 0;
+//showSlides();
+//
+//function showSlides() {
+//  let i;
+//  let slides = document.getElementsByClassName("mySlides");
+//  for (i = 0; i < slides.length; i++) {
+//    slides[i].style.display = "none";
+//  }
+//  //slideIndex++;
+//  if (slideIndex > slides.length) {slideIndex = 1}
+//  slides[slideIndex-1].style.display = "block";
+//  setTimeout(showSlides, 2000); // Change image every 2 seconds
+//}
+//});
+
+//MULTIPLE SLIDESHOW
+//const slideIndex = [1, 1];
+///* Class the members of each slideshow group with different CSS classes */
+//const slideId = ["slides1", "slides2"];
+//showSlides(1, 0);
+//showSlides(1, 1);
+//
+//function plusSlides(n, no) {
+//  showSlides((slideIndex[no] += n), no);
+//}
+//
+//function showSlides(n, no) {
+//  let i;
+//  let x = document.getElementsByClassName(slideId[no]);
+//  if (n > x.length) {
+//    slideIndex[no] = 1;
+//  }
+//  if (n < 1) {
+//    slideIndex[no] = x.length;
+//  }
+//  for (i = 0; i < x.length; i++) {
+//    x[i].style.display = "none";
+//  }
+//  x[slideIndex[no] - 1].style.display = "block";
+//}
+
+// MULTIPLE SLIDESHOW SETUP
+export let manualResizeTrigger = false;
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Define an array to store the current slide index for each slideshow group.
+  const slideIndices: number[] = [1, 1];
+
+  // all the slide containers
+  const slideIds: string[] = ["mySlides1", "mySlides2"];
+
+  // Initialize each slideshow group.
+  slideIndices.forEach((_, no) => {
+    showSlides(slideIndices[no], no);
+  });
+  // Next/previous controls for a given slideshow group.
+  // (Adjust this if you have separate buttons for each slideshow.)
+  function plusSlides(n: number, no: number) {
+    manualResizeTrigger = true;
+    slideIndices[no] += n;
+    showSlides(slideIndices[no], no);
+  }
+
+  // Set the current slide in a group.
+  function currentSlide(n: number, no: number) {
+    manualResizeTrigger = true;
+    slideIndices[no] = n;
+    showSlides(slideIndices[no], no);
+  }
+
+  // This function displays the appropriate slide for the given group.
+  function showSlides(n: number, no: number) {
+    let i: number;
+    // Get all slides in the current group.
+    const slides = document.getElementsByClassName(
+      slideIds[no],
+    ) as HTMLCollectionOf<HTMLElement>;
+
+    // Wrap the slide index if out-of-bounds.
+    if (n > slides.length) {
+      slideIndices[no] = 1;
+    }
+    if (n < 1) {
+      slideIndices[no] = slides.length;
+    }
+
+    // Hide all slides in the group.
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+
+    // Display the current slide.
+    slides[slideIndices[no] - 1].style.display = "block";
+  }
+
+  // Example of binding controls if you have separate controls for each slideshow:
+  // (Assumes you have elements with data attributes or IDs to target each group.)
+  const nextButtons = document.querySelectorAll(".next");
+  const prevButtons = document.querySelectorAll(".prev");
+
+  // For simplicity, we assume the first set of buttons control the first slideshow group,
+  // and the second set (if present) control the second slideshow group.
+  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
+    // Bind controls for slideshow group 0.
+    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
+    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
+  }
+  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
+    // Bind controls for slideshow group 1.
+    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
+    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
+  }
+
+  // For example, if each slideshow group has its own set of dots with a unique container
+  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
+  const dotGroup0 = document.querySelectorAll(
+    "#dotGroup0 .dot",
+  ) as NodeListOf<HTMLElement>;
+  dotGroup0.forEach((dot, index) => {
+    dot.addEventListener("click", () => currentSlide(index + 1, 0));
+  });
+
+  const dotGroup1 = document.querySelectorAll(
+    "#dotGroup1 .dot",
+  ) as NodeListOf<HTMLElement>;
+  dotGroup1.forEach((dot, index) => {
+    dot.addEventListener("click", () => currentSlide(index + 1, 1));
+  });
+});
+</file>
+
 <file path="frontend/src/ts/pages/nav/navEvents.ts">
 import { setState } from "../../utils/setGetState.ts";
 
@@ -3437,27 +3412,6 @@ if (dropdown) {
     dropdown.value = "";
   }, 0);
 }
-</file>
-
-<file path="frontend/src/ts/states/theme.ts">
-import { setState, getState } from "../utils/setGetState.ts";
-
-//const theme = (getState("theme") as string) || "dark";
-//document.documentElement.setAttribute("data-theme", theme);
-
-//on load get the color saved scheme if nothing then set a default one
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = getState("theme");
-
-  const theme = (getState("theme") as string) || "dark";
-  document.documentElement.setAttribute("data-theme", theme);
-  setState("theme", theme);
-
-  //console.log("theme", theme);
-
-  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
-  themeBtn?.classList.add(theme); // which toggle icon to show
-});
 </file>
 
 <file path="backend/configs/babel.config.mjs">
@@ -3558,35 +3512,6 @@ export const logout = async (
 };
 </file>
 
-<file path="frontend/configs/postcss.config.js">
-/** @type {import('postcss-load-config').Config} */
-import autoprefixer from "autoprefixer";
-import postcssNested from "postcss-nested";
-import purgecssModule from "@fullhuman/postcss-purgecss";
-import cssnano from "cssnano";
-
-const purgecss = purgecssModule.default || purgecssModule;
-
-export default {
-  plugins: [
-    autoprefixer,
-    postcssNested,
-    purgecss({
-      content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
-      safelist: [/^data-theme/],
-      //safelist: {
-      //  standard: [/data-theme/],
-      //  deep: [/data-theme/],
-      //  greedy: [/data-theme/],
-      //},
-    }),
-    cssnano({
-      preset: "default",
-    }),
-  ],
-};
-</file>
-
 <file path="frontend/configs/tsconfig.json">
 {
   "compilerOptions": {
@@ -3647,6 +3572,31 @@ export default merge(common, {
   //  static: "./frontend/dist",
   //  hot: true,
   //},
+});
+</file>
+
+<file path="frontend/configs/webpack.prod.js">
+import { merge } from "webpack-merge";
+import common from "./webpack.common.js";
+//import TerserPlugin from "terser-webpack-plugin";
+
+export default merge(common, {
+  mode: "production",
+  optimization: {
+    minimize: true,
+    //minimizer: new TerserPlugin({
+    //  terserOptions: {
+    //    keep_fnames: true,
+    //    keep_classnames: true,
+    //  },
+    //}),
+
+    //[new TerserPlugin()],
+    //
+    //splitChunks: {
+    //  chunks: "all",
+    //},
+  },
 });
 </file>
 
@@ -4578,6 +4528,27 @@ body[data-page="signup"] {
 @forward "themes/footer-theme";
 </file>
 
+<file path="frontend/src/ts/states/theme.ts">
+import { setState, getState } from "../utils/setGetState.ts";
+
+//const theme = (getState("theme") as string) || "dark";
+//document.documentElement.setAttribute("data-theme", theme);
+
+//on load get the color saved scheme if nothing then set a default one
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = getState("theme");
+
+  const theme = (getState("theme") as string) || "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  setState("theme", theme);
+
+  //console.log("theme", theme);
+
+  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
+  themeBtn?.classList.add(theme); // which toggle icon to show
+});
+</file>
+
 <file path="frontend/views/partials/footer.ejs">
 <footer class="container">
     <!-- (on Linux term) press Ctrl-Shift-u then type 00a9 and press enter to type copyright symbol -->
@@ -4609,7 +4580,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Define `pool` with an explicit type
-let pool: Pool | undefined;
+let pool: Pool;
 
 if (process.env.NODE_ENV === "development") {
   pool = mysql.createPool({
@@ -4643,6 +4614,35 @@ if (process.env.NODE_ENV === "development") {
 export default pool!;
 </file>
 
+<file path="frontend/configs/postcss.config.js">
+/** @type {import('postcss-load-config').Config} */
+import autoprefixer from "autoprefixer";
+import postcssNested from "postcss-nested";
+import purgecssModule from "@fullhuman/postcss-purgecss";
+import cssnano from "cssnano";
+
+const purgecss = purgecssModule.default || purgecssModule;
+
+export default {
+  plugins: [
+    autoprefixer,
+    postcssNested,
+    purgecss({
+      content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
+      safelist: [/^data-theme/],
+      //safelist: {
+      //  standard: [/data-theme/],
+      //  deep: [/data-theme/],
+      //  greedy: [/data-theme/],
+      //},
+    }),
+    cssnano({
+      preset: "default",
+    }),
+  ],
+};
+</file>
+
 <file path="frontend/src/scss/layout/_footer.scss">
 %footer-layout {
   display: grid;
@@ -4674,104 +4674,6 @@ footer {
     font-size: 14px;
   }
 }
-</file>
-
-<file path="frontend/src/ts/pages/login/loginUser.ts">
-import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
-import { setState } from "../../utils/setGetState.ts";
-
-export interface LoginData {
-  username?: string;
-  email?: string;
-  password: string;
-}
-
-export default async function loginUser(jsonData: LoginData) {
-  console.log({ jsonData });
-  try {
-    const response = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(jsonData),
-      credentials: "include",
-    });
-    console.log({ response });
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      const text = await response.text();
-      throw new Error(`Expected JSON but got: ${text}`);
-    }
-    const result = await response.json();
-
-    if (!response.ok) {
-      console.log("login validation failed");
-      console.log({ result });
-
-      if (result.errs && typeof result.errs === "object") {
-        // clear prev errs
-        document
-          .querySelectorAll(".error") // yeah, name of the err div of login ejs
-          .forEach((el) => (el.textContent = ""));
-
-        const fieldName = Object.keys(result.errs)[0]; // get the first (and only) key
-        const message = result.errs[fieldName]; // get the msg in the key
-        //const message = String(result.errs[fieldName]);
-
-        console.log({ fieldName });
-        console.log({ message });
-        if (fieldName !== "password") {
-          const errorDiv = document.querySelector(
-            `.error[data-error-for="user-identifier"]`,
-          ) as HTMLElement | null;
-
-          console.log(errorDiv);
-          if (errorDiv) {
-            errorDiv.textContent = message as string;
-          }
-        } else {
-          const errorDiv = document.querySelector(
-            `.error[data-error-for="password"]`,
-          ) as HTMLElement | null;
-
-          if (errorDiv) {
-            errorDiv.textContent = message as string;
-          }
-        }
-      }
-
-      return;
-    }
-
-    sessionStorage.setItem("loginWelcomeNotif", "Welcome Back!");
-    console.log("Login successful", result);
-
-    window.location.href = "/home";
-  } catch (error) {
-    console.error("Network error:", error);
-    notifyError("Something went wrong, please try again later.");
-
-    //document.cookie =
-    //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  }
-}
-
-//import jwtDecode from "jwt-decode";
-//
-//const token = document.cookie
-//  .split("; ")
-//  .find(row => row.startsWith("authorization="))
-//  ?.split("=")[1];
-//
-//if (token) {
-//  try {
-//    const decoded = jwtDecode(token);
-//    if (decoded.exp * 1000 > Date.now()) {
-//      window.location.href = "/home"; // Redirect if token is valid
-//    }
-//  } catch (error) {
-//    console.error("Invalid token", error);
-//  }
-//}
 </file>
 
 <file path="frontend/src/ts/pages/signup/signupUser.ts">
@@ -5038,74 +4940,6 @@ const connectDB = () => {
 export default connectDB;
 </file>
 
-<file path="backend/src/middlewares/errorHandler.ts">
-//import { CustomError } from "../errors/CustomError.ts";
-//import type { Request, Response, NextFunction } from "express";
-//import dotenv from "dotenv";
-//dotenv.config();
-//
-//export const errorHandler = (
-//  err: Error,
-//  _req: Request,
-//  res: Response,
-//  _next: NextFunction,
-//) => {
-//  if (err instanceof CustomError) {
-//    console.error("Error message:", err.message);
-//    return res.status(err.statusCode).json({
-//      err: err.message,
-//      //process.env.NODE_ENV === "production"
-//      //? "Something went wrong, please try again later."
-//      //: err.message,
-//    });
-//  }
-//
-//  console.error("=== ERROR DETAILS ===");
-//  console.error("Path:", _req.path);
-//  console.error("Time:", new Date().toISOString());
-//  console.error("Message:", err.message);
-//  console.error("Stack:", err.stack);
-//  console.error("=====================");
-//
-//  return res
-//    .status(500)
-//    .json({ err: "Something went wrong, please try again later." });
-//};
-//
-import { CustomError } from "../errors/CustomError.ts";
-import type { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
-dotenv.config();
-
-export const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
-  if (err instanceof CustomError) {
-    if (err.message) console.error("Error message:", err.message);
-    if (err.objectErr) console.error("Error message:", err.objectErr);
-
-    return res.status(err.statusCode).json({
-      msg: err.message ?? undefined,
-      errs: err.objectErr ?? undefined, // send multiple errors if available
-    });
-  }
-
-  console.error("=== ERROR DETAILS ===");
-  console.error("Path:", req.path);
-  console.error("Time:", new Date().toISOString());
-  console.error("Message:", err.message);
-  console.error("Stack:", err.stack);
-  console.error("=====================");
-
-  return res
-    .status(500)
-    .json({ msg: "Something went wrong, please try again later." });
-};
-</file>
-
 <file path="backend/src/routes/auth.ts">
 import express from "express";
 const router = express.Router();
@@ -5214,6 +5048,104 @@ export default router;
     // }
   }
 }
+</file>
+
+<file path="frontend/src/ts/pages/login/loginUser.ts">
+import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
+import { setState } from "../../utils/setGetState.ts";
+
+export interface LoginData {
+  username?: string;
+  email?: string;
+  password: string;
+}
+
+export default async function loginUser(jsonData: LoginData) {
+  console.log({ jsonData });
+  try {
+    const response = await fetch("/api/v1/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonData),
+      credentials: "include",
+    });
+    console.log({ response });
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      throw new Error(`Expected JSON but got: ${text}`);
+    }
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.log("login validation failed");
+      console.log({ result });
+
+      if (result.errs && typeof result.errs === "object") {
+        // clear prev errs
+        document
+          .querySelectorAll(".error") // yeah, name of the err div of login ejs
+          .forEach((el) => (el.textContent = ""));
+
+        const fieldName = Object.keys(result.errs)[0]; // get the first (and only) key
+        const message = result.errs[fieldName]; // get the msg in the key
+        //const message = String(result.errs[fieldName]);
+
+        console.log({ fieldName });
+        console.log({ message });
+        if (fieldName !== "password") {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="user-identifier"]`,
+          ) as HTMLElement | null;
+
+          console.log(errorDiv);
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        } else {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="password"]`,
+          ) as HTMLElement | null;
+
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        }
+      }
+
+      return;
+    }
+
+    sessionStorage.setItem("loginWelcomeNotif", "Welcome Back!");
+    console.log("Login successful", result);
+
+    window.location.href = "/home";
+  } catch (error) {
+    console.error("Network error:", error);
+    notifyError("Something went wrong, please try again later.");
+
+    //document.cookie =
+    //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+}
+
+//import jwtDecode from "jwt-decode";
+//
+//const token = document.cookie
+//  .split("; ")
+//  .find(row => row.startsWith("authorization="))
+//  ?.split("=")[1];
+//
+//if (token) {
+//  try {
+//    const decoded = jwtDecode(token);
+//    if (decoded.exp * 1000 > Date.now()) {
+//      window.location.href = "/home"; // Redirect if token is valid
+//    }
+//  } catch (error) {
+//    console.error("Invalid token", error);
+//  }
+//}
 </file>
 
 <file path="frontend/views/profile.ejs">
@@ -5520,6 +5452,75 @@ async function devModeMiddleware(app: Application) {
 export default devModeMiddleware;
 </file>
 
+<file path="backend/src/middlewares/errorHandler.ts">
+import { CustomError } from "../errors/CustomError.ts";
+import type { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  if (err instanceof CustomError) {
+    if (err.message) console.error("Error message:", err.message);
+    if (err.objectErr) console.error("Error message:", err.objectErr);
+
+    return res.status(err.statusCode).json({
+      msg: err.message ?? undefined,
+      errs: err.objectErr ?? undefined, // send multiple errors if available
+    });
+  }
+
+  console.error("=== ERROR DETAILS ===");
+  console.error("Path:", req.path);
+  console.error("Time:", new Date().toISOString());
+  console.error("Message:", err.message);
+  console.error("Stack:", err.stack);
+  console.error("=====================");
+
+  return res
+    .status(500)
+    .json({ msg: "Something went wrong, please try again later." });
+};
+
+//import { CustomError } from "../errors/CustomError.ts";
+//import type { Request, Response, NextFunction } from "express";
+//import dotenv from "dotenv";
+//dotenv.config();
+//
+//export const errorHandler = (
+//  err: Error,
+//  _req: Request,
+//  res: Response,
+//  _next: NextFunction,
+//) => {
+//  if (err instanceof CustomError) {
+//    console.error("Error message:", err.message);
+//    return res.status(err.statusCode).json({
+//      err: err.message,
+//      //process.env.NODE_ENV === "production"
+//      //? "Something went wrong, please try again later."
+//      //: err.message,
+//    });
+//  }
+//
+//  console.error("=== ERROR DETAILS ===");
+//  console.error("Path:", _req.path);
+//  console.error("Time:", new Date().toISOString());
+//  console.error("Message:", err.message);
+//  console.error("Stack:", err.stack);
+//  console.error("=====================");
+//
+//  return res
+//    .status(500)
+//    .json({ err: "Something went wrong, please try again later." });
+//};
+//
+</file>
+
 <file path="backend/src/routes/pages.ts">
 import express from "express";
 const router = express.Router();
@@ -5696,159 +5697,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // states
 import "./states/theme.ts";
 //import "./states/authState.ts";
-</file>
-
-<file path="frontend/views/partials/head.ejs">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SKonnect<%= title ? " - " + title : "" %></title>
-
-    <!--<link-->
-    <!--    rel="preload"-->
-    <!--    href="app.bundled.css"-->
-    <!--    as="style"-->
-    <!--    onload="this.rel='stylesheet'"-->
-    <!--/>-->
-    <link rel="stylesheet" href="app.bundled.css" />
-    <!--<style>-->
-    <!--    /*avoid white flashing on repeated fast refreshes*/-->
-    <!--    html[data-theme="dark"] {-->
-    <!--        background-color: rgb(25, 27, 28) !important;-->
-    <!--    }-->
-    <!--</style>-->
-
-    <!--<noscript><link rel="stylesheet" href="app.bundled.css" /></noscript>-->
-
-    <!--<meta-->
-    <!--  http-equiv="Content-Security-Policy"-->
-    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
-    <!--/>-->
-</head>
-</file>
-
-<file path="frontend/views/login.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body data-page="login" class="">
-        <div class="gradient-bg bg-dark-accent login-left auth-filler-bg">
-            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
-        </div>
-        <!--<div class="pb-1 pr-1 dp-f jc-e w-100">-->
-        <!--    <button class="bd-w theme-btn btn-no-hover">-->
-        <!--        <svg-->
-        <!--            class="sun"-->
-        <!--            xmlns="http://www.w3.org/2000/svg"-->
-        <!--            height="30px"-->
-        <!--            viewBox="0 -960 960 960"-->
-        <!--            width="30px"-->
-        <!--            fill="#e8eaed"-->
-        <!--        >-->
-        <!--            <path-->
-        <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
-        <!--            />-->
-        <!--        </svg>-->
-        <!--        <svg-->
-        <!--            class="moon"-->
-        <!--            xmlns="http://www.w3.org/2000/svg"-->
-        <!--            height="30px"-->
-        <!--            viewBox="0 -960 960 960"-->
-        <!--            width="30px"-->
-        <!--            fill="#e8eaed"-->
-        <!--        >-->
-        <!--            <path-->
-        <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
-        <!--            />-->
-        <!--        </svg>-->
-        <!--    </button>-->
-        <!--</div>-->
-
-        <div class="auth-wrapper container">
-            <form
-                autocomplete="off"
-                id="login-form"
-                class="br-20"
-                action=""
-                novalidate
-            >
-                <h1 class="">Login to SKonnect</h1>
-
-                <div class="input-box">
-                    <input
-                        id="user-identifier"
-                        type="text"
-                        name="user-identifier"
-                        required
-                        minlength="4"
-                        maxlength="100"
-                        placeholder=""
-                    />
-                    <label for="user-identifier">Username or Email</label>
-                    <span></span>
-                </div>
-                <div data-error-for="user-identifier" class="error"></div>
-
-                <div class="input-box">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="password">Password</label>
-                    <button class="btn-no-hover visib-pass-btn" type="button">
-                        <svg
-                            class="visib-on"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
-                            />
-                        </svg>
-                        <svg
-                            class="visib-off"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <div data-error-for="password" class="error"></div>
-
-                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Login
-                </button>
-
-                <div class="gp-10 jc-c dp-f">
-                    <span> Don't have an account? </span>
-                    <a class="signup-link fw-bold" href="/signup">Signup</a>
-                </div>
-            </form>
-        </div>
-
-        <!--FOOTER --commented out -->
-        <%# include('./partials/footer.ejs') %>
-
-        <script type="module" src="/app.bundle.js"></script>
-        <!--<script type="module" src="/nav.bundle.js"></script>-->
-        <script type="module" src="/login.bundle.js"></script>
-    </body>
-</html>
 </file>
 
 <file path="frontend/src/scss/pages/_home.scss">
@@ -6233,6 +6081,35 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
 }
 </file>
 
+<file path="frontend/views/partials/head.ejs">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKonnect<%= title ? " - " + title : "" %></title>
+
+    <!--<link-->
+    <!--    rel="preload"-->
+    <!--    href="app.bundled.css"-->
+    <!--    as="style"-->
+    <!--    onload="this.rel='stylesheet'"-->
+    <!--/>-->
+    <link rel="stylesheet" href="app.bundled.css" />
+    <!--<style>-->
+    <!--    /*avoid white flashing on repeated fast refreshes*/-->
+    <!--    html[data-theme="dark"] {-->
+    <!--        background-color: rgb(25, 27, 28) !important;-->
+    <!--    }-->
+    <!--</style>-->
+
+    <!--<noscript><link rel="stylesheet" href="app.bundled.css" /></noscript>-->
+
+    <!--<meta-->
+    <!--  http-equiv="Content-Security-Policy"-->
+    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
+    <!--/>-->
+</head>
+</file>
+
 <file path="frontend/views/home.ejs">
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -6477,80 +6354,68 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
 </html>
 </file>
 
-<file path="frontend/views/signup.ejs">
+<file path="frontend/views/login.ejs">
 <!DOCTYPE html>
 <html lang="en" data-theme="">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body data-page="signup" class="">
-        <div class="auth-wrapper container">
-            <!--<div class="dp-f jc-s pb-1 pl-1 w-100">-->
-            <!--    <button class="bd-w theme-btn btn-no-hover">-->
-            <!--        <svg-->
-            <!--            class="sun"-->
-            <!--            xmlns="http://www.w3.org/2000/svg"-->
-            <!--            height="30px"-->
-            <!--            viewBox="0 -960 960 960"-->
-            <!--            width="30px"-->
-            <!--            fill="#e8eaed"-->
-            <!--        >-->
-            <!--            <path-->
-            <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
-            <!--            />-->
-            <!--        </svg>-->
-            <!--        <svg-->
-            <!--            class="moon"-->
-            <!--            xmlns="http://www.w3.org/2000/svg"-->
-            <!--            height="30px"-->
-            <!--            viewBox="0 -960 960 960"-->
-            <!--            width="30px"-->
-            <!--            fill="#e8eaed"-->
-            <!--        >-->
-            <!--            <path-->
-            <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
-            <!--            />-->
-            <!--        </svg>-->
-            <!--    </button>-->
-            <!--</div>-->
+    <body data-page="login" class="">
+        <div class="gradient-bg bg-dark-accent login-left auth-filler-bg">
+            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
+        </div>
+        <!--<div class="pb-1 pr-1 dp-f jc-e w-100">-->
+        <!--    <button class="bd-w theme-btn btn-no-hover">-->
+        <!--        <svg-->
+        <!--            class="sun"-->
+        <!--            xmlns="http://www.w3.org/2000/svg"-->
+        <!--            height="30px"-->
+        <!--            viewBox="0 -960 960 960"-->
+        <!--            width="30px"-->
+        <!--            fill="#e8eaed"-->
+        <!--        >-->
+        <!--            <path-->
+        <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
+        <!--            />-->
+        <!--        </svg>-->
+        <!--        <svg-->
+        <!--            class="moon"-->
+        <!--            xmlns="http://www.w3.org/2000/svg"-->
+        <!--            height="30px"-->
+        <!--            viewBox="0 -960 960 960"-->
+        <!--            width="30px"-->
+        <!--            fill="#e8eaed"-->
+        <!--        >-->
+        <!--            <path-->
+        <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
+        <!--            />-->
+        <!--        </svg>-->
+        <!--    </button>-->
+        <!--</div>-->
 
+        <div class="auth-wrapper container">
             <form
                 autocomplete="off"
-                id="signup-form"
+                id="login-form"
                 class="br-20"
                 action=""
                 novalidate
             >
-                <h1 class="mb-2">Get Started</h1>
-                <h4 class="mb-3">Signup to SKonnect.</h4>
+                <h1 class="">Login to SKonnect</h1>
 
                 <div class="input-box">
                     <input
+                        id="user-identifier"
                         type="text"
-                        id="username"
-                        name="username"
+                        name="user-identifier"
                         required
                         minlength="4"
-                        maxlength="40"
-                        placeholder=""
-                    />
-                    <label for="username">Username</label>
-                    <span></span>
-                </div>
-                <div data-error-for="username" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
                         maxlength="100"
                         placeholder=""
                     />
-                    <label for="email">Email</label>
+                    <label for="user-identifier">Username or Email</label>
                     <span></span>
                 </div>
-                <div data-error-for="email" class="signup-error-msg"></div>
+                <div data-error-for="user-identifier" class="error"></div>
 
                 <div class="input-box">
                     <input
@@ -6590,46 +6455,25 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
                         </svg>
                     </button>
                 </div>
-                <div data-error-for="password" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        name="confirmPassword"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="confirmPassword">Confirm Password</label>
-                </div>
-                <div
-                    data-error-for="confirmPassword"
-                    class="signup-error-msg"
-                ></div>
+                <div data-error-for="password" class="error"></div>
 
                 <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Sign up
+                    Login
                 </button>
 
                 <div class="gp-10 jc-c dp-f">
-                    <span> Already have an account? </span>
-                    <a class="login-link fw-bold" href="/login">Login</a>
+                    <span> Don't have an account? </span>
+                    <a class="signup-link fw-bold" href="/signup">Signup</a>
                 </div>
             </form>
-        </div>
-
-        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
-            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
         </div>
 
         <!--FOOTER --commented out -->
         <%# include('./partials/footer.ejs') %>
 
-        <script type="module" src="/app.bundle.js" defer></script>
-        <script type="module" src="/signup.bundle.js" defer></script>
+        <script type="module" src="/app.bundle.js"></script>
         <!--<script type="module" src="/nav.bundle.js"></script>-->
+        <script type="module" src="/login.bundle.js"></script>
     </body>
 </html>
 </file>
@@ -6966,6 +6810,163 @@ document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
       </div>
     <% } %>
 </nav>
+</file>
+
+<file path="frontend/views/signup.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="signup" class="">
+        <div class="auth-wrapper container">
+            <!--<div class="dp-f jc-s pb-1 pl-1 w-100">-->
+            <!--    <button class="bd-w theme-btn btn-no-hover">-->
+            <!--        <svg-->
+            <!--            class="sun"-->
+            <!--            xmlns="http://www.w3.org/2000/svg"-->
+            <!--            height="30px"-->
+            <!--            viewBox="0 -960 960 960"-->
+            <!--            width="30px"-->
+            <!--            fill="#e8eaed"-->
+            <!--        >-->
+            <!--            <path-->
+            <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
+            <!--            />-->
+            <!--        </svg>-->
+            <!--        <svg-->
+            <!--            class="moon"-->
+            <!--            xmlns="http://www.w3.org/2000/svg"-->
+            <!--            height="30px"-->
+            <!--            viewBox="0 -960 960 960"-->
+            <!--            width="30px"-->
+            <!--            fill="#e8eaed"-->
+            <!--        >-->
+            <!--            <path-->
+            <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
+            <!--            />-->
+            <!--        </svg>-->
+            <!--    </button>-->
+            <!--</div>-->
+
+            <form
+                autocomplete="off"
+                id="signup-form"
+                class="br-20"
+                action=""
+                novalidate
+            >
+                <h1 class="mb-2">Get Started</h1>
+                <h4 class="mb-3">Signup to SKonnect.</h4>
+
+                <div class="input-box">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        minlength="4"
+                        maxlength="40"
+                        placeholder=""
+                    />
+                    <label for="username">Username</label>
+                    <span></span>
+                </div>
+                <div data-error-for="username" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        maxlength="100"
+                        placeholder=""
+                    />
+                    <label for="email">Email</label>
+                    <span></span>
+                </div>
+                <div data-error-for="email" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="password">Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <svg
+                            class="visib-on"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                            />
+                        </svg>
+                        <svg
+                            class="visib-off"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div data-error-for="password" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="confirmPassword">Confirm Password</label>
+                </div>
+                <div
+                    data-error-for="confirmPassword"
+                    class="signup-error-msg"
+                ></div>
+
+                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
+                    Sign up
+                </button>
+
+                <div class="gp-10 jc-c dp-f">
+                    <span> Already have an account? </span>
+                    <a class="login-link fw-bold" href="/login">Login</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
+            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
+        </div>
+
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
+
+        <script type="module" src="/app.bundle.js" defer></script>
+        <script type="module" src="/signup.bundle.js" defer></script>
+        <!--<script type="module" src="/nav.bundle.js"></script>-->
+    </body>
+</html>
 </file>
 
 <file path="frontend/src/scss/layout/_nav.scss">
@@ -7454,12 +7455,16 @@ export default class User {
       errs.confirmPassword = "Password does not match.";
 
     const [rows] = await pool.execute<RowDataPacket[]>(
-      `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS emailExists`,
-      [this.email],
+      `SELECT email, username FROM users WHERE email = ? OR username = ?`,
+      [this.email, this.username],
     );
-    const emailExists = rows[0].emailExists;
-    if (emailExists) {
-      errs.email = "email already in use.";
+
+    if (rows.length !== 0) {
+      //console.log({ rows });
+      const { email, username } = rows[0];
+      if (email === this.email) errs.email = "email is already taken.";
+      if (username === this.username)
+        errs.username = "username is already taken.";
     }
 
     //const [rows] = await pool.execute<RowDataPacket[]>(
@@ -7584,8 +7589,8 @@ export default class User {
   };
 
   saveDB = async () => {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(this.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
 
     const [rows] = await pool.execute<ResultSetHeader>(
       //const [rows] = await pool.execute(
@@ -7869,13 +7874,13 @@ const config = {
   //  "/__webpack_hmr",
   //mode: "development",
   entry: {
-    app: [
-      ...(isDevelopment
-        ? ["webpack-hot-middleware/client?reload=true&timeout=5"]
-        : []),
-      "./frontend/src/webpack-app-entry.ts",
-    ],
-    //app: ["./frontend/src/webpack-app-entry.ts"],
+    //app: [
+    //  ...(isDevelopment
+    //    ? ["webpack-hot-middleware/client?reload=true&timeout=5"]
+    //    : []),
+    //  "./frontend/src/webpack-app-entry.ts",
+    //],
+    app: ["./frontend/src/webpack-app-entry.ts"],
     landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],

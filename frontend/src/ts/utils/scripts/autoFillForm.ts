@@ -28,7 +28,7 @@ export default function autofillForm(): void {
 
   if (userIdentifierInput && passwordInput) {
     userIdentifierInput.value = "maya";
-    passwordInput.value = "randomPassword";
+    passwordInput.value = "randompass";
     return;
   }
 

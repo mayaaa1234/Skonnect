@@ -5,7 +5,7 @@ dotenv.config();
 // Define `pool` with an explicit type
 let pool: Pool;
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "production") {
   pool = mysql.createPool({
     host: process.env.SQL_HOST,
     user: process.env.SQL_USER,

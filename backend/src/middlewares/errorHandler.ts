@@ -29,6 +29,8 @@ export const errorHandler = (
   return res
     .status(500)
     .json({ msg: "Something went wrong, please try again later." });
+
+  _next(err);
 };
 
 //import { CustomError } from "../errors/CustomError.ts";

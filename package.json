@@ -6,7 +6,7 @@
   "main": "",
   "scripts": {
     "build": "NODE_ENV=production webpack --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
-    "start": "node backend/dist/app.js",
+    "start": "NODE_ENV=production node backend/dist/app.js",
     "dev": "NODE_ENV=development nodemon --config ./backend/configs/nodemon.json",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
     "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build"
@@ -51,7 +51,6 @@
     "eslint": "^9.19.0",
     "eslint_d": "^14.2.2",
     "eslint-webpack-plugin": "^4.2.0",
-    "express-async-errors": "^3.1.1",
     "favicons": "^7.2.0",
     "favicons-webpack-plugin": "^6.0.1",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
@@ -93,10 +92,9 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
-    "express": "^4.21.2",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^4.0.0",
+    "express-async-errors": "^3.1.1",
     "mysql2": "^3.12.0"
   }
 }

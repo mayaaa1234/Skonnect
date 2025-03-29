@@ -9,7 +9,7 @@ dotenv.config();
 //console.log("MYSQLPORT:", process.env.MYSQLPORT);
 
 const connectDB = () => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "production") {
     return mysql.createConnection({
       host: process.env.SQL_HOST,
       user: process.env.SQL_USER,

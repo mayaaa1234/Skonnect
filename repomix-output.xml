@@ -4188,171 +4188,6 @@ $utilities: (
 }
 </file>
 
-<file path="frontend/src/scss/pages/_auth.scss">
-@use "../abstracts/mixins" as *;
-
-// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
-// specific customization of each at the bottom
-
-body[data-page="login"],
-body[data-page="signup"] {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-
-  @include mobile {
-    height: 100dvh !important;
-  }
-
-  @include xl {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-  }
-
-  .auth-wrapper {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    // border: 1px solid rgb(255, 255, 255, 0.6);
-  }
-
-  $bar-width: 500px;
-
-  form {
-    // border: 1px solid rgb(255, 255, 255, 0.6);
-    height: auto;
-    padding: 24px 0;
-    width: min(850px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    // margin: 0 auto;
-    background: transparent;
-    backdrop-filter: blur(10px);
-
-    h1 {
-      text-align: center;
-      margin-bottom: -5px;
-
-      @include xl {
-        font-size: 3em;
-      }
-    }
-
-    h4 {
-      // margin-bottom: 12px;
-    }
-
-    .input-box:first-of-type {
-      margin-top: 25px !important;
-    }
-
-    .input-box {
-      position: relative;
-      // border-bottom: 1px solid white;
-      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
-      [data-theme="light"] {
-        border-bottom: black !important;
-      }
-      width: min(90%, $bar-width);
-      margin: 25px 0;
-      @include mobile {
-        margin: 38px 0 25px 0 !important;
-      }
-
-      label {
-        position: absolute;
-        left: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-      }
-
-      input {
-        width: 100%;
-        border: 0;
-        padding: 0 36px 0 5px;
-        color: white;
-        height: 50px;
-        font-size: 1em;
-        outline: none;
-        background-color: transparent;
-        // border: 1px solid black;
-
-        // NOTE:
-        // label must be below input in html
-        // for this (sibling selector) to work
-        &:focus ~ label,
-        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
-        // NOTE: input must have placeholder attr even if its empty for this to work
-        &:not(:placeholder-shown) ~ label {
-          top: -5px;
-        }
-      }
-
-      .visib-pass-btn {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-
-        .visib-on {
-          display: none;
-        }
-
-        &.active {
-          .visib-on {
-            display: block;
-          }
-
-          .visib-off {
-            display: none;
-          }
-        }
-      }
-    }
-
-    button.submit {
-      width: min(90%, $bar-width);
-      margin: 20px 0;
-    }
-
-    .error,// this one's for login too lazy to change it
-    .signup-error-msg {
-      color: red;
-      margin-top: -16px;
-    }
-  }
-
-  .auth-filler-bg {
-    display: none;
-
-    @include xl {
-      height: 100vh;
-      display: block;
-    }
-  }
-}
-
-// body[data-page="signup"] {
-//   .signup-link,.login-link{
-//     color: black;
-//   }
-// }
-
-body[data-page="login"] {
-  grid-template-columns: 1fr 1.5fr;
-
-  #login-form h1 {
-    margin-bottom: 60px !important;
-  }
-}
-</file>
-
 <file path="frontend/src/scss/pages/_profile.scss">
 @use "../abstracts/mixins" as *;
 @use "../layout/nav" as *;
@@ -4574,46 +4409,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </footer>
 </file>
 
-<file path="backend/src/db/pool.ts">
-import mysql, { Pool } from "mysql2/promise";
-import dotenv from "dotenv";
-dotenv.config();
-
-// Define `pool` with an explicit type
-let pool: Pool;
-
-if (process.env.NODE_ENV === "development") {
-  pool = mysql.createPool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASS,
-    database: process.env.SQL_DB,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-} else {
-  pool = mysql.createPool({
-    uri: process.env.MYSQL_PUBLIC_URL as string,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-}
-
-// prod
-
-export default pool!;
-</file>
-
 <file path="frontend/configs/postcss.config.js">
 /** @type {import('postcss-load-config').Config} */
 import autoprefixer from "autoprefixer";
@@ -4672,6 +4467,172 @@ footer {
   }
   .c-notice {
     font-size: 14px;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/pages/_auth.scss">
+@use "../abstracts/mixins" as *;
+
+// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
+// specific customization of each at the bottom
+
+body[data-page="login"],
+body[data-page="signup"] {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  @include mobile {
+    height: 100dvh !important;
+  }
+
+  @include xl {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .auth-wrapper {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+  }
+
+  $bar-width: 500px;
+
+  form {
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+    height: auto;
+    padding: 24px 0;
+    width: min(850px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // margin: 0 auto;
+    background: transparent;
+    backdrop-filter: blur(10px);
+
+    h1 {
+      text-align: center;
+      margin-bottom: -5px;
+
+      @include xl {
+        font-size: 3em;
+      }
+    }
+
+    h4 {
+      // margin-bottom: 12px;
+    }
+
+    .input-box:first-of-type {
+      margin-top: 25px !important;
+    }
+
+    .input-box {
+      position: relative;
+      // border: 1px solid white;
+      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
+      [data-theme="light"] {
+        border-bottom: black !important;
+      }
+      width: min(90%, $bar-width);
+      // margin: 25px 0;
+
+      // @include mobile {
+      margin: 38px 0 25px 0 !important;
+      // }
+
+      label {
+        position: absolute;
+        left: 5px;
+        top: 30px;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        padding: 0 36px 0 5px;
+        color: white;
+        height: 50px;
+        font-size: 1em;
+        outline: none;
+        background-color: transparent;
+        // border: 1px solid black;
+
+        // NOTE:
+        // label must be below input in html
+        // for this (sibling selector) to work
+        &:focus ~ label,
+        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
+        // NOTE: input must have placeholder attr even if its empty for this to work
+        &:not(:placeholder-shown) ~ label {
+          top: -5px !important;
+        }
+      }
+
+      .visib-pass-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .visib-on {
+          display: none;
+        }
+
+        &.active {
+          .visib-on {
+            display: block;
+          }
+
+          .visib-off {
+            display: none;
+          }
+        }
+      }
+    }
+
+    button.submit {
+      width: min(90%, $bar-width);
+      margin: 20px 0;
+    }
+
+    .error,// this one's for login too lazy to change it
+    .signup-error-msg {
+      color: red;
+      margin-top: -16px;
+    }
+  }
+
+  .auth-filler-bg {
+    display: none;
+
+    @include xl {
+      height: 100vh;
+      display: block;
+    }
+  }
+}
+
+// body[data-page="signup"] {
+//   .signup-link,.login-link{
+//     color: black;
+//   }
+// }
+
+body[data-page="login"] {
+  grid-template-columns: 1fr 1.5fr;
+
+  #login-form h1 {
+    margin-bottom: 60px !important;
   }
 }
 </file>
@@ -4925,7 +4886,7 @@ dotenv.config();
 //console.log("MYSQLPORT:", process.env.MYSQLPORT);
 
 const connectDB = () => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "production") {
     return mysql.createConnection({
       host: process.env.SQL_HOST,
       user: process.env.SQL_USER,
@@ -4938,6 +4899,46 @@ const connectDB = () => {
 };
 
 export default connectDB;
+</file>
+
+<file path="backend/src/db/pool.ts">
+import mysql, { Pool } from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Define `pool` with an explicit type
+let pool: Pool;
+
+if (process.env.NODE_ENV === "production") {
+  pool = mysql.createPool({
+    host: process.env.SQL_HOST,
+    user: process.env.SQL_USER,
+    password: process.env.SQL_PASS,
+    database: process.env.SQL_DB,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+} else {
+  pool = mysql.createPool({
+    uri: process.env.MYSQL_PUBLIC_URL as string,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+}
+
+// prod
+
+export default pool!;
 </file>
 
 <file path="backend/src/routes/auth.ts">
@@ -5553,144 +5554,6 @@ router.get("/submit-suggestions", redirectAuth(), suggestionPage);
 export default router;
 </file>
 
-<file path="frontend/src/ts/pages/signup/validate.ts">
-import signupUser from "./signupUser.ts";
-import autoFillForm from "../../utils/scripts/autoFillForm.ts";
-import type { SignupData } from "./signupUser.ts";
-
-document.addEventListener("DOMContentLoaded", () => {
-  //WARN: this is for quick testing only and should be removed on prod
-  if (process.env.NODE_ENV !== "production") {
-    autoFillForm();
-  }
-
-  const form = document.getElementById("signup-form") as HTMLFormElement | null;
-  if (!form) return;
-
-  // Helper function to show error
-  function showError(input: HTMLInputElement, message: string) {
-    const errorDiv = document.querySelector(
-      `.signup-error-msg[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = message;
-    }
-    input.classList.add("invalid");
-  }
-
-  // Helper function to clear error
-  function clearError(input: HTMLInputElement) {
-    const errorDiv = document.querySelector(
-      `.signup-error-msg[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = "";
-    }
-    input.classList.remove("invalid");
-  }
-
-  function validateField(field: HTMLInputElement) {
-    const value = field.value.trim();
-    const { name } = field;
-
-    const passwordField = form?.elements.namedItem(
-      "password",
-    ) as HTMLInputElement | null;
-
-    switch (name) {
-      case "username":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "username must be at least 4 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "email":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (value.length < 8) {
-          showError(field, "password must be at least 8 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "confirmPassword":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (
-          passwordField &&
-          passwordField.value &&
-          value !== passwordField.value.trim()
-        ) {
-          showError(field, "passwords do not match.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  // Attach validation handlers (live validation on input activities)
-  for (const field of Array.from(form.elements)) {
-    if (field instanceof HTMLInputElement) {
-      field.addEventListener("input", () => validateField(field));
-    }
-  }
-
-  // Form submission handler
-  form.addEventListener("submit", async (e: SubmitEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains("theme-btn")) {
-      e.preventDefault();
-      return;
-    }
-
-    e.preventDefault();
-
-    // Validate all fields
-    let hasErrors = false;
-    for (const field of Array.from(form.elements)) {
-      if (field instanceof HTMLInputElement) {
-        validateField(field);
-        if (!field.validity.valid || field.classList.contains("invalid")) {
-          hasErrors = true;
-        }
-      }
-    }
-    if (hasErrors) return;
-
-    const formData = new FormData(form);
-    //console.log({ formData });
-    const jsonData = Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ) as unknown as SignupData;
-
-    //console.log({ jsonData });
-    await signupUser(jsonData);
-    //form.reset();
-  });
-});
-</file>
-
 <file path="frontend/src/ts/index.ts">
 //INFO: shared scripts across pages goes here
 
@@ -6079,6 +5942,144 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
     }
   }
 }
+</file>
+
+<file path="frontend/src/ts/pages/signup/validate.ts">
+import signupUser from "./signupUser.ts";
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
+import type { SignupData } from "./signupUser.ts";
+
+document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  if (process.env.NODE_ENV !== "production") {
+    //autoFillForm();
+  }
+
+  const form = document.getElementById("signup-form") as HTMLFormElement | null;
+  if (!form) return;
+
+  // Helper function to show error
+  function showError(input: HTMLInputElement, message: string) {
+    const errorDiv = document.querySelector(
+      `.signup-error-msg[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = message;
+    }
+    input.classList.add("invalid");
+  }
+
+  // Helper function to clear error
+  function clearError(input: HTMLInputElement) {
+    const errorDiv = document.querySelector(
+      `.signup-error-msg[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = "";
+    }
+    input.classList.remove("invalid");
+  }
+
+  function validateField(field: HTMLInputElement) {
+    const value = field.value.trim();
+    const { name } = field;
+
+    const passwordField = form?.elements.namedItem(
+      "password",
+    ) as HTMLInputElement | null;
+
+    switch (name) {
+      case "username":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          showError(field, "username must be at least 4 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          showError(field, "not a valid email.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (value.length < 8) {
+          showError(field, "password must be at least 8 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "confirmPassword":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (
+          passwordField &&
+          passwordField.value &&
+          value !== passwordField.value.trim()
+        ) {
+          showError(field, "passwords do not match.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // Attach validation handlers (live validation on input activities)
+  for (const field of Array.from(form.elements)) {
+    if (field instanceof HTMLInputElement) {
+      field.addEventListener("input", () => validateField(field));
+    }
+  }
+
+  // Form submission handler
+  form.addEventListener("submit", async (e: SubmitEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains("theme-btn")) {
+      e.preventDefault();
+      return;
+    }
+
+    e.preventDefault();
+
+    // Validate all fields
+    let hasErrors = false;
+    for (const field of Array.from(form.elements)) {
+      if (field instanceof HTMLInputElement) {
+        validateField(field);
+        if (!field.validity.valid || field.classList.contains("invalid")) {
+          hasErrors = true;
+        }
+      }
+    }
+    if (hasErrors) return;
+
+    const formData = new FormData(form);
+    //console.log({ formData });
+    const jsonData = Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ) as unknown as SignupData;
+
+    //console.log({ jsonData });
+    await signupUser(jsonData);
+    //form.reset();
+  });
+});
 </file>
 
 <file path="frontend/views/partials/head.ejs">
@@ -7912,11 +7913,6 @@ const config = {
 
   plugins: [
     ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(
-        process.env.NODE_ENV || "development",
-      ),
-    }),
     //new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundled.css",
@@ -8041,8 +8037,8 @@ export default config;
   "description": "",
   "main": "",
   "scripts": {
-    "build": "NODE_ENV=production webpack --mode production --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
-    "start": "NODE_ENV=production nodemon backend/dist/app.js",
+    "build": "NODE_ENV=production webpack --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
+    "start": "NODE_ENV=production node backend/dist/app.js",
     "dev": "NODE_ENV=development nodemon --config ./backend/configs/nodemon.json",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
     "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build"

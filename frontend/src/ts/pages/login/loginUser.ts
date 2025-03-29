@@ -17,18 +17,12 @@ export default async function loginUser(jsonData: LoginData) {
       credentials: "include",
     });
     console.log({ response });
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      throw new Error(`Expected JSON but got: ${text}`);
+    }
     const result = await response.json();
-
-    //if (!response.ok) {
-    //  console.error("Login failed:", result.message || "Unknown error");
-    //  notifyError(result.message || "Login failed, please try again later.");
-    //
-    //  //document.cookie =
-    //  //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    //  return;
-    //
-    //}
-    //
 
     if (!response.ok) {
       console.log("login validation failed");
@@ -42,6 +36,7 @@ export default async function loginUser(jsonData: LoginData) {
 
         const fieldName = Object.keys(result.errs)[0]; // get the first (and only) key
         const message = result.errs[fieldName]; // get the msg in the key
+        //const message = String(result.errs[fieldName]);
 
         console.log({ fieldName });
         console.log({ message });

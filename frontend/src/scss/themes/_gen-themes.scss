@@ -6,10 +6,13 @@
 @use "../abstracts/mixins" as *;
 
 // APPLIES TO ALL PAGES
+// [data-theme="light"],
+// [data-theme="dark"] {
 body {
   background-color: var(--primary);
   color: var(--foreground);
 }
+// }
 
 // WILL BE USED THROUGHOUT THE APP
 

@@ -1,14 +1,22 @@
 import { merge } from "webpack-merge";
-import common from "./webpack.common.js";
-import TerserPlugin from "terser-webpack-plugin";
+import subProd from "./webpack.subProd.js";
+//import TerserPlugin from "terser-webpack-plugin";
 
-export default merge(common, {
+export default merge(subProd, {
   mode: "production",
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
-    splitChunks: {
-      chunks: "all",
-    },
+    //minimizer: new TerserPlugin({
+    //  terserOptions: {
+    //    keep_fnames: true,
+    //    keep_classnames: true,
+    //  },
+    //}),
+
+    //[new TerserPlugin()],
+    //
+    //splitChunks: {
+    //  chunks: "all",
+    //},
   },
 });

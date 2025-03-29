@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
     <body data-page="signup" class="">
@@ -147,8 +147,8 @@
         <!--FOOTER --commented out -->
         <%# include('./partials/footer.ejs') %>
 
-        <script type="module" src="/app.bundle.js"></script>
-        <script type="module" src="/signup.bundle.js"></script>
-        <script type="module" src="/nav.bundle.js"></script>
+        <script type="module" src="/app.bundle.js" defer></script>
+        <script type="module" src="/signup.bundle.js" defer></script>
+        <!--<script type="module" src="/nav.bundle.js"></script>-->
     </body>
 </html>

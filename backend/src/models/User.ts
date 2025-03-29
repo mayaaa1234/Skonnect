@@ -92,8 +92,6 @@ export default class User {
     // only one err at a time. So this will only send a string unlike the signup
     // that sends an json obj.
 
-    console.log("login info:", this.email, this.username);
-
     //INFO: if user used an email to login
     if (this.email && !this.username) {
       if (!emailRegex.test(this.email))
@@ -121,19 +119,23 @@ export default class User {
 
       const { id, username, password } = rows[0];
 
-      const isMatch = await bcrypt.compare(this.password, password);
+      if (!this.password || !password) {
+        throw new Error("Password or hash missing");
+      }
 
-      throw mkCustomError({
-        status: 404,
-        errs: {
-          password: "wrong password, please try again.",
-        },
-      });
+      const isMatch = await bcrypt.compare(this.password, password);
+      if (!isMatch) {
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            password: "wrong password, please try again.",
+          },
+        });
+      }
+
       // will be sent to the client
       this.id = id;
       this.username = username;
-
-      //return null;
     }
 
     //INFO: if user used a username to login
@@ -142,7 +144,7 @@ export default class User {
         `SELECT * FROM users WHERE username = ?`,
         [this.username],
       );
-      //console.log({ rows });
+      console.log({ rows });
 
       if (rows.length === 0) {
         throw mkCustomError({
@@ -156,7 +158,11 @@ export default class User {
       const { id, username, email, password, isAdmin } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
+      console.log(isMatch);
+
+      //if (!isMatch) console.error("Wrong Password, Try again.");
       if (!isMatch) {
+        console.log("wrong pw");
         throw mkCustomError({
           status: 400,
           errs: {
@@ -177,8 +183,8 @@ export default class User {
   };
 
   saveDB = async () => {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(this.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
 
     const [rows] = await pool.execute<ResultSetHeader>(
       //const [rows] = await pool.execute(

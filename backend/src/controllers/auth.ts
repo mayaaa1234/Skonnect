@@ -73,6 +73,8 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 };
 
 const login = async (req: Request, res: Response) => {
+  console.log("Received login request:", req.body);
+
   const { username = null, email = null, password } = req.body;
 
   const user = new User(username, email, password);
@@ -98,22 +100,7 @@ const login = async (req: Request, res: Response) => {
     password: user.password,
     token,
   });
-  // attaching username to sesssion
-  //req.session.user = {
-  //  id: user.id,
-  //  username: user.username,
-  //};
-  //// saving it
-  //await new Promise<void>((resolve, _reject) => {
-  //  req.session.save((err) => {
-  //    if (err) throw mkCustomError("Session save failed.", 500);
-  //    resolve();
-  //  });
-  //  console.log("Session saved successfully:", req.session);
-  //});
-  //console.log("SESSION MIDDLEWARE - Session data:", req.session);
-  //console.log("SESSION MIDDLEWARE - Local user:", res.locals.user);
-  //
+
   res.cookie("authorization", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

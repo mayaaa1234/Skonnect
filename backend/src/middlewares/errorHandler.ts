@@ -43,9 +43,11 @@ export const errorHandler = (
   _next: NextFunction,
 ) => {
   if (err instanceof CustomError) {
-    console.error("Error message:", err.message);
+    if (err.message) console.error("Error message:", err.message);
+    if (err.objectErr) console.error("Error message:", err.objectErr);
+
     return res.status(err.statusCode).json({
-      msg: err.message,
+      msg: err.message ?? undefined,
       errs: err.objectErr ?? undefined, // send multiple errors if available
     });
   }

@@ -88,6 +88,7 @@ frontend/
     webpack.common.js
     webpack.dev.js
     webpack.prod.js
+    webpack.subProd.js
   public/
     assets/
       img/
@@ -193,6 +194,7 @@ frontend/
     profile.ejs
     signup.ejs
     suggestions.ejs
+;w
 .gitignore
 .markuplintrc
 .prettierrc
@@ -207,6 +209,168 @@ tsconfig.json
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="frontend/configs/webpack.subProd.js">
+import path from "path";
+import webpack from "webpack";
+import process from "process";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+//import CopyWebpackPlugin from "copy-webpack-plugin";
+import ESLintPlugin from "eslint-webpack-plugin";
+import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
+
+const isDevelopment = process.env.NODE_ENV;
+console.log("webpack log: dev mode???", isDevelopment);
+
+const config = {
+  entry: {
+    app: ["./frontend/src/webpack-app-entry.ts"],
+    landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
+    home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
+    login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
+    signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
+    profile: ["./frontend/src/ts/pages/profile/profileEntry.ts"],
+    nav: ["./frontend/src/ts/pages/nav/navEntry.ts"],
+  },
+
+  output: {
+    filename: "[name].bundle.js",
+    path: path.resolve(process.cwd(), "frontend/dist"),
+    assetModuleFilename: "assets/[hash][ext][query]",
+    clean: true,
+    publicPath: "/",
+  },
+
+  watchOptions: {
+    aggregateTimeout: 200,
+    ignored: ["node_modules"],
+  },
+
+  resolve: {
+    extensions: [".scss", ".tsx", ".jsx", ".ts", ".js", ".hbs"],
+  },
+
+  stats: {
+    loggingDebug: ["sass-loader"],
+  },
+
+  plugins: [
+    //new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].bundled.css",
+    }),
+    new ESLintPlugin({
+      configType: "flat",
+      // You can specify an override file if needed:
+      // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
+    }),
+    new NodePolyfillPlugin(),
+    //new CopyWebpackPlugin({
+    //  patterns: [
+    //    {
+    //      from: path.resolve(process.cwd(), "frontend/src/assets"),
+    //      to: "assets/",
+    //    },
+    //  ],
+    //}),
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.(webp|png|jpe?g|gif)$/i,
+        type: "asset/resource",
+      },
+
+      {
+        test: /\.svg/,
+        use: {
+          loader: "svg-url-loader",
+          options: {
+            iesafe: true,
+          },
+        },
+      },
+
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+      },
+
+      {
+        test: /\.scss$/i,
+        exclude: /node_modules/,
+        use: [
+          //would do this if not for the css sourcing
+          //isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                config: path.resolve(
+                  process.cwd(),
+                  "./frontend/configs/postcss.config.js",
+                ),
+              },
+            },
+          },
+          "sass-loader",
+        ],
+      },
+      {
+        test: /\.[cm]?[jt]sx?$/, // Matches .js, .ts, .jsx, .tsx
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            plugins: [
+              ["@babel/plugin-transform-runtime"], // Avoids regenerator issues
+              //[
+              //  "module-resolver",
+              //  {
+              //    extensions: [".js", ".ts"],
+              //    alias: {
+              //      "@": "./frontend/src",
+              //    },
+              //  },
+              //],
+            ],
+          },
+        },
+      },
+      //{
+      //  test: /\.([cm]?ts|tsx)$/,
+      //  use: {
+      //    loader: "ts-loader",
+      //    options: {
+      //      configFile: path.resolve(
+      //        process.cwd(),
+      //        "frontend/configs/tsconfig.json",
+      //      ),
+      //      // uncomment the line below to skip type checking for faster builds
+      //      transpileOnly: true,
+      //      compilerOptions: {
+      //        sourceMap: true,
+      //      },
+      //    },
+      //  },
+      //  exclude: [/node_modules/, /backend/],
+      //},
+    ],
+  },
+};
+
+export default config;
+</file>
 
 <file path="backend/configs/register.js">
 import { register } from "node:module";
@@ -1117,26 +1281,6 @@ const createUsersTable = async () => {
 createUsersTable();
 </file>
 
-<file path="backend/src/errors/CustomError.ts">
-export class CustomError extends Error {
-  statusCode: number;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-    //when you extend a built-in class like Error, JavaScript does not automatically fix the prototype chain in all environments.
-    // idk not needed in this case i guess
-    //Object.setPrototypeOf(this, CustomError.prototype);
-  }
-}
-
-const mkCustomError = (msg: string, statusCode: number) => {
-  return new CustomError(msg, statusCode);
-};
-
-export default mkCustomError;
-</file>
-
 <file path="backend/src/middlewares/notFound.ts">
 import type { Request, Response, NextFunction } from "express";
 
@@ -1188,94 +1332,6 @@ router.post("/logout", authUser, logout);
 export default router;
 
 // router.post("/otp", otp); // idk maybe if it's a requirement
-</file>
-
-<file path="frontend/src/scss/abstracts/_mixins.scss">
-@use "sass:map";
-@use "variables" as *;
-
-// media's
-
-@mixin xs {
-  @media (min-width: map.get($breakpoints, "xs")) {
-    @content;
-  }
-}
-
-@mixin sm {
-  @media (min-width: map.get($breakpoints, "sm")) {
-    @content;
-  }
-}
-
-@mixin md {
-  @media (min-width: map.get($breakpoints, "md")) {
-    @content;
-  }
-}
-
-@mixin lg {
-  @media (min-width: map.get($breakpoints, "lg")) {
-    @content;
-  }
-}
-
-@mixin xl {
-  @media (min-width: map.get($breakpoints, "xl")) {
-    @content;
-  }
-}
-
-// min breakpoint callback
-@mixin min-bp($bp: 0) {
-  @media (min-width: $bp) {
-    @content;
-  }
-}
-
-// max breakpoint callback
-@mixin max-bp($bp: 0) {
-  @media (max-width: $bp) {
-    @content;
-  }
-}
-
-@mixin mobile {
-  @media (hover: none) and (pointer: coarse) {
-    @content;
-  }
-}
-
-@mixin webkit {
-  @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    @content;
-  }
-}
-
-// grid
-
-// @mixin
-
-// .responsive-test {
-//   @include xs {
-//     color: red;
-//   }
-//   @include sm {
-//     color: blue;
-//   }
-//   @include md {
-//     color: green;
-//   }
-//   @include lg {
-//     color: purple;
-//   }
-//   @include xl {
-//     color: orange;
-//   }
-//   @include breakpoint(1400px) {
-//     color: pink;
-//   }
-// }
 </file>
 
 <file path="frontend/src/scss/components/_cards.scss">
@@ -1491,447 +1547,9 @@ export default router;
 // }
 </file>
 
-<file path="frontend/src/scss/pages/shared/general-style.scss">
-@use "../../layout/nav" as *;
-@use "../../abstracts/mixins" as *;
-
-// adjust height for the fixed nav excpet for signup and login
-// cause they don't have nav bar attached to them
-body:not([data-page="signup"], [data-page="login"]) {
-  height: 100vh;
-  padding-top: $nav-height !important;
-  overflow-y: auto;
-
-  @include mobile {
-    padding-top: 67px !important;
-  }
-}
-
-// <main class="mb-6">
-//     <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
-//         Explore SKonnect
-//     </h2>
-//
-//     <!--<section class="services container pt-2 pb-2 bd-w">-->
-//     <section class="services container pt-2 pb-2 ">
-//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 ">Services</h3>
-//
-//         <div class="f-row gp-30 jc-c pb-2">
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//             <div class="card p-2 br-20 col-12-xs col-5-md">
-//                 <div class="p-2 ta-c">
-//                     <strong class="card-title"
-//                         >Annual Budget Allocation</strong
-//                     >
-//                 </div>
-//             </div>
-//         </div>
-//     </section>
-//
-//     <section class="events">
-//         <h2 class="fs-3-xs fs-4-lg ta-c col-12-xs gradient-text pb-2 pt-2">
-//             Projects & Events
-//         </h2>
-//
-//         <h3 class="fs-2-xs fs-3-lg col-12-xs pb-2 pt-1">Cleaning</h3>
-//         <div class="slideshow-container container ">
-//
-//             <!-- Full-width images with number and caption text -->
-//             <div class="mySlides fade">
-//                 <div class="numbertext">1 / 3</div>
-//                 <!--<img src="sk-data/clean-1.webp" style="width: 100%" />-->
-//
-//                 <img src="sk-data/clean-1.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Text</div>
-//             </div>
-//
-//             <div class="mySlides fade">
-//                 <div class="numbertext">2 / 3</div>
-//                 <!--<img src="sk-data/clean-2.webp" class="br-20" style="width: 100%" />-->
-//
-//                 <img src="sk-data/clean-2.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Two</div>
-//             </div>
-//
-//             <div class="mySlides fade">
-//                 <div class="numbertext">3 / 3</div>
-//                 <img src="sk-data/clean-3.webp" class="br-20" style="height:600px; width: 100%" />
-//                 <div class="text">Caption Three</div>
-//             </div>
-//
-//             <!-- Next and previous buttons -->
-//             <a class="prev">&#10094;</a>
-//             <a class="next">&#10095;</a>
-//         </div>
-//         <br />
-//
-//         <!-- The dots/circles -->
-//         <div style="text-align: center">
-//             <span class="dot" "></span>
-//             <span class="dot" "></span>
-//             <span class="dot" "></span>
-//         </div>
-//     </section>
-// </main>
-</file>
-
-<file path="frontend/src/scss/pages/_profile.scss">
-@use "../abstracts/mixins" as *;
-@use "../layout/nav" as *;
-
-body[data-page="profile"] {
-  div.profile-container {
-    height: calc(100vh - #{$nav-height}) !important;
-    // height: 800px !important;
-
-    @include mobile {
-      height: calc(100dvh - #{$nav-height}) !important;
-    }
-
-    .lower-container,
-    .upper-container {
-      width: min(100%, 1400px);
-    }
-  }
-}
-</file>
-
-<file path="frontend/src/scss/themes/_gen-themes.scss">
-// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
-// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
-
-// INFO: here goes components that have class based theming or if var theming can't customize something enough
-
-@use "../abstracts/mixins" as *;
-
-// APPLIES TO ALL PAGES
-body {
-  background-color: var(--primary);
-  color: var(--foreground);
-}
-
-// WILL BE USED THROUGHOUT THE APP
-
-.gradient-text {
-  background-image: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  display: inline-block;
-}
-
-.gradient-bg {
-  background: linear-gradient(
-    to right bottom,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-}
-
-.gradient-border {
-  position: relative;
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
-  // background: none;
-  // color: white;
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  padding: 1px; /* Border thickness */
-  background: linear-gradient(
-    to right,
-    rgb(0, 193, 174),
-    rgb(0, 165, 191),
-    rgb(0, 108, 166)
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.gradient-border-1 {
-  border: 5px solid transparent; /* Transparent border to preserve space */
-  border-image: linear-gradient(
-      to right,
-      rgb(0, 193, 174),
-      rgb(0, 165, 191),
-      rgb(0, 108, 166)
-    )
-    1;
-}
-
-// .gradient-border::before {
-//   content: "";
-//   position: absolute;
-//   inset: 0;
-//   border-radius: 8px;
-//   padding: 3px; /* Border thickness */
-//   background: linear-gradient(
-//     to right,
-//     rgb(0, 193, 174),
-//     rgb(0, 165, 191),
-//     rgb(0, 108, 166)
-//   );
-//   -webkit-mask:
-//     linear-gradient(#fff 0 0) content-box,
-//     linear-gradient(#fff 0 0);
-//   -webkit-mask-composite: xor;
-//   mask-composite: exclude;
-// }
-</file>
-
 <file path="frontend/src/ts/pages/home/homeEntry.ts">
 import "./events.ts";
 import "./slideShow.ts";
-</file>
-
-<file path="frontend/src/ts/pages/home/slideShow.ts">
-export let manualResizeTrigger = false;
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("img").forEach((img) => {
-    img.setAttribute("loading", "lazy");
-  });
-
-  //export let manualResizeTrigger = false;
-  let slideIndex = 1;
-
-  showSlides(slideIndex);
-
-  // Next/previous controls
-  function plusSlides(n: number) {
-    manualResizeTrigger = true;
-    showSlides((slideIndex += n));
-  }
-
-  // Thumbnail image controls
-  function currentSlide(n: number) {
-    manualResizeTrigger = true;
-    showSlides((slideIndex = n));
-  }
-
-  function showSlides(n: number) {
-    //console.log("slides work");
-
-    let i: number;
-    const slides = document.getElementsByClassName(
-      "mySlides",
-    ) as HTMLCollectionOf<HTMLElement>;
-    const dots = document.getElementsByClassName(
-      "dot",
-    ) as HTMLCollectionOf<HTMLElement>;
-
-    if (n > slides.length) {
-      slideIndex = 1;
-    }
-    if (n < 1) {
-      slideIndex = slides.length;
-    }
-
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
-  }
-
-  const next = document.querySelector(".next") as HTMLElement;
-  const prev = document.querySelector(".prev") as HTMLElement;
-
-  prev.onclick = () => plusSlides(-1);
-  next.onclick = () => plusSlides(1);
-
-  // for when clicking the dots
-  const dots = document.getElementsByClassName(
-    "dot",
-  ) as HTMLCollectionOf<HTMLElement>;
-
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].onclick = () => currentSlide(i + 1);
-  }
-
-  // the number text in top left of pictures
-  const numberText = document.getElementsByClassName(
-    "numbertext",
-  ) as HTMLCollectionOf<HTMLElement>;
-  for (let i = 0; i < numberText.length; i++) {
-    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
-    console.log(numberText[i].innerText);
-  }
-});
-//AUTOMATIC
-//let slideIndex = 0;
-//showSlides();
-//
-//function showSlides() {
-//  let i;
-//  let slides = document.getElementsByClassName("mySlides");
-//  for (i = 0; i < slides.length; i++) {
-//    slides[i].style.display = "none";
-//  }
-//  slideIndex++;
-//  if (slideIndex > slides.length) {slideIndex = 1}
-//  slides[slideIndex-1].style.display = "block";
-//  setTimeout(showSlides, 2000); // Change image every 2 seconds
-//}
-//});
-
-//MULTIPLE SLIDESHOW
-//let slideIndex = [1, 1];
-///* Class the members of each slideshow group with different CSS classes */
-//const slideId = ["slides1", "slides2"];
-//showSlides(1, 0);
-//showSlides(1, 1);
-//
-//function plusSlides(n, no) {
-//  showSlides((slideIndex[no] += n), no);
-//}
-//
-//function showSlides(n, no) {
-//  let i;
-//  let x = document.getElementsByClassName(slideId[no]);
-//  if (n > x.length) {
-//    slideIndex[no] = 1;
-//  }
-//  if (n < 1) {
-//    slideIndex[no] = x.length;
-//  }
-//  for (i = 0; i < x.length; i++) {
-//    x[i].style.display = "none";
-//  }
-//  x[slideIndex[no] - 1].style.display = "block";
-//}
-////CODE FOR MULTIPLE:
-//export let manualResizeTrigger = false;
-//
-//document.addEventListener("DOMContentLoaded", () => {
-//  // MULTIPLE SLIDESHOW SETUP
-//  // Define an array to store the current slide index for each slideshow group.
-//  const slideIndices: number[] = [1, 1];
-//
-//  // all the slide containers
-//  const slideIds: string[] = ["mySlides1", "mySlides2"];
-//
-//  // Initialize each slideshow group.
-//  slideIndices.forEach((_, no) => {
-//    showSlides(slideIndices[no], no);
-//  });
-//  // Next/previous controls for a given slideshow group.
-//  // (Adjust this if you have separate buttons for each slideshow.)
-//  function plusSlides(n: number, no: number) {
-//    manualResizeTrigger = true;
-//    slideIndices[no] += n;
-//    showSlides(slideIndices[no], no);
-//  }
-//
-//  // Set the current slide in a group.
-//  function currentSlide(n: number, no: number) {
-//    manualResizeTrigger = true;
-//    slideIndices[no] = n;
-//    showSlides(slideIndices[no], no);
-//  }
-//
-//  // This function displays the appropriate slide for the given group.
-//  function showSlides(n: number, no: number) {
-//    let i: number;
-//    // Get all slides in the current group.
-//    const slides = document.getElementsByClassName(
-//      slideIds[no],
-//    ) as HTMLCollectionOf<HTMLElement>;
-//
-//    // Wrap the slide index if out-of-bounds.
-//    if (n > slides.length) {
-//      slideIndices[no] = 1;
-//    }
-//    if (n < 1) {
-//      slideIndices[no] = slides.length;
-//    }
-//
-//    // Hide all slides in the group.
-//    for (i = 0; i < slides.length; i++) {
-//      slides[i].style.display = "none";
-//    }
-//
-//    // Display the current slide.
-//    slides[slideIndices[no] - 1].style.display = "block";
-//  }
-//
-//  // Example of binding controls if you have separate controls for each slideshow:
-//  // (Assumes you have elements with data attributes or IDs to target each group.)
-//  const nextButtons = document.querySelectorAll(".next");
-//  const prevButtons = document.querySelectorAll(".prev");
-//
-//  // For simplicity, we assume the first set of buttons control the first slideshow group,
-//  // and the second set (if present) control the second slideshow group.
-//  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
-//    // Bind controls for slideshow group 0.
-//    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
-//    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
-//  }
-//  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
-//    // Bind controls for slideshow group 1.
-//    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
-//    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
-//  }
-//
-//  // For example, if each slideshow group has its own set of dots with a unique container
-//  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
-//  const dotGroup0 = document.querySelectorAll(
-//    "#dotGroup0 .dot",
-//  ) as NodeListOf<HTMLElement>;
-//  dotGroup0.forEach((dot, index) => {
-//    dot.addEventListener("click", () => currentSlide(index + 1, 0));
-//  });
-//
-//  const dotGroup1 = document.querySelectorAll(
-//    "#dotGroup1 .dot",
-//  ) as NodeListOf<HTMLElement>;
-//  dotGroup1.forEach((dot, index) => {
-//    dot.addEventListener("click", () => currentSlide(index + 1, 1));
-//  });
-//});
 </file>
 
 <file path="frontend/src/ts/pages/login/loginEntry.ts">
@@ -1970,16 +1588,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.querySelector("button.logout");
   logoutBtn?.addEventListener("click", () => logout());
 });
-</file>
-
-<file path="frontend/src/ts/states/theme.ts">
-import { setState, getState } from "../utils/setGetState.ts";
-const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
-
-// sets initial color scheme
-const theme = (getState("theme") as string) || "dark";
-document.documentElement.setAttribute("data-theme", theme);
-themeBtn?.classList.add(theme); // which toggle icon to show
 </file>
 
 <file path="frontend/views/partials/nav-authed.ejs">
@@ -2208,6 +1816,29 @@ themeBtn?.classList.add(theme); // which toggle icon to show
 </html>
 </file>
 
+<file path=";w">
+import { setState, getState } from "../utils/setGetState.ts";
+
+//const theme = (getState("theme") as string) || "dark";
+//document.documentElement.setAttribute("data-theme", theme);
+
+console.log("theme state");
+
+//on load get the color saved scheme if nothing then set a default one
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = getState("theme");
+
+  const theme = (getState("theme") as string) || "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  setState("theme", theme);
+
+  console.log("theme", theme);
+
+  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
+  themeBtn?.classList.add(theme); // which toggle icon to show
+});
+</file>
+
 <file path="backend/configs/prod-build.ts">
 // INFO: this is more proper i guess since in prod you wont use nodemon instead just node
 // also less mess in package.json scripts
@@ -2268,6 +1899,45 @@ try {
 console.log("✅ Build completed successfully!");
 </file>
 
+<file path="backend/src/errors/CustomError.ts">
+export class CustomError extends Error {
+  statusCode: number;
+  public objectErr?: { [key: string]: string };
+
+  constructor(
+    statusCode: number,
+    message?: string,
+    objectErr?: { [key: string]: string }, // ths if server wants to send multiple err's
+  ) {
+    super(message);
+    this.statusCode = statusCode;
+    this.objectErr = objectErr;
+  }
+}
+
+const mkCustomError = ({
+  status,
+  errs,
+  msg,
+}: {
+  status: number;
+  errs?: { [key: string]: string };
+  msg?: string;
+}) => {
+  return new CustomError(status, msg, errs);
+};
+
+//const mkCustomError = (
+//  statusCode: number,
+//  singleMessageErr?: string,
+//  objectErr?: { [key: string]: string },
+//) => {
+//  return new CustomError(statusCode, singleMessageErr, objectErr);
+//};
+
+export default mkCustomError;
+</file>
+
 <file path="backend/types/express.d.ts">
 import { Request, Response } from "express";
 
@@ -2288,106 +1958,121 @@ declare global {
 
 <file path="frontend/configs/webpack.prod.js">
 import { merge } from "webpack-merge";
-import common from "./webpack.common.js";
-import TerserPlugin from "terser-webpack-plugin";
+import subProd from "./webpack.subProd.js";
+//import TerserPlugin from "terser-webpack-plugin";
 
-export default merge(common, {
+export default merge(subProd, {
   mode: "production",
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
-    splitChunks: {
-      chunks: "all",
-    },
+    //minimizer: new TerserPlugin({
+    //  terserOptions: {
+    //    keep_fnames: true,
+    //    keep_classnames: true,
+    //  },
+    //}),
+
+    //[new TerserPlugin()],
+    //
+    //splitChunks: {
+    //  chunks: "all",
+    //},
   },
 });
 </file>
 
-<file path="frontend/src/scss/base/_reset.scss">
-/* Josh Comeau's CSS Reset */
+<file path="frontend/src/scss/abstracts/_mixins.scss">
+@use "sass:map";
+@use "variables" as *;
 
-/*
-  1. Use a more-intuitive box-sizing model.
-*/
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  // margin: 0;
-  // padding: 0;
+// media's
+
+@mixin xs {
+  @media (min-width: map.get($breakpoints, "xs")) {
+    @content;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
+@mixin sm {
+  @media (min-width: map.get($breakpoints, "sm")) {
+    @content;
+  }
 }
 
-input:-webkit-autofill {
-  // -webkit-box-shadow: inset 0 0 0px 9999px white;
-  // box-shadow: inset 0 0 0px 9999px white;
-  // -webkit-box-shadow: transparent;
-  // box-shadow: transparent;
+@mixin md {
+  @media (min-width: map.get($breakpoints, "md")) {
+    @content;
+  }
 }
 
-/*
-  2. Remove default margin
-*/
-* {
-  margin: 0;
-  padding: 0;
+@mixin lg {
+  @media (min-width: map.get($breakpoints, "lg")) {
+    @content;
+  }
 }
 
-/*
-  Typographic tweaks!
-  3. Add accessible line-height
-  4. Improve text rendering
-*/
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+@mixin xl {
+  @media (min-width: map.get($breakpoints, "xl")) {
+    @content;
+  }
 }
 
-/*
-  5. Improve media defaults
-*/
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
+// min breakpoint callback
+@mixin min-bp($bp: 0) {
+  @media (min-width: $bp) {
+    @content;
+  }
 }
 
-/*
-  6. Remove built-in form typography styles
-*/
-input,
-button,
-textarea,
-select {
-  font: inherit;
+// max breakpoint callback
+@mixin max-bp($bp: 0) {
+  @media (max-width: $bp) {
+    @content;
+  }
 }
 
-/*
-  7. Avoid text overflows
-*/
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
+@mixin mobile {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
 }
 
-/*
-  8. Create a root stacking context
-*/
-#root,
-#__next {
-  isolation: isolate;
+@mixin pc {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
 }
+
+@mixin webkit {
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @content;
+  }
+}
+
+// grid
+
+// @mixin
+
+// .responsive-test {
+//   @include xs {
+//     color: red;
+//   }
+//   @include sm {
+//     color: blue;
+//   }
+//   @include md {
+//     color: green;
+//   }
+//   @include lg {
+//     color: purple;
+//   }
+//   @include xl {
+//     color: orange;
+//   }
+//   @include breakpoint(1400px) {
+//     color: pink;
+//   }
+// }
 </file>
 
 <file path="frontend/src/scss/base/_typography.scss">
@@ -2625,6 +2310,23 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 }
 </file>
 
+<file path="frontend/src/scss/pages/shared/general-style.scss">
+@use "../../layout/nav" as *;
+@use "../../abstracts/mixins" as *;
+
+// adjust height for the fixed nav excpet for signup and login
+// cause they don't have nav bar attached to them
+body:not([data-page="signup"], [data-page="login"]) {
+  height: 100vh;
+  padding-top: $nav-height !important;
+  overflow-y: auto;
+
+  @include mobile {
+    padding-top: 67px !important;
+  }
+}
+</file>
+
 <file path="frontend/src/scss/pages/_landing.scss">
 @use "../abstracts/mixins" as *;
 @use "../abstracts/variables" as *;
@@ -2849,6 +2551,112 @@ body[data-page="landing"] {
 }
 </file>
 
+<file path="frontend/src/scss/themes/_gen-themes.scss">
+// DOCUMENT ELEMENT DATA ATTIRIBUTE IS BEING TOGGLED
+// SO THE CHANGES CASCADES TO ALL CHILD AND DESCENDANTS
+
+// INFO: here goes components that have class based theming or if var theming can't customize something enough
+
+@use "../abstracts/mixins" as *;
+
+// APPLIES TO ALL PAGES
+// [data-theme="light"],
+// [data-theme="dark"] {
+body {
+  background-color: var(--primary);
+  color: var(--foreground);
+}
+// }
+
+// WILL BE USED THROUGHOUT THE APP
+
+.gradient-text {
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    to right bottom,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+}
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // background: none;
+  // color: white;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(
+    to right,
+    rgb(0, 193, 174),
+    rgb(0, 165, 191),
+    rgb(0, 108, 166)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-border-1 {
+  border: 5px solid transparent; /* Transparent border to preserve space */
+  border-image: linear-gradient(
+      to right,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    )
+    1;
+}
+
+// .gradient-border::before {
+//   content: "";
+//   position: absolute;
+//   inset: 0;
+//   border-radius: 8px;
+//   padding: 3px; /* Border thickness */
+//   background: linear-gradient(
+//     to right,
+//     rgb(0, 193, 174),
+//     rgb(0, 165, 191),
+//     rgb(0, 108, 166)
+//   );
+//   -webkit-mask:
+//     linear-gradient(#fff 0 0) content-box,
+//     linear-gradient(#fff 0 0);
+//   -webkit-mask-composite: xor;
+//   mask-composite: exclude;
+// }
+</file>
+
 <file path="frontend/src/scss/themes/_landing-theme.scss">
 @use "../abstracts/mixins" as *;
 
@@ -2972,6 +2780,217 @@ body[data-page="landing"] {
 //     border-top: 1px dashed var(--sidebar-tree);
 //   }
 // }
+</file>
+
+<file path="frontend/src/ts/pages/home/slideShow.ts">
+//export let manualResizeTrigger = false;
+//document.addEventListener("DOMContentLoaded", () => {
+//  document.querySelectorAll("img").forEach((img) => {
+//    img.setAttribute("loading", "lazy");
+//  });
+//
+//  //export let manualResizeTrigger = false;
+//  let slideIndex = 1;
+//
+//  showSlides(slideIndex);
+//
+//  // Next/previous controls
+//  function plusSlides(n: number) {
+//    manualResizeTrigger = true;
+//    showSlides((slideIndex += n));
+//  }
+//
+//  // Thumbnail image controls
+//  function currentSlide(n: number) {
+//    manualResizeTrigger = true;
+//    showSlides((slideIndex = n));
+//  }
+//
+//  function showSlides(n: number) {
+//    //console.log("slides work");
+//
+//    let i: number;
+//    const slides = document.getElementsByClassName(
+//      "mySlides",
+//    ) as HTMLCollectionOf<HTMLElement>;
+//    const dots = document.getElementsByClassName(
+//      "dot",
+//    ) as HTMLCollectionOf<HTMLElement>;
+//
+//    if (n > slides.length) {
+//      slideIndex = 1;
+//    }
+//    if (n < 1) {
+//      slideIndex = slides.length;
+//    }
+//
+//    for (i = 0; i < slides.length; i++) {
+//      slides[i].style.display = "none";
+//    }
+//
+//    for (i = 0; i < dots.length; i++) {
+//      dots[i].className = dots[i].className.replace(" active", "");
+//    }
+//    slides[slideIndex - 1].style.display = "block";
+//    dots[slideIndex - 1].className += " active";
+//  }
+//
+//  const next = document.querySelector(".next") as HTMLElement;
+//  const prev = document.querySelector(".prev") as HTMLElement;
+//
+//  prev.onclick = () => plusSlides(-1);
+//  next.onclick = () => plusSlides(1);
+//
+//  // for when clicking the dots
+//  const dots = document.getElementsByClassName(
+//    "dot",
+//  ) as HTMLCollectionOf<HTMLElement>;
+//
+//  for (let i = 0; i < dots.length; i++) {
+//    dots[i].onclick = () => currentSlide(i + 1);
+//  }
+//
+//  // the number text in top left of pictures
+//  const numberText = document.getElementsByClassName(
+//    "numbertext",
+//  ) as HTMLCollectionOf<HTMLElement>;
+//  for (let i = 0; i < numberText.length; i++) {
+//    numberText[i].innerText = `${i + 1} / ${numberText.length}`;
+//    console.log(numberText[i].innerText);
+//  }
+//});
+
+//AUTOMATIC
+//let slideIndex = 0;
+//showSlides();
+//
+//function showSlides() {
+//  let i;
+//  let slides = document.getElementsByClassName("mySlides");
+//  for (i = 0; i < slides.length; i++) {
+//    slides[i].style.display = "none";
+//  }
+//  //slideIndex++;
+//  if (slideIndex > slides.length) {slideIndex = 1}
+//  slides[slideIndex-1].style.display = "block";
+//  setTimeout(showSlides, 2000); // Change image every 2 seconds
+//}
+//});
+
+//MULTIPLE SLIDESHOW
+//const slideIndex = [1, 1];
+///* Class the members of each slideshow group with different CSS classes */
+//const slideId = ["slides1", "slides2"];
+//showSlides(1, 0);
+//showSlides(1, 1);
+//
+//function plusSlides(n, no) {
+//  showSlides((slideIndex[no] += n), no);
+//}
+//
+//function showSlides(n, no) {
+//  let i;
+//  let x = document.getElementsByClassName(slideId[no]);
+//  if (n > x.length) {
+//    slideIndex[no] = 1;
+//  }
+//  if (n < 1) {
+//    slideIndex[no] = x.length;
+//  }
+//  for (i = 0; i < x.length; i++) {
+//    x[i].style.display = "none";
+//  }
+//  x[slideIndex[no] - 1].style.display = "block";
+//}
+
+// MULTIPLE SLIDESHOW SETUP
+export let manualResizeTrigger = false;
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Define an array to store the current slide index for each slideshow group.
+  const slideIndices: number[] = [1, 1];
+
+  // all the slide containers
+  const slideIds: string[] = ["mySlides1", "mySlides2"];
+
+  // Initialize each slideshow group.
+  slideIndices.forEach((_, no) => {
+    showSlides(slideIndices[no], no);
+  });
+  // Next/previous controls for a given slideshow group.
+  // (Adjust this if you have separate buttons for each slideshow.)
+  function plusSlides(n: number, no: number) {
+    manualResizeTrigger = true;
+    slideIndices[no] += n;
+    showSlides(slideIndices[no], no);
+  }
+
+  // Set the current slide in a group.
+  function currentSlide(n: number, no: number) {
+    manualResizeTrigger = true;
+    slideIndices[no] = n;
+    showSlides(slideIndices[no], no);
+  }
+
+  // This function displays the appropriate slide for the given group.
+  function showSlides(n: number, no: number) {
+    let i: number;
+    // Get all slides in the current group.
+    const slides = document.getElementsByClassName(
+      slideIds[no],
+    ) as HTMLCollectionOf<HTMLElement>;
+
+    // Wrap the slide index if out-of-bounds.
+    if (n > slides.length) {
+      slideIndices[no] = 1;
+    }
+    if (n < 1) {
+      slideIndices[no] = slides.length;
+    }
+
+    // Hide all slides in the group.
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+
+    // Display the current slide.
+    slides[slideIndices[no] - 1].style.display = "block";
+  }
+
+  // Example of binding controls if you have separate controls for each slideshow:
+  // (Assumes you have elements with data attributes or IDs to target each group.)
+  const nextButtons = document.querySelectorAll(".next");
+  const prevButtons = document.querySelectorAll(".prev");
+
+  // For simplicity, we assume the first set of buttons control the first slideshow group,
+  // and the second set (if present) control the second slideshow group.
+  if (nextButtons.length >= 1 && prevButtons.length >= 1) {
+    // Bind controls for slideshow group 0.
+    prevButtons[0].addEventListener("click", () => plusSlides(-1, 0));
+    nextButtons[0].addEventListener("click", () => plusSlides(1, 0));
+  }
+  if (nextButtons.length >= 2 && prevButtons.length >= 2) {
+    // Bind controls for slideshow group 1.
+    prevButtons[1].addEventListener("click", () => plusSlides(-1, 1));
+    nextButtons[1].addEventListener("click", () => plusSlides(1, 1));
+  }
+
+  // For example, if each slideshow group has its own set of dots with a unique container
+  // (e.g. a container with an id like "dotGroup0" for group 0), then you can query and bind them:
+  const dotGroup0 = document.querySelectorAll(
+    "#dotGroup0 .dot",
+  ) as NodeListOf<HTMLElement>;
+  dotGroup0.forEach((dot, index) => {
+    dot.addEventListener("click", () => currentSlide(index + 1, 0));
+  });
+
+  const dotGroup1 = document.querySelectorAll(
+    "#dotGroup1 .dot",
+  ) as NodeListOf<HTMLElement>;
+  dotGroup1.forEach((dot, index) => {
+    dot.addEventListener("click", () => currentSlide(index + 1, 1));
+  });
+});
 </file>
 
 <file path="frontend/src/ts/utils/scripts/autoFillForm.ts">
@@ -3122,71 +3141,6 @@ export default [
 ];
 </file>
 
-<file path="backend/src/controllers/user.ts">
-import type { Request, Response, NextFunction } from "express";
-import mkCustomError from "../errors/CustomError.ts";
-import User from "../models/User.ts";
-
-export const info = async (req: Request, res: Response) => {
-  if (!req.user) {
-    throw mkCustomError("Req user is empty", 404);
-  }
-  const { userId } = req.user;
-
-  const user = await User.findById(userId);
-  if (!user) {
-    throw mkCustomError("User not found", 404);
-  }
-
-  const { userId: id, username, email, password, isAdmin } = user;
-
-  res.status(200).json({
-    userId,
-    email,
-    username,
-    isAdmin,
-  });
-};
-
-export const status = async (req: Request, res: Response) => {
-  if (!req.user) {
-    throw mkCustomError("Req user is empty", 404);
-  }
-
-  res.status(200).json({
-    isAuthenticated: true,
-  });
-};
-
-export const logout = async (
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
-  //await new Promise<void>((resolve, _reject) => {
-  //req.session.destroy((err) => {
-  //  if (err) next(mkCustomError("Session destruction failed", 500));
-  //  resolve();
-  //});
-
-  res.set(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate",
-  );
-  res.set("Pragma", "no-cache");
-  res.set("Expires", "0");
-  res.clearCookie("authorization", {
-    path: "/",
-    domain: "",
-  });
-
-  res.status(200).json({
-    success: true,
-  });
-  //});
-};
-</file>
-
 <file path="backend/src/middlewares/redirectAuth.ts">
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -3258,360 +3212,104 @@ const redirectAuth = () => {
 export default redirectAuth;
 </file>
 
-<file path="frontend/configs/postcss.config.js">
-/** @type {import('postcss-load-config').Config} */
-import autoprefixer from "autoprefixer";
-import postcssNested from "postcss-nested";
-import purgecssModule from "@fullhuman/postcss-purgecss";
-import cssnano from "cssnano";
+<file path="frontend/src/scss/base/_reset.scss">
+/* Josh Comeau's CSS Reset */
 
-const purgecss = purgecssModule.default || purgecssModule;
-
-export default {
-  plugins: [
-    autoprefixer,
-    postcssNested,
-    purgecss({
-      content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
-      safelist: [/^data-theme/],
-    }),
-    cssnano({
-      preset: "default",
-    }),
-  ],
-};
-</file>
-
-<file path="frontend/src/scss/components/_notif.scss">
-@use "../abstracts/mixins" as *;
-
-#notification-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 10000;
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  // margin: 0;
+  // padding: 0;
 }
 
-.notification {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // outline: 1px solid blue; /* Debug border */
-  min-width: 150px;
-  height: 70px;
-  padding: 12px 16px;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transform: translateX(-100%);
-  opacity: 0;
-  transition:
-    transform 0.3s ease-out,
-    opacity 0.3s ease-out;
-
-  @include md {
-    min-width: 180px !important;
-  }
-  @include xl {
-    min-width: 200px !important;
-  }
-
-  &.show {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  &.hide {
-    opacity: 0;
-    transition: opacity 0.4s ease-out;
-  }
-
-  &.no-animation {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  // Notification Colors
-
-  &.gradient {
-    background: linear-gradient(
-      to right bottom,
-      rgb(0, 193, 174),
-      rgb(0, 165, 191),
-      rgb(0, 108, 166)
-    );
-  }
-
-  &.success {
-    background: #4caf50;
-  }
-
-  &.error {
-    background: #f44336;
-  }
-
-  &.warning {
-    background: #ffc107;
-  }
-
-  &.info {
-    background: #2196f3;
-  }
-}
-</file>
-
-<file path="frontend/src/scss/pages/_auth.scss">
-@use "../abstracts/mixins" as *;
-
-// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
-// specific customization of each at the bottom
-
-body[data-page="login"],
-body[data-page="signup"] {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-
-  @include xl {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-  }
-
-  .auth-wrapper {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    // border: 1px solid rgb(255, 255, 255, 0.6);
-  }
-
-  $bar-width: 500px;
-
-  form {
-    // border: 1px solid rgb(255, 255, 255, 0.6);
-    height: 760px;
-    width: min(850px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    // margin: 0 auto;
-    background: transparent;
-    backdrop-filter: blur(10px);
-
-    h1 {
-      text-align: center;
-      margin-bottom: -5px;
-
-      @include xl {
-        font-size: 3em;
-      }
-    }
-
-    h4 {
-      // margin-bottom: 12px;
-    }
-
-    .input-box {
-      position: relative;
-      // border-bottom: 1px solid white;
-      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
-      [data-theme="light"] {
-        border-bottom: black !important;
-      }
-      width: min(90%, $bar-width);
-      margin: 25px 0;
-
-      label {
-        position: absolute;
-        left: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-      }
-
-      input {
-        width: 100%;
-        border: 0;
-        // border: 1px solid rgb(255, 255, 255, 0.6);
-        padding: 0 36px 0 5px;
-        color: white;
-        height: 50px;
-        font-size: 1em;
-        outline: none;
-        background-color: transparent;
-
-        // NOTE:
-        // label must be below input in html
-        // for this (sibling selector) to work
-        &:focus ~ label,
-        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
-        // NOTE: input must have placeholder attr even if its empty for this to work
-        &:not(:placeholder-shown) ~ label {
-          top: -5px;
-        }
-      }
-
-      .visib-pass-btn {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-
-        .visib-on {
-          display: none;
-        }
-
-        &.active {
-          .visib-on {
-            display: block;
-          }
-
-          .visib-off {
-            display: none;
-          }
-        }
-      }
-    }
-
-    button.submit {
-      width: min(90%, $bar-width);
-      margin: 20px 0;
-    }
-
-    .signup-error-msg {
-      color: red;
-      margin-top: -16px;
-    }
-  }
-
-  .auth-filler-bg {
-    display: none;
-
-    @include xl {
-      height: 100vh;
-      display: block;
-    }
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-// body[data-page="signup"] {
-//   .signup-link,.login-link{
-//     color: black;
-//   }
+//AUTO COMPELETE IS OFF SO NEED FOR THIS PROJECT
+// input:-webkit-autofill:invalid,
+// input:-webkit-autofill:hover,
+// input:-webkit-autofill:focus,
+// input:-webkit-autofill:active,
+// input:-webkit-autofill {
+//   color: var(--foreground) !important;
+//   caret-color: var(--foreground) !important;
+//   -webkit-background-clip: text !important;
+//   -webkit-text-fill-color: var(--foreground) !important;
+//   -webkit-box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
+//   box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
+//   // -webkit-box-shadow: transparent;
+//   // box-shadow: transparent;
+// }
+// input[data-autocompleted] {
+//   -webkit-text-fill-color: var(--foreground) !important;
+//   color: var(--foreground) !important;
 // }
 
-body[data-page="login"] {
-  grid-template-columns: 1fr 1.5fr;
-
-  #login-form h1 {
-    margin-bottom: 60px !important;
-  }
-}
-</file>
-
-<file path="frontend/src/scss/themes/_auth-theme.scss">
-body[data-page="login"],
-body[data-page="signup"] {
-  .theme-btn {
-    &.light {
-      &:hover {
-        .moon {
-          fill: black !important;
-        }
-      }
-      .moon {
-        display: block !important;
-        fill: var(--accent) !important;
-      }
-      .sun {
-        display: none;
-      }
-    }
-
-    &.dark {
-      &:hover {
-        .sun {
-          fill: var(--accent) !important;
-        }
-      }
-
-      .moon {
-        display: none !important;
-      }
-
-      .sun {
-        display: block !important;
-      }
-    }
-
-    svg.moon,
-    svg.sun {
-      transition: fill 0.5s ease !important;
-    }
-  }
-  .nav-menu-btn-open {
-    justify-self: flex-end;
-
-    &.clicked {
-      display: none;
-    }
-  }
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+  padding: 0;
 }
 
-// TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
-
-[data-theme="dark"] {
-  .signup-link,
-  .login-link {
-    color: white;
-  }
+/*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-[data-theme="light"] {
-  body[data-page="login"],
-  body[data-page="signup"] {
-    form {
-      .input-box {
-        border-bottom: 1px solid black !important;
-
-        input {
-          color: black !important;
-        }
-      }
-
-      // input {
-      //   color: black !important;
-      // }
-
-      .signup-link,
-      .login-link {
-        color: black;
-      }
-
-      .visib-on,
-      .visib-off {
-        // fill: black !important;
-        fill: black;
-      }
-    }
-
-    .right-auth {
-      h1 {
-        color: #fff;
-      }
-    }
-  }
+/*
+  5. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
-// [data-theme="dark"] {
+/*
+  6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
 
-// }
+/*
+  7. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/*
+  8. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
 </file>
 
 <file path="frontend/src/scss/themes/_nav-theme.scss">
@@ -3678,136 +3376,6 @@ nav {
 }
 </file>
 
-<file path="frontend/src/ts/pages/login/validate.ts">
-import autoFillForm from "../../utils/scripts/autoFillForm.ts";
-import loginUser from "./loginUser.ts";
-import type { LoginData } from "./loginUser.ts";
-
-const emailRegex = new RegExp(
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-);
-
-document.addEventListener("DOMContentLoaded", () => {
-  //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
-
-  const form = document.getElementById("login-form") as HTMLFormElement | null;
-  if (!form) return;
-
-  // Helper function to show error
-  function showError(input: HTMLInputElement, message: string) {
-    const errorDiv = document.querySelector(
-      `.error[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = message;
-    }
-    input.classList.add("invalid");
-  }
-
-  // Helper function to clear error
-  function clearError(input: HTMLInputElement) {
-    const errorDiv = document.querySelector(
-      `.error[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = "";
-    }
-    input.classList.remove("invalid");
-  }
-
-  function validateField(field: HTMLInputElement) {
-    const value = field.value.trim();
-
-    //check if value is email or username
-    // and overwrite generic user-identifier name attribute
-    // and type of text if email.
-    if (field.name === "user-identifier") {
-      if (emailRegex.test(value)) {
-        field.name = "email";
-        field.type = "email";
-      } else {
-        field.name = "username";
-        //field.type = "text"; // already text in html
-      }
-    }
-
-    console.log("name: ", field.name);
-    console.log("type: ", field.type);
-
-    switch (field.name) {
-      case "username":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          //showError(field, "field must be at least 4 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "email":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (value.length < 8) {
-          showError(field, "password must be at least 8 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  // Attach validation handlers (live validation on input activity)
-  for (const field of Array.from(form.elements)) {
-    if (field instanceof HTMLInputElement) {
-      field.addEventListener("input", () => validateField(field));
-    }
-  }
-
-  // Form submission handler
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Validate all fields
-    let hasErrors = false;
-    for (const field of Array.from(form.elements)) {
-      if (field instanceof HTMLInputElement) {
-        validateField(field);
-        if (!field.validity.valid || field.classList.contains("invalid")) {
-          hasErrors = true;
-        }
-      }
-    }
-    if (hasErrors) return;
-
-    const formData = new FormData(form);
-    //console.log({ formData });
-    const jsonData = Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ) as unknown as LoginData;
-
-    await loginUser(jsonData);
-    form.reset();
-  });
-});
-</file>
-
 <file path="frontend/src/ts/pages/nav/navEvents.ts">
 import { setState } from "../../utils/setGetState.ts";
 
@@ -3871,6 +3439,27 @@ if (dropdown) {
 }
 </file>
 
+<file path="frontend/src/ts/states/theme.ts">
+import { setState, getState } from "../utils/setGetState.ts";
+
+//const theme = (getState("theme") as string) || "dark";
+//document.documentElement.setAttribute("data-theme", theme);
+
+//on load get the color saved scheme if nothing then set a default one
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = getState("theme");
+
+  const theme = (getState("theme") as string) || "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+  setState("theme", theme);
+
+  //console.log("theme", theme);
+
+  const themeBtn = document.querySelector(".theme-btn") as HTMLElement;
+  themeBtn?.classList.add(theme); // which toggle icon to show
+});
+</file>
+
 <file path="backend/configs/babel.config.mjs">
 export default {
   comments: false,
@@ -3899,6 +3488,101 @@ export default {
         },
       },
     ],
+  ],
+};
+</file>
+
+<file path="backend/src/controllers/user.ts">
+import type { Request, Response, NextFunction } from "express";
+import mkCustomError from "../errors/CustomError.ts";
+import User from "../models/User.ts";
+
+export const info = async (req: Request, res: Response) => {
+  if (!req.user) {
+    throw mkCustomError({ status: 404, msg: "req.user not found." });
+  }
+
+  const { userId } = req.user;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw mkCustomError({ status: 404, msg: "User not found." });
+  }
+
+  const { userId: id, username, email, password, isAdmin } = user;
+
+  res.status(200).json({
+    userId,
+    email,
+    username,
+    isAdmin,
+  });
+};
+
+export const status = async (req: Request, res: Response) => {
+  if (!req.user) {
+    throw mkCustomError({ status: 404, msg: "User not found." });
+  }
+
+  res.status(200).json({
+    isAuthenticated: true,
+  });
+};
+
+export const logout = async (
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  //await new Promise<void>((resolve, _reject) => {
+  //req.session.destroy((err) => {
+  //  if (err) next(mkCustomError("Session destruction failed", 500));
+  //  resolve();
+  //});
+
+  res.set(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  res.clearCookie("authorization", {
+    path: "/",
+    domain: "",
+  });
+
+  res.status(200).json({
+    success: true,
+  });
+  //});
+};
+</file>
+
+<file path="frontend/configs/postcss.config.js">
+/** @type {import('postcss-load-config').Config} */
+import autoprefixer from "autoprefixer";
+import postcssNested from "postcss-nested";
+import purgecssModule from "@fullhuman/postcss-purgecss";
+import cssnano from "cssnano";
+
+const purgecss = purgecssModule.default || purgecssModule;
+
+export default {
+  plugins: [
+    autoprefixer,
+    postcssNested,
+    purgecss({
+      content: ["frontend/views/**/*.ejs", "frontend/src/**/*.ts"],
+      safelist: [/^data-theme/],
+      //safelist: {
+      //  standard: [/data-theme/],
+      //  deep: [/data-theme/],
+      //  greedy: [/data-theme/],
+      //},
+    }),
+    cssnano({
+      preset: "default",
+    }),
   ],
 };
 </file>
@@ -4473,37 +4157,380 @@ $utilities: (
 // }
 </file>
 
-<file path="frontend/src/scss/layout/_footer.scss">
-%footer-layout {
-  display: grid;
-  place-content: center;
-  padding-top: 40px;
-  padding-bottom: 20px;
-  margin-top: 30px;
+<file path="frontend/src/scss/components/_notif.scss">
+@use "../abstracts/mixins" as *;
+
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10000;
 }
 
-footer {
-  // position: absolute;
-  // bottom: 0;
-  box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
-  @extend %footer-layout;
+.notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // outline: 1px solid blue; /* Debug border */
+  min-width: 90px;
+  height: 70px;
+  padding: 12px 16px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  opacity: 0;
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
 
-  .socials {
-    margin-bottom: 80px;
+  @include md {
+    min-width: 120px !important;
+  }
+  @include xl {
+    min-width: 180px !important;
+  }
+
+  &.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  &.hide {
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+  }
+
+  &.no-animation {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  // Notification Colors
+
+  &.gradient {
+    background: linear-gradient(
+      to right bottom,
+      rgb(0, 193, 174),
+      rgb(0, 165, 191),
+      rgb(0, 108, 166)
+    );
+  }
+
+  &.success {
+    background: #4caf50;
+  }
+
+  &.error {
+    background: #f44336;
+  }
+
+  &.warning {
+    background: #ffc107;
+  }
+
+  &.info {
+    background: #2196f3;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/pages/_auth.scss">
+@use "../abstracts/mixins" as *;
+
+// INFO: SHARED STYLES OF SIGNUP AND LOGIN.
+// specific customization of each at the bottom
+
+body[data-page="login"],
+body[data-page="signup"] {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  @include mobile {
+    height: 100dvh !important;
+  }
+
+  @include xl {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .auth-wrapper {
+    position: relative;
+    height: 100vh;
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: center;
+    flex-direction: column;
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+  }
 
-    .dev-icons {
-      display: inline-block;
-      width: 30px;
-      fill: white;
+  $bar-width: 500px;
+
+  form {
+    // border: 1px solid rgb(255, 255, 255, 0.6);
+    height: auto;
+    padding: 24px 0;
+    width: min(850px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // margin: 0 auto;
+    background: transparent;
+    backdrop-filter: blur(10px);
+
+    h1 {
+      text-align: center;
+      margin-bottom: -5px;
+
+      @include xl {
+        font-size: 3em;
+      }
+    }
+
+    h4 {
+      // margin-bottom: 12px;
+    }
+
+    .input-box:first-of-type {
+      margin-top: 25px !important;
+    }
+
+    .input-box {
+      position: relative;
+      // border-bottom: 1px solid white;
+      border-bottom: 1px solid rgb(255, 255, 255, 0.6);
+      [data-theme="light"] {
+        border-bottom: black !important;
+      }
+      width: min(90%, $bar-width);
+      margin: 25px 0;
+      @include mobile {
+        margin: 38px 0 25px 0 !important;
+      }
+
+      label {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        padding: 0 36px 0 5px;
+        color: white;
+        height: 50px;
+        font-size: 1em;
+        outline: none;
+        background-color: transparent;
+        // border: 1px solid black;
+
+        // NOTE:
+        // label must be below input in html
+        // for this (sibling selector) to work
+        &:focus ~ label,
+        // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
+        // NOTE: input must have placeholder attr even if its empty for this to work
+        &:not(:placeholder-shown) ~ label {
+          top: -5px;
+        }
+      }
+
+      .visib-pass-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .visib-on {
+          display: none;
+        }
+
+        &.active {
+          .visib-on {
+            display: block;
+          }
+
+          .visib-off {
+            display: none;
+          }
+        }
+      }
+    }
+
+    button.submit {
+      width: min(90%, $bar-width);
+      margin: 20px 0;
+    }
+
+    .error,// this one's for login too lazy to change it
+    .signup-error-msg {
+      color: red;
+      margin-top: -16px;
     }
   }
-  .c-notice {
-    font-size: 14px;
+
+  .auth-filler-bg {
+    display: none;
+
+    @include xl {
+      height: 100vh;
+      display: block;
+    }
   }
 }
+
+// body[data-page="signup"] {
+//   .signup-link,.login-link{
+//     color: black;
+//   }
+// }
+
+body[data-page="login"] {
+  grid-template-columns: 1fr 1.5fr;
+
+  #login-form h1 {
+    margin-bottom: 60px !important;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/pages/_profile.scss">
+@use "../abstracts/mixins" as *;
+@use "../layout/nav" as *;
+
+body[data-page="profile"] {
+  height: 100vh;
+  @include mobile {
+    height: 100dvh !important;
+  }
+
+  div.profile-container {
+    height: calc(100vh - #{$nav-height}) !important;
+    // height: 800px !important;
+
+    .lower-container,
+    .upper-container {
+      width: min(100%, 1400px);
+    }
+  }
+  .test {
+    // line-height: normal;
+  }
+}
+</file>
+
+<file path="frontend/src/scss/themes/_auth-theme.scss">
+body[data-page="login"],
+body[data-page="signup"] {
+  .theme-btn {
+    &.light {
+      &:hover {
+        .moon {
+          fill: black !important;
+        }
+      }
+      .moon {
+        display: block !important;
+        fill: var(--accent) !important;
+      }
+      .sun {
+        display: none;
+      }
+    }
+
+    &.dark {
+      &:hover {
+        .sun {
+          fill: var(--accent) !important;
+        }
+      }
+
+      .moon {
+        display: none !important;
+      }
+
+      .sun {
+        display: block !important;
+      }
+    }
+
+    svg.moon,
+    svg.sun {
+      transition: fill 0.5s ease !important;
+    }
+  }
+  .nav-menu-btn-open {
+    justify-self: flex-end;
+
+    &.clicked {
+      display: none;
+    }
+  }
+}
+
+// TODO: ?? prob add a condition on colors that when bg === accent make the text auto white so that i dont have to manually do it on all elem
+
+[data-theme="dark"] {
+  body[data-page="login"],
+  body[data-page="signup"] {
+    .signup-link,
+    .login-link {
+      color: white;
+    }
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="login"],
+  body[data-page="signup"] {
+    form {
+      background-color: var(--secondary) !important;
+
+      .input-box {
+        border-bottom: 1px solid black !important;
+
+        input {
+          color: black !important;
+        }
+      }
+
+      // input {
+      //   color: black !important;
+      // }
+
+      .signup-link,
+      .login-link {
+        color: black;
+      }
+
+      .visib-on,
+      .sun,
+      .moon,
+      .visib-off {
+        fill: black !important;
+      }
+    }
+
+    .right-auth {
+      h1 {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// [data-theme="dark"] {
+
+// }
 </file>
 
 <file path="frontend/src/scss/index.scss">
@@ -4551,6 +4578,104 @@ footer {
 @forward "themes/footer-theme";
 </file>
 
+<file path="frontend/views/partials/footer.ejs">
+<footer class="container">
+    <!-- (on Linux term) press Ctrl-Shift-u then type 00a9 and press enter to type copyright symbol -->
+    <div class="socials">
+        <h3>Socials</h3>
+        <div>
+            <a class="" href="">
+                <svg
+                    width: 30px;
+                    class="dev-icons"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                >
+                    <path
+                        d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"
+                    />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="c-notice">© EARIST BSCS-2C, 2025. All rights reserved.</div>
+</footer>
+</file>
+
+<file path="backend/src/db/pool.ts">
+import mysql, { Pool } from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Define `pool` with an explicit type
+let pool: Pool | undefined;
+
+if (process.env.NODE_ENV === "development") {
+  pool = mysql.createPool({
+    host: process.env.SQL_HOST,
+    user: process.env.SQL_USER,
+    password: process.env.SQL_PASS,
+    database: process.env.SQL_DB,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+} else {
+  pool = mysql.createPool({
+    uri: process.env.MYSQL_PUBLIC_URL as string,
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // Maximum number of idle connections
+    idleTimeout: 60000, // 60kms = 1minute
+    queueLimit: 0, // unli
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+}
+
+// prod
+
+export default pool!;
+</file>
+
+<file path="frontend/src/scss/layout/_footer.scss">
+%footer-layout {
+  display: grid;
+  place-content: center;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  // margin-top: 30px;
+}
+
+footer {
+  // position: absolute;
+  // bottom: 0;
+  box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
+  @extend %footer-layout;
+
+  .socials {
+    margin-bottom: 80px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .dev-icons {
+      display: inline-block;
+      width: 30px;
+      fill: white;
+    }
+  }
+  .c-notice {
+    font-size: 14px;
+  }
+}
+</file>
+
 <file path="frontend/src/ts/pages/login/loginUser.ts">
 import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
 import { setState } from "../../utils/setGetState.ts";
@@ -4571,14 +4696,49 @@ export default async function loginUser(jsonData: LoginData) {
       credentials: "include",
     });
     console.log({ response });
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      throw new Error(`Expected JSON but got: ${text}`);
+    }
     const result = await response.json();
 
     if (!response.ok) {
-      console.error("Login failed:", result.message || "Unknown error");
-      notifyError(result.message || "Login failed, please try again later.");
+      console.log("login validation failed");
+      console.log({ result });
 
-      //document.cookie =
-      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      if (result.errs && typeof result.errs === "object") {
+        // clear prev errs
+        document
+          .querySelectorAll(".error") // yeah, name of the err div of login ejs
+          .forEach((el) => (el.textContent = ""));
+
+        const fieldName = Object.keys(result.errs)[0]; // get the first (and only) key
+        const message = result.errs[fieldName]; // get the msg in the key
+        //const message = String(result.errs[fieldName]);
+
+        console.log({ fieldName });
+        console.log({ message });
+        if (fieldName !== "password") {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="user-identifier"]`,
+          ) as HTMLElement | null;
+
+          console.log(errorDiv);
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        } else {
+          const errorDiv = document.querySelector(
+            `.error[data-error-for="password"]`,
+          ) as HTMLElement | null;
+
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+        }
+      }
+
       return;
     }
 
@@ -4623,7 +4783,6 @@ export interface SignupData {
   email: string;
   password: string;
   confirmPassword: string;
-  adminKey?: string;
 }
 
 const signupUser = async (jsonData: SignupData) => {
@@ -4634,38 +4793,49 @@ const signupUser = async (jsonData: SignupData) => {
       body: JSON.stringify(jsonData),
       credentials: "include",
     });
+
     console.log({ response });
     const result = await response.json();
 
+    //INFO: if validation failed on the BE it sends an json obj
     if (!response.ok) {
-      let errMsg = "Signup failed";
-      const err = result.err;
-      console.log(typeof err);
+      console.log("signup validation failed");
 
-      if (err) {
-        if (typeof err === "string") {
-          errMsg = err;
-        } else if (typeof err === "object") {
-          // Extract first error message from the object
-          const firstKey = Object.keys(err)[0];
-          errMsg = err[firstKey] || errMsg;
-        }
+      if (result.errs && typeof result.errs === "object") {
+        // clear prev errs
+        document
+          .querySelectorAll(".signup-error-msg")
+          .forEach((el) => (el.textContent = ""));
+
+        Object.entries(result.errs).forEach(([fieldName, message]) => {
+          const errorDiv = document.querySelector(
+            `.signup-error-msg[data-error-for="${fieldName}"]`,
+          ) as HTMLElement | null;
+
+          if (errorDiv) {
+            errorDiv.textContent = message as string;
+          }
+
+          // Add invalid class to the input field
+          // this is useful when:
+          // .invalid {
+          //  border: 2px solid red;
+          //  background-color: #ffe6e6;
+          //}
+
+          //tho not gonna use it in this project
+
+          //const inputField = document.querySelector(
+          //  `input[name="${fieldName}"]`,
+          //) as HTMLInputElement | null;
+          //
+          //if (inputField) {
+          //  inputField.classList.add("invalid");
+          //}
+        });
       }
 
-      console.log("err msg: ", errMsg);
-      notifyError(errMsg);
-      //console.log("signup err: ", result.err);
-      //const errMsg = result.err
-      //  ? typeof result.err === "string"
-      //    ? result.err
-      //    : JSON.stringify(result.err)
-      //  : "Signup failed";
-      //notifyError(errMsg);
-      //notifyError(errMsg || "Signup failed");
       return;
-
-      //document.cookie =
-      //  "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
 
     // saving this for illusory transcedental notif accross pages
@@ -4691,29 +4861,359 @@ const signupUser = async (jsonData: SignupData) => {
 export default signupUser;
 </file>
 
-<file path="frontend/views/partials/footer.ejs">
-<footer class="container">
-    <!-- (on Linux term) press Ctrl-Shift-u then type 00a9 and press enter to type copyright symbol -->
-    <div class="socials">
-        <h3>Socials</h3>
-        <div>
-            <a class="" href="">
-                <svg
-                    width: 30px;
-                    class="dev-icons"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
-                >
-                    <path
-                        d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"
-                    />
-                </svg>
-            </a>
-        </div>
-    </div>
+<file path=".gitignore">
+node_modules/
+dist/
+.env
+ignored/
+</file>
 
-    <div class="c-notice">© EARIST BSCS-2C, 2025. All rights reserved.</div>
-</footer>
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "rootDir": ".",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "typeRoots": [
+      "node_modules/@types",
+      //"types",
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "*src/*"
+      ]
+    },
+    "types": [
+      "node",
+      //"express"
+    ],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+    "outDir": "../dist", /* Specify an output folder for all emitted files. */
+    "removeComments": true, /* Disable emitting comments. */
+    "noEmitOnError": true, /* Disable emitting files if any type checking errors are reported. */
+    "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
+    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+    "noUnusedLocals": false, /* Enable error reporting when local variables aren't read. */
+    "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
+    "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+  },
+  "include": [
+    "backend/src/**/*",
+    "backend/types/*",
+    "frontend/src/**/*",
+    "frontend/types/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "frontend/dist/",
+    "backend/dist/",
+  ]
+}
+</file>
+
+<file path="backend/src/controllers/pages.ts">
+import type { Request, Response } from "express";
+
+const landingPage = (_req: Request, res: Response): void => {
+  res.render("index", {
+    title: "",
+  });
+};
+
+const signupPage = (_req: Request, res: Response): void => {
+  res.render("signup", {
+    title: "Signup",
+  });
+};
+
+const loginPage = (_req: Request, res: Response): void => {
+  res.render("login", {
+    title: "Login",
+  });
+};
+
+const budgetAllocationPage = (_req: Request, res: Response): void => {
+  res.render("budgetAllocation", {
+    title: "Budget Allocation",
+  });
+};
+const projectsPage = (_req: Request, res: Response): void => {
+  res.render("projects", {
+    title: "Projects and Events",
+  });
+};
+const suggestionPage = (_req: Request, res: Response): void => {
+  res.render("suggestions", {
+    title: "Submit Suggestions",
+  });
+};
+const aboutPage = (_req: Request, res: Response): void => {
+  res.render("about", {
+    title: "About",
+  });
+};
+
+// protected routes
+
+const homePage = (_req: Request, res: Response): void => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
+  res.render("home", {
+    title: "Home",
+  });
+};
+
+const profilePage = (_req: Request, res: Response): void => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
+  res.render("profile", {
+    title: "Profile",
+  });
+};
+
+export {
+  landingPage,
+  signupPage,
+  loginPage,
+  homePage,
+  profilePage,
+  aboutPage,
+  budgetAllocationPage,
+  projectsPage,
+  suggestionPage,
+};
+</file>
+
+<file path="backend/src/db/connect.ts">
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
+
+//console.log("NODE_ENV:", process.env.NODE_ENV);
+//console.log("MYSQLHOST:", process.env.MYSQLHOST);
+//console.log("MYSQLUSER:", process.env.MYSQLUSER);
+//console.log("MYSQLDATABASE:", process.env.MYSQL_DATABASE);
+//console.log("MYSQLPORT:", process.env.MYSQLPORT);
+
+const connectDB = () => {
+  if (process.env.NODE_ENV === "development") {
+    return mysql.createConnection({
+      host: process.env.SQL_HOST,
+      user: process.env.SQL_USER,
+      password: process.env.SQL_PASS,
+      database: process.env.SQL_DB,
+    });
+  } else {
+    return mysql.createConnection(process.env.MYSQL_PUBLIC_URL as string);
+  }
+};
+
+export default connectDB;
+</file>
+
+<file path="backend/src/middlewares/errorHandler.ts">
+//import { CustomError } from "../errors/CustomError.ts";
+//import type { Request, Response, NextFunction } from "express";
+//import dotenv from "dotenv";
+//dotenv.config();
+//
+//export const errorHandler = (
+//  err: Error,
+//  _req: Request,
+//  res: Response,
+//  _next: NextFunction,
+//) => {
+//  if (err instanceof CustomError) {
+//    console.error("Error message:", err.message);
+//    return res.status(err.statusCode).json({
+//      err: err.message,
+//      //process.env.NODE_ENV === "production"
+//      //? "Something went wrong, please try again later."
+//      //: err.message,
+//    });
+//  }
+//
+//  console.error("=== ERROR DETAILS ===");
+//  console.error("Path:", _req.path);
+//  console.error("Time:", new Date().toISOString());
+//  console.error("Message:", err.message);
+//  console.error("Stack:", err.stack);
+//  console.error("=====================");
+//
+//  return res
+//    .status(500)
+//    .json({ err: "Something went wrong, please try again later." });
+//};
+//
+import { CustomError } from "../errors/CustomError.ts";
+import type { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  if (err instanceof CustomError) {
+    if (err.message) console.error("Error message:", err.message);
+    if (err.objectErr) console.error("Error message:", err.objectErr);
+
+    return res.status(err.statusCode).json({
+      msg: err.message ?? undefined,
+      errs: err.objectErr ?? undefined, // send multiple errors if available
+    });
+  }
+
+  console.error("=== ERROR DETAILS ===");
+  console.error("Path:", req.path);
+  console.error("Time:", new Date().toISOString());
+  console.error("Message:", err.message);
+  console.error("Stack:", err.stack);
+  console.error("=====================");
+
+  return res
+    .status(500)
+    .json({ msg: "Something went wrong, please try again later." });
+};
+</file>
+
+<file path="backend/src/routes/auth.ts">
+import express from "express";
+const router = express.Router();
+import authUser from "../middlewares/authUser.ts";
+import { signup, login } from "../controllers/auth.ts";
+
+router.post("/signup", signup);
+router.post("/login", login);
+// router.post("/otp", otp); // idk maybe if it's a requirement
+
+export default router;
+</file>
+
+<file path="frontend/src/scss/components/_buttons.scss">
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+@use "sass:color";
+
+%gen-btn {
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  outline: none;
+  // padding: $base-padding $base-padding;
+  // border-radius: $base-border-radius;
+}
+
+@mixin btn($bg-color: #fff) {
+  @extend %gen-btn;
+  background-color: $bg-color;
+  // color: $color !important;
+  color: var(--foreground);
+}
+
+// use this for if using var theming approach
+// and just customize color and hover color through vars in a
+// centralized .scss file (e.g. themes.scss)
+.btn {
+  @extend %gen-btn;
+}
+
+// GENERIC BUTTON COLORS
+
+@each $key, $val in $colors {
+  .btn-#{$key} {
+    @include btn($val);
+    &:hover {
+      background-color: color.adjust($val, $lightness: 5%);
+    }
+  }
+
+  .btn-outlined-#{$key} {
+    @include btn(#fff);
+    border: $base-border-thickness solid $val;
+    &:hover {
+      background-color: $val;
+    }
+  }
+}
+
+// CLASS BASED THEMING
+
+// NOTE: temporarily added @ xl will remove/modify again later / on other projs
+
+@each $theme, $values in $themes {
+  @each $k, $v in $values {
+    // @include xl {
+    .btn-#{$theme}-#{$k} {
+      @include btn($v);
+
+      &:hover {
+        background-color: color.adjust($v, $lightness: 5%);
+      }
+    }
+
+    .btn-outlined-#{$theme}-#{$k} {
+      @include btn(transparent);
+      border: $base-border-thickness solid $v !important;
+
+      &:hover {
+        background-color: $v !important;
+
+        // @include mobile {
+        //   // override browsers weird default hover/bg on mobiles.
+        //   -webkit-tap-highlight-color: #3295b6;
+        //   background-color: #3295b6 !important;
+        // }
+      }
+    }
+
+    .btn-no-hover {
+      @include btn(transparent);
+    }
+
+    // .btn-no-hover-outlined-#{$theme}-#{$k} {
+    //   @include btn(transparent);
+    //   border: $base-border-thickness solid $v !important;
+    // }
+
+    @include mobile {
+      // override browsers weird default hover/bg on mobiles.
+      // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
+      // -webkit-tap-highlight-color: #3295b6;
+      // background-color: #3295b6 !important;
+    }
+    // }
+  }
+}
 </file>
 
 <file path="frontend/views/profile.ejs">
@@ -4721,14 +5221,16 @@ export default signupUser;
 <html lang="en" data-theme="dark">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body class="h-100vh" data-page="profile">
+    <body class="" data-page="profile">
         <%- include('./partials/nav.ejs') %>
 
         <div class="profile-container container dp-f fd-c ai-c jc-c gp-50">
             <div class="upper-container br-20 dp-f fd-c p-1">
-                <div class="br-20 js-s upper-top p-1 dp-f jc-sb w-100">
+                <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
                     <h1 class="">Profile</h1>
-                    <button class="p-1 as-s br-40 btn-outlined-dark-accent">
+                    <button
+                        class="p-1 as-s br-40 btn-outlined-dark-accent test"
+                    >
                         Edit profile
                     </button>
                 </div>
@@ -4773,6 +5275,7 @@ export default signupUser;
                 </button>
             </div>
         </div>
+        <br />
 
         <!--FOOTER-->
         <%- include('./partials/footer.ejs') %>
@@ -4784,86 +5287,568 @@ export default signupUser;
 </html>
 </file>
 
-<file path=".gitignore">
-node_modules/
-dist/
-.env
-ignored/
+<file path="frontend/src/ts/pages/login/validate.ts">
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
+import loginUser from "./loginUser.ts";
+import type { LoginData } from "./loginUser.ts";
+
+const emailRegex = new RegExp(
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+);
+
+//const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
+document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  if (process.env.NODE_ENV !== "production") {
+    autoFillForm();
+  }
+
+  const form = document.getElementById("login-form") as HTMLFormElement | null;
+  if (!form) return;
+
+  // Helper function to show error
+  function showError(input: HTMLInputElement, message: string) {
+    const errorDiv = document.querySelector(
+      `.error[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = message;
+    }
+    input.classList.add("invalid");
+  }
+
+  // Helper function to clear error
+  function clearError(input: HTMLInputElement) {
+    const errorDiv = document.querySelector(
+      `.error[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = "";
+    }
+    input.classList.remove("invalid");
+  }
+
+  function validateField(field: HTMLInputElement) {
+    const value = field.value.trim();
+
+    //console.log("name: ", field.attributes);
+    console.log("name: ", field.name);
+    console.log("type: ", field.type);
+
+    switch (field.name) {
+      case "user-identifier":
+        if (!value) {
+          showError(field, "field can't be empty.");
+          //} else if (!field.validity.valid) {
+          //  //showError(field, "field must be at least 4 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (value.length < 8) {
+          showError(field, "password must be at least 8 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // Attach validation handlers (live validation on input activity)
+  for (const field of Array.from(form.elements)) {
+    if (field instanceof HTMLInputElement) {
+      field.addEventListener("input", () => validateField(field));
+    }
+  }
+
+  // Form submission handler
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Validate all fields
+    let hasErrors = false;
+    for (const field of Array.from(form.elements)) {
+      if (field instanceof HTMLInputElement) {
+        validateField(field);
+        if (!field.validity.valid || field.classList.contains("invalid")) {
+          hasErrors = true;
+        }
+      }
+    }
+    if (hasErrors) return;
+
+    const userIdentifier = form.querySelector(
+      "#user-identifier",
+    ) as HTMLInputElement;
+    const value = userIdentifier.value.trim();
+
+    const passwordInput = form.querySelector(
+      'input[name="password"]',
+    ) as HTMLInputElement;
+
+    const loginData: LoginData = {
+      password: passwordInput.value,
+    };
+
+    // if the value matches the email regex, add it as an email,
+    // otherwise as username.
+    if (emailRegex.test(value)) {
+      loginData.email = value;
+    } else {
+      loginData.username = value;
+    }
+
+    await loginUser(loginData);
+  });
+});
 </file>
 
-<file path="backend/src/db/pool.ts">
-import mysql, { Pool } from "mysql2/promise";
+<file path="README.md">
+### TODO:
+1. financial budget display and manipulation if admin
+2. dirs like UI with yearly proj tracks each dir  
+
+#### dev setup:
+
+```bash
+npm install && npm audit fix && npm start
+```
+</file>
+
+<file path="backend/src/middlewares/authUser.ts">
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-
-// Define `pool` with an explicit type
-let pool: Pool | undefined;
-
-if (process.env.NODE_ENV === "development") {
-  pool = mysql.createPool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASS,
-    database: process.env.SQL_DB,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-} else {
-  pool = mysql.createPool({
-    uri: process.env.MYSQL_PUBLIC_URL as string,
-    waitForConnections: true,
-    connectionLimit: 10,
-    maxIdle: 10, // Maximum number of idle connections
-    idleTimeout: 60000, // 60kms = 1minute
-    queueLimit: 0, // unli
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-  });
-}
-
-// prod
-
-export default pool!;
-</file>
-
-<file path="backend/src/middlewares/errorHandler.ts">
-import { CustomError } from "../errors/CustomError.ts";
 import type { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
-dotenv.config();
+import mkCustomError from "../errors/CustomError.ts";
 
-export const errorHandler = (
-  err: Error,
-  _req: Request,
+const authUser = async (
+  req: Request,
   res: Response,
-  _next: NextFunction,
-) => {
-  if (err instanceof CustomError) {
-    console.error("Error message:", err.message);
-    return res.status(err.statusCode).json({
-      err: err.message,
-      //process.env.NODE_ENV === "production"
-      //? "Something went wrong, please try again later."
-      //: err.message,
+  next: NextFunction,
+): Promise<void> => {
+  const authHeader = req.headers.authorization;
+  //this if sign is set to true in server response in auth
+  //otherwise just req.cookies.authorization would do
+  const authCookie = req.signedCookies.authorization;
+
+  //console.log("Cookies:", req.cookies);
+
+  let token: string | undefined;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
+  } else if (authCookie) {
+    //req.signedCookies.authorization
+    //    return res.status(401).json({ error: "Unauthorized" });
+    token = authCookie;
+  }
+
+  if (!token) {
+    throw mkCustomError({
+      status: 401,
+      msg: "Authentication Invalid: No Token Provided.",
     });
   }
 
-  console.error("=== ERROR DETAILS ===");
-  console.error("Path:", _req.path);
-  console.error("Time:", new Date().toISOString());
-  console.error("Message:", err.message);
-  console.error("Stack:", err.stack);
-  console.error("=====================");
+  //console.log({ token });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      userId: number;
+      username: string;
+      email: string;
+      isAdmin: boolean;
+    };
 
-  return res
-    .status(500)
-    .json({ err: "Something went wrong, please try again later." });
+    console.log({ decoded });
+    req.user = decoded;
+    res.locals.user = decoded; // sent to ejs
+    next();
+  } catch (error) {
+    throw mkCustomError({ status: 401, msg: "Invalid or expired token." });
+  }
 };
+
+export default authUser;
+</file>
+
+<file path="backend/src/middlewares/devModeMiddleware.ts">
+import path from "path";
+import process from "process";
+import webpack from "webpack";
+import devMiddleware from "webpack-dev-middleware";
+import hotMiddleware from "webpack-hot-middleware";
+import type { Application } from "express";
+
+//import { createRequire } from "module";
+//const require = createRequire(import.meta.url);
+//const webpackConfig = require(
+//  path.join(process.cwd(), "frontend", "configs", "webpack.dev.js"),
+//);
+
+async function devModeMiddleware(app: Application) {
+  const webpackModule = await import(
+    path.join(process.cwd(), "frontend", "configs", "webpack.dev.js")
+  );
+  const webpackConfig = webpackModule.default;
+  const compiler = webpack(webpackConfig);
+
+  app.use(
+    devMiddleware(compiler, {
+      publicPath: webpackConfig.output?.publicPath,
+      writeToDisk: true,
+    }),
+  );
+
+  app.use(
+    hotMiddleware(compiler, {
+      //path: "localhost:3000/__webpack_hmr",
+      log: console.log,
+      heartbeat: 1000,
+    }),
+  );
+}
+export default devModeMiddleware;
+</file>
+
+<file path="backend/src/routes/pages.ts">
+import express from "express";
+const router = express.Router();
+import redirectAuth from "../middlewares/redirectAuth.ts";
+import authUser from "../middlewares/authUser.ts";
+import {
+  landingPage,
+  homePage,
+  signupPage,
+  loginPage,
+  profilePage,
+  aboutPage,
+  budgetAllocationPage,
+  projectsPage,
+  suggestionPage,
+} from "../controllers/pages.ts";
+
+router.get("/", redirectAuth(), landingPage);
+router.get("/signup", redirectAuth(), signupPage);
+router.get("/login", redirectAuth(), loginPage);
+
+// protected routes
+router.get("/profile", redirectAuth(), authUser, profilePage);
+router.get("/home", redirectAuth(), homePage);
+router.get("/about", redirectAuth(), aboutPage);
+router.get("/annual-budget-allocation", redirectAuth(), budgetAllocationPage);
+router.get("/projects-and-events", redirectAuth(), projectsPage);
+router.get("/submit-suggestions", redirectAuth(), suggestionPage);
+
+export default router;
+</file>
+
+<file path="frontend/src/ts/pages/signup/validate.ts">
+import signupUser from "./signupUser.ts";
+import autoFillForm from "../../utils/scripts/autoFillForm.ts";
+import type { SignupData } from "./signupUser.ts";
+
+document.addEventListener("DOMContentLoaded", () => {
+  //WARN: this is for quick testing only and should be removed on prod
+  if (process.env.NODE_ENV !== "production") {
+    autoFillForm();
+  }
+
+  const form = document.getElementById("signup-form") as HTMLFormElement | null;
+  if (!form) return;
+
+  // Helper function to show error
+  function showError(input: HTMLInputElement, message: string) {
+    const errorDiv = document.querySelector(
+      `.signup-error-msg[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = message;
+    }
+    input.classList.add("invalid");
+  }
+
+  // Helper function to clear error
+  function clearError(input: HTMLInputElement) {
+    const errorDiv = document.querySelector(
+      `.signup-error-msg[data-error-for="${input.name}"]`,
+    ) as HTMLElement | null;
+
+    if (errorDiv) {
+      errorDiv.textContent = "";
+    }
+    input.classList.remove("invalid");
+  }
+
+  function validateField(field: HTMLInputElement) {
+    const value = field.value.trim();
+    const { name } = field;
+
+    const passwordField = form?.elements.namedItem(
+      "password",
+    ) as HTMLInputElement | null;
+
+    switch (name) {
+      case "username":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          showError(field, "username must be at least 4 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (!field.validity.valid) {
+          showError(field, "not a valid email.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (value.length < 8) {
+          showError(field, "password must be at least 8 characters long.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      case "confirmPassword":
+        if (!value) {
+          showError(field, "field can't be empty.");
+        } else if (
+          passwordField &&
+          passwordField.value &&
+          value !== passwordField.value.trim()
+        ) {
+          showError(field, "passwords do not match.");
+        } else {
+          clearError(field);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // Attach validation handlers (live validation on input activities)
+  for (const field of Array.from(form.elements)) {
+    if (field instanceof HTMLInputElement) {
+      field.addEventListener("input", () => validateField(field));
+    }
+  }
+
+  // Form submission handler
+  form.addEventListener("submit", async (e: SubmitEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains("theme-btn")) {
+      e.preventDefault();
+      return;
+    }
+
+    e.preventDefault();
+
+    // Validate all fields
+    let hasErrors = false;
+    for (const field of Array.from(form.elements)) {
+      if (field instanceof HTMLInputElement) {
+        validateField(field);
+        if (!field.validity.valid || field.classList.contains("invalid")) {
+          hasErrors = true;
+        }
+      }
+    }
+    if (hasErrors) return;
+
+    const formData = new FormData(form);
+    //console.log({ formData });
+    const jsonData = Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ) as unknown as SignupData;
+
+    //console.log({ jsonData });
+    await signupUser(jsonData);
+    //form.reset();
+  });
+});
+</file>
+
+<file path="frontend/src/ts/index.ts">
+//INFO: shared scripts across pages goes here
+
+// states
+import "./states/theme.ts";
+//import "./states/authState.ts";
+</file>
+
+<file path="frontend/views/partials/head.ejs">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SKonnect<%= title ? " - " + title : "" %></title>
+
+    <!--<link-->
+    <!--    rel="preload"-->
+    <!--    href="app.bundled.css"-->
+    <!--    as="style"-->
+    <!--    onload="this.rel='stylesheet'"-->
+    <!--/>-->
+    <link rel="stylesheet" href="app.bundled.css" />
+    <!--<style>-->
+    <!--    /*avoid white flashing on repeated fast refreshes*/-->
+    <!--    html[data-theme="dark"] {-->
+    <!--        background-color: rgb(25, 27, 28) !important;-->
+    <!--    }-->
+    <!--</style>-->
+
+    <!--<noscript><link rel="stylesheet" href="app.bundled.css" /></noscript>-->
+
+    <!--<meta-->
+    <!--  http-equiv="Content-Security-Policy"-->
+    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
+    <!--/>-->
+</head>
+</file>
+
+<file path="frontend/views/login.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="login" class="">
+        <div class="gradient-bg bg-dark-accent login-left auth-filler-bg">
+            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
+        </div>
+        <!--<div class="pb-1 pr-1 dp-f jc-e w-100">-->
+        <!--    <button class="bd-w theme-btn btn-no-hover">-->
+        <!--        <svg-->
+        <!--            class="sun"-->
+        <!--            xmlns="http://www.w3.org/2000/svg"-->
+        <!--            height="30px"-->
+        <!--            viewBox="0 -960 960 960"-->
+        <!--            width="30px"-->
+        <!--            fill="#e8eaed"-->
+        <!--        >-->
+        <!--            <path-->
+        <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
+        <!--            />-->
+        <!--        </svg>-->
+        <!--        <svg-->
+        <!--            class="moon"-->
+        <!--            xmlns="http://www.w3.org/2000/svg"-->
+        <!--            height="30px"-->
+        <!--            viewBox="0 -960 960 960"-->
+        <!--            width="30px"-->
+        <!--            fill="#e8eaed"-->
+        <!--        >-->
+        <!--            <path-->
+        <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
+        <!--            />-->
+        <!--        </svg>-->
+        <!--    </button>-->
+        <!--</div>-->
+
+        <div class="auth-wrapper container">
+            <form
+                autocomplete="off"
+                id="login-form"
+                class="br-20"
+                action=""
+                novalidate
+            >
+                <h1 class="">Login to SKonnect</h1>
+
+                <div class="input-box">
+                    <input
+                        id="user-identifier"
+                        type="text"
+                        name="user-identifier"
+                        required
+                        minlength="4"
+                        maxlength="100"
+                        placeholder=""
+                    />
+                    <label for="user-identifier">Username or Email</label>
+                    <span></span>
+                </div>
+                <div data-error-for="user-identifier" class="error"></div>
+
+                <div class="input-box">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="password">Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <svg
+                            class="visib-on"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                            />
+                        </svg>
+                        <svg
+                            class="visib-off"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div data-error-for="password" class="error"></div>
+
+                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
+                    Login
+                </button>
+
+                <div class="gp-10 jc-c dp-f">
+                    <span> Don't have an account? </span>
+                    <a class="signup-link fw-bold" href="/signup">Signup</a>
+                </div>
+            </form>
+        </div>
+
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
+
+        <script type="module" src="/app.bundle.js"></script>
+        <!--<script type="module" src="/nav.bundle.js"></script>-->
+        <script type="module" src="/login.bundle.js"></script>
+    </body>
+</html>
 </file>
 
 <file path="frontend/src/scss/pages/_home.scss">
@@ -4876,18 +5861,34 @@ body[data-page="home"] {
     background-color: var(--tertiary);
   }
 
-  // all captions on the page
-  .caption {
-    font-weight: bold;
-    padding-left: 7px;
+  %titles {
     padding-bottom: 5px;
+    font-weight: bold;
+  }
 
+  .services-txt {
+    @extend %titles;
     @include xs {
       font-size: $font-size-lg;
     }
 
     @include xl {
       font-size: $font-size-xl;
+      text-align: center;
+    }
+  }
+
+  // all slideshow captions on the page
+  .caption {
+    @extend %titles;
+    padding-left: 7px;
+
+    @include xs {
+      font-size: $font-size-md;
+    }
+
+    @include xl {
+      font-size: $font-size-lg;
       text-align: center;
     }
   }
@@ -4961,10 +5962,6 @@ body[data-page="home"] {
         width: 150px;
       }
     }
-  }
-
-  section {
-    background-color: var(--tertiary);
   }
 
   section.services {
@@ -5154,6 +6151,14 @@ body[data-page="home"] {
       }
     }
   }
+
+  section {
+    background-color: var(--tertiary);
+  }
+
+  section.events {
+    background-color: var(--secondary);
+  }
 }
 
 [data-theme="dark"] {
@@ -5168,6 +6173,10 @@ body[data-page="home"] {
 
 [data-theme="light"] {
   body[data-page="home"] {
+    section.events {
+      background-color: var(--secondary);
+    }
+
     border-top: none;
     .card {
       // background-color: #fff;  // Ensure the card itself is light
@@ -5191,7 +6200,7 @@ body[data-page="home"] {
 
 // skeleton screen before load
 body[data-page="home"]:not(.loaded) .card::after,
-body[data-page="home"]:not(.loaded) nav::after,
+// body[data-page="home"]:not(.loaded) nav::after,
 // body[data-page="home"]:not(.loaded) .hero-top::after,
 body[data-page="home"]:not(.loaded) .mySlides::after {
   content: "";
@@ -5200,7 +6209,8 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  // background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #e0e0e0 25%, #cfcfcf 50%, #e0e0e0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 
@@ -5221,827 +6231,6 @@ body[data-page="home"]:not(.loaded) .mySlides::after {
     }
   }
 }
-</file>
-
-<file path="frontend/src/ts/pages/signup/validate.ts">
-import signupUser from "./signupUser.ts";
-import autoFillForm from "../../utils/scripts/autoFillForm.ts";
-import type { SignupData } from "./signupUser.ts";
-//import process from "process";
-//import dotenv from "dotenv";
-//dotenv.config();
-
-document.addEventListener("DOMContentLoaded", () => {
-  //WARN: this is for quick testing only and should be removed on prod
-  autoFillForm();
-
-  const form = document.getElementById("signup-form") as HTMLFormElement | null;
-  if (!form) return;
-
-  // Helper function to show error
-  function showError(input: HTMLInputElement, message: string) {
-    const errorDiv = document.querySelector(
-      `.signup-error-msg[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = message;
-    }
-    input.classList.add("invalid");
-  }
-
-  // Helper function to clear error
-  function clearError(input: HTMLInputElement) {
-    const errorDiv = document.querySelector(
-      `.signup-error-msg[data-error-for="${input.name}"]`,
-    ) as HTMLElement | null;
-
-    if (errorDiv) {
-      errorDiv.textContent = "";
-    }
-    input.classList.remove("invalid");
-  }
-
-  function validateField(field: HTMLInputElement) {
-    const value = field.value.trim();
-    const { name } = field;
-
-    const passwordField = form?.elements.namedItem(
-      "password",
-    ) as HTMLInputElement | null;
-
-    switch (name) {
-      case "username":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "username must be at least 4 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "email":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "password":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (value.length < 8) {
-          showError(field, "password must be at least 8 characters long.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      case "confirmPassword":
-        if (!value) {
-          showError(field, "field can't be empty.");
-        } else if (
-          passwordField &&
-          passwordField.value &&
-          value !== passwordField.value.trim()
-        ) {
-          showError(field, "passwords do not match.");
-        } else {
-          clearError(field);
-        }
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  // Attach validation handlers (live validation on input activities)
-  for (const field of Array.from(form.elements)) {
-    if (field instanceof HTMLInputElement) {
-      field.addEventListener("input", () => validateField(field));
-    }
-  }
-
-  // Form submission handler
-  form.addEventListener("submit", async (e: SubmitEvent) => {
-    e.preventDefault();
-
-    // Validate all fields
-    let hasErrors = false;
-    for (const field of Array.from(form.elements)) {
-      if (field instanceof HTMLInputElement) {
-        validateField(field);
-        if (!field.validity.valid || field.classList.contains("invalid")) {
-          hasErrors = true;
-        }
-      }
-    }
-    if (hasErrors) return;
-
-    const formData = new FormData(form);
-    //console.log({ formData });
-    const jsonData = Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ) as unknown as SignupData;
-
-    //console.log({ jsonData });
-    await signupUser(jsonData);
-    form.reset();
-  });
-});
-</file>
-
-<file path="frontend/views/login.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body data-page="login" class="">
-        <div class="gradient-bg bg-dark-accent login-left auth-filler-bg">
-            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
-        </div>
-
-        <div class="auth-wrapper container">
-            <div class="mt-1 dp-f jc-e w-100">
-                <button class="bd-w theme-btn btn-no-hover">
-                    <svg
-                        class="sun"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
-                        />
-                    </svg>
-                    <svg
-                        class="moon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-
-            <form id="login-form" class="br-20" action="" novalidate>
-                <h1 class="">Login to SKonnect</h1>
-
-                <div class="input-box">
-                    <input
-                        id="user-identifier"
-                        type="text"
-                        name="user-identifier"
-                        required
-                        minlength="4"
-                        maxlength="100"
-                        placeholder=""
-                    />
-                    <label for="user-identifier">Username or Email</label>
-                    <span></span>
-                </div>
-                <div data-error-for="user-identifier" class="error"></div>
-
-                <div class="input-box">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="password">Password</label>
-                    <button class="btn-no-hover visib-pass-btn" type="button">
-                        <svg
-                            class="visib-on"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
-                            />
-                        </svg>
-                        <svg
-                            class="visib-off"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <div data-error-for="password" class="error"></div>
-
-                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Login
-                </button>
-
-                <div class="gp-10 jc-c dp-f">
-                    <span> Don't have an account? </span>
-                    <a class="signup-link fw-bold" href="/signup">Signup</a>
-                </div>
-            </form>
-        </div>
-
-        <!--FOOTER --commented out -->
-        <%# include('./partials/footer.ejs') %>
-
-        <script type="module" src="/app.bundle.js"></script>
-        <script type="module" src="/nav.bundle.js"></script>
-        <script type="module" src="/login.bundle.js"></script>
-    </body>
-</html>
-</file>
-
-<file path="tsconfig.json">
-{
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2022",
-    "rootDir": ".",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "typeRoots": [
-      "node_modules/@types",
-      //"types",
-    ],
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "*src/*"
-      ]
-    },
-    "types": [
-      "node",
-      //"express"
-    ],
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "sourceMap": true, /* Create source map files for emitted JavaScript files. */
-    "outDir": "../dist", /* Specify an output folder for all emitted files. */
-    "removeComments": true, /* Disable emitting comments. */
-    "noEmitOnError": true, /* Disable emitting files if any type checking errors are reported. */
-    "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
-    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. */
-    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
-    "noUnusedLocals": false, /* Enable error reporting when local variables aren't read. */
-    "noUnusedParameters": true, /* Raise an error when a function parameter isn't read. */
-    "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
-  },
-  "include": [
-    "backend/src/**/*",
-    "backend/types/*",
-    "frontend/src/**/*",
-    "frontend/types/*",
-  ],
-  "exclude": [
-    "node_modules",
-    "frontend/dist/",
-    "backend/dist/",
-  ]
-}
-</file>
-
-<file path="backend/src/controllers/pages.ts">
-import type { Request, Response } from "express";
-
-const landingPage = (_req: Request, res: Response): void => {
-  res.render("index", {
-    title: "",
-  });
-};
-
-const signupPage = (_req: Request, res: Response): void => {
-  res.render("signup", {
-    title: "Signup",
-  });
-};
-
-const loginPage = (_req: Request, res: Response): void => {
-  res.render("login", {
-    title: "Login",
-  });
-};
-
-const budgetAllocationPage = (_req: Request, res: Response): void => {
-  res.render("budgetAllocation", {
-    title: "Budget Allocation",
-  });
-};
-const projectsPage = (_req: Request, res: Response): void => {
-  res.render("projects", {
-    title: "Projects and Events",
-  });
-};
-const suggestionPage = (_req: Request, res: Response): void => {
-  res.render("suggestions", {
-    title: "Submit Suggestions",
-  });
-};
-const aboutPage = (_req: Request, res: Response): void => {
-  res.render("about", {
-    title: "About",
-  });
-};
-
-// protected routes
-
-const homePage = (_req: Request, res: Response): void => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate",
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  res.setHeader("Surrogate-Control", "no-store");
-  res.render("home", {
-    title: "Home",
-  });
-};
-
-const profilePage = (_req: Request, res: Response): void => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate",
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  res.setHeader("Surrogate-Control", "no-store");
-  res.render("profile", {
-    title: "Profile",
-  });
-};
-
-export {
-  landingPage,
-  signupPage,
-  loginPage,
-  homePage,
-  profilePage,
-  aboutPage,
-  budgetAllocationPage,
-  projectsPage,
-  suggestionPage,
-};
-</file>
-
-<file path="backend/src/db/connect.ts">
-import mysql from "mysql2/promise";
-import dotenv from "dotenv";
-dotenv.config();
-
-//console.log("NODE_ENV:", process.env.NODE_ENV);
-//console.log("MYSQLHOST:", process.env.MYSQLHOST);
-//console.log("MYSQLUSER:", process.env.MYSQLUSER);
-//console.log("MYSQLDATABASE:", process.env.MYSQL_DATABASE);
-//console.log("MYSQLPORT:", process.env.MYSQLPORT);
-
-const connectDB = () => {
-  if (process.env.NODE_ENV === "development") {
-    return mysql.createConnection({
-      host: process.env.SQL_HOST,
-      user: process.env.SQL_USER,
-      password: process.env.SQL_PASS,
-      database: process.env.SQL_DB,
-    });
-  } else {
-    return mysql.createConnection(process.env.MYSQL_PUBLIC_URL as string);
-  }
-};
-
-export default connectDB;
-</file>
-
-<file path="backend/src/routes/auth.ts">
-import express from "express";
-const router = express.Router();
-import authUser from "../middlewares/authUser.ts";
-import { signup, login } from "../controllers/auth.ts";
-
-router.post("/signup", signup);
-router.post("/login", login);
-// router.post("/otp", otp); // idk maybe if it's a requirement
-
-export default router;
-</file>
-
-<file path="frontend/src/scss/components/_buttons.scss">
-@use "../abstracts/variables" as *;
-@use "../abstracts/mixins" as *;
-@use "sass:color";
-
-%gen-btn {
-  cursor: pointer;
-  display: inline-block;
-  border: 0;
-  outline: none;
-  // padding: $base-padding $base-padding;
-  // border-radius: $base-border-radius;
-}
-
-@mixin btn($bg-color: #fff) {
-  @extend %gen-btn;
-  background-color: $bg-color;
-  // color: $color !important;
-  color: var(--foreground);
-}
-
-// use this for if using var theming approach
-// and just customize color and hover color through vars in a
-// centralized .scss file (e.g. themes.scss)
-.btn {
-  @extend %gen-btn;
-}
-
-// GENERIC BUTTON COLORS
-
-@each $key, $val in $colors {
-  .btn-#{$key} {
-    @include btn($val);
-    &:hover {
-      background-color: color.adjust($val, $lightness: 5%);
-    }
-  }
-
-  .btn-outlined-#{$key} {
-    @include btn(#fff);
-    border: $base-border-thickness solid $val;
-    &:hover {
-      background-color: $val;
-    }
-  }
-}
-
-// CLASS BASED THEMING
-
-// NOTE: temporarily added @ xl will remove/modify again later / on other projs
-
-@each $theme, $values in $themes {
-  @each $k, $v in $values {
-    // @include xl {
-    .btn-#{$theme}-#{$k} {
-      @include btn($v);
-
-      &:hover {
-        background-color: color.adjust($v, $lightness: 5%);
-      }
-    }
-
-    .btn-outlined-#{$theme}-#{$k} {
-      @include btn(transparent);
-      border: $base-border-thickness solid $v !important;
-
-      &:hover {
-        background-color: $v !important;
-
-        // @include mobile {
-        //   // override browsers weird default hover/bg on mobiles.
-        //   -webkit-tap-highlight-color: #3295b6;
-        //   background-color: #3295b6 !important;
-        // }
-      }
-    }
-
-    .btn-no-hover {
-      @include btn(transparent);
-    }
-
-    // .btn-no-hover-outlined-#{$theme}-#{$k} {
-    //   @include btn(transparent);
-    //   border: $base-border-thickness solid $v !important;
-    // }
-
-    @include mobile {
-      // override browsers weird default hover/bg on mobiles.
-      // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
-      // -webkit-tap-highlight-color: #3295b6;
-      // background-color: #3295b6 !important;
-    }
-    // }
-  }
-}
-</file>
-
-<file path="frontend/views/signup.ejs">
-<!DOCTYPE html>
-<html lang="en" data-theme="">
-    <!--HEAD-->
-    <%- include('./partials/head.ejs') %>
-    <body data-page="signup" class="">
-        <div class="auth-wrapper container">
-            <div class="dp-f jc-s mt-1 w-100">
-                <button class="bd-w theme-btn btn-no-hover">
-                    <svg
-                        class="sun"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
-                        />
-                    </svg>
-                    <svg
-                        class="moon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="30px"
-                        viewBox="0 -960 960 960"
-                        width="30px"
-                        fill="#e8eaed"
-                    >
-                        <path
-                            d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-                        />
-                    </svg>
-                </button>
-            </div>
-
-            <form id="signup-form" class="br-20" action="" novalidate>
-                <h1 class="mb-2">Get Started</h1>
-                <h4 class="mb-3">Signup to SKonnect.</h4>
-
-                <div class="input-box">
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        required
-                        minlength="4"
-                        maxlength="40"
-                        placeholder=""
-                    />
-                    <label for="username">Username</label>
-                    <span></span>
-                </div>
-                <div data-error-for="username" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
-                        maxlength="100"
-                        placeholder=""
-                    />
-                    <label for="email">Email</label>
-                    <span></span>
-                </div>
-                <div data-error-for="email" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="password">Password</label>
-                    <button class="btn-no-hover visib-pass-btn" type="button">
-                        <svg
-                            class="visib-on"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
-                            />
-                        </svg>
-                        <svg
-                            class="visib-off"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            fill="#e8eaed"
-                        >
-                            <path
-                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <div data-error-for="password" class="signup-error-msg"></div>
-
-                <div class="input-box">
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        name="confirmPassword"
-                        required
-                        minlength="8"
-                        maxlength="255"
-                        placeholder=""
-                    />
-                    <label for="confirmPassword">Confirm Password</label>
-                </div>
-                <div
-                    data-error-for="confirmPassword"
-                    class="signup-error-msg"
-                ></div>
-
-                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Sign up
-                </button>
-
-                <div class="gp-10 jc-c dp-f">
-                    <span> Already have an account? </span>
-                    <a class="login-link fw-bold" href="/login">Login</a>
-                </div>
-            </form>
-        </div>
-
-        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
-            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
-        </div>
-
-        <!--FOOTER --commented out -->
-        <%# include('./partials/footer.ejs') %>
-
-        <script type="module" src="/app.bundle.js"></script>
-        <script type="module" src="/signup.bundle.js"></script>
-        <script type="module" src="/nav.bundle.js"></script>
-    </body>
-</html>
-</file>
-
-<file path="README.md">
-### TODO:
-1. financial budget display and manipulation if admin
-2. dirs like UI with yearly proj tracks each dir  
-
-#### dev setup:
-
-```bash
-npm install && npm audit fix && npm start
-```
-
-
-{
-  "verbose": true,
-  "ignore": [
-    "frontend/public/",
-    "frontend/dist/",
-    "backend/dist/"
-  ],
-  "ext": "ts,ejs",
-  "exec": "NODE_ENV=development TS_NODE_PROJECT=backend/configs/tsconfig.json node ts-node backend/src/app.ts"
-}
-</file>
-
-<file path="backend/src/middlewares/authUser.ts">
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
-import type { Request, Response, NextFunction } from "express";
-import mkCustomError from "../errors/CustomError.ts";
-
-const authUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  const authHeader = req.headers.authorization;
-  //this if sign is set to true in server response in auth
-  //otherwise just req.cookies.authorization would do
-  const authCookie = req.signedCookies.authorization;
-
-  //console.log("Cookies:", req.cookies);
-
-  let token: string | undefined;
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    token = authHeader.split(" ")[1];
-  } else if (authCookie) {
-    //req.signedCookies.authorization
-    //    return res.status(401).json({ error: "Unauthorized" });
-    token = authCookie;
-  }
-
-  if (!token) {
-    throw mkCustomError("Authentication Invalid: No Token Provided.", 401);
-  }
-
-  //console.log({ token });
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      userId: number;
-      username: string;
-      email: string;
-      isAdmin: boolean;
-    };
-
-    console.log({ decoded });
-    req.user = decoded;
-    res.locals.user = decoded; // sent to ejs
-    next();
-  } catch (error) {
-    throw mkCustomError("Invalid or expired token.", 401);
-  }
-};
-
-export default authUser;
-</file>
-
-<file path="frontend/src/scss/abstracts/_variables.scss">
-$themes: (
-  "dark": (
-    "primary": rgb(25, 27, 28),
-    "secondary": rgb(28, 30, 32),
-    "neutral": rgb(31, 33, 37),
-    // "tertiary": rgb(36, 38, 41),
-    "accent": rgb(0, 130, 159),
-    // "accent": #3b60e4,
-    "foreground": #f3f3f3,
-  ),
-  "light": (
-    "primary": #fcfcfc,
-    "secondary": #e3eef0,
-
-    "tertiary": #f5f5f5,
-    "neutral": rgb(230, 230, 230),
-    "accent": rgb(0, 130, 159),
-    // "foreground": #141216,
-    "foreground": black,
-  ),
-);
-
-$colors: (
-  "info": #326dee,
-  "warn": #f6c31c,
-  "error": #d32752,
-  "tip": #1ac886,
-  "black": black,
-  "white": white,
-  "lightgray": #d3d3d3,
-);
-
-$breakpoints: (
-  "xs": 0,
-  "sm": 475px,
-  "md": 640px,
-  "lg": 760px,
-  "xl": 1024px,
-  "xxl": 1536px,
-);
-
-// spacing
-$base-padding: 0.75rem;
-$base-margin: 0.75rem;
-
-// borders
-$base-border-thickness: 1px;
-$base-border-radius: 5px;
-
-// box-shadow
-$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
-
-// font sizes
-$base-font-size: 1rem;
-$font-size-sm: $base-font-size * 0.75;
-$font-size-lg: $base-font-size * 1.5;
-$font-size-xl: $base-font-size * 2;
-$font-size-xxl: $base-font-size * 3;
 </file>
 
 <file path="frontend/views/home.ejs">
@@ -6078,13 +6267,13 @@ $font-size-xxl: $base-font-size * 3;
             </div>
         </section>
 
-        <section class="services container pt-2 pb-2">
+        <section class="services container pt-2 pb-3">
             <h2 class="fs-3-xs fs-4-md ta-c col-12-xs gradient-text mb-4 pt-2">
                 Explore SKonnect
             </h2>
 
             <div class="gp-30 pb-2 cards-container">
-                <p class="hidden caption">Services</p>
+                <p class="hidden services-txt">Services</p>
 
                 <div class="card hidden p-2 br-20">
                     <div class="">
@@ -6288,112 +6477,161 @@ $font-size-xxl: $base-font-size * 3;
 </html>
 </file>
 
-<file path="backend/src/middlewares/devModeMiddleware.ts">
-import path from "path";
-import process from "process";
-import webpack from "webpack";
-import devMiddleware from "webpack-dev-middleware";
-import hotMiddleware from "webpack-hot-middleware";
-import type { Application } from "express";
+<file path="frontend/views/signup.ejs">
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="signup" class="">
+        <div class="auth-wrapper container">
+            <!--<div class="dp-f jc-s pb-1 pl-1 w-100">-->
+            <!--    <button class="bd-w theme-btn btn-no-hover">-->
+            <!--        <svg-->
+            <!--            class="sun"-->
+            <!--            xmlns="http://www.w3.org/2000/svg"-->
+            <!--            height="30px"-->
+            <!--            viewBox="0 -960 960 960"-->
+            <!--            width="30px"-->
+            <!--            fill="#e8eaed"-->
+            <!--        >-->
+            <!--            <path-->
+            <!--                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"-->
+            <!--            />-->
+            <!--        </svg>-->
+            <!--        <svg-->
+            <!--            class="moon"-->
+            <!--            xmlns="http://www.w3.org/2000/svg"-->
+            <!--            height="30px"-->
+            <!--            viewBox="0 -960 960 960"-->
+            <!--            width="30px"-->
+            <!--            fill="#e8eaed"-->
+            <!--        >-->
+            <!--            <path-->
+            <!--                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"-->
+            <!--            />-->
+            <!--        </svg>-->
+            <!--    </button>-->
+            <!--</div>-->
 
-//import { createRequire } from "module";
-//const require = createRequire(import.meta.url);
-//const webpackConfig = require(
-//  path.join(process.cwd(), "frontend", "configs", "webpack.dev.js"),
-//);
+            <form
+                autocomplete="off"
+                id="signup-form"
+                class="br-20"
+                action=""
+                novalidate
+            >
+                <h1 class="mb-2">Get Started</h1>
+                <h4 class="mb-3">Signup to SKonnect.</h4>
 
-async function devModeMiddleware(app: Application) {
-  const webpackModule = await import(
-    path.join(process.cwd(), "frontend", "configs", "webpack.dev.js")
-  );
-  const webpackConfig = webpackModule.default;
-  const compiler = webpack(webpackConfig);
+                <div class="input-box">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        minlength="4"
+                        maxlength="40"
+                        placeholder=""
+                    />
+                    <label for="username">Username</label>
+                    <span></span>
+                </div>
+                <div data-error-for="username" class="signup-error-msg"></div>
 
-  app.use(
-    devMiddleware(compiler, {
-      publicPath: webpackConfig.output?.publicPath,
-      writeToDisk: true,
-    }),
-  );
+                <div class="input-box">
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        maxlength="100"
+                        placeholder=""
+                    />
+                    <label for="email">Email</label>
+                    <span></span>
+                </div>
+                <div data-error-for="email" class="signup-error-msg"></div>
 
-  app.use(
-    hotMiddleware(compiler, {
-      //path: "localhost:3000/__webpack_hmr",
-      log: console.log,
-      heartbeat: 1000,
-    }),
-  );
-}
-export default devModeMiddleware;
-</file>
+                <div class="input-box">
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="password">Password</label>
+                    <button class="btn-no-hover visib-pass-btn" type="button">
+                        <svg
+                            class="visib-on"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"
+                            />
+                        </svg>
+                        <svg
+                            class="visib-off"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 -960 960 960"
+                            width="24px"
+                            fill="#e8eaed"
+                        >
+                            <path
+                                d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div data-error-for="password" class="signup-error-msg"></div>
 
-<file path="backend/src/routes/pages.ts">
-import express from "express";
-const router = express.Router();
-import redirectAuth from "../middlewares/redirectAuth.ts";
-import authUser from "../middlewares/authUser.ts";
-import {
-  landingPage,
-  homePage,
-  signupPage,
-  loginPage,
-  profilePage,
-  aboutPage,
-  budgetAllocationPage,
-  projectsPage,
-  suggestionPage,
-} from "../controllers/pages.ts";
+                <div class="input-box">
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="confirmPassword">Confirm Password</label>
+                </div>
+                <div
+                    data-error-for="confirmPassword"
+                    class="signup-error-msg"
+                ></div>
 
-router.get("/", redirectAuth(), landingPage);
-router.get("/signup", redirectAuth(), signupPage);
-router.get("/login", redirectAuth(), loginPage);
+                <button type="submit" class="submit p-1 br-40 btn-dark-accent">
+                    Sign up
+                </button>
 
-// protected routes
-router.get("/profile", redirectAuth(), authUser, profilePage);
-router.get("/home", redirectAuth(), homePage);
-router.get("/about", redirectAuth(), aboutPage);
-router.get("/annual-budget-allocation", redirectAuth(), budgetAllocationPage);
-router.get("/projects-and-events", redirectAuth(), projectsPage);
-router.get("/submit-suggestions", redirectAuth(), suggestionPage);
+                <div class="gp-10 jc-c dp-f">
+                    <span> Already have an account? </span>
+                    <a class="login-link fw-bold" href="/login">Login</a>
+                </div>
+            </form>
+        </div>
 
-export default router;
-</file>
+        <div class="gradient-bg bg-dark-accent signup-right auth-filler-bg">
+            <h1 class="fs-xxl fw-black">Some random bg here.</h1>
+        </div>
 
-<file path="frontend/src/ts/index.ts">
-//INFO: shared scripts across pages goes here
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
 
-// states
-import "./states/theme.ts";
-//import "./states/authState.ts";
-</file>
-
-<file path="frontend/views/partials/head.ejs">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SKonnect<%= title ? " - " + title : "" %></title>
-
-    <!--<link-->
-    <!--    rel="preload"-->
-    <!--    href="app.bundled.css"-->
-    <!--    as="style"-->
-    <!--    onload="this.rel='stylesheet'"-->
-    <!--/>-->
-    <link rel="stylesheet" href="app.bundled.css" />
-    <!--<style>-->
-    <!--avoid white flashing on repeated fast refreshes-->
-    <!--html[data-theme="dark"] {-->
-    <!--background-color: rgb(25, 27, 28) !important;-->
-    <!--}-->
-    <!--</style>-->
-
-    <!--<noscript><link rel="stylesheet" href="app.bundled.css" /></noscript>-->
-
-    <!--<meta-->
-    <!--  http-equiv="Content-Security-Policy"-->
-    <!--  content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** "-->
-    <!--/>-->
-</head>
+        <script type="module" src="/app.bundle.js" defer></script>
+        <script type="module" src="/signup.bundle.js" defer></script>
+        <!--<script type="module" src="/nav.bundle.js"></script>-->
+    </body>
+</html>
 </file>
 
 <file path="backend/configs/tsconfig.json">
@@ -6401,13 +6639,11 @@ import "./states/theme.ts";
   "compilerOptions": {
     "strict": true,
     "target": "ES2022",
-    //"module": "nodenext",
+    "module": "nodenext",
     "moduleResolution": "nodenext",
     "rootDir": "../",
     // Treat files as modules even if it doesn't use import/export
     "moduleDetection": "force",
-    // Ignore module structure
-    "module": "Preserve",
     "typeRoots": [
       "../../node_modules/@types",
     ],
@@ -6456,6 +6692,68 @@ import "./states/theme.ts";
 }
 </file>
 
+<file path="frontend/src/scss/abstracts/_variables.scss">
+$themes: (
+  "dark": (
+    "primary": rgb(25, 27, 28),
+    "secondary": rgb(28, 30, 32),
+    "neutral": rgb(31, 33, 37),
+    "accent": rgb(0, 130, 159),
+    "foreground": #f3f3f3,
+    // "tertiary": rgb(36, 38, 41),
+     // "accent": #3b60e4,
+  ),
+  "light": (
+    "primary": #fcfcfc,
+    "secondary": #e3eef0,
+    "tertiary": #f5f5f5,
+    "neutral": rgb(230, 230, 230),
+    "accent": rgb(0, 130, 159),
+    // "contrast": #8dd6f959,
+    // "foreground": #141216,
+    "foreground": black,
+  ),
+);
+
+$colors: (
+  "info": #326dee,
+  "warn": #f6c31c,
+  "error": #d32752,
+  "tip": #1ac886,
+  "black": black,
+  "white": white,
+  "lightgray": #d3d3d3,
+);
+
+$breakpoints: (
+  "xs": 0,
+  "sm": 475px,
+  "md": 640px,
+  "lg": 760px,
+  "xl": 1024px,
+  "xxl": 1536px,
+);
+
+// spacing
+$base-padding: 0.75rem;
+$base-margin: 0.75rem;
+
+// borders
+$base-border-thickness: 1px;
+$base-border-radius: 5px;
+
+// box-shadow
+$base-box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+
+// font sizes
+$base-font-size: 1rem;
+$font-size-sm: $base-font-size * 0.75;
+$font-size-md: $base-font-size * 1.2;
+$font-size-lg: $base-font-size * 1.5;
+$font-size-xl: $base-font-size * 2;
+$font-size-xxl: $base-font-size * 3;
+</file>
+
 <file path="frontend/src/ts/pages/home/events.ts">
 import { notifyGradient } from "../../utils/showNotif.ts";
 import { manualResizeTrigger } from "./slideShow.ts";
@@ -6468,15 +6766,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //// notif message
-//const signupMsg = sessionStorage.getItem("signupSuccessNotif");
-//const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
-//if (signupMsg) {
-//  notifyGradient(signupMsg);
-//  sessionStorage.removeItem("signupSuccessNotif");
-//} else if (loginMsg) {
-//  notifyGradient(loginMsg);
-//  sessionStorage.removeItem("loginWelcomeNotif");
-//}
+const signupMsg = sessionStorage.getItem("signupSuccessNotif");
+const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
+if (signupMsg) {
+  notifyGradient(signupMsg);
+  sessionStorage.removeItem("signupSuccessNotif");
+} else if (loginMsg) {
+  notifyGradient(loginMsg);
+  sessionStorage.removeItem("loginWelcomeNotif");
+}
 
 // scroll animation
 const observer = new IntersectionObserver(
@@ -6512,8 +6810,162 @@ const observer = new IntersectionObserver(
 document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
 </file>
 
-<file path="command list-panes: too many arguments (need at most 0)">
-Ptmux;_Ga=d,q=2,d=a\\
+<file path="frontend/views/partials/nav.ejs">
+<nav class="normal container p-1">
+    <button class="nav-menu-btn-open btn">
+        <svg
+            class="menu-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            height="35px"
+            viewBox="0 -960 960 960"
+            width="35px"
+            fill="#e8eaed"
+        >
+            <path
+                d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+            />
+        </svg>
+    </button>
+
+    <a href="/" class="logo-container td-n">
+        <img class="br logo" width="30px" src="assets/img/beru.png" alt="" />
+        <h2 class="logo-name">SKonnect</h2>
+    </a>
+
+    <button class="theme-btn btn-no-hover">
+        <svg
+            class="sun"
+            xmlns="http://www.w3.org/2000/svg"
+            height="30px"
+            viewBox="0 -960 960 960"
+            width="30px"
+            fill="#e8eaed"
+        >
+            <path
+                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
+            />
+        </svg>
+        <svg
+            class="moon"
+            xmlns="http://www.w3.org/2000/svg"
+            height="30px"
+            viewBox="0 -960 960 960"
+            width="30px"
+            fill="#e8eaed"
+        >
+            <path
+                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
+            />
+        </svg>
+    </button>
+
+    <div class="container nav-menu-popup">
+        <button class="nav-menu-btn-close btn">
+            <svg
+                class="close-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                height="35"
+                viewBox="0 -960 960 960"
+                width="35px"
+                fill="#e8eaed"
+            >
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+                />
+            </svg>
+        </button>
+
+        <div class="menu-content">
+            <ul>
+                <li><a class="nav-link" href="/">Home</a></li>
+                <li><a class="nav-link" href="/about">About</a></li>
+                <li>
+                    <a class="nav-link" href="/annual-budget-allocation"
+                        >Annual Budget Allocation</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="nav-link"
+                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Projects & Events</a
+                </li>
+                <li>
+                    <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        class="nav-link"
+                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
+                        >Submit Suggestion</a
+                    >
+                </li>
+
+
+        <% if (!user) { %>
+                <a
+                    href="/signup"
+                    class="ta-c td-n p-1 signup-link-mobile btn-outlined-dark-accent br-40"
+                >
+                    Sign up
+                </a>
+                <a
+                    href="/login"
+                    class="ta-c td-n p-1 login-link-mobile btn-dark-accent br-40"
+                >
+                    Login
+                </a>
+        <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <!--xl screens only-->
+    <ul class="nav-links">
+        <li class="lst-n"><a class="nav-link" href="/home">Home</a></li>
+        <li class="lst-n"><a class="nav-link" href="/about">About</a></li>
+
+        <li class="lst-n">
+            <select class="nav-link-dropdown">
+                <option value="" selected disabled>Services</option>
+                <option value="/annual-budget-allocation">
+                    Annual Budget Allocation
+                </option>
+                <option value="/projects-and-events">Projects & Events</option>
+                <option value="/submit-suggestions">Submit Suggestion</option>
+                <!--<option value="/services.html#suggestions">Submit Suggestions</option>-->
+            </select>
+        </li>
+    </ul>
+
+    <% if (user) { %>
+      <a href="/profile" class="ml-40 br-40 btn-no-hover profile">
+          <img
+              width="35px"
+              class="br-40"
+              src="assets/img/makise.jpg"
+              alt="profile picture"
+          />
+      </a>
+    <% } else { %>
+      <div class="nav-auth-container">
+          <a
+              href="/signup"
+              class="p-1 signup-link btn-outlined-dark-accent br-40"
+          >
+              Sign up
+          </a>
+          <a
+              href="/login"
+              class="p-1 login-link btn-dark-accent br-40"
+          >
+              Login
+          </a>
+      </div>
+    <% } %>
+</nav>
 </file>
 
 <file path="frontend/src/scss/layout/_nav.scss">
@@ -6587,7 +7039,7 @@ nav {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .theme-btn {
@@ -6780,164 +7232,6 @@ nav {
 }
 </file>
 
-<file path="frontend/views/partials/nav.ejs">
-<nav class="normal container p-1">
-    <button class="nav-menu-btn-open btn">
-        <svg
-            class="menu-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            height="35px"
-            viewBox="0 -960 960 960"
-            width="35px"
-            fill="#e8eaed"
-        >
-            <path
-                d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
-            />
-        </svg>
-    </button>
-
-    <a href="/" class="logo-container td-n">
-        <img class="br logo" width="30px" src="assets/img/beru.png" alt="" />
-        <h2 class="logo-name">SKonnect</h2>
-    </a>
-
-    <button class="theme-btn btn-no-hover">
-        <svg
-            class="sun"
-            xmlns="http://www.w3.org/2000/svg"
-            height="30px"
-            viewBox="0 -960 960 960"
-            width="30px"
-            fill="#e8eaed"
-        >
-            <path
-                d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"
-            />
-        </svg>
-        <svg
-            class="moon"
-            xmlns="http://www.w3.org/2000/svg"
-            height="30px"
-            viewBox="0 -960 960 960"
-            width="30px"
-            fill="#e8eaed"
-        >
-            <path
-                d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"
-            />
-        </svg>
-    </button>
-
-    <div class="container nav-menu-popup">
-        <button class="nav-menu-btn-close btn">
-            <svg
-                class="close-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                height="35"
-                viewBox="0 -960 960 960"
-                width="35px"
-                fill="#e8eaed"
-            >
-                <path
-                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-            </svg>
-        </button>
-
-        <div class="menu-content">
-            <ul>
-                <li><a class="nav-link" href="/">Home</a></li>
-                <li><a class="nav-link" href="/about">About</a></li>
-                <li>
-                    <a class="nav-link" href="/annual-budget-allocation"
-                        >Annual Budget Allocation</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="nav-link"
-                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Projects & Events</a
-                </li>
-                <li>
-                    <a
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        class="nav-link"
-                        href="https://forms.gle/H9YozQFgCx9CWN6d8"
-                        >Submit Suggestion</a
-                    >
-                </li>
-
-
-        <% if (!user) { %>
-                <a
-                    href="/signup"
-                    class="ta-c td-n p-1 signup-link-mobile btn-outlined-dark-accent br-40"
-                >
-                    Sign up
-                </a>
-                <a
-                    href="/login"
-                    class="ta-c td-n p-1 login-link-mobile btn-dark-accent br-40"
-                >
-                    Login
-                </a>
-        <% } %>
-            </ul>
-        </div>
-    </div>
-
-    <!--xl screens only-->
-    <ul class="nav-links">
-        <li class="lst-n"><a class="nav-link" href="/home">Home</a></li>
-        <li class="lst-n"><a class="nav-link" href="/about">About</a></li>
-
-        <li class="lst-n">
-            <select class="nav-link-dropdown">
-                <option value="" selected disabled>Services</option>
-                <option value="/annual-budget-allocation">
-                    Annual Budget Allocation
-                </option>
-                <option value="/projects-and-events">Projects & Events</option>
-                <option value="/submit-suggestions">Submit Suggestion</option>
-                <!--<option value="/services.html#suggestions">Submit Suggestions</option>-->
-            </select>
-        </li>
-    </ul>
-
-    <% if (user) { %>
-      <a href="/profile" class="ml-40 br-40 btn-no-hover profile">
-          <img
-              width="35px"
-              class="br-40"
-              src="assets/img/makise.jpg"
-              alt="profile picture"
-          />
-      </a>
-    <% } else { %>
-      <div class="nav-auth-container">
-          <a
-              href="/signup"
-              class="p-1 signup-link btn-outlined-dark-accent br-40"
-          >
-              Sign up
-          </a>
-          <a
-              href="/login"
-              class="p-1 login-link btn-dark-accent br-40"
-          >
-              Login
-          </a>
-      </div>
-    <% } %>
-</nav>
-</file>
-
 <file path="frontend/views/index.ejs">
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -6994,7 +7288,7 @@ nav {
         </section>
 
         <main id="main">
-            <h1 id="hidden skonnect-provides" class="pt-2 ta-c mb-2">
+            <h1 id="skonnect-provides" class="hidden pt-2 ta-c mb-2">
                 What SKonnect Provides
             </h1>
             <section id="features" class="container features">
@@ -7100,6 +7394,10 @@ nav {
 </html>
 </file>
 
+<file path="command list-panes: too many arguments (need at most 0)">
+Ptmux;_Ga=d,d=a,q=2\\
+</file>
+
 <file path="backend/src/models/User.ts">
 import type {
   ResultSetHeader,
@@ -7140,20 +7438,20 @@ export default class User {
 
   // TODO: getAllUsers?
 
-  signupValidation = async (): Promise<{ [key: string]: string } | null> => {
-    const errors: { [key: string]: string } = {};
+  signupValidation = async (): Promise<void> => {
+    const errs: { [key: string]: string } = {};
 
     if (!this.username || this.username.length < 4)
-      errors.username = "Username must be at least 4 characters long.";
+      errs.username = "username must be at least 4 characters long.";
 
     if (!this.email || !emailRegex.test(this.email))
-      errors.email = "Email is not valid.";
+      errs.email = "email is not valid.";
 
     if (!this.password || this.password.length < 8)
-      errors.password = "Password must be at least 8 characters long.";
+      errs.password = "password must be at least 8 characters long.";
 
     if (this._confirmPassword && this._confirmPassword !== this.password)
-      errors.confirmPassword = "Password does not match.";
+      errs.confirmPassword = "Password does not match.";
 
     const [rows] = await pool.execute<RowDataPacket[]>(
       `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS emailExists`,
@@ -7161,7 +7459,7 @@ export default class User {
     );
     const emailExists = rows[0].emailExists;
     if (emailExists) {
-      errors.email = "Email already in use.";
+      errs.email = "email already in use.";
     }
 
     //const [rows] = await pool.execute<RowDataPacket[]>(
@@ -7172,34 +7470,38 @@ export default class User {
     //  errors.email = "Email already in use.";
     //}
 
-    if (Object.keys(errors).length > 0) {
-      //throw new Error(JSON.stringify(errors)); // send errors as JSON
-      return errors;
-    } else {
-      return null;
+    console.log({ errs });
+    if (Object.keys(errs).length > 0) {
+      throw mkCustomError({ status: 400, errs });
     }
-
-    //catch:
-    throw mkCustomError("Signup failed, please try again.", 500);
   };
 
   //SQL CONSTRAINTS: both username and email is unique
   // FLOW: (1) if email is used as a login method, check if valid email using regex and then check if it exists then check if pass is correct, skipping the username validation.
   // (2) if username is used as a login method do the same validation and skip the email validation
   // NOTE, unlike signup which aggregates and sends all err's at once so that the user can instantly know which input is wrong based on contstraints.
-  // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if conforming to contstraints thus the code:
-
-  // WARN: i dont know yet if i should include the isAdmin in setting it to this.isAdmin or should i just send it throuhgh jwt (security reasons)
-  loginValidation = async (): Promise<{ [key: string]: string } | null> => {
+  // login on the other hand in practice is supposed to be a sequential process and more of a checking if exists rather than checking if user is conforming to contstraints. Thus, the code:
+  loginValidation = async (): Promise<void> => {
     if (this.email && this.username)
-      return { err: "Provide only either email or username." };
+      throw mkCustomError({
+        status: 400,
+        msg: "provide only either email or username.",
+      });
+    //return { err: "Provide only either email or username." };
 
-    console.log("login info:", this.email, this.username);
+    //INFO: unlike signup, login's logic and especially considering ux, sends
+    // only one err at a time. So this will only send a string unlike the signup
+    // that sends an json obj.
 
     //INFO: if user used an email to login
     if (this.email && !this.username) {
       if (!emailRegex.test(this.email))
-        return { notValid: "Email is not valid." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            email: "email is not valid.",
+          },
+        });
 
       const [rows] = await pool.execute<RowDataPacket[]>(
         `SELECT * FROM users WHERE email = ?`,
@@ -7208,19 +7510,33 @@ export default class User {
       console.log({ rows });
 
       if (rows.length === 0) {
-        return { emailNotFound: "Email not found." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            email: "email does not exist.",
+          },
+        });
       }
 
       const { id, username, password } = rows[0];
 
+      if (!this.password || !password) {
+        throw new Error("Password or hash missing");
+      }
+
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
+      if (!isMatch) {
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            password: "wrong password, please try again.",
+          },
+        });
+      }
 
       // will be sent to the client
       this.id = id;
       this.username = username;
-
-      return null;
     }
 
     //INFO: if user used a username to login
@@ -7229,16 +7545,32 @@ export default class User {
         `SELECT * FROM users WHERE username = ?`,
         [this.username],
       );
-      //console.log({ rows });
+      console.log({ rows });
 
       if (rows.length === 0) {
-        return { userNotFound: "Username not found." };
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            username: "username does not exist.",
+          },
+        });
       }
 
       const { id, username, email, password, isAdmin } = rows[0];
 
       const isMatch = await bcrypt.compare(this.password, password);
-      if (!isMatch) return { wrongPassword: "Wrong Password, Try again." };
+      console.log(isMatch);
+
+      //if (!isMatch) console.error("Wrong Password, Try again.");
+      if (!isMatch) {
+        console.log("wrong pw");
+        throw mkCustomError({
+          status: 400,
+          errs: {
+            password: "wrong password, please try again.",
+          },
+        });
+      }
 
       // will be sent to the client
       //console.log("LOGIN VALIDATION INFO :", { id, username, email, isAdmin });
@@ -7247,11 +7579,8 @@ export default class User {
       this.email = email;
       this.isAdmin = isAdmin;
 
-      return null;
+      //return null;
     }
-
-    //catch block
-    throw mkCustomError("Login failed, please try again.", 500);
   };
 
   saveDB = async () => {
@@ -7272,10 +7601,10 @@ export default class User {
       return;
     }
 
-    throw mkCustomError(
-      "An error occurred while saving the user to the database.",
-      500,
-    );
+    throw mkCustomError({
+      status: 500,
+      msg: "An error occurred while saving the user to the database.",
+    });
   };
 
   static findById = async (id: number) => {
@@ -7310,15 +7639,13 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   let isAdmin = false;
   if (adminKey) {
     if (adminKey !== process.env.ADMIN_KEY) {
-      throw mkCustomError("Invalid admin key.", 401);
+      throw mkCustomError({ status: 401, msg: "Invalid admin key." });
     }
     isAdmin = true;
   }
 
   const user = new User(username, email, password, confirmPassword, isAdmin);
-  const errors = await user.signupValidation();
-  if (errors) throw mkCustomError(errors, 400);
-
+  await user.signupValidation();
   await user.saveDB();
 
   //user has id from sql auto increment
@@ -7367,12 +7694,13 @@ const signup = async (req: Request, res: Response): Promise<void> => {
 };
 
 const login = async (req: Request, res: Response) => {
+  console.log("Received login request:", req.body);
+
   const { username = null, email = null, password } = req.body;
 
   const user = new User(username, email, password);
 
-  const err = await user.loginValidation();
-  if (err) throw mkCustomError(err, 400);
+  await user.loginValidation();
 
   const token = jwt.sign(
     {
@@ -7393,22 +7721,7 @@ const login = async (req: Request, res: Response) => {
     password: user.password,
     token,
   });
-  // attaching username to sesssion
-  //req.session.user = {
-  //  id: user.id,
-  //  username: user.username,
-  //};
-  //// saving it
-  //await new Promise<void>((resolve, _reject) => {
-  //  req.session.save((err) => {
-  //    if (err) throw mkCustomError("Session save failed.", 500);
-  //    resolve();
-  //  });
-  //  console.log("Session saved successfully:", req.session);
-  //});
-  //console.log("SESSION MIDDLEWARE - Session data:", req.session);
-  //console.log("SESSION MIDDLEWARE - Local user:", res.locals.user);
-  //
+
   res.cookie("authorization", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -7427,6 +7740,114 @@ const login = async (req: Request, res: Response) => {
 export { signup, login };
 </file>
 
+<file path="backend/src/app.ts">
+import "express-async-errors";
+import process from "process";
+import path from "path";
+import fs from "fs";
+
+import express from "express";
+import morgan from "morgan";
+import session from "express-session";
+
+import cookieParser from "cookie-parser";
+import connectDB from "./db/connect.ts";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+const app = express();
+const port =
+  process.env.NODE_ENV === "development"
+    ? 3000
+    : Number(process.env.PORT) || 3000;
+//const dist = path.join(process.cwd(), "frontend/dist");
+
+// INFO : development-mode only middleware and will be removed on prod
+
+import webpackDevMiddleware from "./middlewares/devModeMiddleware.ts";
+import livereload from "livereload";
+import connectLivereload from "connect-livereload";
+if (process.env.NODE_ENV !== "production") {
+  const lrserver = livereload.createServer();
+  lrserver.watch(path.join(process.cwd(), "frontend/dist"));
+  lrserver.watch(path.join(process.cwd(), "frontend/public"));
+
+  lrserver.server.once("connection", () => {
+    setTimeout(() => {
+      lrserver.refresh("frontend/");
+    }, 5);
+  });
+  app.use(connectLivereload());
+
+  await webpackDevMiddleware(app);
+}
+
+// routers
+import auth from "./routes/auth.ts";
+import pages from "./routes/pages.ts";
+import user from "./routes/user.ts";
+
+// middlewares
+import { notFound } from "./middlewares/notFound.ts";
+import { errorHandler } from "./middlewares/errorHandler.ts";
+//import {
+//  sessionMiddleware,
+//  attachSessionData,
+//} from "./middlewares/sessionMiddleware.ts";
+//
+//if (process.env.NODE_ENV === "development") {
+//  app.use((_req, res, next) => {
+//    res.set("Cache-Control", "no-store");
+//    next();
+//  });
+//}
+
+// NOTE : src attr path's given to elems from
+// ejs files should be relative to this publicDir
+
+app.use(express.static(path.join(process.cwd(), "frontend/public")));
+app.use(express.static(path.resolve(process.cwd(), "frontend/dist")));
+app.use(express.json());
+app.use(cookieParser(process.env.JWT_SECRET));
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+//app.set("view cache", false);
+app.set("view options", { rmWhitespace: true });
+app.set("views", path.join(process.cwd(), "frontend/views"));
+app.use(morgan("dev"));
+
+//app.use(sessionMiddleware);
+//app.use(attachSessionData);
+
+//app.use((_req, res, next) => {
+//  res.locals.env = process.env.NODE_ENV;
+//  console.log("sending locals:", res.locals.env);
+//  next();
+//});
+
+// routes
+app.use("/", pages);
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/user", user);
+
+//errors
+app.use(notFound);
+app.use(errorHandler);
+
+const server = async () => {
+  try {
+    await connectDB();
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Server is running on port ${port}....`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+server();
+</file>
+
 <file path="frontend/configs/webpack.common.js">
 import path from "path";
 import webpack from "webpack";
@@ -7437,7 +7858,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV;
 console.log("webpack log: dev mode???", isDevelopment);
 
 const config = {
@@ -7448,16 +7869,13 @@ const config = {
   //  "/__webpack_hmr",
   //mode: "development",
   entry: {
-    //app: [
-    //  //...(isDevelopment
-    //  //  ? [
-    //  //      "webpack-hot-middleware/client?reload=true&timeout=5",
-    //  //      //"webpack/hot/dev-server",
-    //  //    ]
-    //  //  : []),
-    //  "./frontend/src/webpack-app-entry.ts",
-    //],
-    app: ["./frontend/src/webpack-app-entry.ts"],
+    app: [
+      ...(isDevelopment
+        ? ["webpack-hot-middleware/client?reload=true&timeout=5"]
+        : []),
+      "./frontend/src/webpack-app-entry.ts",
+    ],
+    //app: ["./frontend/src/webpack-app-entry.ts"],
     landing: ["./frontend/src/ts/pages/landing/landingEntry.ts"],
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
@@ -7489,8 +7907,12 @@ const config = {
 
   plugins: [
     ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(
+        process.env.NODE_ENV || "development",
+      ),
+    }),
     //new webpack.HotModuleReplacementPlugin(),
-    //
     new MiniCssExtractPlugin({
       filename: "[name].bundled.css",
     }),
@@ -7606,114 +8028,6 @@ const config = {
 export default config;
 </file>
 
-<file path="backend/src/app.ts">
-import "express-async-errors";
-import process from "process";
-import path from "path";
-import fs from "fs";
-
-import express from "express";
-import morgan from "morgan";
-import session from "express-session";
-
-import cookieParser from "cookie-parser";
-import connectDB from "./db/connect.ts";
-
-import dotenv from "dotenv";
-dotenv.config();
-
-const app = express();
-const port =
-  process.env.NODE_ENV === "development"
-    ? 3000
-    : Number(process.env.PORT) || 3000;
-//const dist = path.join(process.cwd(), "frontend/dist");
-
-// INFO : development-mode only middleware and will be removed on prod
-
-import webpackDevMiddleware from "./middlewares/devModeMiddleware.ts";
-import livereload from "livereload";
-import connectLivereload from "connect-livereload";
-if (process.env.NODE_ENV !== "production") {
-  const lrserver = livereload.createServer();
-  lrserver.watch(path.join(process.cwd(), "frontend/dist"));
-  lrserver.watch(path.join(process.cwd(), "frontend/public"));
-
-  lrserver.server.once("connection", () => {
-    setTimeout(() => {
-      lrserver.refresh("frontend/");
-    }, 5);
-  });
-  app.use(connectLivereload());
-
-  await webpackDevMiddleware(app);
-}
-
-// routers
-import auth from "./routes/auth.ts";
-import pages from "./routes/pages.ts";
-import user from "./routes/user.ts";
-
-// middlewares
-import { notFound } from "./middlewares/notFound.ts";
-import { errorHandler } from "./middlewares/errorHandler.ts";
-//import {
-//  sessionMiddleware,
-//  attachSessionData,
-//} from "./middlewares/sessionMiddleware.ts";
-//
-//if (process.env.NODE_ENV === "development") {
-//  app.use((_req, res, next) => {
-//    res.set("Cache-Control", "no-store");
-//    next();
-//  });
-//}
-
-// NOTE : src attr path's given to elems from
-// ejs files should be relative to this publicDir
-
-app.use(express.static(path.join(process.cwd(), "frontend/public")));
-app.use(express.static(path.resolve(process.cwd(), "frontend/dist")));
-app.use(express.json());
-app.use(cookieParser(process.env.JWT_SECRET));
-app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-//app.set("view cache", false);
-app.set("view options", { rmWhitespace: true });
-app.set("views", path.join(process.cwd(), "frontend/views"));
-app.use(morgan("dev"));
-
-//app.use(sessionMiddleware);
-//app.use(attachSessionData);
-
-//app.use((_req, res, next) => {
-//  res.locals.env = process.env.NODE_ENV;
-//  console.log("sending locals:", res.locals.env);
-//  next();
-//});
-
-// routes
-app.use("/", pages);
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/user", user);
-
-//errors
-app.use(notFound);
-app.use(errorHandler);
-
-const server = async () => {
-  try {
-    await connectDB();
-    app.listen(port, "0.0.0.0", () => {
-      console.log(`Server is running on port ${port}....`);
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
-server();
-</file>
-
 <file path="package.json">
 {
   "name": "info-mgmmt-project",
@@ -7722,12 +8036,11 @@ server();
   "description": "",
   "main": "",
   "scripts": {
-    "dev": "nodemon --config ./backend/configs/nodemon.json",
+    "build": "NODE_ENV=production webpack --mode production --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
+    "start": "NODE_ENV=production nodemon backend/dist/app.js",
+    "dev": "NODE_ENV=development nodemon --config ./backend/configs/nodemon.json",
     "typecheck": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json",
-    "build": "webpack --mode production --config frontend/configs/webpack.prod.js && rm -rf backend/dist && babel backend/src -d backend/dist --extensions .ts --config-file ./backend/configs/babel.config.mjs",
-    "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build",
-    "start": "node backend/dist/app.js",
-    "tsx": "tsx watch --tsconfig ./backend/tsconfig.json --exclude \"./frontend/public/**/*\" --exclude \"./backend/dist/**/*\" --include \"./backend/src/**/*\" --include \"./backend/configs/**/*\" backend/src/app.ts"
+    "build:ci": "tsc -p backend/configs/tsconfig.json && tsc -p frontend/configs/tsconfig.json && npm run build"
   },
   "keywords": [],
   "author": "",

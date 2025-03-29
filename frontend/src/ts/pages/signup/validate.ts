@@ -5,7 +5,7 @@ import type { SignupData } from "./signupUser.ts";
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
   if (process.env.NODE_ENV !== "production") {
-    autoFillForm();
+    //autoFillForm();
   }
 
   const form = document.getElementById("signup-form") as HTMLFormElement | null;

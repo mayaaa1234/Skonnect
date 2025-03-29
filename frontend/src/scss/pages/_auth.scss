@@ -62,21 +62,22 @@ body[data-page="signup"] {
 
     .input-box {
       position: relative;
-      // border-bottom: 1px solid white;
+      // border: 1px solid white;
       border-bottom: 1px solid rgb(255, 255, 255, 0.6);
       [data-theme="light"] {
         border-bottom: black !important;
       }
       width: min(90%, $bar-width);
-      margin: 25px 0;
-      @include mobile {
-        margin: 38px 0 25px 0 !important;
-      }
+      // margin: 25px 0;
+
+      // @include mobile {
+      margin: 38px 0 25px 0 !important;
+      // }
 
       label {
         position: absolute;
         left: 5px;
-        top: 50%;
+        top: 30px;
         transform: translateY(-50%);
         pointer-events: none;
       }
@@ -99,7 +100,7 @@ body[data-page="signup"] {
         // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
         // NOTE: input must have placeholder attr even if its empty for this to work
         &:not(:placeholder-shown) ~ label {
-          top: -5px;
+          top: -5px !important;
         }
       }
 

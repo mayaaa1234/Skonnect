@@ -59,4 +59,4 @@ body:not([data-page="signup"], [data-page="login"]) {
 
 @include page-loader("signup", "form");
 @include page-loader("login", "form");
-@include page-loader("home", ".card", ".mySlides", ".hero-top", "nav");
+@include page-loader("home", ".card", ".mySlides", ".hero-top");

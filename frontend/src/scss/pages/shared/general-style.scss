@@ -33,7 +33,7 @@ body:not([data-page="signup"], [data-page="login"]) {
         );
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
-        z-index: 10;
+        z-index: 11;
       }
     }
   }

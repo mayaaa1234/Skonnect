@@ -53,12 +53,16 @@ export default class User {
       errs.confirmPassword = "Password does not match.";
 
     const [rows] = await pool.execute<RowDataPacket[]>(
-      `SELECT EXISTS (SELECT 1 FROM users WHERE email = ?) AS emailExists`,
-      [this.email],
+      `SELECT email, username FROM users WHERE email = ? OR username = ?`,
+      [this.email, this.username],
     );
-    const emailExists = rows[0].emailExists;
-    if (emailExists) {
-      errs.email = "email already in use.";
+
+    if (rows.length !== 0) {
+      //console.log({ rows });
+      const { email, username } = rows[0];
+      if (email === this.email) errs.email = "email is already taken.";
+      if (username === this.username)
+        errs.username = "username is already taken.";
     }
 
     //const [rows] = await pool.execute<RowDataPacket[]>(

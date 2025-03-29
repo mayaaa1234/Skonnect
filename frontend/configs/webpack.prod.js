@@ -1,8 +1,8 @@
 import { merge } from "webpack-merge";
-import subProd from "./webpack.subProd.js";
+import common from "./webpack.common.js";
 //import TerserPlugin from "terser-webpack-plugin";
 
-export default merge(subProd, {
+export default merge(common, {
   mode: "production",
   optimization: {
     minimize: true,

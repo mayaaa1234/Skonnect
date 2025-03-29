@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(numberText[i].innerText);
   }
 });
+
 //AUTOMATIC
 //let slideIndex = 0;
 //showSlides();
@@ -84,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //  for (i = 0; i < slides.length; i++) {
 //    slides[i].style.display = "none";
 //  }
-//  slideIndex++;
+//  //slideIndex++;
 //  if (slideIndex > slides.length) {slideIndex = 1}
 //  slides[slideIndex-1].style.display = "block";
 //  setTimeout(showSlides, 2000); // Change image every 2 seconds
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //});
 
 //MULTIPLE SLIDESHOW
-//let slideIndex = [1, 1];
+//const slideIndex = [1, 1];
 ///* Class the members of each slideshow group with different CSS classes */
 //const slideId = ["slides1", "slides2"];
 //showSlides(1, 0);
@@ -116,11 +117,11 @@ document.addEventListener("DOMContentLoaded", () => {
 //  }
 //  x[slideIndex[no] - 1].style.display = "block";
 //}
-////CODE FOR MULTIPLE:
+
+// MULTIPLE SLIDESHOW SETUP
 //export let manualResizeTrigger = false;
 //
 //document.addEventListener("DOMContentLoaded", () => {
-//  // MULTIPLE SLIDESHOW SETUP
 //  // Define an array to store the current slide index for each slideshow group.
 //  const slideIndices: number[] = [1, 1];
 //

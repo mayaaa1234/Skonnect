@@ -7,18 +7,34 @@ body[data-page="home"] {
     background-color: var(--tertiary);
   }
 
-  // all captions on the page
-  .caption {
-    font-weight: bold;
-    padding-left: 7px;
+  %titles {
     padding-bottom: 5px;
+    font-weight: bold;
+  }
 
+  .services-txt {
+    @extend %titles;
     @include xs {
       font-size: $font-size-lg;
     }
 
     @include xl {
       font-size: $font-size-xl;
+      text-align: center;
+    }
+  }
+
+  // all slideshow captions on the page
+  .caption {
+    @extend %titles;
+    padding-left: 7px;
+
+    @include xs {
+      font-size: $font-size-md;
+    }
+
+    @include xl {
+      font-size: $font-size-lg;
       text-align: center;
     }
   }

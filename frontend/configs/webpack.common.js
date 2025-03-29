@@ -20,10 +20,7 @@ const config = {
   entry: {
     app: [
       ...(isDevelopment
-        ? [
-            "webpack-hot-middleware/client?reload=true&timeout=5",
-            //"webpack/hot/dev-server",
-          ]
+        ? ["webpack-hot-middleware/client?reload=true&timeout=5"]
         : []),
       "./frontend/src/webpack-app-entry.ts",
     ],
@@ -59,7 +56,6 @@ const config = {
 
   plugins: [
     ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
-
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(
         process.env.NODE_ENV || "development",

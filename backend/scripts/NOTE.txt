@@ -7,7 +7,7 @@ INFO:
   anything else preapred statements is more secure
     see: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
 
-run a specific script with:
-  ❯ npx ts-node --transpileOnly backend/src/db/tables/foo.ts
+init db tables with the entry file:
+❯ npx tsx --tsconfig ./backend/configs/tsconfig.json backend/scripts/initTables.ts
 
-// install ts-node if not installed yet
+// install tsx if not installed yet

@@ -14,8 +14,9 @@
       "../../node_modules/@types",
     ],
     "types": [
-      "node"
-    ], /* Specify type package names to be included without being referenced in a source file. */
+      "node",
+      "../types/serverError.d.ts"
+    ],
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "sourceMap": true, /* Create source map files for emitted JavaScript files. */

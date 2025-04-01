@@ -44,21 +44,11 @@ if (process.env.NODE_ENV !== "production") {
 import auth from "./routes/auth.ts";
 import pages from "./routes/pages.ts";
 import user from "./routes/user.ts";
+import slides from "./routes/slides.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
-//import {
-//  sessionMiddleware,
-//  attachSessionData,
-//} from "./middlewares/sessionMiddleware.ts";
-//
-//if (process.env.NODE_ENV === "development") {
-//  app.use((_req, res, next) => {
-//    res.set("Cache-Control", "no-store");
-//    next();
-//  });
-//}
 
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir
@@ -87,6 +77,7 @@ app.use(morgan("dev"));
 app.use("/", pages);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/user", user);
+app.use("/api/v1/slides", slides);
 
 //errors
 app.use(notFound);

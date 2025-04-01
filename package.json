@@ -31,6 +31,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.13.9",
     "@types/webpack-dev-middleware": "^5.0.2",
     "@types/webpack-hot-middleware": "^2.25.9",
@@ -79,6 +80,7 @@
     "svg-url-loader": "^8.0.0",
     "terser-webpack-plugin": "^5.3.14",
     "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.22.0",
@@ -94,7 +96,9 @@
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "express-session": "^1.18.1",
+    "image-type": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
     "mysql2": "^3.12.0"
   }
 }

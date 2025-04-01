@@ -15,6 +15,7 @@ const connectDB = () => {
       user: process.env.SQL_USER,
       password: process.env.SQL_PASS,
       database: process.env.SQL_DB,
+      multipleStatements: true,
     });
   } else {
     return mysql.createConnection(process.env.MYSQL_PUBLIC_URL as string);

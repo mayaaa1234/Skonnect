@@ -12,23 +12,25 @@ if (process.env.NODE_ENV === "development") {
     password: process.env.SQL_PASS,
     database: process.env.SQL_DB,
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 15,
     maxIdle: 10, // Maximum number of idle connections
     idleTimeout: 60000, // 60kms = 1minute
     queueLimit: 0, // unli
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
+    multipleStatements: true,
   });
 } else {
   pool = mysql.createPool({
     uri: process.env.MYSQL_PUBLIC_URL as string,
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 15,
     maxIdle: 10, // Maximum number of idle connections
     idleTimeout: 60000, // 60kms = 1minute
     queueLimit: 0, // unli
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
+    multipleStatements: true,
   });
 }
 

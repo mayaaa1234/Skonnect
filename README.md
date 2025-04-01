@@ -5,5 +5,5 @@
 #### dev setup:
 
 ```bash
-npm install && npm audit fix && npm start
+npm install && npm audit fix && npm run dev
 ```

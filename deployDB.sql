@@ -65,6 +65,32 @@ LOCK TABLES `department` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `slideshows`
+--
+
+DROP TABLE IF EXISTS `slideshows`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `slideshows` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `images` text NOT NULL,
+  `caption` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `slideshows`
+--
+
+LOCK TABLES `slideshows` WRITE;
+/*!40000 ALTER TABLE `slideshows` DISABLE KEYS */;
+INSERT INTO `slideshows` VALUES (1,'Clean-up Drive','[\"sk-data/clean-1.webp\",\"sk-data/clean-2.webp\",\"sk-data/clean-3.webp\"]','Our community clean-up event!');
+/*!40000 ALTER TABLE `slideshows` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -83,7 +109,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `password` (`password`),
   CONSTRAINT `users_chk_1` CHECK ((char_length(`username`) >= 4)),
   CONSTRAINT `users_chk_2` CHECK ((char_length(`password`) >= 8))
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +118,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'maya','maya123@gmail.com','$2b$10$Il2t.e4rQitAPhlbMEtNJeNaWKDXcsSMDOf6NvgsCxGf03Vc0umZi',1);
+INSERT INTO `users` VALUES (1,'maya','maya123@gmail.com','$2b$10$N.5gU1B64HuAtcjEsJ6ANOMdxUCrEQ8RzLI8DPM8bCzUhL9kHfcb.',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -105,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-24 15:39:38
+-- Dump completed on 2025-03-30 12:07:43

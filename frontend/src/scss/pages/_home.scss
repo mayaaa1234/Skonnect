@@ -201,7 +201,7 @@ body[data-page="home"] {
       flex-basis: 600px;
     }
 
-    .slideshow-container {
+    .slides-container {
       position: relative;
 
       img {
@@ -210,7 +210,7 @@ body[data-page="home"] {
     }
 
     /* Hide the images by default */
-    .mySlides {
+    .slides {
       display: none;
     }
 

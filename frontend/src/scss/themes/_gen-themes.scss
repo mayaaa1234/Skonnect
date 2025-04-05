@@ -73,7 +73,7 @@ body {
 }
 
 .gradient-border-1 {
-  border: 5px solid transparent; /* Transparent border to preserve space */
+  border: 2px solid transparent; /* Transparent border to preserve space */
   border-image: linear-gradient(
       to right,
       rgb(0, 193, 174),
@@ -81,6 +81,7 @@ body {
       rgb(0, 108, 166)
     )
     1;
+  // border-radius: 40px;
 }
 
 // .gradient-border::before {

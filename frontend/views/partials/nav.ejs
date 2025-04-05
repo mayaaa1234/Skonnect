@@ -15,7 +15,7 @@
     </button>
 
     <a href="/" class="logo-container td-n">
-        <img class="br logo" width="30px" src="assets/img/beru.png" alt="" />
+        <img class="br logo" width="30px" src="assets/img/SKonnectLogo.png" alt="" />
         <h2 class="logo-name">SKonnect</h2>
     </a>
 
@@ -129,12 +129,22 @@
 
     <% if (user) { %>
       <a href="/profile" class="ml-40 br-40 btn-no-hover profile">
+
+    <% if (user.isAdmin) { %>
           <img
               width="35px"
               class="br-40"
               src="assets/img/makise.jpg"
               alt="profile picture"
           />
+    <% } else { %>
+          <img
+              width="35px"
+              class="br-40"
+              src="assets/img/default-profile1.png"
+              alt="profile picture"
+          />
+    <%}%>
       </a>
     <% } else { %>
       <div class="nav-auth-container">

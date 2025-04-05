@@ -1,5 +1,7 @@
 import { notifyGradient } from "../../utils/showNotif.ts";
-import { manualResizeTrigger } from "./slideShow.ts";
+// import { manualResizeTrigger } from "./slideShow/slidesDOM.ts";
+
+const manualResizeTrigger = true; // WARN: temporary to flail err
 
 // notif message
 const signupMsg = sessionStorage.getItem("signupSuccessNotif");
@@ -17,7 +19,7 @@ const observer = new IntersectionObserver(
   (entries, _obs) => {
     entries.forEach((entry) => {
       // dont trigger animation if slideShow event is hit
-      console.log("resize trigger: ", manualResizeTrigger);
+      // console.log("resize trigger: ", manualResizeTrigger);
       if (manualResizeTrigger) {
         // removing the hidden class effectively
         // removing it too from observed elem

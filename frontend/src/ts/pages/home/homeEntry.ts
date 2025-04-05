@@ -1,3 +1,5 @@
-//import "./events.ts";
-//import "./slideShow/slides.ts";
-//import "./slideShow/slideApi.ts";
+import "./onLoadEvents.ts";
+import "./slideShow/";
+// import "./slideShow/fetchSlides.ts";
+// import "./slideShow/slideEvents.ts";
+// import "./slideShow/slidesDOM.ts";

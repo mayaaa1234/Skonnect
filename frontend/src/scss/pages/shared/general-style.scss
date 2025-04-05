@@ -27,13 +27,13 @@ body:not([data-page="signup"], [data-page="login"]) {
         bottom: 0;
         background: linear-gradient(
           90deg,
-          var(--secondary) 25%,
+          var(--neutral) 25%,
           var(--primary) 50%,
-          var(--secondary) 75%
+          var(--neutral) 75%
         );
         background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-        z-index: 11;
+        animation: shimmer 1.5s infinite linear;
+        z-index: 10;
       }
     }
   }
@@ -51,7 +51,10 @@ body:not([data-page="signup"], [data-page="login"]) {
   }
 
   @keyframes shimmer {
-    to {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
       background-position: -200% 0;
     }
   }
@@ -59,4 +62,29 @@ body:not([data-page="signup"], [data-page="login"]) {
 
 @include page-loader("signup", "form");
 @include page-loader("login", "form");
-@include page-loader("home", ".card", ".mySlides");
+@include page-loader("home", ".card");
+
+.skeleton {
+  animation: shimmer-1 1.5s infinite linear;
+  // background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--neutral) 25%,
+    var(--primary) 50%,
+    var(--neutral) 75%
+  );
+  display: block;
+  background-size: 200% 100%;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes shimmer-1 {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

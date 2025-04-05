@@ -150,81 +150,69 @@
                 Projects & Events
             </h2>
 
-            <div class="clean-up">
-                <p class="hidden caption">Clean-up drive</p>
+            <% if (user.isAdmin) { %>
+            <button class="btn-dark-accent p-1 br-40" id="upload-trigger-btn">
+                Add Slideshow
+            </button>
 
-                <div class="slideshow-container">
-                    <div class="mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-1.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
+            <div class="upload-popup-overlay" id="upload-popup-overlay">
+                <div class="upload-popup">
+                    <div class="popup-header">
+                        <h2>Upload Images</h2>
+                        <p>
+                            NOTE: <br />
+                            supported files: png, jpg, jpeg, webp<br />
+                            recommended 6-8 images only for storage
+                            considerations
+                        </p>
+                        <!-- <button id="close-upload-popup">&times;</button> -->
                     </div>
 
-                    <div class="mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-2.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Two</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-3.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Three</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-5.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext"></div>
-                        <img
-                            src="sk-data/clean-6.webp"
-                            class="br-20"
-                            style="height: 600px; width: 100%"
-                        />
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <!-- Next and previous buttons -->
-                    <a class="prev">&#10094;</a>
-                    <a class="next">&#10095;</a>
-                </div>
-                <br />
-                <!-- The dots/circles -->
-                <div style="text-align: center">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+                    <form id="upload-form">
+                        <div id="drop-zone">
+                            <p>Drop the file here or click to upload</p>
+                            <input
+                                type="file"
+                                id="image-upload"
+                                accept=".jpg,.jpeg,.png,.webp"
+                                multiple
+                                required
+                            />
+                            <div class="img-preview-container"></div>
+                        </div>
+                        <button type="submit">Upload</button>
+                    </form>
                 </div>
             </div>
+            <% } %>
 
-            <div class="dummy">
-                <div class="bd-w h-600px"></div>
-            </div>
+            <div class="slideshow-container container">
+                <!-- SERIES OF SLIDESHOWS WILL BE  --->
 
-            <div class="dummy">
-                <div class="bd-w h-600px"></div>
+                <!-- DYNAMICALLY INSERTED HERE -->
+                <!-- <div class="slideshow" data-slideshow-id=""> -->
+                <!--   <p class="caption"></p> -->
+                <!--   <div class="slides-container"> -->
+                <!--     <div -->
+                <!--       class="slides fade" -->
+                <!--       data-slide-id="" -->
+                <!--       data-slide-number="" -->
+                <!--       style="display: none;" -->
+                <!--     > -->
+                <!--       <div class="numbertext"></div> -->
+                <!--       <img -->
+                <!--         src="" -->
+                <!--         class="br-20" -->
+                <!--         style="height: 600px; width: 600px" -->
+                <!--       /> -->
+                <!--       <div class="text">Caption Text</div> -->
+                <!--     </div> -->
+                <!--     <a class="prev" data-slideshow-id="">&#10094;</a> -->
+                <!--     <a class="next" data-slideshow-id="">&#10095;</a> -->
+                <!--   </div> -->
+                <!--   <br /> -->
+                <!--   <div class="dots-container" style="text-align: center"></div> -->
+                <!-- </div> -->
             </div>
         </section>
 

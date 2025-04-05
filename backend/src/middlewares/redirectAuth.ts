@@ -27,7 +27,7 @@ const redirectAuth = () => {
         //throw mkCustomError("Invalid token", 401);
       }
     }
-    res.locals.user = user;
+    res.locals.user = user; // sent to ejs
 
     // Define route categories
     const authPages = ["/signup", "/login"];

@@ -61,6 +61,7 @@
     "handlebars-loader": "^1.7.3",
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.0",
+    "lit-html": "^3.2.1",
     "livereload": "^0.9.3",
     "mini-css-extract-plugin": "^2.9.2",
     "morgan": "^1.10.0",

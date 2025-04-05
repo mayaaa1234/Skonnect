@@ -11,6 +11,8 @@ import imageType from "image-type";
 export async function uploadSlideshow(req: Request, res: Response) {
   const { caption } = req.body;
 
+  // TODO: check if caption already exist in the db
+
   if (!caption) {
     throw mkCustomError({ status: 400, msg: "Missing caption" });
   }
@@ -93,7 +95,7 @@ export async function updateSlideshow(req: Request, res: Response) {
 // and an api reference to then be called (@ getSlideshowImage) to actually get the img
 
 export async function getAllSlideshows(_req: Request, res: Response) {
-  // first get all slideshow metadata
+  // get all slideshow metadata
   const [slideshows] = await pool.execute<RowDataPacket[]>(`
       SELECT id, caption FROM slideshows
       ORDER BY id DESC
@@ -115,11 +117,15 @@ export async function getAllSlideshows(_req: Request, res: Response) {
       .filter((img) => img.slideshow_id === slideshow.id)
       .map((img) => ({
         id: img.id,
-        url: `/api/slideshows/images/${img.id}`, // frontend will fetch this
+        url: `/api/v1/slides/images/${img.id}`, // frontend will fetch this
       })),
   }));
 
-  console.log({ response });
+  // response.forEach((slideshow) => {
+  //   console.log(`Slideshow ID: ${slideshow.id}`);
+  //   console.log("Images:", slideshow.images); // Logs the images array
+  // });
+  // console.log({ response });
   res.json(response);
 }
 

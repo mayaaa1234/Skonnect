@@ -15,8 +15,14 @@
     ],
     "types": [
       "node",
-      "../types/serverError.d.ts"
+      // "../types/serverError.d.ts"
     ],
+    "baseUrl": "./",
+    "paths": {
+      "@ts/*": [
+        "frontend/src/ts/*"
+      ]
+    },
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "sourceMap": true, /* Create source map files for emitted JavaScript files. */

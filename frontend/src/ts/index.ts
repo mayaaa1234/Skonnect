@@ -3,6 +3,7 @@
 // states
 import "./states/theme.ts";
 import "./states/pageLoaded.ts";
+import "./states/authInput.ts";
 
 // admin
 import "./admin/upload/image-preview.ts";

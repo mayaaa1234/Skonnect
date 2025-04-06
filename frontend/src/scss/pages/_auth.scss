@@ -90,6 +90,7 @@ body[data-page="signup"] {
         top: 50%;
         transform: translateY(-50%);
         pointer-events: none;
+        transition: all 0.2s ease-in-out;
       }
 
       input {
@@ -110,8 +111,16 @@ body[data-page="signup"] {
         // NOTE: input must have placeholder attr even if its empty for this to work
         &:focus ~ label,
         &:not(:placeholder-shown) ~ label {
+          // &:focus ~ label {
           top: -5px;
         }
+
+        // @include mobile {
+        //   &:focus ~ label,
+        //   &:not(:placeholder-shown) ~ label {
+        //     top: -5px;
+        //   }
+        // }
       }
 
       .visib-pass-btn {

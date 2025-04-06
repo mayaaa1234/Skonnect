@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 
 import express from "express";
+import favicon from "serve-favicon";
 import morgan from "morgan";
 import session from "express-session";
 
@@ -33,7 +34,7 @@ if (process.env.NODE_ENV !== "production") {
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       lrserver.refresh("frontend/");
-    }, 50);
+    }, 5);
   });
   app.use(connectLivereload());
 
@@ -53,6 +54,11 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir
 
+app.use(
+  favicon(
+    path.join(process.cwd(), "frontend/public/assets/favicon/favicon.ico"),
+  ),
+);
 app.use(express.static(path.join(process.cwd(), "frontend/public")));
 app.use(express.static(path.resolve(process.cwd(), "frontend/dist")));
 app.use(express.json());

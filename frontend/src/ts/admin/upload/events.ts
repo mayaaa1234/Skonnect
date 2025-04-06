@@ -4,13 +4,13 @@ const dropZone = document.getElementById("drop-zone") as HTMLElement;
 const nav = document.querySelector("nav")!;
 
 openBtn?.addEventListener("click", () => {
-  overlay.classList.add("show");
+  overlay?.classList.add("show");
 });
 
 document.addEventListener("click", (e) => {
-  if (overlay.matches(".show")) {
+  if (overlay?.matches(".show")) {
     if (e.target === overlay || e.target === nav) {
-      overlay.classList.remove("show");
+      overlay?.classList.remove("show");
     }
   }
 });

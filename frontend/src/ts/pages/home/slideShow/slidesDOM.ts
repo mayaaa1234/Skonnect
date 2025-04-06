@@ -57,7 +57,7 @@ export default async function loadSlideshows(): Promise<void> {
                 <img
                   src="${img.url}"
                   class="br-20"
-                  style="height: 600px; width: 600px"
+                  style="height: 600px; width: 100%"
                 />
               </div>
             `;

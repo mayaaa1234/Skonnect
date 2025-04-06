@@ -7,10 +7,10 @@ function initSlideSkeletons() {
   t.innerHTML = `
   <div class="slideshow" style="overflow: hidden" data-slideshow-id="">
     <p class="caption"></p>
-    <div class="slides-container skeleton" style="border-radius: 20px; height: 600px; width: 600px;"
+    <div class="skeleton" style="border-radius: 20px; height: 600px; width: 600px;"
       >
-      <a class="prev" data-slideshow-id="">&#10094;</a>
-      <a class="next" data-slideshow-id="">&#10095;</a>
+      <!-- <a class="prev" data-slideshow-id="">&#10094;</a> -->
+      <!-- <a class="next" data-slideshow-id="">&#10095;</a> -->
     </div>
     <br />
     <div class="dots-container" style="text-align: center">
@@ -39,7 +39,7 @@ export default async function loadSlideshows(): Promise<void> {
     if (!slideshows[0]) {
       container.innerHTML = `
       <div>Empty Slideshows...</div>
-`;
+      `;
     }
 
     const slidesDOM = slideshows

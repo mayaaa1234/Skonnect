@@ -7,7 +7,8 @@ body[data-page="login"],
 body[data-page="signup"] {
   height: 100vh;
   display: flex;
-  align-items: center;
+  // align-items: center;
+  justify-content: flex-start !important;
 
   @include mobile {
     height: 100dvh !important;
@@ -16,16 +17,26 @@ body[data-page="signup"] {
   @include xl {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
+
+    .auth-mobile-header {
+      display: none;
+    }
   }
 
-  .overlay {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    height: 100%;
-    width: 100%;
-    // background-color: var(--accent);
-    // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
+  // .overlay {
+  //   position: absolute;
+  //   inset: 0;
+  //   z-index: -1;
+  //   img {
+  //     height: 100%;
+  //     width: 100%;
+  //   }
+  //   // filter: blur(18px);
+  // }
+
+  #login-form h4,
+  #signup-form h4 {
+    margin-bottom: 60px;
   }
 
   .auth-wrapper {
@@ -50,7 +61,7 @@ body[data-page="signup"] {
     align-items: center;
     justify-content: center;
     // margin: 0 auto;
-    background: transparent;
+    // background: transparent;
     backdrop-filter: blur(10px);
 
     h1 {
@@ -60,10 +71,6 @@ body[data-page="signup"] {
       @include xl {
         font-size: 3em;
       }
-    }
-
-    h4 {
-      // margin-bottom: 12px;
     }
 
     .input-box:first-of-type {
@@ -109,18 +116,21 @@ body[data-page="signup"] {
         // for this (sibling selector) to work
         // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
         // NOTE: input must have placeholder attr even if its empty for this to work
-        &:focus ~ label,
-        &:not(:placeholder-shown) ~ label {
-          // &:focus ~ label {
-          top: -5px;
+        @include lg {
+          &:focus ~ label {
+            // &:focus ~ label {
+            top: -5px;
+          }
         }
 
-        // @include mobile {
-        //   &:focus ~ label,
-        //   &:not(:placeholder-shown) ~ label {
-        //     top: -5px;
-        //   }
-        // }
+        @include mobile {
+          // &:focus ~ label,
+          // &:not(:placeholder-shown) ~ label {
+
+          &:focus ~ label {
+            top: -5px;
+          }
+        }
       }
 
       .visib-pass-btn {
@@ -162,25 +172,42 @@ body[data-page="signup"] {
 
     @include xl {
       height: 100vh;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
 
-    .auth-img-temp {
-      background: transparent !important;
+    // place-items: center;
+    // border: 1px solid white;
+
+    h1 {
+      display: block;
     }
   }
 }
 
 body[data-page="signup"] {
+  // justify-content: flex-start;
   // .signup-link,.login-link{
   //   color: black;
   // }
+
+  @include xl {
+    form {
+      height: 700px;
+    }
+  }
 }
 
 body[data-page="login"] {
   grid-template-columns: 1fr 1.5fr;
+  // .login-left {
+  // }
 
-  #login-form h1 {
-    margin-bottom: 60px !important;
+  @include xl {
+    form {
+      height: 500px;
+    }
   }
 }

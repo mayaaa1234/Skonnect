@@ -1,22 +1,111 @@
 @use "../abstracts/mixins" as *;
 @use "../layout/nav" as *;
+// @use "sass:math";
 
 body[data-page="profile"] {
-  height: 100vh;
-  @include mobile {
-    height: 100dvh !important;
-  }
+  // @include mobile {
+  //   height: 100dvh !important;
+  //   // padding-top: $nav-height !important;
+  // }
 
-  div.profile-container {
+  .profile-container {
+    // border: 1px solid white;
     height: calc(100vh - #{$nav-height}) !important;
-    // height: 800px !important;
 
     .lower-container,
     .upper-container {
       width: min(100%, 1400px);
     }
   }
-  .test {
-    // line-height: normal;
+
+  &:is(button, input):focus {
+    outline: none !important;
+  }
+}
+
+//
+// SIDEBAR TOGGLE/EVENTS STYLES
+//
+
+$sidebar-width: min(350px, 80%);
+
+#sidebar {
+  width: $sidebar-width;
+  height: calc(100dvh - #{$nav-height});
+  position: fixed;
+  top: $nav-height;
+  // hide sidebar to the left using
+  // it's own size's negative value
+  left: calc(-1 * #{$sidebar-width});
+  transition: left 0.3s ease;
+  overflow: hidden auto; // x, y
+  z-index: 9998;
+  padding-top: 20px;
+}
+
+@include xs {
+  html[data-page="profile"] {
+    // initially hidden cause putting it
+    // inside &.active-sidebar resets the scroll
+    // bar position (cause overflow will be toggled too)
+    overflow: hidden;
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+
+      &::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      #data-container {
+        transition: transform 0.3s ease;
+        transform: translateX(0);
+      }
+    }
+
+    &.active-sidebar {
+      body {
+        overflow: hidden; // disable scrolling if sidebar is open
+
+        &::after {
+          content: "";
+          opacity: 1;
+          pointer-events: auto;
+        }
+        #sidebar {
+          left: 0;
+        }
+
+        #data-container {
+          // pointer-events: none;
+          transform: translateX($sidebar-width);
+        }
+      }
+    }
+  }
+}
+
+@include md {
+  html[data-page="profile"] {
+    overflow: auto !important;
+
+    &.active-sidebar {
+      body {
+        // allow y scrolling
+        overflow: hidden auto !important;
+
+        &::after {
+          display: none; // removes it from rendering
+        }
+      }
+    }
   }
 }

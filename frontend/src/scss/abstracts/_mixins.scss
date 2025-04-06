@@ -48,6 +48,7 @@
 }
 
 @mixin mobile {
+  // @media (hover: none) and (pointer: coarse) and (max-width: 475px) {
   @media (hover: none) and (pointer: coarse) {
     @content;
   }

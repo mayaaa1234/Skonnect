@@ -2,41 +2,51 @@
 <html lang="en" data-theme="dark">
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
-    <body data-page="login" class="">
-        <div class="bg-dark-secondary login-left auth-filler-bg">
-            <h1 class="fs-3-xs fs-5-xl">Welcome Back!</h1>
-            <h1 class="fs-3-xs">
-                Login to <span class="gradient-text">SKonnect</span>
-            </h1>
-        </div>
-
+    <body data-page="signup" class="">
+        <!-- <div class="overlay"> -->
+        <!--     <img src="assets/img/bg.jpg" alt="" /> -->
+        <!-- </div> -->
         <div class="auth-wrapper container">
             <form
                 autocomplete="off"
-                id="login-form"
+                id="signup-form"
                 class="br-20"
                 action=""
                 novalidate
             >
-                <h1 class="auth-mobile-header mb-2">Welcome Back!</h1>
+                <h1 class="auth-mobile-header mb-2">Get Started Now!</h1>
                 <h4 class="auth-mobile-header">
-                    Login to <span class="gradient-text">SKonnect</span>
+                    Signup to <span class="gradient-text">SKonnect</span>
                 </h4>
 
                 <div class="input-box">
                     <input
-                        id="user-identifier"
                         type="text"
-                        name="user-identifier"
+                        id="username"
+                        name="username"
                         required
                         minlength="4"
+                        maxlength="40"
+                        placeholder=""
+                    />
+                    <label for="username">Username</label>
+                    <span></span>
+                </div>
+                <div data-error-for="username" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
                         maxlength="100"
                         placeholder=""
                     />
-                    <label for="user-identifier">Username or Email</label>
+                    <label for="email">Email</label>
                     <span></span>
                 </div>
-                <div data-error-for="user-identifier" class="error"></div>
+                <div data-error-for="email" class="signup-error-msg"></div>
 
                 <div class="input-box">
                     <input
@@ -76,24 +86,48 @@
                         </svg>
                     </button>
                 </div>
-                <div data-error-for="password" class="error"></div>
+                <div data-error-for="password" class="signup-error-msg"></div>
+
+                <div class="input-box">
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        required
+                        minlength="8"
+                        maxlength="255"
+                        placeholder=""
+                    />
+                    <label for="confirmPassword">Confirm Password</label>
+                </div>
+                <div
+                    data-error-for="confirmPassword"
+                    class="signup-error-msg"
+                ></div>
 
                 <button type="submit" class="submit p-1 br-40 btn-dark-accent">
-                    Login
+                    Sign up
                 </button>
 
                 <div class="gp-10 jc-c dp-f">
-                    <span> Don't have an account? </span>
-                    <a class="signup-link fw-bold" href="/signup">Signup</a>
+                    <span> Already have an account? </span>
+                    <a class="login-link fw-bold" href="/login">Login</a>
                 </div>
             </form>
+        </div>
+
+        <div class="bg-dark-secondary login-left auth-filler-bg">
+            <h1 class="fs-3-xs fs-5-xl">Get Started Now!</h1>
+            <h1 class="fs-3-xs">
+                Signup to <span class="gradient-text">SKonnect</span>
+            </h1>
         </div>
 
         <!--FOOTER --commented out -->
         <%# include('./partials/footer.ejs') %>
 
-        <script type="module" src="/app.bundle.js"></script>
+        <script type="module" src="/app.bundle.js" defer></script>
+        <script type="module" src="/signup.bundle.js" defer></script>
         <!--<script type="module" src="/nav.bundle.js"></script>-->
-        <script type="module" src="/login.bundle.js"></script>
     </body>
 </html>

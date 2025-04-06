@@ -7,9 +7,19 @@
   display: inline-block;
   border: 0;
   outline: none;
-  line-height: normal !important;
+  // rm  the default 1.5 so that textd inside doesnt create space
+  // if btn has text and not icon
+  // line-height: normal !important;
   // padding: $base-padding $base-padding;
   // border-radius: $base-border-radius;
+
+  // hover effect is triggered by tap on mobiles
+  // @include mobile {
+  //   &:hover {
+  //     -webkit-tap-highlight-color: transparent !important;
+  //     background-color: transparent !important;
+  //   }
+  // }
 }
 
 @mixin btn($bg-color: #fff) {
@@ -69,8 +79,8 @@
 
         // @include mobile {
         //   // override browsers weird default hover/bg on mobiles.
-        //   -webkit-tap-highlight-color: #3295b6;
-        //   background-color: #3295b6 !important;
+        //   -webkit-tap-highlight-color: transparent;
+        //   background-color: transparent !important;
         // }
       }
     }

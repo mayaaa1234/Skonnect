@@ -1,9 +1,10 @@
 ### TODO:
-1. financial budget display and manipulation if admin
-2. dirs like UI with yearly proj tracks each dir  
+financial budget display and manipulation if admin
+dirs like UI with yearly proj tracks each dir  
 
-### BUG/S:
-1. username existance validation on BE does not trigger user input's less than 4 chars
+### BUG/S TO FIX:
+username existance validation on BE does not trigger user input's less than 4 chars
+logo link width in lg screens causes href to trigger even when not click  the actual logo (flex/grid issue)
 
 #### dev setup:
 

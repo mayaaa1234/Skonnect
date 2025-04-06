@@ -59,7 +59,6 @@ export default async function loadSlideshows(): Promise<void> {
                   class="br-20"
                   style="height: 600px; width: 600px"
                 />
-                <div class="text">Caption Text</div>
               </div>
             `;
           })

@@ -18,6 +18,16 @@ body[data-page="signup"] {
     grid-template-columns: 1.5fr 1fr;
   }
 
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    // background-color: var(--accent);
+    // clip-path: polygon(0 0, 100% 0, 100% 40%, 0% 100%);
+  }
+
   .auth-wrapper {
     position: relative;
     height: 100vh;
@@ -144,6 +154,10 @@ body[data-page="signup"] {
     @include xl {
       height: 100vh;
       display: block;
+    }
+
+    .auth-img-temp {
+      background: transparent !important;
     }
   }
 }

@@ -33,6 +33,12 @@
   }
 }
 
+@mixin xxl {
+  @media (min-width: map.get($breakpoints, "xxl")) {
+    @content;
+  }
+}
+
 // min breakpoint callback
 @mixin min-bp($bp: 0) {
   @media (min-width: $bp) {

@@ -85,8 +85,20 @@
       }
     }
 
+    // TODO: create icon buttons (hover and no hover)
+
+    // just for this project so that the proj not breaks.
+    // ill be deprecating this next time
     .btn-no-hover {
       @include btn(transparent);
+
+      @include mobile {
+        // override browsers weird default hover/bg on mobiles.
+        &:hover {
+          -webkit-tap-highlight-color: transparent;
+          background-color: transparent !important;
+        }
+      }
     }
 
     // .btn-no-hover-outlined-#{$theme}-#{$k} {

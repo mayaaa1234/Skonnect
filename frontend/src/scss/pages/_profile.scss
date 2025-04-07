@@ -7,6 +7,10 @@ body[data-page="profile"] {
   //   height: 100dvh !important;
   //   // padding-top: $nav-height !important;
   // }
+  #data-container {
+    display: flex;
+    justify-content: center;
+  }
 
   .profile-container {
     // border: 1px solid white;
@@ -14,6 +18,7 @@ body[data-page="profile"] {
 
     .lower-container,
     .upper-container {
+      // width: 100%;
       width: min(100%, 1400px);
     }
   }
@@ -68,6 +73,19 @@ $sidebar-width: min(350px, 80%);
       #data-container {
         transition: transform 0.3s ease;
         transform: translateX(0);
+
+        // border: 1px solid blue;
+
+        .profile-container {
+          transition: transform 0.3s ease;
+          transform: translateX(0);
+        }
+        // .lower-container,
+        // .upper-container {
+        //
+        //   transition: transform 0.3s ease;
+        //   transform: translateX(0);
+        // }
       }
     }
 
@@ -85,7 +103,6 @@ $sidebar-width: min(350px, 80%);
         }
 
         #data-container {
-          // pointer-events: none;
           transform: translateX($sidebar-width);
         }
       }
@@ -106,6 +123,38 @@ $sidebar-width: min(350px, 80%);
           display: none; // removes it from rendering
         }
       }
+    }
+  }
+}
+
+@include min-bp("1359px") {
+  #data-container {
+    border: 1px solid white;
+
+    // transform: none !important;
+    width: 100%;
+    // transition: width transform 0.3s ease !important;
+
+    transition:
+      width 0.3s ease,
+      transform 0.3s ease !important;
+  }
+
+  html[data-page="profile"] {
+    // overflow: auto !important;
+
+    &.active-sidebar {
+      #data-container {
+        width: calc(100% - #{$sidebar-width});
+      }
+
+      .profile-container {
+        // transform: translateX($sidebar-width) !important;
+      }
+      // .lower-container,
+      // .upper-container {
+      //   transform: translateX($sidebar-width) !important;
+      // }
     }
   }
 }

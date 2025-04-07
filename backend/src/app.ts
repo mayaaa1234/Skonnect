@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import "express-async-errors";
 import process from "process";
 import path from "path";
@@ -10,9 +13,6 @@ import session from "express-session";
 
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.ts";
-
-import dotenv from "dotenv";
-dotenv.config();
 
 const app = express();
 const port =
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV !== "production") {
 // routers
 import auth from "./routes/auth.ts";
 import pages from "./routes/pages.ts";
-import user from "./routes/user.ts";
+import user from "./routes/users.ts";
 import slides from "./routes/slides.ts";
 
 // middlewares
@@ -82,7 +82,7 @@ app.use(morgan("dev"));
 // routes
 app.use("/", pages);
 app.use("/api/v1/auth", auth);
-app.use("/api/v1/user", user);
+app.use("/api/v1/users", user);
 app.use("/api/v1/slides", slides);
 
 //errors

@@ -1,48 +1,114 @@
-<div id="sidebar" class="container">
-    <!-- <div class="sidebar-item-container"> -->
-    <!--     <div class="sidebar-item sidebar-item-open"> -->
-    <!--         <h3> -->
-    <!--             <a -->
-    <!--                 class="sidebar-item-title cs-p" -->
-    <!--                 href="../nvim.html" -->
-    <!--             >Neovim</a> -->
-    <!--         </h3> -->
-    <!---->
-    <!--         <ul class="sidebar-item-branches"> -->
-    <!--             <li class="sidebar-item-branch"> -->
-    <!--                 <a class="cs-p" href="">Subtree level 1</a> -->
-    <!--             </li> -->
-    <!---->
-    <!--             <li class="sidebar-item-branch"> -->
-    <!--                 <div class="sidebar-item-branch"> -->
-    <!--                     <a class="text- cs-p" href="">Subtree level 1</a> -->
-    <!--                 </i> -->
-    <!---->
-    <!--                 <ul class="sidebar-item-branches"> -->
-    <!--                     <li class="sidebar-item-branch"> -->
-    <!--                         <a class="" href="">Subtree level 2</a> -->
-    <!--                     </li> -->
-    <!--                     <li class="sidebar-item-branch"> -->
-    <!--                         <a class="" href="">Subtree level 2</a> -->
-    <!--                     </li> -->
-    <!--                 </ul> -->
-    <!--             </li> -->
-    <!---->
-    <!--             <li class="sidebar-item-branch"> -->
-    <!--                 <div class="sidebar-item-branch"> -->
-    <!--                     <a class="text- cs-p" href="">Subtree level 1</a> -->
-    <!--                 </div> -->
-    <!---->
-    <!--                 <ul class="sidebar-item-branches"> -->
-    <!--                     <li class="sidebar-item-branch"> -->
-    <!--                         <a class="" href="">Subtree level 2</a> -->
-    <!--                     </li> -->
-    <!--                     <li class="sidebar-item-branch"> -->
-    <!--                         <a class="" href="">Subtree level 2</a> -->
-    <!--                     </li> -->
-    <!--                 </ul> -->
-    <!--             </li> -->
-    <!--         </ul> -->
-    <!--     </div> -->
-    <!-- </div> -->
-</div>
+<aside id="sidebar" class="container">
+    <div class="hide-sidebar-wrapper">
+        <button class="sidebar-items btn-no-hover sidebar-btn-hide-sidebar">
+            <svg
+                class="sidebar-shrink-icon"
+                height="30px"
+                width="30px"
+                fill="#e8eaed"
+                viewBox="0 -960 960 960"
+            >
+                <path
+                    d="M518.33-480 390.67-352.33l46.66 47.66L612.67-480 437.33-655.33l-46.66 47.66L518.33-480ZM480-80q-83 0-156-31.5t-127-85.83q-54-54.34-85.5-127.34T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 155.67 31.5 72.66 31.5 127 85.5Q817-709 848.5-636T880-480q0 82.33-31.5 155.33-31.5 73-85.83 127.34-54.34 54.33-127 85.83Q563-80 480-80Zm0-66.67q138.67 0 236-97.33 97.33-97.33 97.33-236 0-139.33-97.33-236.33t-236-97q-139.33 0-236.33 97t-97 236.33q0 138.67 97 236 97 97.33 236.33 97.33ZM480-480Z"
+                />
+            </svg>
+        </button>
+    </div>
+
+    <ul class="sidebar-ul lst-n">
+        <li class="sidebar-items btn">
+            <button data-action="profile" class="btn-no-hover">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e8eaed"
+                >
+                    <path
+                        d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"
+                    />
+                </svg>
+                <span>Profile</span>
+            </button>
+        </li>
+        <li class="sidebar-items btn">
+            <button data-action="users" class="btn-no-hover">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#e8eaed"
+                >
+                    <path
+                        d="M240-80q-50 0-85-35t-35-85v-560q0-50 35-85t85-35h440v640H240q-17 0-28.5 11.5T200-200q0 17 11.5 28.5T240-160h520v-640h80v720H240Zm120-240h240v-480H360v480Zm-80 0v-480h-40q-17 0-28.5 11.5T200-760v447q10-3 19.5-5t20.5-2h40Zm-80-480v487-487Z"
+                    />
+                </svg>
+                <span>Users</span>
+            </button>
+        </li>
+        <li class="sidebar-items btn">
+            <button data-action="projectsAndEvents" class="btn-no-hover">
+                <svg
+                    class="def"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-week"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"
+                    />
+                    <path d="M16 3v4" />
+                    <path d="M8 3v4" />
+                    <path d="M4 11h16" />
+                    <path d="M7 14h.013" />
+                    <path d="M10.01 14h.005" />
+                    <path d="M13.01 14h.005" />
+                    <path d="M16.015 14h.005" />
+                    <path d="M13.015 17h.005" />
+                    <path d="M7.01 17h.005" />
+                    <path d="M10.01 17h.005" />
+                </svg>
+                <span>Projects & Events</span>
+            </button>
+        </li>
+        <li class="sidebar-items btn">
+            <button data-action="budgetAllocation" class="btn-no-hover">
+                <svg
+                    class="def"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-coins"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"
+                    />
+                    <path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" />
+                    <path
+                        d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z"
+                    />
+                    <path d="M3 6v10c0 .888 .772 1.45 2 2" />
+                    <path d="M3 11c0 .888 .772 1.45 2 2" />
+                </svg>
+                <span>Budget Allocation</span>
+            </button>
+        </li>
+    </ul>
+</aside>

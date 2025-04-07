@@ -80,11 +80,11 @@
 
       // light / dark variation (needs aso interpolation for vals)
       @for $i from 1 through 9 {
-        --#{$k}-light-#{$i}: #{color.mix(white, $v, $i * 10%)};
+        --#{$k}-light-#{$i}: #{color.mix(white, $v, $i * 5%)};
       }
 
       @for $i from 1 through 9 {
-        --#{$k}-dark-#{$i}: #{color.mix(black, $v, $i * 10%)};
+        --#{$k}-dark-#{$i}: #{color.mix(black, $v, $i * 5%)};
       }
     }
   }

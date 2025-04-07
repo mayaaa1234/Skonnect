@@ -1,0 +1,33 @@
+[data-theme="dark"] {
+  body[data-page="home"] {
+    .card {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+      // background-color: var(--secondary);
+    }
+
+    .slides img {
+      border: 2px solid gray !important;
+      // border: 2px solid var(--accent) !important;
+    }
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="home"] {
+    border-top: none;
+
+    section.events {
+      background-color: var(--secondary);
+    }
+
+    svg:not(.default) {
+      fill: black;
+    }
+
+    .dummy {
+      border: 1px solid black;
+      border-radius: 20px;
+    }
+  }
+}

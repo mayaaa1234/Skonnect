@@ -1,6 +1,6 @@
+// import dotenv from "dotenv";
+// dotenv.config();
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
 import type { Request, Response, NextFunction } from "express";
 import mkCustomError from "../errors/CustomError.ts";
 
@@ -32,7 +32,6 @@ const authUser = async (
     });
   }
 
-  //console.log({ token });
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       userId: number;
@@ -41,8 +40,9 @@ const authUser = async (
       isAdmin: boolean;
     };
 
-    console.log({ decoded });
-    req.user = decoded;
+    console.log("authUser middleware: ", { decoded });
+
+    req.user = decoded; // sent to ts
     res.locals.user = decoded; // sent to ejs
     next();
   } catch (error) {

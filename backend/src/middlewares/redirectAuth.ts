@@ -1,6 +1,6 @@
+// import dotenv from "dotenv";
+// dotenv.config();
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
 import type { Request, Response, NextFunction } from "express";
 import mkCustomError from "../errors/CustomError.ts";
 

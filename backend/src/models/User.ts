@@ -176,7 +176,7 @@ export default class User {
       }
 
       // will be sent to the client
-      //console.log("LOGIN VALIDATION INFO :", { id, username, email, isAdmin });
+      //console.log("LOGIN VALIDATION INFORMATION :", { id, username, email, isAdmin });
       this.id = id;
       this.username = username;
       this.email = email;
@@ -208,6 +208,34 @@ export default class User {
       status: 500,
       msg: "An error occurred while saving the user to the database.",
     });
+  };
+
+  // TODO: i'll have to study this later on how this works
+
+  static find = async (
+    filter?: Partial<{
+      id: number;
+      username: string;
+      email: string;
+      isAdmin: boolean;
+    }>,
+  ): Promise<RowDataPacket[]> => {
+    let query = "SELECT * FROM users";
+    const values: any[] = [];
+
+    if (filter && Object.keys(filter).length > 0) {
+      // Build an array of conditions for each key in the filter
+      const conditions = Object.keys(filter).map((key) => {
+        values.push(filter[key as keyof typeof filter]);
+        return `${key} = ?`;
+      });
+
+      query += " WHERE " + conditions.join(" AND ");
+    }
+
+    const [rows] = await pool.execute<RowDataPacket[]>(query, values);
+    console.log("find result: ", rows);
+    return rows;
   };
 
   static findById = async (id: number) => {

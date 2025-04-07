@@ -32,6 +32,7 @@
 // use this for if using var theming approach
 // and just customize color and hover color through vars in a
 // centralized .scss file (e.g. themes.scss)
+// or if using a simple btn that doesnt require theme
 .btn {
   @extend %gen-btn;
 }

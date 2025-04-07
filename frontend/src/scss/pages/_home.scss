@@ -3,10 +3,6 @@
 // @use "../layout/nav" as *;
 
 body[data-page="home"] {
-  &[data-theme="light"] {
-    background-color: var(--tertiary);
-  }
-
   %titles {
     padding-bottom: 5px;
     font-weight: bold;
@@ -112,6 +108,8 @@ body[data-page="home"] {
   }
 
   section.services {
+    height: 750px !important;
+
     h3 {
       // border-bottom: 1 solid rgba(var(--accent), 0.1);
 
@@ -171,13 +169,6 @@ body[data-page="home"] {
           height: 80px;
           // border: 1px solid white;
         }
-
-        // strong {
-        // }
-        // svg {
-        //   // border: 1px solid white;
-        //   // flex: 0 1 100%;
-        // }
       }
     }
   }
@@ -323,47 +314,5 @@ body[data-page="home"] {
 
   section {
     background-color: var(--tertiary);
-  }
-}
-
-[data-theme="dark"] {
-  body[data-page="home"] {
-    .card {
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      // box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
-      // background-color: var(--secondary);
-    }
-
-    .slides img {
-      border: 2px solid gray !important;
-      // border: 2px solid var(--accent) !important;
-    }
-  }
-}
-
-[data-theme="light"] {
-  body[data-page="home"] {
-    section.events {
-      background-color: var(--secondary);
-    }
-
-    border-top: none;
-    .card {
-      // background-color: #fff;  // Ensure the card itself is light
-      // border-radius: 8px;
-      // box-shadow: 2 2px 4px rgba(0, 0, 0, 0.1);
-      // 0 8px 16px rgba(0, 0, 0, 0.1);
-      //   box-shadow:
-      //     2px 2px 4px rgba(0, 0, 0, 0.1),
-      //     4px 8px 16px rgba(0, 0, 0, 0.1);
-    }
-    svg:not(.default) {
-      fill: black;
-    }
-
-    .dummy {
-      border: 1px solid black;
-      border-radius: 20px;
-    }
   }
 }

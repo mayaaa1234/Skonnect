@@ -3,15 +3,38 @@
 body[data-page="profile"] {
   // background-color: var(--accent);
 
-  #sidebar {
-    background-color: var(--secondary) !important;
-  }
-
   .profile-container {
     .upper-container,
     .lower-container {
       background-color: var(--secondary);
       color: var(--foreground);
+    }
+  }
+
+  #sidebar {
+    background-color: var(--neutral);
+
+    li > button {
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--accent);
+        svg:not(.def) {
+          fill: var(--accent);
+        }
+      }
+
+      &.selected {
+        transition: none !important;
+        background-color: var(--accent) !important;
+        &:hover {
+          color: var(--foreground) !important;
+
+          svg:not(.def) {
+            fill: var(--foreground) !important;
+          }
+        }
+      }
     }
   }
 }
@@ -21,6 +44,12 @@ body[data-page="profile"] {
   .lower-container {
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+  }
+
+  #sidebar {
+    // li > button:hover {
+    //   background-color: gray !important;
+    // }
   }
 }
 
@@ -33,5 +62,17 @@ body[data-page="profile"] {
 
   .profile-expand-icon {
     fill: black !important;
+  }
+
+  #sidebar {
+    background-color: var(--tertiary) !important;
+
+    .sidebar-items > svg:not(.def) {
+      fill: black;
+    }
+
+    // li > button:hover {
+    //   background-color: var(--secondary) !important;
+    // }
   }
 }

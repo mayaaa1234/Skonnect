@@ -188,20 +188,16 @@ $sidebar-width: min(350px, 80%);
 
 // DYNAMIC ELEMENTS FROM DATABASE
 
-// TODO: adjust this =>
-//           background-color: var(--neutral-dark-1);
-//   then put the bgc into -theme
-
 body[data-page="profile"] {
   .user-table {
     height: auto;
     border-collapse: collapse;
     margin-inline: auto;
     width: min(100%, 1000px);
+    background-color: var(--neutral);
     table-layout: fixed;
 
     thead {
-      background-color: var(--secondary);
       // border-bottom: 2px solid #ccc;
 
       tr {
@@ -211,24 +207,32 @@ body[data-page="profile"] {
       th {
         padding: 12px 15px;
         font-weight: bold;
-        border: 3px solid white;
+        border: 1px solid var(--accent);
       }
     }
 
     tbody {
       tr {
-        // border: 1px solid #ccc;
-        background-color: var(--neutral);
+        border: 1px solid #ccc;
 
-        &:nth-of-type(odd) {
-          background-color: var(--neutral-dark-1);
+        &:nth-of-type(even) {
+          // background-color: #f9f9f9;
+        }
+
+        &:hover {
         }
 
         td {
           padding: 12px 15px;
-          border: 1px solid white;
+          border: 1px solid #ccc;
         }
       }
+    }
+  }
+
+  @include xl {
+    .user-table {
+      // font-size: 18px;
     }
   }
 }

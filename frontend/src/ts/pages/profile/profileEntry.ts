@@ -1,2 +1,2 @@
 import "./logout.ts";
-import "./sidebar.ts";
+import "./sidebar/events.ts";

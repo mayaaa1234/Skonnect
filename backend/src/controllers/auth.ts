@@ -116,4 +116,27 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
-export { signup, login };
+const logout = async (_req: Request, res: Response) => {
+  //await new Promise<void>((resolve, _reject) => {
+  //req.session.destroy((err) => {
+  //  if (err) next(mkCustomError("Session destruction failed", 500));
+  //  resolve();
+  //});
+
+  res.set(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  res.clearCookie("authorization", {
+    path: "/",
+    domain: "",
+  });
+
+  res.status(200).json({
+    success: true,
+  });
+  //});
+};
+export { signup, login, logout };

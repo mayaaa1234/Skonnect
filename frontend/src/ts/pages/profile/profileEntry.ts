@@ -1,3 +1,2 @@
-import "./logout.ts";
-import "./sidebar/btn-actions.ts";
+import "./sidebar/buttons.ts";
 import "./sidebar/toggle.ts";

@@ -1,7 +1,7 @@
-import openProfileData from "./admin/profile/openProfile.ts";
-import openUsersData from "./admin/users/openUsers.ts";
-import openProjectsAndEventsData from "./admin/projectsAndEvents/openProjectsAndEvents.ts";
-import openBudgetAllocationData from "./admin/budgetAllocation/openBudgetAllocation.ts";
+import initProfilePage from "../profileData/initProfile.ts";
+import initProjectsAndEventsPage from "../projectsAndEvents/initProjectsAndEvents.ts";
+import initBudgetAllocationPage from "../budgetAllocation/initBudgetAllocation.ts";
+import initUsersPage from "../users/initUsers.ts";
 
 import {
   Slideshow,
@@ -41,16 +41,16 @@ function highlightButton(action: string) {
 async function openSelectedData(action: string): Promise<void> {
   switch (action) {
     case "profile":
-      await openProfileData();
+      await initProfilePage();
       break;
     case "users":
-      await openUsersData();
+      await initUsersPage();
       break;
     case "projectsAndEvents":
-      await openProjectsAndEventsData();
+      await initProjectsAndEventsPage();
       break;
     case "budgetAllocation":
-      await openBudgetAllocationData();
+      await initBudgetAllocationPage();
       break;
     default:
       console.warn(`Unhandled action: ${action}`);

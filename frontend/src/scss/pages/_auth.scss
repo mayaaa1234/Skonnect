@@ -94,7 +94,7 @@ body[data-page="signup"] {
       label {
         position: absolute;
         left: 5px;
-        top: 50%;
+        top: -3px;
         transform: translateY(-50%);
         pointer-events: none;
         transition: all 0.2s ease-in-out;
@@ -105,7 +105,7 @@ body[data-page="signup"] {
         border: 0;
         padding: 0 36px 0 5px;
         color: white;
-        height: 50px;
+        height: 44px;
         font-size: 1em;
         outline: none;
         background-color: transparent;
@@ -116,21 +116,24 @@ body[data-page="signup"] {
         // for this (sibling selector) to work
         // INFO: below line means adjust the label as if there's a value in the input meaning placeholder is not shown.
         // NOTE: input must have placeholder attr even if its empty for this to work
-        @include lg {
-          &:focus ~ label {
-            // &:focus ~ label {
-            top: -5px;
-          }
-        }
-
-        @include mobile {
-          // &:focus ~ label,
-          // &:not(:placeholder-shown) ~ label {
-
-          &:focus ~ label {
-            top: -5px;
-          }
-        }
+        // @include lg {
+        //   &:focus ~ label,
+        //   &:valid ~ label {
+        //     // &:not(:valid) ~ label {
+        //     // &:input:focus:invalid ~ label {
+        //     // &:not(:placeholder-shown) ~ label {
+        //     top: -5px;
+        //   }
+        // }
+        //
+        // @include mobile {
+        //   // &:focus ~ label,
+        //   // &:not(:placeholder-shown) ~ label {
+        //
+        //   &:focus ~ label {
+        //     top: -5px;
+        //   }
+        // }
       }
 
       .visib-pass-btn {

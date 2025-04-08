@@ -2,9 +2,10 @@ const container = document.getElementById("data-container") as HTMLElement;
 import {
   Slideshow,
   fetchAllSlideShows,
-} from "../../../../home/slideShow/fetchSlides.ts";
+} from "../../home/slideShow/fetchSlides.ts";
 
-import initSlideIndexesAndEvents from "../../../../home/slideShow/slideEvents.ts";
+import initSlideIndexesAndEvents from "../../home/slideShow/slideEvents.ts";
+import uploadEventListener from "./upload.ts";
 
 export default async function openProjectsAndEventsData(): Promise<void> {
   // initSlideSkeletons();
@@ -66,8 +67,6 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       })
       .join("");
 
-    console.log({ slidesDOM });
-
     // if (!slideshows.length) {
     //   const container = document.querySelector(".container.events")!;
     //   container.insertAdjacentHTML(
@@ -81,15 +80,12 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     // }
 
     const slideshowsControls = document.createElement("div");
-    slideshowsControls.classList.add(
-      "slideshows-control-container",
-      "border-subtle-effect",
-    );
+    slideshowsControls.classList.add("slideshows-control-container");
 
     const controlBtns = `
 <div class="control-btn-container">
-      <button class="p-1 br-15 btn-dark-accent edit-btn control-btn">Edit</button>
-      <button class="p-1 br-15 btn-outlined-dark-accent upload-btn control-btn">Upload</button>
+      <button id='btn-edit-slideshows' class="p-1 br-40 btn-dark-accent edit-btn control-btn">Edit</button>
+      <button id="btn-open-upload-popup" class="p-1 br-40 btn-outlined-dark-accent  control-btn">Upload</button>
 </div>`;
 
     const uploadPopup = `
@@ -125,10 +121,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     slideshowsControls.innerHTML = controlBtns + uploadPopup;
 
     const slideshowContainer = document.createElement("div");
-    slideshowContainer.classList.add(
-      "slideshow-container",
-      "border-subtle-effect",
-    );
+    slideshowContainer.classList.add("slideshow-container");
     slideshowContainer.innerHTML = slidesDOM; // insert the data from db
 
     const projectsAndEventsContiner = document.createElement("div");
@@ -142,6 +135,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     container.appendChild(projectsAndEventsContiner);
 
     await initSlideIndexesAndEvents();
+    // uploadEventListener();
   } catch (error) {
     console.error("Error in loadSlideshows:", error);
   }

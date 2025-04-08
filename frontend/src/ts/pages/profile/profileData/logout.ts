@@ -1,7 +1,12 @@
 import { setState } from "../../utils/setGetState.ts";
 
-document.addEventListener("DOMContentLoaded", () => {
-  async function logout() {
+export default async function logoutEventListener() {
+  const logoutBtn = document.querySelector(".logout");
+  if (!logoutBtn) {
+    console.log("aspdlfj");
+    return;
+  }
+  logoutBtn.addEventListener("click", async () => {
     try {
       const response = await fetch("/api/v1/auth/logout", {
         method: "POST",
@@ -17,8 +22,5 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Error during logout", error);
     }
-  }
-
-  const logoutBtn = document.querySelector("button.logout");
-  logoutBtn?.addEventListener("click", () => logout());
-});
+  });
+}

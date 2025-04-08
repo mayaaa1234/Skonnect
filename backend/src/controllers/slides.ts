@@ -94,7 +94,20 @@ export async function updateSlideshow(req: Request, res: Response) {
 // INFO: this fn does not send the actual img binary, it only send the metadata
 // and an api reference to then be called (@ getSlideshowImage) to actually get the img
 
-export async function getAllSlideshows(_req: Request, res: Response) {
+interface SlideshowResponseItem {
+  id: number;
+  caption: string;
+  images: {
+    id: number;
+    url: string;
+  }[];
+}
+type SlideshowResponse = SlideshowResponseItem[];
+
+export async function getAllSlideshows(
+  _req: Request,
+  res: Response<SlideshowResponse>,
+) {
   // get all slideshow metadata
   const [slideshows] = await pool.execute<RowDataPacket[]>(`
       SELECT id, caption FROM slideshows

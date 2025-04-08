@@ -8,8 +8,8 @@
             <button class="btn-no-hover profile-btn-show-sidebar">
                 <svg
                     class="profile-expand-icon"
-                    height="30px"
-                    width="30px"
+                    height="35px"
+                    width="35px"
                     fill="#e8eaed"
                     viewBox="0 -960 960 960"
                 >
@@ -23,57 +23,7 @@
         <%- include('./partials/sidebar.ejs') %>
 
         <div id="data-container" class="pt-2">
-            <div class="profile-container container dp-f fd-c ai-c gp-50">
-                <div class="upper-container br-20 dp-f fd-c p-1">
-                    <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
-                        <h1 class="">Profile</h1>
-                        <button
-                            class="p-1 as-s br-40 btn-outlined-dark-accent test"
-                        >
-                            Edit profile
-                        </button>
-                    </div>
-
-                    <div class="br-20 w-100 p-1 upper-bottom">
-                        <div class="mb-2 ml-n1 avatar">
-                            <img
-                                width="150px"
-                                class="br-full"
-                                src="<%= user.isAdmin ? 'assets/img/makise.jpg' : 'assets/img/default-profile1.png' %>"
-                                alt=""
-                            />
-                        </div>
-
-                        <div class="mb-2 username">
-                            <h3>Username</h3>
-                            <div data-username>
-                                <%= user.username -%>
-                                <% if (user.isAdmin) { %>
-                                (ADMIN)
-                                <% } %>
-                            </div>
-                            <!--<input required type="text" />-->
-                        </div>
-
-                        <div class="mb-2 email">
-                            <h3 class="">Email</h3>
-                            <!--<div data-email>example@gmail.com</div>-->
-                            <div data-email>
-                                <%= user.email %>
-                            </div>
-                            <!--<input required type="text" />-->
-                        </div>
-                    </div>
-                    <!--</div>-->
-                </div>
-
-                <div class="lower-container dp-f p-3 jc-sb ai-c br-20">
-                    <div>some text</div>
-                    <button class="logout btn-dark-accent br-40 p-1 w-100px">
-                        Logout
-                    </button>
-                </div>
-            </div>
+            <!-- data'll appear here -->
         </div>
 
         <br />

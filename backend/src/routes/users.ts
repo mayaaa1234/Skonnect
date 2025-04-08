@@ -5,7 +5,7 @@ import authAdmin from "../middlewares/authAdmin.ts";
 import { info, status, getAllUsers } from "../controllers/users.ts";
 
 router.get("/", authAdmin, getAllUsers);
-router.get("/info", authUser, info);
+router.get("/my-info", authUser, info);
 router.get("/status", authUser, status);
 
 export default router;

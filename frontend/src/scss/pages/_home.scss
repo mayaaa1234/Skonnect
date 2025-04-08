@@ -21,21 +21,6 @@ body[data-page="home"] {
     }
   }
 
-  // all slideshow captions on the page
-  .caption {
-    @extend %titles;
-    padding-left: 7px;
-
-    @include xs {
-      font-size: $font-size-md;
-    }
-
-    @include xl {
-      font-size: $font-size-lg;
-      text-align: center;
-    }
-  }
-
   // ------------------------------
   // for scroll animation
   .hidden {
@@ -205,6 +190,20 @@ body[data-page="home"] {
         overflow: hidden;
         // display: flex;
         // flex-direction: column;
+
+        .caption {
+          @extend %titles;
+          padding-left: 7px;
+
+          @include xs {
+            font-size: $font-size-md;
+          }
+
+          @include xl {
+            font-size: $font-size-lg;
+            text-align: center;
+          }
+        }
 
         .slides-container {
           // width: 100% !important;

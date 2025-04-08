@@ -48,6 +48,7 @@ const fetchImage = async (id: number): Promise<Buffer | null> => {
       await ErrorHandler.handleResponseError(response);
     }
     const data = await response.json();
+
     // console.log({ data });
     return data;
   } catch (e) {

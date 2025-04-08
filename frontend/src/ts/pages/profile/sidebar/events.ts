@@ -1,34 +1,55 @@
 import { html } from "lit-html";
 
-const showSidebarBtn = document.querySelector(".profile-btn-show-sidebar");
-const hideSidebarBtn = document.querySelector(".sidebar-btn-hide-sidebar");
+import {
+  Slideshow,
+  fetchAllSlideShows,
+} from "../../home/slideShow/fetchSlides.ts";
+
+import initSlideIndexesAndEvents from "../../home/slideShow/slideEvents.ts";
+
+const showSidebarBtn = document.querySelector(".profile-btn-show-sidebar") as HTMLElement;
+const hideSidebarBtn = document.querySelector(".sidebar-btn-hide-sidebar") as HTMLElement;
 const sidebar = document.getElementById("sidebar");
 const dataPage = document.documentElement.dataset.page;
 const dom = document.documentElement;
 
 // TOGGLING SIDEBAR
 
-showSidebarBtn?.addEventListener("click", () => {
+export const clearActiveSidebar = () => {
+  const currentDataPage = document.documentElement.dataset.page;
+
+  if (currentDataPage !== "profile") {
+    sessionStorage.removeItem("active-sidebar");
+  }
+
+  if(currentDataPage === "profile" && sessionStorage.getItem("active-sidebar")){
+    dom.classList.toggle("active-sidebar", true);
+
+  }
+};
+
+showSidebarBtn.addEventListener("click", () => {
   console.log("clicked sidebar toggle");
   if (dataPage && dataPage === "profile") {
     dom.classList.toggle("active-sidebar");
+    sessionStorage.setItem("active-sidebar", "true")
   }
 });
 
-document.addEventListener("click", (e) => {
-  if (!sidebar || !showSidebarBtn) return;
-
-  const t = e.target as Node;
-
-  if (
-    dom.classList.contains("active-sidebar") &&
-    !sidebar.contains(t) &&
-    // excluding the btn itself from triggering the close
-    !showSidebarBtn.contains(t)
-  ) {
-    dom.classList.remove("active-sidebar");
-  }
-});
+// document.addEventListener("click", (e) => {
+//   if (!sidebar || !showSidebarBtn) return;
+//
+//   const t = e.target as Node;
+//
+//   if (
+//     dom.classList.contains("active-sidebar") &&
+//     !sidebar.contains(t) &&
+//     // excluding the btn itself from triggering the close
+//     !showSidebarBtn.contains(t)
+//   ) 
+//     dom.classList.remove("active-sidebar");
+//   }
+// });
 
 hideSidebarBtn?.addEventListener("click", () => {
   console.log("clicked sidebar toggle");
@@ -37,7 +58,20 @@ hideSidebarBtn?.addEventListener("click", () => {
   }
 });
 
-// OPENING SPECIC DATA/INFORMATION FROM DB
+// OPENING SPECIFIC DATA/INFORMATION FROM DB
+
+
+export const clearSidebarSelectedKey = () => {
+  const currentDataPage = document.documentElement.dataset.page;
+  if (currentDataPage !== "profile") {
+    sessionStorage.removeItem(SELECTED_KEY);
+  }
+
+  const action = getSelectedActionOrDefault();
+  highlightButton(action);
+  openSelectedData(action);
+};
+
 
 const container = document.getElementById("data-container") as HTMLElement;
 const sidebarUlbtns = document.querySelectorAll(
@@ -47,8 +81,9 @@ const sidebarUlbtns = document.querySelectorAll(
 const DEFAULT_ACTION = "profile";
 const SELECTED_KEY = "selectedSidebarBtn";
 
-function getSelectedAction(): string {
-  return localStorage.getItem(SELECTED_KEY) ?? DEFAULT_ACTION;
+function getSelectedActionOrDefault(): string {
+  // return localStorage.getItem(SELECTED_KEY) ?? DEFAULT_ACTION;
+  return sessionStorage.getItem(SELECTED_KEY) ?? DEFAULT_ACTION;
 }
 
 function highlightButton(action: string) {
@@ -62,7 +97,6 @@ async function openSelectedData(action: string): Promise<void> {
     case "profile":
       await openProfileData();
       break;
-
     case "users":
       await openUsersData();
       break;
@@ -77,11 +111,6 @@ async function openSelectedData(action: string): Promise<void> {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const action = getSelectedAction();
-  highlightButton(action);
-  openSelectedData(action);
-});
 
 sidebarUlbtns.forEach((btn) => {
   btn.addEventListener("click", async () => {
@@ -90,29 +119,25 @@ sidebarUlbtns.forEach((btn) => {
     console.log("click");
 
     const action = btn.dataset.action!;
-    localStorage.setItem(SELECTED_KEY, action);
+    // localStorage.setItem(SELECTED_KEY, action);
+    sessionStorage.setItem(SELECTED_KEY, action);
 
     highlightButton(action);
     openSelectedData(action);
   });
 });
 
-const openProjectsAndEventsData = () => {};
-const openBudgetAllocationData = () => {};
-
 async function openProfileData(): Promise<void> {
   try {
-    const response = await fetch("/api/profile");
+    const response = await fetch("/api/v1/users/my-info", {
+      method: "GET",
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const user = await response.json();
-    // Ensure your HTML has an element with id "profile-output"
-    const output = document.getElementById("profile-output");
-    if (!output) {
-      console.error("No element with id 'profile-output' found.");
-      return;
-    }
+
     // Determine profile image and username display based on admin status
     const profileImg = user.isAdmin
       ? "assets/img/makise.jpg"
@@ -121,7 +146,7 @@ async function openProfileData(): Promise<void> {
       ? `${user.username} (ADMIN)`
       : user.username;
 
-    output.innerHTML = `
+    container.innerHTML = `
       <div class="profile-container container mt-2 dp-f fd-c ai-c gp-50">
         <div class="upper-container br-20 dp-f fd-c p-1">
           <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
@@ -213,3 +238,171 @@ async function openUsersData(): Promise<void> {
     console.error("Error fetching users data:", error);
   }
 }
+
+async function openProjectsAndEventsData(): Promise<void> {
+  if (!container) {
+    console.log("no container found");
+    return;
+  }
+
+  // initSlideSkeletons();
+
+  try {
+    const slideshows: Slideshow[] = await fetchAllSlideShows();
+    if (!slideshows[0]) {
+      container.innerHTML = `
+      <div>Empty Slideshows...</div>
+      `;
+    }
+
+    const slidesDOM = slideshows
+      .map((s) => {
+        const imagesDOM = s.images
+          .map((img, idx) => {
+            return `
+              <div
+                class="slides fade"
+                data-slide-id="${s.id}"
+                data-slide-number="${idx + 1}"
+                style="display: none;"
+              >
+                <div class="numbertext">${idx + 1} / ${s.images.length}</div>
+                <img
+                  src="${img.url}"
+                  class="br-20"
+                  style="height: 300px; width: 100%"
+                />
+              </div>
+            `;
+          })
+          .join("");
+
+        const dotsDOM = s.images
+          .map((_, idx) => {
+            return `<span class="dot" data-slideshow-id="${s.id}" data-dot-index="${idx + 1}"></span>`;
+          })
+          .join("");
+
+        return `
+            <div class="slideshow" data-slideshow-id="${s.id}">
+              <p class="caption">${s.caption ? s.caption : ""}</p>
+              <div
+                class="slides-container"
+                style="height: 300px; width: 300px;"
+              >
+                ${imagesDOM}
+                <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
+                <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
+              </div>
+              <br />
+              <div class="dots-container" style="text-align: center">
+                ${dotsDOM}
+              </div>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+
+    console.log({ slidesDOM });
+
+    // if (!slideshows.length) {
+    //   const container = document.querySelector(".container.events")!;
+    //   container.insertAdjacentHTML(
+    //     "beforeend",
+    //     `
+    //       <h1>Empty...</h1>
+    //       </br>
+    //       </br>
+    //     `,
+    //   );
+    // }
+
+    const slideshowsControls = document.createElement("div");
+    slideshowsControls.classList.add(
+      "slideshows-control-container",
+      "border-subtle-effect",
+    );
+    const controlBtns = `
+<div class="control-btn-container">
+      <button class="p-1 br-15 btn-dark-accent edit control-btn">Edit</button>
+      <button class="p-1 br-15 btn-outlined-dark-accent upload control-btn">Upload</button>
+</div>`;
+    slideshowsControls.innerHTML = controlBtns;
+
+    const slideshowContainer = document.createElement("div");
+    slideshowContainer.classList.add(
+      "slideshow-container",
+      "border-subtle-effect",
+    );
+    slideshowContainer.innerHTML = slidesDOM; // insert the data from db
+
+    const projectsAndEventsContiner = document.createElement("div");
+    projectsAndEventsContiner.classList.add(
+      "projects-and-events-container",
+      "container",
+    );
+    projectsAndEventsContiner.appendChild(slideshowsControls);
+    projectsAndEventsContiner.appendChild(slideshowContainer);
+
+    container.appendChild(projectsAndEventsContiner);
+
+    await initSlideIndexesAndEvents();
+  } catch (error) {
+    console.error("Error in loadSlideshows:", error);
+  }
+}
+
+// async function openProjectsAndEventsData(): Promise<void> {
+//   try {
+//     const response = await fetch("/api/v1/slides", {
+//       method: "GET",
+//       credentials: "include",
+//     });
+//
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const slideshows = (await response.json()) as Slideshow[];
+//     container.innerHTML = `
+//
+//       <div class="container">
+//         <table class="user-table ">
+//           <thead>
+//             <tr >
+//               <th class="" style="width: 20%;">ID</th>
+//               <th class="" style="width: 25%;">Caption</th>
+//               <th class="" style="width: 35%;">Email</th>
+//               <th class="" style="width: 20%;">Admin</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             ${users
+//               .map(
+//                 (
+//                   user: {
+//                     id: number | string;
+//                     username: string;
+//                     email: string;
+//                     isAdmin: boolean;
+//                   },
+//                   i: number,
+//                 ) => `
+//             <tr>
+//               <td style="${i === 0 ? "border-top: none;" : ""}">${user.id}</td>
+//               <td style="${i === 0 ? "border-top: none;" : ""}">${user.username}</td>
+//               <td style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
+//               <td style="${i === 0 ? "border-top: none;" : ""}">${user.isAdmin}</td>
+//             </tr>
+//             `,
+//               )
+//               .join("")}
+//           </tbody>
+//         </table>
+//       </div>
+//     `;
+//   } catch (error) {
+//     console.error("Error fetching users data:", error);
+//   }
+// }
+const openBudgetAllocationData = () => {};

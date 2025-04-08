@@ -7,21 +7,7 @@ export const info = async (req: Request, res: Response) => {
   if (!req.user)
     throw mkCustomError({ status: 404, msg: "req.user not found." });
 
-  const { userId } = req.user;
-
-  const user = await User.findById(userId);
-  if (!user) {
-    throw mkCustomError({ status: 404, msg: "User not found." });
-  }
-
-  const { userId: id, username, email, password, isAdmin } = user;
-
-  res.status(200).json({
-    userId,
-    email,
-    username,
-    isAdmin,
-  });
+  res.status(200).json(req.user);
 };
 
 export const getAllUsers = async (req: Request, res: Response) => {

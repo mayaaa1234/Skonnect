@@ -1,4 +1,4 @@
-import "./fetchSlides.ts";
+// import "./fetchSlides.ts";
 import loadSlideshows from "./slidesDOM";
 import initSlideIndexesAndEvents from "./slideEvents.ts";
 

@@ -9,8 +9,6 @@ function initSlideSkeletons() {
     <p class="caption"></p>
     <div class="skeleton" style="border-radius: 20px; height: 600px; width: 600px;"
       >
-      <!-- <a class="prev" data-slideshow-id="">&#10094;</a> -->
-      <!-- <a class="next" data-slideshow-id="">&#10095;</a> -->
     </div>
     <br />
     <div class="dots-container" style="text-align: center">
@@ -87,7 +85,7 @@ export default async function loadSlideshows(): Promise<void> {
       })
       .join("");
 
-    console.log({ slidesDOM });
+    // console.log({ slidesDOM });
 
     // if (!slideshows.length) {
     //   const container = document.querySelector(".container.events")!;

@@ -14,36 +14,69 @@ body[data-page="profile"] {
   #sidebar {
     background-color: var(--neutral);
 
+    .hide-sidebar-wrapper {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
     li > button {
       transition: color 0.2s ease;
 
-      &:hover {
-        color: var(--accent);
-        svg:not(.def) {
-          fill: var(--accent);
-        }
-      }
+      // &:hover {
+      //   color: var(--accent);
+      //   svg:not(.def) {
+      //     fill: var(--accent);
+      //   }
+      // }
 
       &.selected {
         transition: none !important;
         background-color: var(--accent) !important;
-        &:hover {
-          color: var(--foreground) !important;
-
-          svg:not(.def) {
-            fill: var(--foreground) !important;
-          }
-        }
+        // &:hover {
+        //   color: var(--foreground) !important;
+        //
+        //   svg:not(.def) {
+        //     fill: var(--foreground) !important;
+        //   }
+        // }
       }
     }
+  }
+
+  // USERBASE TABLE
+  .user-table {
+    thead {
+      background-color: var(--secondary) !important;
+    }
+
+    tbody {
+      tr {
+        background-color: var(--neutral) !important;
+
+        // &:nth-of-type(odd) {
+        //   background-color: var(--neutral-dark-1) !important;
+        // }
+      }
+    }
+  }
+
+  // SLIDESHOWS
+
+  .slideshows-control-container {
+    background-color: var(--secondary);
+  }
+
+  .slideshow-container {
+    background-color: var(--secondary);
   }
 }
 
 [data-theme="dark"] {
-  .upper-container,
-  .lower-container {
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+  profile-container {
+    .upper-container,
+    .lower-container {
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0px -2px 4px rgba(255, 255, 255, 0.1);
+    }
   }
 
   #sidebar {
@@ -51,28 +84,52 @@ body[data-page="profile"] {
     //   background-color: gray !important;
     // }
   }
+
+  // USERBASE TABLE ;
+  .user-table > tbody > tr {
+    &:nth-of-type(odd) {
+      background-color: var(--neutral-light-1) !important;
+    }
+  }
 }
 
 [data-theme="light"] {
-  .upper-container,
-  .lower-container {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+  // PROFILE
+  profile-container {
+    .upper-container,
+    .lower-container {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
   }
 
-  .profile-expand-icon {
+  button > .profile-expand-icon {
     fill: black !important;
   }
+
+  // SIDEBAR
 
   #sidebar {
     background-color: var(--tertiary) !important;
 
-    .sidebar-items > svg:not(.def) {
-      fill: black;
+    .hide-sidebar-wrapper {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.9) !important;
+    }
+
+    .sidebar-shrink-icon,
+    .sidebar-items > button > svg:not(.def) {
+      fill: black !important;
     }
 
     // li > button:hover {
     //   background-color: var(--secondary) !important;
     // }
+  }
+
+  // USERBASE TABLE ;
+  .user-table > tbody > tr {
+    &:nth-of-type(odd) {
+      background-color: var(--neutral-dark-1) !important;
+    }
   }
 }

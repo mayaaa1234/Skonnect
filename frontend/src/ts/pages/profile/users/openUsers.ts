@@ -18,8 +18,8 @@ export default async function openUsersData(): Promise<void> {
           <thead>
             <tr >
               <th class="" style="width: 20%;">ID</th>
-              <th class="" style="width: 25%;">Username</th>
-              <th class="" style="width: 35%;">Email</th>
+              <th class="" style="width: 30%;">Username</th>
+              <th class="" style="width: 30%;">Email</th>
               <th class="" style="width: 20%;">Admin</th>
             </tr>
           </thead>
@@ -37,8 +37,8 @@ export default async function openUsersData(): Promise<void> {
                 ) => `
             <tr>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.id}</td>
-              <td style="${i === 0 ? "border-top: none;" : ""}">${user.username}</td>
-              <td style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
+              <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.username}</td>
+              <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.isAdmin}</td>
             </tr>
             `,

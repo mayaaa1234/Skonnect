@@ -55,7 +55,7 @@ const config = {
   },
 
   plugins: [
-    ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
+    // ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
     //new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundled.css",
@@ -66,14 +66,6 @@ const config = {
       // overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
     }),
     new NodePolyfillPlugin(),
-    //new CopyWebpackPlugin({
-    //  patterns: [
-    //    {
-    //      from: path.resolve(process.cwd(), "frontend/src/assets"),
-    //      to: "assets/",
-    //    },
-    //  ],
-    //}),
   ],
 
   module: {

@@ -1,0 +1,73 @@
+import openProfileData from "./admin/profile/openProfile.ts";
+import openUsersData from "./admin/users/openUsers.ts";
+import openProjectsAndEventsData from "./admin/projectsAndEvents/openProjectsAndEvents.ts";
+import openBudgetAllocationData from "./admin/budgetAllocation/openBudgetAllocation.ts";
+
+import {
+  Slideshow,
+  fetchAllSlideShows,
+} from "../../home/slideShow/fetchSlides.ts";
+
+import initSlideIndexesAndEvents from "../../home/slideShow/slideEvents.ts";
+
+const dataPage = document.documentElement.dataset.page;
+const dom = document.documentElement;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const action = getSelectedActionOrDefault();
+  highlightButton(action);
+  openSelectedData(action);
+});
+
+const container = document.getElementById("data-container") as HTMLElement;
+const sidebarUlbtns = document.querySelectorAll(
+  ".sidebar-ul button",
+) as NodeListOf<HTMLButtonElement>;
+
+const DEFAULT_ACTION = "profile";
+const SELECTED_KEY = "selectedSidebarBtn";
+
+function getSelectedActionOrDefault(): string {
+  // return localStorage.getItem(SELECTED_KEY) ?? DEFAULT_ACTION;
+  return sessionStorage.getItem(SELECTED_KEY) ?? DEFAULT_ACTION;
+}
+
+function highlightButton(action: string) {
+  sidebarUlbtns.forEach((btn) => {
+    btn.classList.toggle("selected", btn.dataset.action === action);
+  });
+}
+
+async function openSelectedData(action: string): Promise<void> {
+  switch (action) {
+    case "profile":
+      await openProfileData();
+      break;
+    case "users":
+      await openUsersData();
+      break;
+    case "projectsAndEvents":
+      await openProjectsAndEventsData();
+      break;
+    case "budgetAllocation":
+      await openBudgetAllocationData();
+      break;
+    default:
+      console.warn(`Unhandled action: ${action}`);
+  }
+}
+
+sidebarUlbtns.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    container.innerHTML = "";
+
+    console.log("click");
+
+    const action = btn.dataset.action!;
+    // localStorage.setItem(SELECTED_KEY, action);
+    sessionStorage.setItem(SELECTED_KEY, action);
+
+    highlightButton(action);
+    openSelectedData(action);
+  });
+});

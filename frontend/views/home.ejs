@@ -146,42 +146,6 @@
                 Projects & Events
             </h2>
 
-            <% if (user.isAdmin) { %>
-            <button class="btn-dark-accent p-1 br-40" id="upload-trigger-btn">
-                Add Slideshow
-            </button>
-
-            <div class="upload-popup-overlay" id="upload-popup-overlay">
-                <div class="upload-popup">
-                    <div class="popup-header">
-                        <h2>Upload Images</h2>
-                        <p>
-                            NOTE: <br />
-                            supported files: png, jpg, jpeg, webp<br />
-                            recommended 6-8 images only for storage
-                            considerations
-                        </p>
-                        <!-- <button id="close-upload-popup">&times;</button> -->
-                    </div>
-
-                    <form id="upload-form">
-                        <div id="drop-zone">
-                            <p>Drop the file here or click to upload</p>
-                            <input
-                                type="file"
-                                id="image-upload"
-                                accept=".jpg,.jpeg,.png,.webp"
-                                multiple
-                                required
-                            />
-                            <div class="img-preview-container"></div>
-                        </div>
-                        <button type="submit">Upload</button>
-                    </form>
-                </div>
-            </div>
-            <% } %>
-
             <div class="slideshow-container container">
                 <!-- SERIES OF SLIDESHOWS WILL BE  --->
 

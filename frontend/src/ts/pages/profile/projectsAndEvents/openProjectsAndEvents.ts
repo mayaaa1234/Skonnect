@@ -12,11 +12,11 @@ export default async function openProjectsAndEventsData(): Promise<void> {
 
   try {
     const slideshows: Slideshow[] = await fetchAllSlideShows();
-    if (!slideshows[0]) {
-      container.innerHTML = `
-      <div>Empty Slideshows...</div>
-      `;
-    }
+    // if (!slideshows[0]) {
+    //   container.innerHTML = `
+    //   <div>Empty Slideshows...</div>
+    //   `;
+    // }
 
     const slidesDOM = slideshows
       .map((s) => {

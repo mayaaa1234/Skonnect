@@ -93,7 +93,10 @@ body[data-page="home"] {
   }
 
   section.services {
-    height: 750px !important;
+    height: auto;
+    @include lg {
+      height: 750px !important ;
+    }
 
     h3 {
       // border-bottom: 1 solid rgba(var(--accent), 0.1);

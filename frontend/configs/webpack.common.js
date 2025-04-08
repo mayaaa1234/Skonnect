@@ -55,7 +55,7 @@ const config = {
   },
 
   plugins: [
-    // ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
+    ...(isDevelopment ? [new webpack.HotModuleReplacementPlugin()] : []),
     //new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundled.css",

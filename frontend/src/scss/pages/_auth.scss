@@ -64,6 +64,8 @@ body[data-page="signup"] {
     // background: transparent;
     backdrop-filter: blur(10px);
 
+    // background-color: var(--secondary);
+
     h1 {
       text-align: center;
       margin-bottom: -5px;
@@ -81,6 +83,8 @@ body[data-page="signup"] {
       position: relative;
       // border: 1px solid white;
       border-bottom: 1px solid rgb(255, 255, 255, 0.6);
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
       [data-theme="light"] {
         border-bottom: black !important;
       }
@@ -88,7 +92,7 @@ body[data-page="signup"] {
       // margin: 25px 0;
 
       // @include mobile {
-      margin: 38px 0 25px 0 !important;
+      margin: 46px 0 25px 0 !important;
       // }
 
       label {
@@ -105,7 +109,7 @@ body[data-page="signup"] {
         border: 0;
         padding: 0 36px 0 5px;
         color: white;
-        height: 44px;
+        height: 48px;
         font-size: 1em;
         outline: none;
         background-color: transparent;

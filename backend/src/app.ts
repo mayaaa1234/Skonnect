@@ -65,7 +65,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-//app.set("view cache", false);
+// app.set("view cache", false);
 app.set("view options", { rmWhitespace: true });
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));

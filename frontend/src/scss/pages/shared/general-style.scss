@@ -45,6 +45,13 @@ body {
   }
 }
 
+// body[data-page="profile"],
+// body[data-page="home"]{
+//
+//
+//
+// }
+
 //mixin for skeleton screen before load
 @mixin page-loader($page, $components...) {
   body[data-page="#{$page}"]:not(.loaded) {

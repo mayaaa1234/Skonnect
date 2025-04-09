@@ -67,6 +67,7 @@ body[data-page="profile"] {
 
   .slideshow-container {
     background-color: var(--secondary);
+    // border: 1px solid var(--foreground);
   }
 }
 
@@ -90,6 +91,17 @@ body[data-page="profile"] {
     &:nth-of-type(odd) {
       background-color: var(--neutral-light-1) !important;
     }
+  }
+
+  // SLIDESHOWS
+  .slides > img {
+    border: 20px solid var(--neutral-light-1) !important;
+    border-bottom: 45px solid var(--neutral-light-1) !important;
+  }
+
+  .prev,
+  .next {
+    color: var(--foreground);
   }
 }
 
@@ -131,5 +143,11 @@ body[data-page="profile"] {
     &:nth-of-type(odd) {
       background-color: var(--neutral-dark-1) !important;
     }
+  }
+
+  // SLIDESHOWS
+  .slides > img {
+    border: 20px solid white !important;
+    border-bottom: 45px solid white !important;
   }
 }

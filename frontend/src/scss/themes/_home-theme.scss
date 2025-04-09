@@ -1,15 +1,8 @@
 body[data-page="home"] {
-  // .slides,
-  // .slideshow,
-  // .slides-container {
-  //   border: 0 !important;
-  //
-  //   img {
-  //     border: 0 !important;
-  //   }
-  // }
-  .caption {
-    color: var(--primary);
+  .caption,
+  .prev,
+  .next {
+    color: var(--foreground);
   }
 }
 
@@ -29,6 +22,14 @@ body[data-page="home"] {
     section.services {
       // background-color: var(--tertiary);
     }
+
+    // SLIDESHOWS
+    .slides > img {
+      // border: 30px solid var(--neutral-light-1) !important;
+      border: 30px solid color-mix(in srgb, white 80%, black 20%) !important ;
+      // border-bottom: 75px solid var(--neutral-light-1) !important;
+      border-bottom: 75px solid color-mix(in srgb, white 80%, black 20%) !important;
+    }
   }
 }
 
@@ -46,6 +47,12 @@ body[data-page="home"] {
 
     svg:not(.default) {
       fill: black;
+    }
+
+    // SLIDESHOWS
+    .slides > img {
+      border: 30px solid white !important;
+      border-bottom: 75px solid white !important;
     }
   }
 }

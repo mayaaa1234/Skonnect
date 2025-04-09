@@ -10,6 +10,10 @@
       border: 2px solid gray !important;
       // border: 2px solid var(--accent) !important;
     }
+
+    section.services {
+      // background-color: var(--tertiary);
+    }
   }
 }
 
@@ -19,6 +23,10 @@
 
     section.events {
       background-color: var(--secondary);
+    }
+
+    section.services {
+      background-color: var(--tertiary);
     }
 
     svg:not(.default) {

@@ -17,18 +17,29 @@ body:not([data-page="signup"], [data-page="login"]) {
 // styles here applies to all pages
 // nav its included since its a partial
 body {
-  // this selects all inputs and btns if they exist
   &:is(button, input) {
     &:focus {
       outline: none !important;
     }
 
-    // hover effect is triggered by tap on mobiles
-    // this removes it.
+    // mobile-specific styles to remove tap highlight
     @include mobile {
+      // &:hover,
+      // &:active {
+      //
       &:hover {
         -webkit-tap-highlight-color: transparent !important;
         background-color: transparent !important;
+        outline: none !important;
+      }
+
+      // Target Safari-specific styling
+      @supports (-webkit-touch-callout: none) {
+        &:hover {
+          -webkit-tap-highlight-color: transparent !important;
+          background-color: transparent !important;
+          outline: none !important;
+        }
       }
     }
   }

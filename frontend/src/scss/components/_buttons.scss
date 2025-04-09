@@ -14,12 +14,12 @@
   // border-radius: $base-border-radius;
 
   // hover effect is triggered by tap on mobiles
-  // @include mobile {
-  //   &:hover {
-  //     -webkit-tap-highlight-color: transparent !important;
-  //     background-color: transparent !important;
-  //   }
-  // }
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
 }
 
 @mixin btn($bg-color: #fff) {

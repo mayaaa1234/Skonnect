@@ -314,7 +314,39 @@ body[data-page="home"] {
     }
   }
 
-  section {
-    background-color: var(--tertiary);
+  // Carousel
+
+  .infinite-carousel {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, 1900px);
+    margin: 0 auto;
+    /* hide scrollbar if any */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .infinite-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-track {
+    display: flex;
+    // gap: 10px;
+    /* no animation here */
+
+    @include max-bp("475px") {
+      gap: 40px;
+    }
+  }
+
+  .carousel-item {
+    flex: 0 0 calc(100% / 3); /* 3 items visible at once */
+
+    img {
+      border-radius: 5px;
+      min-width: 300px;
+      max-width: 500px;
+      height: 500px;
+    }
   }
 }

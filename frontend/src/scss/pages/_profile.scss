@@ -54,6 +54,17 @@ $sidebar-width: min(350px, 80%);
   overflow: hidden auto; // x, y
   z-index: 9998;
   padding-top: 20px;
+
+  .sidebar-btn-hide-sidebar {
+    // border: 1px solid white;
+    width: auto !important;
+    // @include mobile {
+    //   &:hover {
+    //     -webkit-tap-highlight-color: transparent !important;
+    //     background-color: transparent !important;
+    //   }
+    // }
+  }
 }
 
 @include xs {

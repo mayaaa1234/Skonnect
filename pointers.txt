@@ -1,0 +1,25 @@
+------------------------------------
+
+exlpain 3 sections briefly
+
+------------------------------------
+
+1. backend:
+  current db users
+  api / security 
+  
+ > page routes 
+    > authToken, authredirect
+    > show UI and how token affects it 
+
+------------------------------------
+
+2. web user perspective
+    > sub/branch perspective: mobile view
+
+------------------------------------
+
+3. admin perspective
+
+------------------------------------
+

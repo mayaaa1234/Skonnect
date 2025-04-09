@@ -286,6 +286,11 @@ body[data-page="profile"] {
       .caption {
         @extend %titles;
         padding-left: 7px;
+        position: absolute;
+        bottom: 6%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--primary);
 
         // @include xs {
         //   font-size: $font-size-xs;
@@ -303,19 +308,26 @@ body[data-page="profile"] {
 
         .slides {
           display: none;
+
+          img {
+            border: 20px solid white !important;
+            border-bottom: 45px solid white !important;
+            border-radius: 5px;
+          }
         }
 
         .prev,
         .next {
           cursor: pointer;
           position: absolute;
-          top: 50%;
+          color: black;
+          bottom: 10px;
+          // transform: translateY(-50%);
           width: auto;
           margin-top: -22px;
           padding: 16px;
-          color: white;
           font-weight: bold;
-          font-size: 24px;
+          font-size: 20px;
           transition: 0.6s ease;
           border-radius: 0 3px 3px 0;
           user-select: none;
@@ -335,15 +347,15 @@ body[data-page="profile"] {
     }
 
     /* Number text (1/3 etc) */
-    .numbertext {
-      color: black;
-      font-size: 14px;
-      font-family: "Playfair Display", serif;
-      font-weight: bold;
-      padding: 8px 12px;
-      position: absolute;
-      top: 0;
-    }
+    // .numbertext {
+    //   color: black;
+    //   font-size: 14px;
+    //   font-family: "Playfair Display", serif;
+    //   font-weight: bold;
+    //   padding: 8px 12px;
+    //   position: absolute;
+    //   top: 0;
+    // }
 
     /* The dots/bullets/indicators */
     .dot {

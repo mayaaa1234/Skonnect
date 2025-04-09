@@ -1,3 +1,18 @@
+body[data-page="home"] {
+  // .slides,
+  // .slideshow,
+  // .slides-container {
+  //   border: 0 !important;
+  //
+  //   img {
+  //     border: 0 !important;
+  //   }
+  // }
+  .caption {
+    color: var(--primary);
+  }
+}
+
 [data-theme="dark"] {
   body[data-page="home"] {
     .card {
@@ -31,11 +46,6 @@
 
     svg:not(.default) {
       fill: black;
-    }
-
-    .dummy {
-      border: 1px solid black;
-      border-radius: 20px;
     }
   }
 }

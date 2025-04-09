@@ -29,10 +29,9 @@ export default async function openProjectsAndEventsData(): Promise<void> {
                 data-slide-number="${idx + 1}"
                 style="display: none;"
               >
-                <div class="numbertext">${idx + 1} / ${s.images.length}</div>
                 <img
                   src="${img.url}"
-                  class="br-20"
+                  class="br-5"
                   style="height: 300px; width: 100%"
                 />
               </div>
@@ -48,16 +47,15 @@ export default async function openProjectsAndEventsData(): Promise<void> {
 
         return `
             <div class="slideshow" data-slideshow-id="${s.id}">
-              <p class="caption">${s.caption ? s.caption : ""}</p>
               <div
                 class="slides-container"
-                style="height: 300px; width: 300px;"
+                style="height: 320px; width: 300px;"
               >
                 ${imagesDOM}
                 <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
                 <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
+              <p class="caption">${s.caption ? s.caption : ""}</p>
               </div>
-              <br />
               <div class="dots-container" style="text-align: center">
                 ${dotsDOM}
               </div>

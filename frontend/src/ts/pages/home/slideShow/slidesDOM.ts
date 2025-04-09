@@ -7,7 +7,7 @@ function initSlideSkeletons() {
   t.innerHTML = `
   <div class="slideshow" style="overflow: hidden" data-slideshow-id="">
     <p class="caption"></p>
-    <div class="skeleton" style="border-radius: 20px; height: 600px; width: 600px;"
+    <div class="skeleton" style="border-radius: 5px; height: 600px; width: 600px;"
       >
     </div>
     <br />
@@ -40,6 +40,7 @@ export default async function loadSlideshows(): Promise<void> {
     //   `;
     // }
 
+    // <div class="numbertext">${idx + 1} / ${s.images.length}</div>
     const slidesDOM = slideshows
       .map((s) => {
         const imagesDOM = s.images
@@ -51,11 +52,10 @@ export default async function loadSlideshows(): Promise<void> {
                 data-slide-number="${idx + 1}"
                 style="display: none;"
               >
-                <div class="numbertext">${idx + 1} / ${s.images.length}</div>
                 <img
                   src="${img.url}"
-                  class="br-20"
-                  style="height: 600px; width: 100%"
+                  class="br-default"
+                  style="height: 600px; width: 600px"
                 />
               </div>
             `;
@@ -70,13 +70,12 @@ export default async function loadSlideshows(): Promise<void> {
 
         return `
           <div class="slideshow" data-slideshow-id="${s.id}">
-              <p class="caption">${s.caption ? s.caption : ""}</p>
-              <div class="slides-container" style="height: 600px; width: 600px;">
+         <div class="slides-container" style="height: 635px; width: 600px;">
                   ${imagesDOM}
                   <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
                   <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
+              <p class="caption">${s.caption ? s.caption : ""}</p>
               </div>
-              <br />
               <div class="dots-container" style="text-align: center">
                 ${dotsDOM}
               </div>

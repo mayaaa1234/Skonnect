@@ -188,18 +188,29 @@ body[data-page="home"] {
       align-items: center;
       justify-content: center;
       gap: 60px;
+      border: 1px solid white;
 
       .slideshow {
-        height: auto;
-        // overflow: hidden;
+        overflow: hidden;
         // display: flex;
         // flex-direction: column;
 
+        .caption {
+          @extend %titles;
+          padding-left: 7px;
+
+          @include xs {
+            font-size: $font-size-md;
+          }
+
+          @include xl {
+            font-size: $font-size-lg;
+            text-align: center;
+          }
+        }
+
         .slides-container {
           // width: 100% !important;
-
-          // border: 3px solid red !important;
-
           position: relative;
           @include max-bp(640px) {
             width: min(100%, 600px) !important;
@@ -209,31 +220,12 @@ body[data-page="home"] {
           .slides {
             // width: 100% !important;
             display: none;
-
             img {
               // width: min(100%, 600px) !important;
               // border: 6px solid var(--secondary);
-              border: 30px solid white !important;
-              border-bottom: 75px solid white !important;
+              // border: 30px solid white !important;
+              // border-bottom: 75px solid white !important;
               border-radius: 5px;
-            }
-          }
-
-          .caption {
-            position: absolute;
-            bottom: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            @extend %titles;
-            padding-left: 7px;
-
-            @include xs {
-              font-size: $font-size-md;
-            }
-
-            @include xl {
-              font-size: $font-size-lg;
-              text-align: center;
             }
           }
 
@@ -241,13 +233,11 @@ body[data-page="home"] {
           .next {
             cursor: pointer;
             position: absolute;
-            bottom: 0;
-            transform: translateY(-50%);
+            top: 50%;
             width: auto;
             margin-top: -22px;
             padding: 16px;
-            // border: 2px solid red;
-            color: black;
+            color: white;
             font-weight: bold;
             font-size: 24px;
             transition: 0.6s ease;

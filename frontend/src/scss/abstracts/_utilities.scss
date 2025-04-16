@@ -160,6 +160,7 @@ $utilities: (
       //default is 5px
       "default": $base-border-radius,
       "none": 0,
+      "5": 5px,
       "10": $base-border-radius * 2,
       "15": $base-border-radius * 3,
       "20": $base-border-radius * 4,
@@ -317,6 +318,8 @@ $utilities: (
     "values": (
       "s": start,
       "e": end,
+      "fe": flex-end,
+      "fs": flex-start,
       "c": center,
       "st": stretch,
       "b": baseline,

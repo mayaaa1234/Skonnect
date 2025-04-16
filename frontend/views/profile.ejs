@@ -3,9 +3,13 @@
     <!--HEAD-->
     <%- include('./partials/head.ejs') %>
     <body class="" data-page="profile">
-        <%- include('./partials/nav.ejs') %>
-        <div class="container mt-2">
-            <button class="btn-no-hover profile-btn-show-sidebar">
+        <%- include('./partials/nav.ejs')%>
+
+        <!-- // -->
+
+        <% if(user.isAdmin){ %>
+        <div class="show-sidebar-container container">
+            <button class="btn-no-hover mt-2 profile-btn-show-sidebar">
                 <svg
                     class="profile-expand-icon"
                     height="30px"
@@ -19,10 +23,11 @@
                 </svg>
             </button>
         </div>
+        <% } %>
 
         <%- include('./partials/sidebar.ejs') %>
 
-        <div id="data-container" class="pt-2">
+        <div id="data-container" class="mb-2 pt-2">
             <!-- data'll appear here -->
         </div>
 

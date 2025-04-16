@@ -34,10 +34,18 @@ body[data-page="profile"] {
         // &:hover {
         //   color: var(--foreground) !important;
         //
-        //   svg:not(.def) {
-        //     fill: var(--foreground) !important;
-        //   }
-        // }
+        svg:not(.def) {
+          // svg {
+          fill: white !important;
+        }
+
+        svg.def {
+          stroke: white !important;
+        }
+
+        span {
+          color: white !important;
+        }
       }
     }
   }
@@ -60,15 +68,6 @@ body[data-page="profile"] {
   }
 
   // SLIDESHOWS
-
-  .slideshows-control-container {
-    background-color: var(--secondary);
-  }
-
-  .slideshow-container {
-    background-color: var(--secondary);
-    // border: 1px solid var(--foreground);
-  }
 }
 
 [data-theme="dark"] {
@@ -149,5 +148,9 @@ body[data-page="profile"] {
   .slides > img {
     border: 20px solid white !important;
     border-bottom: 45px solid white !important;
+  }
+
+  .slideshow-container {
+    background-color: var(--secondary) !important;
   }
 }

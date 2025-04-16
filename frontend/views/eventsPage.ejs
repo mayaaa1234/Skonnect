@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" data-page="profile" data-theme="dark" class="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body class="" data-page="events">
+        <%- include('./partials/nav.ejs')%>
+
+        <!-- // -->
+
+        <section class="events pt-2 pb-5">
+            <h1
+                class="hidden fs-2-xs fs-3-lg ta-c col-12-xs gradient-text pt-2"
+            >
+                Projects & Events
+            </h1>
+
+            <div class="slideshow-container"></div>
+        </section>
+
+        <!--FOOTER-->
+        <%- include('./partials/footer.ejs') %>
+
+        <script type="module" src="app.bundle.js"></script>
+        <script type="module" src="nav.bundle.js"></script>
+        <script defer type="module" src="home.bundle.js"></script>
+    </body>
+</html>

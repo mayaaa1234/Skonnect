@@ -10,8 +10,9 @@ import {
   profilePage,
   aboutPage,
   budgetAllocationPage,
-  projectsPage,
-  suggestionPage,
+  councilPage,
+  concernsPage,
+  eventsPage,
 } from "../controllers/pages.ts";
 
 router.get("/", redirectAuth(), landingPage);
@@ -22,8 +23,10 @@ router.get("/login", redirectAuth(), loginPage);
 router.get("/profile", redirectAuth(), authUser, profilePage);
 router.get("/home", redirectAuth(), homePage);
 router.get("/about", redirectAuth(), aboutPage);
+
 router.get("/annual-budget-allocation", redirectAuth(), budgetAllocationPage);
-router.get("/projects-and-events", redirectAuth(), projectsPage);
-router.get("/submit-suggestions", redirectAuth(), suggestionPage);
+router.get("/projects-and-events", redirectAuth(), eventsPage);
+router.get("/concerns-or-suggestions", redirectAuth(), concernsPage);
+router.get("/council-information", redirectAuth(), councilPage);
 
 export default router;

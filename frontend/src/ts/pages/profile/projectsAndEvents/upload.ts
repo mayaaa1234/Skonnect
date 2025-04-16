@@ -1,7 +1,13 @@
+import { warn } from "console";
+import { notifyError, notifySuccess, notifyInfo } from "@utils/showNotif.ts";
+
 export default function uploadEventListener() {
   const overlay = document.getElementById("upload-popup-overlay")!;
   const openPopup = document.getElementById("btn-open-upload-popup");
   const editSlideshows = document.getElementById("btn-edit-slideshows");
+  const inputCaption = document.querySelector(
+    ".upload-input-caption",
+  ) as HTMLInputElement;
 
   const dropZone = document.getElementById("drop-zone") as HTMLElement;
   const nav = document.querySelector("nav")!;
@@ -13,8 +19,8 @@ export default function uploadEventListener() {
     return;
   }
   openPopup.addEventListener("click", () => {
-    console.log("test bs");
     overlay?.classList.add("show");
+    inputCaption?.focus();
   });
 
   document.addEventListener("click", (e) => {
@@ -48,10 +54,18 @@ export default function uploadEventListener() {
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const inputCaption = document.querySelector(
+      ".upload-input-caption",
+    ) as HTMLInputElement;
     const fileInput = document.getElementById(
       "image-upload",
     ) as HTMLInputElement;
     const files = fileInput.files;
+
+    if (!inputCaption.value.trim()) {
+      alert("Please enter a caption.");
+      return;
+    }
 
     if (!files || files.length === 0) {
       alert("Please select a file.");
@@ -69,10 +83,15 @@ export default function uploadEventListener() {
       }
     }
 
+    // add in the caption and the images
     const formData = new FormData();
-
+    formData.append("caption", inputCaption.value.trim());
     for (const file of fileArray) {
       formData.append("images", file);
+    }
+
+    for (const [k, v] of (formData as any).entries()) {
+      console.log(`${k}:`, v);
     }
 
     try {
@@ -81,8 +100,15 @@ export default function uploadEventListener() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Upload failed.");
+      if (!res.ok) {
+        notifyError("Something went wrong. please try again later.");
+        overlay?.classList.remove("show");
+        throw new Error("Upload failed.");
+      }
 
+      // Success??
+      overlay?.classList.remove("show");
+      notifyInfo("Uploading files...");
       const result = await res.json();
       console.log("Upload success:", result);
     } catch (err) {
@@ -90,7 +116,7 @@ export default function uploadEventListener() {
     }
   });
 
-  // IMAGE PREVIEWS
+  // DROPPPING IMAGES AND IMAGE PREVIEWS
 
   const fileInput = document.getElementById("image-upload") as HTMLInputElement;
 

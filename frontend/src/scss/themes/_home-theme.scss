@@ -1,9 +1,4 @@
 body[data-page="home"] {
-  .caption,
-  .prev,
-  .next {
-    color: var(--foreground);
-  }
 }
 
 [data-theme="dark"] {
@@ -14,22 +9,16 @@ body[data-page="home"] {
       // background-color: var(--secondary);
     }
 
-    .slides img {
-      border: 2px solid gray !important;
-      // border: 2px solid var(--accent) !important;
-    }
+    // .slides img {
+    //   border: 2px solid gray !important;
+    //   // border: 2px solid var(--accent) !important;
+    // }
 
     section.services {
       // background-color: var(--tertiary);
     }
 
     // SLIDESHOWS
-    .slides > img {
-      // border: 30px solid var(--neutral-light-1) !important;
-      border: 30px solid color-mix(in srgb, white 80%, black 20%) !important ;
-      // border-bottom: 75px solid var(--neutral-light-1) !important;
-      border-bottom: 75px solid color-mix(in srgb, white 80%, black 20%) !important;
-    }
   }
 }
 
@@ -50,9 +39,5 @@ body[data-page="home"] {
     }
 
     // SLIDESHOWS
-    .slides > img {
-      border: 30px solid white !important;
-      border-bottom: 75px solid white !important;
-    }
   }
 }

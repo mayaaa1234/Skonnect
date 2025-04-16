@@ -1,6 +1,8 @@
 import { Slideshow, fetchAllSlideShows } from "./fetchSlides.ts";
-// import { html } from "lit-html";
-const container = document.querySelector(".slideshow-container") as HTMLElement;
+import { html } from "lit-html";
+const slideshowContainer = document.querySelector(
+  ".slideshow-container",
+) as HTMLElement;
 
 function initSlideSkeletons() {
   const t = document.createElement("template");
@@ -20,12 +22,12 @@ function initSlideSkeletons() {
 `;
 
   for (let i = 0; i < 3; i++) {
-    container.appendChild(t.content.cloneNode(true));
+    slideshowContainer.appendChild(t.content.cloneNode(true));
   }
 }
 
 export default async function loadSlideshows(): Promise<void> {
-  if (!container) {
+  if (!slideshowContainer) {
     console.log("no container found");
     return;
   }
@@ -41,6 +43,9 @@ export default async function loadSlideshows(): Promise<void> {
     // }
 
     // <div class="numbertext">${idx + 1} / ${s.images.length}</div>
+    //
+    //
+
     const slidesDOM = slideshows
       .map((s) => {
         const imagesDOM = s.images
@@ -55,7 +60,7 @@ export default async function loadSlideshows(): Promise<void> {
                 <img
                   src="${img.url}"
                   class="br-default"
-                  style="height: 600px; width: 600px"
+                  style="height: 800px; width: 900px"
                 />
               </div>
             `;
@@ -68,23 +73,42 @@ export default async function loadSlideshows(): Promise<void> {
           })
           .join("");
 
+        //       const allImagesView = s.images
+        //         .map(
+        //           (img) => `
+        //     <img
+        //       src="${img.url}"
+        //       class="br-default"
+        //       style="height: 200px; width: 200px;"
+        //     />
+        // `,
+        //         )
+        //         .join("");
+
         return `
           <div class="slideshow" data-slideshow-id="${s.id}">
-         <div class="slides-container" style="height: 635px; width: 600px;">
-                  ${imagesDOM}
-                  <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
-                  <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
+            <div class="slides-container" style="height: 835px; width: 900px;">
+              ${imagesDOM}
+              <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
+              <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
               <p class="caption">${s.caption ? s.caption : ""}</p>
-              </div>
-              <div class="dots-container" style="text-align: center">
-                ${dotsDOM}
-              </div>
+            </div>
+            <div class="dots-container" style="text-align: center">
+              ${dotsDOM}
+            </div>
           </div>
+
+
         `;
       })
       .join("");
 
+    // <div class="images-container">
+    //   ${allImagesView}
+    // </div>
     // console.log({ slidesDOM });
+
+    // ----------------------------------------------
 
     // if (!slideshows.length) {
     //   const container = document.querySelector(".container.events")!;
@@ -97,7 +121,8 @@ export default async function loadSlideshows(): Promise<void> {
     //     `,
     //   );
     // }
-    container.innerHTML = slidesDOM;
+
+    slideshowContainer.innerHTML = slidesDOM;
   } catch (error) {
     console.error("Error in loadSlideshows:", error);
   }

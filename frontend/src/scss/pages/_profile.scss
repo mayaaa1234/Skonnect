@@ -4,16 +4,49 @@
 // @use "sass:math";
 
 body[data-page="profile"] {
+  @include xxl {
+    .show-sidebar-container {
+      z-index: 10;
+      position: fixed;
+      background-color: var(--neutral);
+      width: 65px;
+      height: 100vh;
+      top: $nav-height;
+    }
+    //   display: grid;
+    //   grid-template-areas:
+    //     "show-sidebar main"
+    //     "footer footer";
+    //   grid-template-rows: 1fr auto;
+    //   grid-template-columns: 65px 1fr;
+    //
+    //   .show-sidebar-container {
+    //     background-color: var(--neutral) !important;
+    //   }
+    //
+    //   footer {
+    //     grid-area: footer;
+    //   }
+    //
+    #data-container {
+      height: auto;
+      @include mobile {
+        height: 100dvh !important;
+      }
+    }
+  }
+
   &:is(button, input):focus {
     outline: none !important;
   }
-  // @include mobile {
-  //   height: 100dvh !important;
+
+  // @include mobile{
+  //   // height: 100dvh !important;
   //   // padding-top: $nav-height !important;
   // }
+
   #data-container {
-    // border: 1px solid white;
-    // width: 100%;
+    height: auto;
     min-height: 800px; // for stability when clearing
 
     // becuase of this the direct child of the
@@ -52,7 +85,7 @@ $sidebar-width: min(350px, 80%);
   left: calc(-1 * #{$sidebar-width});
   transition: left 0.3s ease;
   overflow: hidden auto; // x, y
-  z-index: 9998;
+  z-index: 9997;
   padding-top: 20px;
 
   .sidebar-btn-hide-sidebar {
@@ -201,192 +234,5 @@ $sidebar-width: min(350px, 80%);
 //   then put the bgc into -theme
 
 body[data-page="profile"] {
-  .user-table {
-    height: auto;
-    border-collapse: collapse;
-    margin-inline: auto;
-    width: min(100%, 1000px);
-    table-layout: fixed;
-
-    thead {
-      // border-bottom: 2px solid #ccc;
-
-      tr {
-        text-align: left;
-      }
-
-      th {
-        padding: 12px 15px;
-        font-weight: bold;
-        border: 3px solid white;
-      }
-    }
-
-    tbody {
-      tr {
-        // border: 1px solid #ccc;
-
-        td {
-          padding: 12px 15px;
-          border: 1px solid white;
-        }
-      }
-    }
-  }
-
-  // SLIDESHOWS (THIS IS A SLIGHTLY DIFF VER FROM THE
-  // SLIDESHOWS IN HOMEPAGE)
-
-  .projects-and-events-container > * {
-    // border: 1px solid white;
-    margin-inline: auto;
-  }
-
-  .slideshows-control-container {
-    // border: 1px solid white;
-    border-radius: 20px;
-    max-width: 1400px;
-    padding: 24px;
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: end;
-
-    .control-btn-container {
-      display: flex;
-      gap: 15px;
-    }
-
-    button {
-      width: 100px;
-    }
-  }
-
-  %titles {
-    padding-bottom: 5px;
-    font-weight: bold;
-  }
-
-  .slideshow-container {
-    padding: 24px;
-    width: 100%;
-    max-width: 1400px;
-    border-radius: 20px;
-    // border: 1px solid red;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, auto));
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    // gap: 60px;
-
-    .slideshow {
-      // overflow: hidde;
-      // border: 1px solid white;
-
-      .caption {
-        @extend %titles;
-        padding-left: 7px;
-        position: absolute;
-        bottom: 6%;
-        left: 50%;
-        transform: translateX(-50%);
-        // color: var(--fore);
-
-        // @include xs {
-        //   font-size: $font-size-xs;
-        // }
-
-        @include xl {
-          font-size: $font-size-md;
-          text-align: center;
-        }
-      }
-
-      .slides-container {
-        // border: 1px solid white;
-        position: relative;
-
-        .slides {
-          display: none;
-
-          img {
-            border-radius: 5px;
-          }
-        }
-
-        .prev,
-        .next {
-          cursor: pointer;
-          position: absolute;
-          bottom: 10px;
-          // transform: translateY(-50%);
-          width: auto;
-          margin-top: -22px;
-          padding: 16px;
-          font-weight: bold;
-          font-size: 20px;
-          transition: 0.6s ease;
-          border-radius: 0 3px 3px 0;
-          user-select: none;
-
-          &:hover {
-            border-radius: 8px;
-            opacity: 0.8;
-            background-color: var(--accent);
-          }
-        }
-
-        .next {
-          right: 0;
-          border-radius: 3px 0 0 3px;
-        }
-      }
-    }
-
-    /* Number text (1/3 etc) */
-    // .numbertext {
-    //   color: black;
-    //   font-size: 14px;
-    //   font-family: "Playfair Display", serif;
-    //   font-weight: bold;
-    //   padding: 8px 12px;
-    //   position: absolute;
-    //   top: 0;
-    // }
-
-    /* The dots/bullets/indicators */
-    .dot {
-      cursor: pointer;
-      height: 15px;
-      width: 15px;
-      margin: 0 2px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.6s ease;
-
-      &.active {
-        background-color: var(--accent);
-      }
-
-      &:hover {
-        background-color: #717171;
-      }
-    }
-
-    /* Fading animation */
-    .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-
-    @keyframes fade {
-      from {
-        opacity: 0.4;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  }
+  // PROJECTS AND EVENTS
 }

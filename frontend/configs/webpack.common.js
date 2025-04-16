@@ -48,6 +48,10 @@ const config = {
 
   resolve: {
     extensions: [".scss", ".tsx", ".jsx", ".ts", ".js", ".hbs"],
+    alias: {
+      "@utils": path.resolve(process.cwd(), "frontend/src/ts/utils"),
+      "@ts": path.resolve(process.cwd(), "frontend/src/ts"),
+    },
   },
 
   stats: {

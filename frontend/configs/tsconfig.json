@@ -5,10 +5,8 @@
     "moduleResolution": "nodenext", /* Specify how TypeScript looks up a file from a given module specifier. */
     "rootDir": "../",
     "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "esnext"
+      "DOM",
+      "ESNEXT"
     ],
     "typeRoots": [
       "../../node_modules/@types",
@@ -17,10 +15,10 @@
       "node",
       // "../types/serverError.d.ts"
     ],
-    "baseUrl": "./",
+    "baseUrl": "../src",
     "paths": {
-      "@ts/*": [
-        "frontend/src/ts/*"
+      "@utils/*": [
+        "ts/utils/*"
       ]
     },
     "noEmit": true,

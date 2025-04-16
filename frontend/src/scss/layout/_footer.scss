@@ -1,8 +1,12 @@
+@use "../abstracts/mixins" as *;
+
 %footer-layout {
   display: grid;
   place-content: center;
   padding-top: 40px;
   padding-bottom: 20px;
+  height: auto;
+  // width: 100%;
   // margin-top: 30px;
 }
 
@@ -10,14 +14,14 @@
   footer {
     background-color: var(--tertiary) !important;
     box-shadow: none !important;
-    border-top: none !important;
+    // border-top: none !important;
   }
 }
 
 footer {
   // position: absolute;
   // bottom: 0;
-  box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
+  // box-shadow: 0px -2px 4px rgba(0, 130, 159, 0.1);
   @extend %footer-layout;
 
   .socials {

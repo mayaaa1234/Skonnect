@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "username":
         if (!value) {
           showError(field, "field can't be empty.");
-        } else if (!field.validity.valid) {
+        } else if (value.length < 4) {
           showError(field, "username must be at least 4 characters long.");
         } else {
           clearError(field);

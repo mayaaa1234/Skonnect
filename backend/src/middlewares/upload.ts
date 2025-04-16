@@ -4,17 +4,21 @@ import path from "path";
 // Storage configuration
 const storage = multer.memoryStorage(); // Stores files in memory as buffer
 
-// File filter to allow only specific file types (optional)
+// File filter to allow only specific file types
 const fileFilter = (
   _req: Express.Request,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback,
 ) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Invalid file type. Only JPG, PNG, and WEBP are allowed."));
+    cb(
+      new Error(
+        "Invalid file type. Only, JPEG, JPG, PNG, and WEBP are allowed.",
+      ),
+    );
   }
 };
 
@@ -25,7 +29,11 @@ const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024 }, // 15MB file size limit
 });
 
-const uploadMultiple = upload.array("images", 6);
+// NOTE:
+// just gonna use upload.array cause upload.field too much for this projects usecase
+//it's typed as: { [fieldname: string]: Express.Multer.File[] }
+
+const uploadMany = upload.array("images", 8);
 //export const uploadSingle = upload.single("file"); // not used
 
-export default uploadMultiple;
+export default uploadMany;

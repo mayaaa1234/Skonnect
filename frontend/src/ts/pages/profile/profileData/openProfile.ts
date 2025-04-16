@@ -11,7 +11,6 @@ export default async function openProfileData(): Promise<void> {
     }
     const user = await response.json();
 
-    // Determine profile image and username display based on admin status
     const profileImg = user.isAdmin
       ? "assets/img/makise.jpg"
       : "assets/img/default-profile1.png";

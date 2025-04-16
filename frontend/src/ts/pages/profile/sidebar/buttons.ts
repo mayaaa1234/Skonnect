@@ -8,8 +8,6 @@ import {
   fetchAllSlideShows,
 } from "../../home/slideShow/fetchSlides.ts";
 
-import initSlideIndexesAndEvents from "../../home/slideShow/slideEvents.ts";
-
 const dataPage = document.documentElement.dataset.page;
 const dom = document.documentElement;
 

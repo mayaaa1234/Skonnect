@@ -1,8 +1,11 @@
 @use "../abstracts/mixins" as *;
 @use "../abstracts/variables" as *;
-// @use "../layout/nav" as *;
+@use "../layout/nav" as *;
 
 body[data-page="home"] {
+  display: flex;
+  flex-direction: column;
+
   %titles {
     padding-bottom: 5px;
     font-weight: bold;
@@ -93,10 +96,7 @@ body[data-page="home"] {
   }
 
   section.services {
-    height: auto;
-    @include lg {
-      height: 750px !important ;
-    }
+    flex: 1;
 
     h3 {
       // border-bottom: 1 solid rgba(var(--accent), 0.1);
@@ -162,165 +162,6 @@ body[data-page="home"] {
   }
 
   // ------------------------------------------------------------------------ //
-
-  section.events {
-    background-color: var(--secondary);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 60px;
-
-    h2 {
-      //  60px gap + 12px mb which is 72px
-      // (matches with explore skconnect text mb px)
-      margin-bottom: 12px;
-    }
-
-    // ---------------------
-    // SLIDESHOWS |
-    // ---------------------
-
-    .slideshow-container {
-      min-height: 600px; // for layout stability
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 60px;
-
-      .slideshow {
-        height: auto;
-        // overflow: hidden;
-        // display: flex;
-        // flex-direction: column;
-
-        .slides-container {
-          // width: 100% !important;
-
-          // border: 3px solid red !important;
-
-          position: relative;
-          @include max-bp(640px) {
-            width: min(100%, 600px) !important;
-            min-width: 300px;
-          }
-
-          .slides {
-            // width: 100% !important;
-            display: none;
-
-            img {
-              // width: min(100%, 600px) !important;
-              border-radius: 5px;
-            }
-          }
-
-          .caption {
-            position: absolute;
-            bottom: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            @extend %titles;
-            padding-left: 7px;
-
-            @include xs {
-              font-size: $font-size-md;
-            }
-
-            @include xl {
-              font-size: $font-size-lg;
-              text-align: center;
-            }
-          }
-
-          .prev,
-          .next {
-            cursor: pointer;
-            position: absolute;
-            bottom: 0;
-            transform: translateY(-50%);
-            width: auto;
-            margin-top: -22px;
-            padding: 16px;
-            font-weight: bold;
-            font-size: 24px;
-            transition: 0.6s ease;
-            border-radius: 0 3px 3px 0;
-            user-select: none;
-
-            &:hover {
-              border-radius: 8px;
-              opacity: 0.8;
-              background-color: var(--accent);
-            }
-          }
-
-          .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
-          }
-        }
-      }
-    }
-
-    /* Caption text */
-    .text {
-      color: #f2f2f2;
-      font-size: 15px;
-      padding: 8px 12px;
-      position: absolute;
-      bottom: 8px;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* Number text (1/3 etc) */
-    .numbertext {
-      color: black;
-      font-size: 22px;
-      font-family: "Playfair Display", serif;
-      font-weight: bold;
-      padding: 8px 12px;
-      position: absolute;
-      top: 0;
-    }
-
-    /* The dots/bullets/indicators */
-    .dot {
-      cursor: pointer;
-      height: 15px;
-      width: 15px;
-      margin: 0 2px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.6s ease;
-
-      &.active {
-        background-color: var(--accent);
-      }
-
-      &:hover {
-        background-color: #717171;
-      }
-    }
-
-    /* Fading animation */
-    .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-
-    @keyframes fade {
-      from {
-        opacity: 0.4;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  }
 
   // Carousel
 

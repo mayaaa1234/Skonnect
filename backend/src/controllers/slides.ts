@@ -113,14 +113,14 @@ export async function getAllSlideshows(
       SELECT id, caption FROM slideshows
       ORDER BY id DESC
     `);
-  console.log({ slideshows });
+  // console.log({ slideshows });
 
   // get all images id
   const [images] = await pool.execute<RowDataPacket[]>(`
       SELECT id, slideshow_id FROM slideshow_images
       ORDER BY slideshow_id
     `);
-  console.log({ images });
+  // console.log({ images });
 
   // structure the response with image references
   const response = slideshows.map((slideshow) => ({
@@ -171,4 +171,30 @@ export async function getSlideshowImage(req: Request, res: Response) {
   res.setHeader("Cache-Control", "public, max-age=31536000"); // 1 year cache
   res.setHeader("Content-Length", imageBuffer.length);
   res.send(imageBuffer);
+}
+
+export async function deleteSlideshow(req: Request, res: Response) {
+  const { id } = req.params;
+
+  if (!Number.isInteger(Number(id))) {
+    throw mkCustomError({ status: 400, msg: "Invalid slideshow ID format" });
+  }
+
+  const [check] = await pool.execute<RowDataPacket[]>(
+    "SELECT id FROM slideshows WHERE id = ?",
+    [id],
+  );
+  if (!check.length) {
+    throw mkCustomError({ status: 404, msg: "Slideshow not found." });
+  }
+
+  // delete all related images
+  await pool.execute("DELETE FROM slideshow_images WHERE slideshow_id = ?", [
+    id,
+  ]);
+
+  // delete the slideshow
+  await pool.execute("DELETE FROM slideshows WHERE id = ?", [id]);
+
+  res.json({ success: true });
 }

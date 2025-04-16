@@ -34,7 +34,7 @@ if (process.env.NODE_ENV !== "production") {
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       lrserver.refresh("frontend/");
-    }, 5);
+    }, 15);
   });
   app.use(connectLivereload());
 
@@ -42,8 +42,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // routers
-import auth from "./routes/auth.ts";
 import pages from "./routes/pages.ts";
+import auth from "./routes/auth.ts";
 import user from "./routes/users.ts";
 import slides from "./routes/slides.ts";
 

@@ -1,0 +1,39 @@
+@use "../abstracts/mixins" as *;
+
+body[data-page="events"] {
+  .caption,
+  .prev,
+  .next {
+    color: var(--foreground);
+  }
+}
+
+[data-theme="dark"] {
+  body[data-page="events"] {
+    .slides > img {
+      border: 30px solid var(--neutral-light-1) !important;
+      border-bottom: 75px solid var(--neutral-light-1) !important;
+    }
+
+    @include max-bp("514px") {
+      .slides > img {
+        border: 0 !important;
+      }
+    }
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="events"] {
+    .slides > img {
+      border: 30px solid white !important;
+      border-bottom: 75px solid white !important;
+    }
+
+    @include max-bp("514px") {
+      .slides > img {
+        border: 0 !important;
+      }
+    }
+  }
+}

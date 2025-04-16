@@ -108,13 +108,16 @@ $letter-spacing: (
   }
 }
 
+.muted {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-// Text Transform Utilities
 .text-transform-upper {
   text-transform: uppercase;
 }

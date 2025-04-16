@@ -36,7 +36,8 @@ const redirectAuth = () => {
       "/profile",
       "/annual-budget-allocation",
       "/projects-and-events",
-      "/submit-suggestions",
+      "/concerns-or-suggestions",
+      "/council-information",
     ];
 
     // Landing page: if authenticated, redirect to home

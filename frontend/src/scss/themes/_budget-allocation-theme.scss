@@ -21,5 +21,6 @@ body[data-page="budget-allocation"] {
   .btn-save-dark-5-no-hover {
     color: rgba(255, 255, 255, 0.4);
     cursor: unset;
+    pointer-events: none;
   }
 }

@@ -54,6 +54,34 @@
       background-color: $val;
     }
   }
+
+  // Generate dark variations
+  @for $i from 1 through 9 {
+    .btn-#{$key}-dark-#{$i} {
+      @include btn(color.adjust($val, $lightness: -($i * 5)));
+      &:hover {
+        background-color: color.adjust($val, $lightness: -(($i * 5) - 5));
+      }
+    }
+
+    .btn-#{$key}-dark-#{$i}-no-hover {
+      @include btn(color.adjust($val, $lightness: -($i * 5)));
+    }
+  }
+
+  // Generate light variations
+  @for $i from 1 through 9 {
+    .btn-#{$key}-light-#{$i} {
+      @include btn(color.adjust($val, $lightness: $i * 5));
+      &:hover {
+        background-color: color.adjust($val, $lightness: ($i * 5) + 5);
+      }
+    }
+
+    .btn-#{$key}-light-#{$i}-no-hover {
+      @include btn(color.adjust($val, $lightness: $i * 5));
+    }
+  }
 }
 
 // CLASS BASED THEMING

@@ -7,8 +7,10 @@
 }
 
 body[data-page="events"] {
-  section.events {
-    background-color: var(--secondary);
+  h1 {
+    margin-inline: auto;
+  }
+  .events {
     display: flex;
     flex-wrap: wrap;
     align-items: center;

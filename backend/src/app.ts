@@ -34,7 +34,7 @@ if (process.env.NODE_ENV !== "production") {
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       lrserver.refresh("frontend/");
-    }, 15);
+    }, 45);
   });
   app.use(connectLivereload());
 
@@ -46,10 +46,12 @@ import pages from "./routes/pages.ts";
 import auth from "./routes/auth.ts";
 import user from "./routes/users.ts";
 import slides from "./routes/slides.ts";
+import budgetAllocation from "./routes/budgetAllocation.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
+import { budgetAllocationPage } from "./controllers/pages.ts";
 
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir
@@ -84,6 +86,7 @@ app.use("/", pages);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", user);
 app.use("/api/v1/slides", slides);
+app.use("/api/v1/budgetAllocation", budgetAllocation);
 
 //errors
 app.use(notFound);

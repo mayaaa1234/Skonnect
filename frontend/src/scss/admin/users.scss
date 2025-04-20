@@ -1,34 +1,14 @@
 body[data-page="profile"] {
   .user-table {
     height: auto;
-    border-collapse: collapse;
     margin-inline: auto;
     width: min(100%, 1000px);
     table-layout: fixed;
 
-    thead {
-      // border-bottom: 2px solid #ccc;
-
-      tr {
-        text-align: left;
-      }
-
-      th {
-        padding: 12px 15px;
-        font-weight: bold;
-        border: 3px solid white;
-      }
-    }
-
-    tbody {
-      tr {
-        // border: 1px solid #ccc;
-
-        td {
-          padding: 12px 15px;
-          border: 1px solid white;
-        }
-      }
+    th,
+    td {
+      padding: 12px 15px;
+      font-weight: bold;
     }
   }
 }

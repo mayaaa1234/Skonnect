@@ -2,29 +2,64 @@
 @use "../abstracts/variables" as *;
 @use "../layout/nav" as *;
 
-body[data-page="budget-alloc"] {
+body[data-page="profile"] {
   @include mobile {
     min-height: 100dvh !important;
   }
 
-  header,
-  main {
-    // border: 1px solid white;
-  }
-
-  main {
-  }
-
   table {
-    // border: 1px solid white;
-    // width: min(100%, 900px);
+    width: 100%;
   }
-  td {
+
+  .table-wrapper {
+    width: min(90%, 1400px);
+  }
+
+  .table-controls {
+    flex-wrap: wrap;
+    p {
+      margin-right: auto;
+    }
   }
 
   th,
   td {
     text-align: center;
     padding: 8px;
+
+    input {
+      width: 100%;
+      border: none;
+      text-align: center;
+      font: inherit;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  @include max-bp("500px") {
+    td input,
+    th input {
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  tr {
+    position: relative !important;
+
+    svg.del-icon {
+      position: absolute !important;
+      right: -35px;
+      @include max-bp("450px") {
+        right: -28px;
+      }
+      top: 50%;
+      transform: translateY(-50%); /* To adjust the icon vertically if needed */
+    }
   }
 }

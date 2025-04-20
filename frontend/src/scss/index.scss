@@ -29,6 +29,7 @@
 @forward "pages/profile";
 @forward "pages/about";
 @forward "pages/events";
+@forward "pages/budgetAllocation";
 
 // themes
 @forward "themes/gen-themes";
@@ -39,6 +40,7 @@
 @forward "themes/profile-theme";
 @forward "themes/footer-theme";
 @forward "themes/events-theme";
+@forward "themes/budget-allocation-theme";
 
 // admin
 // @forward "admin/profile.scss";

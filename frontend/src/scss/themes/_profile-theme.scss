@@ -42,7 +42,6 @@ body[data-page="profile"] {
         svg.def {
           stroke: white !important;
         }
-
         span {
           color: white !important;
         }
@@ -152,5 +151,9 @@ body[data-page="profile"] {
 
   .slideshow-container {
     background-color: var(--secondary) !important;
+  }
+
+  footer {
+    background-color: var(--primary) !important;
   }
 }

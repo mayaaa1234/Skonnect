@@ -32,8 +32,6 @@ export default async function loadSlideshows(): Promise<void> {
     return;
   }
 
-  initSlideSkeletons();
-
   try {
     const slideshows: Slideshow[] = await fetchAllSlideShows();
     // if (!slideshows[0]) {
@@ -45,6 +43,25 @@ export default async function loadSlideshows(): Promise<void> {
     // <div class="numbertext">${idx + 1} / ${s.images.length}</div>
     //
     //
+
+    if (!slideshows.length) {
+      console.log("empty");
+
+      const container = document.querySelector(
+        ".slideshow-container",
+      ) as HTMLElement;
+      container.insertAdjacentHTML(
+        "beforeend",
+        `
+          <h2 class="mb-4 ta-c">Empty...</h2>
+          </br>
+          </br>
+        `,
+      );
+      return;
+    }
+
+    initSlideSkeletons();
 
     const slidesDOM = slideshows
       .map((s) => {

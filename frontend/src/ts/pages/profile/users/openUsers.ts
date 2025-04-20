@@ -14,7 +14,7 @@ export default async function openUsersData(): Promise<void> {
     container.innerHTML = `
 
       <div class="container">
-        <table class="user-table ">
+        <table border="1" cellspacing="0" class="user-table ">
           <thead>
             <tr >
               <th class="" style="width: 20%;">ID</th>
@@ -38,7 +38,7 @@ export default async function openUsersData(): Promise<void> {
             <tr>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.id}</td>
               <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.username}</td>
-              <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
+              <td class="ullipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.isAdmin}</td>
             </tr>
             `,

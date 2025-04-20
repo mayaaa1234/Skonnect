@@ -1,0 +1,25 @@
+body[data-page="profile"],
+body[data-page="budget-allocation"] {
+  th input,
+  td input {
+    background: transparent;
+    color: var(--foreground);
+    caret-color: var(--foreground);
+    &:focus {
+      // color:;
+    }
+  }
+
+  .table-controls p {
+    border-left: 4px solid var(--accent);
+    padding-left: 8px;
+    padding-top: 4px;
+    // height: 0.9rem;
+    // line-height: normal;
+  }
+
+  .btn-save-dark-5-no-hover {
+    color: rgba(255, 255, 255, 0.4);
+    cursor: unset;
+  }
+}

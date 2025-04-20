@@ -163,7 +163,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       container.insertAdjacentHTML(
         "beforeend",
         `
-          <h1 class="mt-3 ta-c">Empty...</h1>
+          <h2 class="mt-3 ta-c">Empty...</h2>
           </br>
           </br>
         `,

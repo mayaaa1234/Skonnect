@@ -219,7 +219,7 @@ function initSaveBtnEventListener() {
             itemsEl.value.trim(),
           );
         }
-        notifySuccess("Updated successfully");
+        // notifySuccess("Updated successfully");
       } catch (error) {
         notifyError("Update failed, please try again");
         console.error({ error });
@@ -261,25 +261,44 @@ function initAddRowBtnEventListener() {
               data-original-value=""
               maxlength="155"
               type="text"
+
             />
+<button class="btn-no-hover btn-del">
+<svg class='del-icon' height="24px" viewBox="0 -960 960 960" width="24px" fill="#D16D6A"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+</button>
+
           </td>
         </tr>
       `,
     );
+
+    const newRow = tbody.lastElementChild!;
+    const amountInput = newRow.querySelector<HTMLInputElement>(".amount-input");
+    if (amountInput) attachNumberFormatting(amountInput);
   });
 }
 
 function initDeleteBtnEventListener() {
-  const table = document.querySelector("table") as HTMLTableElement;
-  // const delBtn = document.querySelector(".btn-del") as HTMLButtonElement;
+  const table = document.querySelector("table")!;
 
-  table.addEventListener("click", (e) => {
-    const t = e.target as HTMLButtonElement;
-    if (t.matches(".btn-del")) {
-      console.log("click");
-      const rowId = t.dataset.rowId;
-      deleteBudgetAllocationRow(Number(rowId));
-      t.remove();
+  table.addEventListener("click", async (e) => {
+    const btn = (e.target as Element).closest(".btn-del");
+    if (!btn) return;
+
+    const row = btn.closest("tr")!;
+    const rowId = Number(row.dataset.rowId);
+
+    try {
+      if (rowId) {
+        await deleteBudgetAllocationRow(rowId);
+        row.remove();
+      } else {
+        // for new unsaved rows
+        row.remove();
+      }
+    } catch (error) {
+      console.log(error);
+      notifyError("Deletion failed, please try again");
     }
   });
 }

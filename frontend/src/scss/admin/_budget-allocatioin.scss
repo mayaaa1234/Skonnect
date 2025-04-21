@@ -7,59 +7,138 @@ body[data-page="profile"] {
     min-height: 100dvh !important;
   }
 
-  table {
-    width: 100%;
-  }
-
   .table-wrapper {
     width: min(90%, 1400px);
-  }
 
-  .table-controls {
-    flex-wrap: wrap;
-    p {
-      margin-right: auto;
+    .table-controls {
+      display: flex;
+      flex-wrap: wrap;
+
+      p {
+        margin-right: auto;
+        padding-left: 8px;
+        padding-top: 4px;
+      }
+      .btn-dark-accent,
+      .btn-save {
+        margin-left: 10px;
+      }
     }
-  }
 
-  th,
-  td {
-    text-align: center;
-    padding: 8px;
-
-    input {
+    table {
       width: 100%;
-      border: none;
-      text-align: center;
-      font: inherit;
+      // border-collapse: collapse;
 
-      &:focus {
-        outline: none;
+      th,
+      td {
+        text-align: center;
+        padding: 8px;
+
+        input {
+          width: 100%;
+          border: none;
+          text-align: center;
+          font: inherit;
+
+          &:focus {
+            outline: none;
+          }
+        }
       }
-    }
-  }
 
-  @include max-bp("500px") {
-    td input,
-    th input {
-      font-size: 0.8rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
+      tr {
+        position: relative !important;
 
-  tr {
-    position: relative !important;
+        svg.del-icon {
+          position: absolute !important;
+          right: -35px;
+          top: 50%;
+          transform: translateY(-50%);
 
-    svg.del-icon {
-      position: absolute !important;
-      right: -35px;
-      @include max-bp("450px") {
-        right: -28px;
+          @include max-bp("450px") {
+            right: -28px;
+          }
+        }
       }
-      top: 50%;
-      transform: translateY(-50%); /* To adjust the icon vertically if needed */
+
+      @include max-bp("500px") {
+        th,
+        td {
+          input {
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
     }
   }
 }
+
+// @use "../abstracts/mixins" as *;
+// @use "../abstracts/variables" as *;
+// @use "../layout/nav" as *;
+//
+// body[data-page="profile"] {
+//   @include mobile {
+//     min-height: 100dvh !important;
+//   }
+//
+//   table {
+//     width: 100%;
+//   }
+//
+//   .table-wrapper {
+//     width: min(90%, 1400px);
+//   }
+//
+//   .table-controls {
+//     flex-wrap: wrap;
+//     p {
+//       margin-right: auto;
+//     }
+//   }
+//
+//   th,
+//   td {
+//     text-align: center;
+//     padding: 8px;
+//
+//     input {
+//       width: 100%;
+//       border: none;
+//       text-align: center;
+//       font: inherit;
+//
+//       &:focus {
+//         outline: none;
+//       }
+//     }
+//   }
+//
+//   @include max-bp("500px") {
+//     td input,
+//     th input {
+//       font-size: 0.8rem;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//       white-space: nowrap;
+//     }
+//   }
+//
+//   tr {
+//     position: relative !important;
+//
+//     svg.del-icon {
+//       position: absolute !important;
+//       right: -35px;
+//       @include max-bp("450px") {
+//         right: -28px;
+//       }
+//       top: 50%;
+//       transform: translateY(-50%); /* To adjust the icon vertically if needed */
+//     }
+//   }
+// }
+//

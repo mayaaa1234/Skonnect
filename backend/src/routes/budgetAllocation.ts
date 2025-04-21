@@ -3,7 +3,7 @@ const router = express.Router();
 import authUser from "../middlewares/authUser.ts";
 import authAdmin from "../middlewares/authAdmin.ts";
 import {
-  update,
+  updateRow,
   add,
   deleteRow,
   getAll,
@@ -15,6 +15,6 @@ router.post("/", authAdmin, add);
 
 router.delete("/:id", authAdmin, deleteRow);
 
-router.put("/:id", authAdmin, update);
+router.put("/:id", authAdmin, updateRow);
 
 export default router;

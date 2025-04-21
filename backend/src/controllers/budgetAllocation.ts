@@ -51,7 +51,7 @@ const deleteRow = async (req: Request, res: Response) => {
   res.json({ msg: "ok" });
 };
 
-const update = async (req: Request, res: Response) => {
+const updateRow = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { category, amount, items } = req.body;
 
@@ -62,7 +62,7 @@ const update = async (req: Request, res: Response) => {
     });
   }
 
-  if (!Number.isInteger(Number(String(amount).replace("/,/g", "")))) {
+  if (!Number.isInteger(Number(String(amount).replace(/,/g, "")))) {
     throw mkCustomError({
       status: 400,
       msg: "Invlid amount value / format",
@@ -84,4 +84,4 @@ const getAll = async (_req: Request, res: Response): Promise<void> => {
   res.json(rows);
 };
 
-export { getAll, update, add, deleteRow };
+export { getAll, updateRow, add, deleteRow };

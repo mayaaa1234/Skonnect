@@ -10,11 +10,6 @@ body[data-page="events"] {
 
 [data-theme="dark"] {
   body[data-page="events"] {
-    main,
-    header {
-      background-color: var(--secondary) !important;
-    }
-
     .slides > img {
       border: 30px solid var(--neutral-light-1) !important;
       border-bottom: 75px solid var(--neutral-light-1) !important;

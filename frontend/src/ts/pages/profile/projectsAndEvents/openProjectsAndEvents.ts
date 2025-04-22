@@ -3,9 +3,9 @@ import { html } from "lit-html";
 import {
   Slideshow,
   fetchAllSlideShows,
-} from "../../home/slideShow/fetchSlides.ts";
+} from "../../projectsAndEvents/slideShow/fetchSlides.ts";
 
-import initSlideIndexesAndEvents from "../../home/slideShow/slideEvents.ts";
+import initSlideIndexesAndEvents from "../../projectsAndEvents/slideShow/slideEvents.ts";
 import uploadEventListener from "./upload.ts";
 
 export default async function openProjectsAndEventsData(): Promise<void> {
@@ -20,6 +20,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     // }
 
     const slidesDOM = slideshows
+
       .map((s) => {
         const imagesDOM = s.images
           .map((img, idx) => {
@@ -47,33 +48,35 @@ export default async function openProjectsAndEventsData(): Promise<void> {
           .join("");
 
         return `
-            <div class="slideshow " data-slideshow-id="${s.id}">
-              <div
-                class="slides-container "
-                style="height: 320px; width: 300px;"
-              >
-                ${imagesDOM}
-                <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
-                <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
+          <div class="slideshow " data-slideshow-id="${s.id}">
+            <div class="slides-container " style="height: 320px; width: 300px;">
+              ${imagesDOM}
+              <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
+              <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
               <p style="font-size: 14px;" class="caption">${s.caption}</p>
 
               <button class="slideshow-del-btn btn">
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#D16D6A"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#D16D6A"
+                >
+                  <path
+                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                  />
+                </svg>
               </button>
-              </div>
+            </div>
 
-              <div class="dots-container" style="text-align: center">
-                ${dotsDOM}
-              </div>
-
+            <div class="dots-container" style="text-align: center">
+              ${dotsDOM}
             </div>
           </div>
         `;
       })
       .join("");
-
-    const slideshowsControls = document.createElement("div");
-    slideshowsControls.classList.add("slideshows-control-container");
 
     const controlBtns = `
     <div class="control-btn-container">
@@ -133,12 +136,26 @@ export default async function openProjectsAndEventsData(): Promise<void> {
         </div>
       </div>
     `;
+
+    // Insert upload popup into body
+    document.body.insertAdjacentHTML("beforeend", uploadPopup);
+
+    // Header
+    const header = document.createElement("h1");
+    header.className = "mt-2 w-100 fs-2-xs fs-3-lg ta-c gradient-text";
+    header.innerText = "SK Council: Projects and Events";
+
+    // Build slideshow controls container
+    const slideshowsControls = document.createElement("div");
+    slideshowsControls.className = "slideshows-control-container mt-4";
     slideshowsControls.innerHTML = controlBtns;
 
+    // Build slideshow container with data from DB
     const slideshowContainer = document.createElement("div");
-    slideshowContainer.classList.add("slideshow-container");
-    slideshowContainer.innerHTML = slidesDOM; // insert the data from db
+    slideshowContainer.className = "slideshow-container mt-2 dp-f fd-c";
+    slideshowContainer.innerHTML = slidesDOM;
 
+    // Build wrapper for controls and slideshow
     const projectsAndEventsContiner = document.createElement("div");
     projectsAndEventsContiner.classList.add(
       "projects-and-events-container",
@@ -146,7 +163,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       "events",
     );
 
-    document.body.insertAdjacentHTML("beforeend", uploadPopup);
+    projectsAndEventsContiner.appendChild(header);
     projectsAndEventsContiner.appendChild(slideshowsControls);
     projectsAndEventsContiner.appendChild(slideshowContainer);
 

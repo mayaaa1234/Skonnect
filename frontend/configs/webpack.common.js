@@ -31,6 +31,12 @@ const config = {
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
     profile: ["./frontend/src/ts/pages/profile/profileEntry.ts"],
     nav: ["./frontend/src/ts/pages/nav/navEntry.ts"],
+    projectAndEvents: [
+      "./frontend/src/ts/pages/projectsAndEvents/projectsAndEventsEntry.ts",
+    ],
+    budgetAllocation: [
+      "./frontend/src/ts/pages/budgetAllocation/budgetAllocationEntry.ts",
+    ],
   },
 
   output: {

@@ -34,7 +34,7 @@ if (process.env.NODE_ENV !== "production") {
   lrserver.server.once("connection", () => {
     setTimeout(() => {
       lrserver.refresh("frontend/");
-    }, 45);
+    }, 5);
   });
   app.use(connectLivereload());
 

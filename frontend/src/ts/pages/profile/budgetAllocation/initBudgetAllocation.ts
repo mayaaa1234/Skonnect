@@ -5,6 +5,7 @@ export default async function initBudgetAllocationPage() {
   await initBudgetAllocationDOM();
 
   initTableEventListener();
+  // initTotalAllocationListener();
   initSaveBtnEventListener();
   initAddRowBtnEventListener();
   initDeleteBtnEventListener();
@@ -14,6 +15,7 @@ export default async function initBudgetAllocationPage() {
     .querySelectorAll<HTMLInputElement>(".amount-input")
     .forEach(attachNumberFormatting);
 }
+
 import { html } from "lit-html";
 
 interface BudgetAllocation {
@@ -26,11 +28,14 @@ interface BudgetAllocation {
 // <th style="width=">Category</th>
 // <th class="" style="width: 20%">Amount (₱)</th>
 // <th style="width=">Description / Details</th>
+
 async function initBudgetAllocationDOM() {
   const container = document.getElementById("data-container") as HTMLElement;
+  const year = new Date().getFullYear();
 
   try {
     const budgetAllocations = await getAllBudgetAllocationRow();
+
     const budgetAllocationDOM = `
       <div class="dp-f jc-c ai-c fd-c container">
         <h1 class="mt-2 fs-2-xs fs-3-lg ta-c container gradient-text">
@@ -59,25 +64,13 @@ async function initBudgetAllocationDOM() {
             <thead>
               <tr>
                 <th style="width: auto; text-align: center;">
-                  <input
-                    data-original-value="Category"
-                    type="text"
-                    value="Category"
-                  />
+                  <h4 class="text-dark-accent">Category</h4>
                 </th>
                 <th style="width: 20%; text-align: center;">
-                  <input
-                    data-original-value="Allocation (₱)"
-                    type="text"
-                    value="Allocation (₱)"
-                  />
+                  <h4 class="text-dark-accent">Allocation (₱)</h4>
                 </th>
                 <th style="width: auto; text-align: center;">
-                  <input
-                    data-original-value="Description"
-                    type="text"
-                    value="Description"
-                  />
+                  <h4 class="text-dark-accent">Description</h4>
                 </th>
               </tr>
             </thead>
@@ -100,6 +93,15 @@ async function initBudgetAllocationDOM() {
           `;
                 })
                 .join("")}
+              <tr>
+                <td><h4 class="text-tip">Total</h4></td>
+                <td>
+                  <h4 class="text-tip" id="totalAllocation">
+                    ${calculateTotalAllocation()}
+                  </h4>
+                </td>
+                <td><h4 class="text-tip">SK Budget For CY ${year}</h4></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -110,12 +112,17 @@ async function initBudgetAllocationDOM() {
     // );
 
     container.innerHTML = budgetAllocationDOM;
+
+    const totalEl = document.getElementById("totalAllocation");
+    if (totalEl) {
+      totalEl.textContent = calculateTotalAllocation().toLocaleString("en-US");
+    }
   } catch (e) {
     console.error(e);
   }
 }
 
-// Formatting
+// Formatting | Utils
 
 function formatNumber(value: string): string {
   const n = parseFloat(value.replace(/,/g, ""));
@@ -135,11 +142,21 @@ function attachNumberFormatting(input: HTMLInputElement) {
   });
 }
 
+function calculateTotalAllocation() {
+  const inputs = document.querySelectorAll<HTMLInputElement>(".amount-input");
+  return Array.from(inputs).reduce((sum, el) => {
+    const raw = unformatNumber(el.value);
+    const n = parseFloat(raw);
+    return sum + (isNaN(n) ? 0 : n);
+  }, 0);
+}
+
 // Events
 
 function initTableEventListener() {
   const table = document.querySelector("table") as HTMLTableElement;
   const saveBtn = document.querySelector(".btn-save") as HTMLButtonElement;
+  const totalCell = document.getElementById("totalAllocation")!;
 
   const handleRevert = () => {
     const inputs = table.querySelectorAll<HTMLInputElement>("input");
@@ -151,8 +168,11 @@ function initTableEventListener() {
         : i.value;
       return current !== orig;
     });
-
     saveBtn.classList.toggle("btn-save-dark-5-no-hover", !anyChanged);
+  };
+
+  const updateTotal = () => {
+    totalCell.textContent = calculateTotalAllocation().toLocaleString("en-US");
   };
 
   // prob not needed tbh
@@ -168,24 +188,30 @@ function initTableEventListener() {
     if ((e.target as HTMLInputElement).matches("input")) {
       handleRevert();
     }
+
+    if ((e.target as HTMLInputElement).matches(".amount-input")) {
+      updateTotal();
+    }
   });
 
-  // handleRevert();
+  saveBtn.addEventListener("click", () => {
+    updateTotal();
+  });
 }
+
+// function initTotalAllocationListener() {
+//   const table = document.querySelector("table")!;
+// }
 
 function initSaveBtnEventListener() {
   const saveBtn = document.querySelector(".btn-save") as HTMLButtonElement;
   if (saveBtn.matches("btn-save-dark-5-no-hover")) return;
-  let isSaving = false;
 
-  saveBtn.addEventListener("click", async () => {
-    if (isSaving) return;
-    isSaving = true;
-    saveBtn.disabled = true;
+  saveBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
 
     const changedRows = new Map<HTMLElement, HTMLInputElement[]>();
 
-    // First pass: collect all changed inputs per row
     document.querySelectorAll<HTMLInputElement>("table input").forEach((i) => {
       const val = i.value.trim();
       const origVal = i.dataset.originalValue;
@@ -197,82 +223,115 @@ function initSaveBtnEventListener() {
       }
     });
 
-    // Second pass: process each changed row once
+    const validateRowInputs = (
+      category: string,
+      amount: number,
+      items: string,
+    ) => {
+      if (!category) {
+        throw new Error("Invalid category row/s");
+      }
+      if (!amount) {
+        throw new Error("Invalid allocation row/s");
+      }
+      if (!items) {
+        throw new Error("Invalid description row/s");
+      }
+    };
+
     for (const [row, inputs] of changedRows) {
       const rowId = Number(row.dataset.rowId);
       const [categoryEl, amountEl, itemsEl] = Array.from(
         row.querySelectorAll<HTMLInputElement>("input"),
       );
 
+      const rawAmount = amountEl.value.trim();
+      const cleanedAmount = unformatNumber(rawAmount);
+      const amount = Number(cleanedAmount);
+      console.log({ rawAmount, cleanedAmount, amount }); // DEBUG
+
       try {
         if (!rowId) {
+          validateRowInputs(
+            categoryEl.value.trim(),
+            amount,
+            itemsEl.value.trim(),
+          );
+
           await addBudgetAllocationRow(
             categoryEl.value.trim(),
-            Number(unformatNumber(amountEl.value.trim())),
+            amount,
             itemsEl.value.trim(),
           );
         } else {
+          validateRowInputs(
+            categoryEl.value.trim(),
+            amount,
+            itemsEl.value.trim(),
+          );
+
           await updateBudgetAllocationRow(
             rowId,
             categoryEl.value.trim(),
-            Number(unformatNumber(amountEl.value.trim())),
+            amount,
             itemsEl.value.trim(),
           );
         }
-        // notifySuccess("Updated successfully");
-      } catch (error) {
-        notifyError("Update failed, please try again");
-        console.error({ error });
-      }
-    }
 
-    saveBtn.classList.add("btn-save-dark-5-no-hover");
-    saveBtn.disabled = false;
-    isSaving = false;
+        // notifySuccess("Updated successfully");
+      } catch (error: any) {
+        notifyError(error.message || "Update failed, please try again");
+        console.error("error: ", error);
+      }
+
+      saveBtn.classList.add("btn-save-dark-5-no-hover");
+    }
   });
 }
 
 function initAddRowBtnEventListener() {
-  const tbody = document.querySelector("table tbody")! as HTMLTableElement;
+  const tbody = document.querySelector("table tbody")!;
   const addBtn = document.querySelector(".btn-add") as HTMLButtonElement;
+
   addBtn.addEventListener("click", () => {
-    tbody.insertAdjacentHTML(
-      "beforeend",
-      `
-        <tr data-row-id="">
-          <td>
-            <input
-              data-original-value=""
-              maxlength="55"
-              type="text"
-            />
-          </td>
-          <td>
-            <input
-              data-original-value=""
-              class="amount-input"
-              max="1000000"
-              inputmode="numeric"
-              type="text"
-            />
-          </td>
-          <td>
-            <input
-              data-original-value=""
-              maxlength="155"
-              type="text"
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-row-id", "");
+    newRow.innerHTML = `
+      <td>
+        <input
+          focus()
+          data-original-value=""
+          maxlength="55"
+          type="text"
+        />
+      </td>
+      <td>
+        <input
+          data-original-value=""
+          class="amount-input"
+          max="1000000"
+          inputmode="numeric"
+          type="text"
+        />
+      </td>
+      <td>
+        <input
+          data-original-value=""
+          maxlength="155"
+          type="text"
+        />
+        <button class="btn-no-hover btn-del">
+          <svg class='del-icon' height="24px" viewBox="0 -960 960 960" width="24px" fill="#D16D6A">
+            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+          </svg>
+        </button>
+      </td>
+    `;
 
-            />
-<button class="btn-no-hover btn-del">
-<svg class='del-icon' height="24px" viewBox="0 -960 960 960" width="24px" fill="#D16D6A"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-</button>
+    const totalRow = tbody.querySelector("tr:last-child");
+    tbody.insertBefore(newRow, totalRow);
+    newRow.querySelector("input")?.focus();
 
-          </td>
-        </tr>
-      `,
-    );
-
-    const newRow = tbody.lastElementChild!;
     const amountInput = newRow.querySelector<HTMLInputElement>(".amount-input");
     if (amountInput) attachNumberFormatting(amountInput);
   });

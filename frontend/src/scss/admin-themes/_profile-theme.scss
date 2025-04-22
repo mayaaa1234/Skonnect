@@ -48,25 +48,6 @@ body[data-page="profile"] {
       }
     }
   }
-
-  // USERBASE TABLE
-  .user-table {
-    thead {
-      background-color: var(--secondary) !important;
-    }
-
-    tbody {
-      tr {
-        background-color: var(--neutral) !important;
-
-        // &:nth-of-type(odd) {
-        //   background-color: var(--neutral-dark-1) !important;
-        // }
-      }
-    }
-  }
-
-  // SLIDESHOWS
 }
 
 [data-theme="dark"] {
@@ -82,24 +63,6 @@ body[data-page="profile"] {
     // li > button:hover {
     //   background-color: gray !important;
     // }
-  }
-
-  // USERBASE TABLE ;
-  .user-table > tbody > tr {
-    &:nth-of-type(odd) {
-      background-color: var(--neutral-light-1) !important;
-    }
-  }
-
-  // SLIDESHOWS
-  .slides > img {
-    border: 20px solid var(--neutral-light-1) !important;
-    border-bottom: 45px solid var(--neutral-light-1) !important;
-  }
-
-  .prev,
-  .next {
-    color: var(--foreground);
   }
 }
 
@@ -134,23 +97,6 @@ body[data-page="profile"] {
     // li > button:hover {
     //   background-color: var(--secondary) !important;
     // }
-  }
-
-  // USERBASE TABLE ;
-  .user-table > tbody > tr {
-    &:nth-of-type(odd) {
-      background-color: var(--neutral-dark-1) !important;
-    }
-  }
-
-  // SLIDESHOWS
-  .slides > img {
-    border: 20px solid white !important;
-    border-bottom: 45px solid white !important;
-  }
-
-  .slideshow-container {
-    background-color: var(--secondary) !important;
   }
 
   footer {

@@ -108,12 +108,24 @@ $letter-spacing: (
   }
 }
 
-.muted {
-  color: rgba(255, 255, 255, 0.8);
+[data-theme="dark"] {
+  .muted {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .muted-2 {
+    color: rgba(255, 255, 255, 0.6);
+  }
 }
 
-.muted-2 {
-  color: rgba(255, 255, 255, 0.6);
+[data-theme="light"] {
+  .muted {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .muted-2 {
+    color: rgba(0, 0, 0, 0.6);
+  }
 }
 
 .ellipsis {

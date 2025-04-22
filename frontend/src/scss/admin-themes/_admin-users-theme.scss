@@ -1,0 +1,32 @@
+body[data-page="profile"] {
+  .user-table {
+    thead {
+      background-color: var(--secondary) !important;
+    }
+
+    tbody {
+      tr {
+        background-color: var(--neutral) !important;
+
+        // &:nth-of-type(odd) {
+        //   background-color: var(--neutral-dark-1) !important;
+        // }
+      }
+    }
+  }
+  .user-table > tbody > tr {
+    &:nth-of-type(odd) {
+      background-color: var(--neutral-dark-1) !important;
+    }
+  }
+}
+
+[data-theme="dark"] {
+  body[data-page="profile"] {
+    .user-table > tbody > tr {
+      &:nth-of-type(odd) {
+        background-color: var(--neutral-light-1) !important;
+      }
+    }
+  }
+}

@@ -55,6 +55,49 @@
   }
 }
 
+@each $theme-name, $palette in $themes {
+  @each $key, $val in $palette {
+    // Base text and background classes
+    .text-#{$theme-name}-#{$key} {
+      color: $val;
+    }
+    .bgc-#{$theme-name}-#{$key} {
+      background-color: $val;
+    }
+    .hover-bgc-#{$theme-name}-#{$key}:hover {
+      background-color: $val;
+    }
+
+    // Lighter variants (10% to 90%)
+    @for $i from 1 through 9 {
+      $pct: $i * 10%;
+      .text-#{$theme-name}-#{$key}-l#{$i} {
+        color: color.mix(white, $val, $pct);
+      }
+      .bgc-#{$theme-name}-#{$key}-l#{$i} {
+        background-color: color.mix(white, $val, $pct);
+      }
+      .hover-bgc-#{$theme-name}-#{$key}-l#{$i}:hover {
+        background-color: color.mix(white, $val, $pct);
+      }
+    }
+
+    // Darker variants (10% to 90%)
+    @for $i from 1 through 9 {
+      $pct: $i * 10%;
+      .text-#{$theme-name}-#{$key}-d#{$i} {
+        color: color.mix(black, $val, $pct);
+      }
+      .bgc-#{$theme-name}-#{$key}-d#{$i} {
+        background-color: color.mix(black, $val, $pct);
+      }
+      .hover-bgc-#{$theme-name}-#{$key}-d#{$i}:hover {
+        background-color: color.mix(black, $val, $pct);
+      }
+    }
+  }
+}
+
 // VANILLA CSS VAR THEMING APPROACH
 
 @each $theme, $values in $themes {

@@ -46,3 +46,16 @@ const observer = new IntersectionObserver(
 
 // Observe elements
 document.querySelectorAll(".hidden").forEach((el) => observer.observe(el));
+
+// Card Links
+document.addEventListener("DOMContentLoaded", async () => {
+  const annual = document.querySelector(".annual") as HTMLElement;
+  const concern = document.querySelector(".concern") as HTMLElement;
+  const council = document.querySelector(".council") as HTMLElement;
+  const events = document.querySelector(".events") as HTMLElement;
+
+  annual.onclick = () => (location.href = "/annual-budget-allocation");
+  concern.onclick = () => (location.href = "/concerns-or-suggestions");
+  council.onclick = () => (location.href = "/council-information");
+  events.onclick = () => (location.href = "/projects-and-events");
+});

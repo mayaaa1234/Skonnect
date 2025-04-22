@@ -7,19 +7,8 @@ body[data-page="budget-alloc"] {
     min-height: 100dvh !important;
   }
 
-  header,
-  main {
-    // border: 1px solid white;
-  }
-
-  main {
-  }
-
   table {
-    // border: 1px solid white;
-    // width: min(100%, 900px);
-  }
-  td {
+    width: min(90%, 1400px);
   }
 
   th,

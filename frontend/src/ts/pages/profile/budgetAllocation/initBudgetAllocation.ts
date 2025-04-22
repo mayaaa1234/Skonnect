@@ -5,7 +5,6 @@ export default async function initBudgetAllocationPage() {
   await initBudgetAllocationDOM();
 
   initTableEventListener();
-  // initTotalAllocationListener();
   initSaveBtnEventListener();
   initAddRowBtnEventListener();
   initDeleteBtnEventListener();
@@ -18,7 +17,7 @@ export default async function initBudgetAllocationPage() {
 
 import { html } from "lit-html";
 
-interface BudgetAllocation {
+export interface BudgetAllocation {
   id: number;
   category: string;
   amount: number;
@@ -39,7 +38,7 @@ async function initBudgetAllocationDOM() {
     const budgetAllocationDOM = `
       <div class="dp-f jc-c ai-c fd-c container">
         <h1 class="mt-2 fs-2-xs fs-3-lg ta-c container gradient-text">
-          Annual Budget Youth Invesment Plan 2025 Itemization
+          Annual Budget Youth Invesment Plan ${year} Itemization
         </h1>
 
         <div class="table-wrapper dp-f fd-c ai-c">
@@ -97,7 +96,7 @@ async function initBudgetAllocationDOM() {
                 <td><h4 class="text-tip">Total</h4></td>
                 <td>
                   <h4 class="text-tip" id="totalAllocation">
-                    ${calculateTotalAllocation()}
+                    // total here
                   </h4>
                 </td>
                 <td><h4 class="text-tip">SK Budget For CY ${year}</h4></td>
@@ -364,7 +363,7 @@ function initDeleteBtnEventListener() {
 
 // Fetches
 
-async function getAllBudgetAllocationRow(): Promise<BudgetAllocation[]> {
+export async function getAllBudgetAllocationRow(): Promise<BudgetAllocation[]> {
   const res = await fetch("/api/v1/budgetAllocation/", {
     method: "GET",
     credentials: "include",

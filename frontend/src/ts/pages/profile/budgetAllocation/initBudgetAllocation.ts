@@ -63,7 +63,7 @@ async function initBudgetAllocationDOM() {
             <thead>
               <tr>
                 <th style="width: auto; text-align: center;">
-                  <h4 class="text-dark-accent">Category</h4>
+                  <h4 class="text-dark-accent">Budget Item</h4>
                 </th>
                 <th style="width: 20%; text-align: center;">
                   <h4 class="text-dark-accent">Allocation (₱)</h4>

@@ -9,10 +9,15 @@ body[data-page="budget-alloc"] {
 
   table {
     width: min(90%, 1400px);
+    border-collapse: separate;
+    border-spacing: 12px;
+    // border: none;
+    padding: 24px;
   }
 
   th,
   td {
+    border: 1px solid var(--foreground);
     text-align: center;
     padding: 8px;
   }

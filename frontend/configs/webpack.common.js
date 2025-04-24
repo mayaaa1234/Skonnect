@@ -34,6 +34,8 @@ const config = {
     projectsAndEvents: [
       "./frontend/src/ts/pages/projectsAndEvents/projectsAndEventsEntry.ts",
     ],
+
+    concerns: ["./frontend/src/ts/pages/concerns/concernsEntry.ts"],
     budgetAllocation: [
       "./frontend/src/ts/pages/budgetAllocation/budgetAllocationEntry.ts",
     ],

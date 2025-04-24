@@ -1,19 +1,162 @@
+// @use "../abstracts/variables" as *;
+// @use "../abstracts/mixins" as *;
+// @use "sass:color";
+//
+// %gen-btn {
+//   cursor: pointer;
+//   display: inline-block;
+//   border: 0;
+//   outline: none;
+//   // rm  the default 1.5 so that textd inside doesnt create space
+//   // if btn has text and not icon
+//   // line-height: normal !important;
+//   // padding: $base-padding $base-padding;
+//   // border-radius: $base-border-radius;
+//
+//   // hover effect is triggered by tap on mobiles
+//   @include mobile {
+//     &:hover {
+//       -webkit-tap-highlight-color: transparent !important;
+//       background-color: transparent !important;
+//     }
+//   }
+// }
+//
+// @mixin btn($bg-color: #fff) {
+//   @extend %gen-btn;
+//   background-color: $bg-color;
+//   // color: $color !important;
+//   color: var(--foreground);
+// }
+//
+// // use this for if using var theming approach
+// // and just customize color and hover color through vars in a
+// // centralized .scss file (e.g. themes.scss)
+// // or if using a simple btn that doesnt require theme
+// .btn {
+//   @extend %gen-btn;
+// }
+//
+// // GENERIC BUTTON COLORS
+//
+// @each $key, $val in $colors {
+//   .btn-#{$key} {
+//     @include btn($val);
+//     &:hover {
+//       background-color: color.adjust($val, $lightness: 5%);
+//     }
+//   }
+//
+//   .btn-outlined-#{$key} {
+//     @include btn(#fff);
+//     border: $base-border-thickness solid $val;
+//     &:hover {
+//       background-color: $val;
+//     }
+//   }
+//
+//   // Generate dark variations
+//   @for $i from 1 through 9 {
+//     .btn-#{$key}-dark-#{$i} {
+//       @include btn(color.adjust($val, $lightness: -($i * 5)));
+//       &:hover {
+//         background-color: color.adjust($val, $lightness: -(($i * 5) - 5));
+//       }
+//     }
+//
+//     .btn-#{$key}-dark-#{$i}-no-hover {
+//       @include btn(color.adjust($val, $lightness: -($i * 5)));
+//     }
+//   }
+//
+//   // Generate light variations
+//   @for $i from 1 through 9 {
+//     .btn-#{$key}-light-#{$i} {
+//       @include btn(color.adjust($val, $lightness: $i * 5));
+//       &:hover {
+//         background-color: color.adjust($val, $lightness: ($i * 5) + 5);
+//       }
+//     }
+//
+//     .btn-#{$key}-light-#{$i}-no-hover {
+//       @include btn(color.adjust($val, $lightness: $i * 5));
+//     }
+//   }
+// }
+//
+// // CLASS BASED THEMING
+//
+// // NOTE: temporarily added @ xl will remove/modify again later / on other projs
+//
+// @each $theme, $values in $themes {
+//   @each $k, $v in $values {
+//     // @include xl {
+//     .btn-#{$theme}-#{$k} {
+//       @include btn($v);
+//
+//       &:hover {
+//         background-color: color.adjust($v, $lightness: 5%);
+//       }
+//     }
+//
+//     .btn-outlined-#{$theme}-#{$k} {
+//       @include btn(transparent);
+//       border: $base-border-thickness solid $v !important;
+//
+//       &:hover {
+//         background-color: $v !important;
+//
+//         // @include mobile {
+//         //   // override browsers weird default hover/bg on mobiles.
+//         //   -webkit-tap-highlight-color: transparent;
+//         //   background-color: transparent !important;
+//         // }
+//       }
+//     }
+//
+//     // TODO: create icon buttons (hover and no hover)
+//
+//     // just for this project so that the proj not breaks.
+//     // ill be deprecating this next time
+//     .btn-no-hover {
+//       @include btn(transparent);
+//
+//       @include mobile {
+//         // override browsers weird default hover/bg on mobiles.
+//         &:hover {
+//           -webkit-tap-highlight-color: transparent;
+//           background-color: transparent !important;
+//         }
+//       }
+//     }
+//
+//     // .btn-no-hover-outlined-#{$theme}-#{$k} {
+//     //   @include btn(transparent);
+//     //   border: $base-border-thickness solid $v !important;
+//     // }
+//
+//     @include mobile {
+//       // override browsers weird default hover/bg on mobiles.
+//       // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
+//       // -webkit-tap-highlight-color: #3295b6;
+//       // background-color: #3295b6 !important;
+//     }
+//     // }
+//   }
+// }
+
 @use "../abstracts/variables" as *;
 @use "../abstracts/mixins" as *;
 @use "sass:color";
 
-%gen-btn {
+/// Base placeholder for all buttons
+%btn-base {
   cursor: pointer;
   display: inline-block;
   border: 0;
   outline: none;
-  // rm  the default 1.5 so that textd inside doesnt create space
-  // if btn has text and not icon
-  // line-height: normal !important;
-  // padding: $base-padding $base-padding;
-  // border-radius: $base-border-radius;
+  color: var(--foreground);
 
-  // hover effect is triggered by tap on mobiles
   @include mobile {
     &:hover {
       -webkit-tap-highlight-color: transparent !important;
@@ -22,24 +165,77 @@
   }
 }
 
+/// Standard button mixin
 @mixin btn($bg-color: #fff) {
-  @extend %gen-btn;
+  @extend %btn-base;
   background-color: $bg-color;
-  // color: $color !important;
-  color: var(--foreground);
 }
 
-// use this for if using var theming approach
-// and just customize color and hover color through vars in a
-// centralized .scss file (e.g. themes.scss)
-// or if using a simple btn that doesnt require theme
+/// Outlined button mixin
+@mixin btn-outlined($color) {
+  @include btn(#fff);
+  border: $base-border-thickness solid $color;
+  &:hover {
+    background-color: $color;
+  }
+}
+
+/// Generate light & dark variants for a given color
+/// $name: modifier key suffix
+/// $color: base color
+/// $levels: number of steps
+/// $step: lightness change per step (percentage)
+@mixin generate-variants($name, $color, $levels: 9, $step: 5%) {
+  @for $i from 1 through $levels {
+    $delta: $i * $step;
+
+    // Light variants
+    .btn-#{$name}-light-#{$i} {
+      @include btn(color.adjust($color, $lightness: $delta));
+      &:hover {
+        background-color: color.adjust($color, $lightness: ($delta + $step));
+      }
+    }
+    .btn-#{$name}-light-#{$i}-no-hover {
+      @include btn(color.adjust($color, $lightness: $delta));
+    }
+
+    // Dark variants
+    $neg-delta: -$delta;
+    .btn-#{$name}-dark-#{$i} {
+      @include btn(color.adjust($color, $lightness: $neg-delta));
+      &:hover {
+        background-color: color.adjust(
+          $color,
+          $lightness: ($neg-delta + $step)
+        );
+      }
+    }
+    .btn-#{$name}-dark-#{$i}-no-hover {
+      @include btn(color.adjust($color, $lightness: $neg-delta));
+    }
+  }
+}
+
+// Default base button
 .btn {
-  @extend %gen-btn;
+  @extend %btn-base;
+}
+
+// Outlined no-hover utility
+.btn-no-hover {
+  @include btn(transparent);
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent;
+      background-color: transparent !important;
+    }
+  }
 }
 
 // GENERIC BUTTON COLORS
-
 @each $key, $val in $colors {
+  // Filled style
   .btn-#{$key} {
     @include btn($val);
     &:hover {
@@ -47,100 +243,31 @@
     }
   }
 
+  // Outlined style
   .btn-outlined-#{$key} {
-    @include btn(#fff);
-    border: $base-border-thickness solid $val;
-    &:hover {
-      background-color: $val;
-    }
+    @include btn-outlined($val);
   }
 
-  // Generate dark variations
-  @for $i from 1 through 9 {
-    .btn-#{$key}-dark-#{$i} {
-      @include btn(color.adjust($val, $lightness: -($i * 5)));
-      &:hover {
-        background-color: color.adjust($val, $lightness: -(($i * 5) - 5));
-      }
-    }
-
-    .btn-#{$key}-dark-#{$i}-no-hover {
-      @include btn(color.adjust($val, $lightness: -($i * 5)));
-    }
-  }
-
-  // Generate light variations
-  @for $i from 1 through 9 {
-    .btn-#{$key}-light-#{$i} {
-      @include btn(color.adjust($val, $lightness: $i * 5));
-      &:hover {
-        background-color: color.adjust($val, $lightness: ($i * 5) + 5);
-      }
-    }
-
-    .btn-#{$key}-light-#{$i}-no-hover {
-      @include btn(color.adjust($val, $lightness: $i * 5));
-    }
-  }
+  // Variants
+  @include generate-variants($key, $val);
 }
 
-// CLASS BASED THEMING
-
-// NOTE: temporarily added @ xl will remove/modify again later / on other projs
-
+// CLASS-BASED THEMING
 @each $theme, $values in $themes {
-  @each $k, $v in $values {
-    // @include xl {
-    .btn-#{$theme}-#{$k} {
-      @include btn($v);
-
+  @each $variant, $color in $values {
+    .btn-#{$theme}-#{$variant} {
+      @include btn($color);
       &:hover {
-        background-color: color.adjust($v, $lightness: 5%);
+        background-color: color.adjust($color, $lightness: 5%);
       }
     }
 
-    .btn-outlined-#{$theme}-#{$k} {
+    .btn-outlined-#{$theme}-#{$variant} {
       @include btn(transparent);
-      border: $base-border-thickness solid $v !important;
-
+      border: $base-border-thickness solid $color !important;
       &:hover {
-        background-color: $v !important;
-
-        // @include mobile {
-        //   // override browsers weird default hover/bg on mobiles.
-        //   -webkit-tap-highlight-color: transparent;
-        //   background-color: transparent !important;
-        // }
+        background-color: $color !important;
       }
     }
-
-    // TODO: create icon buttons (hover and no hover)
-
-    // just for this project so that the proj not breaks.
-    // ill be deprecating this next time
-    .btn-no-hover {
-      @include btn(transparent);
-
-      @include mobile {
-        // override browsers weird default hover/bg on mobiles.
-        &:hover {
-          -webkit-tap-highlight-color: transparent;
-          background-color: transparent !important;
-        }
-      }
-    }
-
-    // .btn-no-hover-outlined-#{$theme}-#{$k} {
-    //   @include btn(transparent);
-    //   border: $base-border-thickness solid $v !important;
-    // }
-
-    @include mobile {
-      // override browsers weird default hover/bg on mobiles.
-      // cause when using ur finger/s on mobiles, technically you cant hover like you would using a mouse in computers, and if you have a hover pseudo class on an elem (in mobile), when you click on it the hover color becomes the new bg which is not ideal MOST of the time.
-      // -webkit-tap-highlight-color: #3295b6;
-      // background-color: #3295b6 !important;
-    }
-    // }
   }
 }

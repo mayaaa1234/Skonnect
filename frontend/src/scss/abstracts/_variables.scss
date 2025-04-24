@@ -4,7 +4,8 @@ $themes: (
     "secondary": rgb(28, 30, 32),
     "accent": rgb(0, 130, 159),
     "neutral": rgb(31, 33, 37),
-    "foreground": #f3f3f3,
+    "foreground": rgb(243, 243, 243),
+    // "foreground": #f3f3f3,
     "shimmer-placeholder": rgb(31, 33, 36),
     // "tertiary": rgb(36, 38, 41),
      // "accent": #3b60e4,
@@ -25,12 +26,19 @@ $themes: (
 $colors: (
   "info": #326dee,
   "warn": #f6c31c,
+  "progress": #f97316,
   "error": #d32752,
   "tip": #1ac886,
   "black": black,
   "white": white,
   "lightgray": #d3d3d3,
   "save": #16a34a,
+
+  // mac colors
+  "mac-red": #ff5f57,
+  "mac-yellow": #ffbd2e,
+  "mac-green": #28c840,
+  "mac-blue": #007aff,
 );
 
 $breakpoints: (

@@ -18,7 +18,7 @@ async function initBudgetAllocationDOM() {
 
     const total = budgetAllocations.reduce((sum, a) => sum + a.amount, 0);
     container.innerHTML = `
-          <table class="" border="1" cellspacing="0">
+          <table class="border-subtle-effect br-20" cellspacing="0">
             <thead>
               <tr>
                 <th style="width: auto; text-align: center;">

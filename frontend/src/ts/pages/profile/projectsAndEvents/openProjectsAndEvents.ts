@@ -141,9 +141,9 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     document.body.insertAdjacentHTML("beforeend", uploadPopup);
 
     // Header
-    const header = document.createElement("h1");
-    header.className = "mt-2 w-100 fs-2-xs fs-3-lg ta-c gradient-text";
-    header.innerText = "SK Council: Projects and Events";
+    // const header = document.createElement("h1");
+    // header.className = "mt-2 w-100 fs-2-xs fs-3-lg ta-c gradient-text";
+    // header.innerText = "SK Council: Projects and Events";
 
     // Build slideshow controls container
     const slideshowsControls = document.createElement("div");
@@ -163,7 +163,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       "events",
     );
 
-    projectsAndEventsContiner.appendChild(header);
+    // projectsAndEventsContiner.appendChild(header);
     projectsAndEventsContiner.appendChild(slideshowsControls);
     projectsAndEventsContiner.appendChild(slideshowContainer);
 

@@ -17,7 +17,7 @@ body:not([data-page="signup"], [data-page="login"]) {
 // styles here applies to all pages
 // nav its included since its a partial
 body {
-  &:is(button, input) {
+  &:is(button, input, textarea) {
     &:focus {
       outline: none !important;
     }

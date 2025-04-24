@@ -12,18 +12,17 @@ export default async function openUsersData(): Promise<void> {
     }
     const users = await response.json();
     container.innerHTML = `
-
-      <div class="container">
+      <div class="container mt-4">
         <table border="1" cellspacing="0" class="user-table ">
-          <thead>
-            <tr >
-              <th class="" style="width: 20%;">ID</th>
-              <th class="" style="width: 30%;">Username</th>
-              <th class="" style="width: 30%;">Email</th>
-              <th class="" style="width: 20%;">Admin</th>
+          <thead class="">
+            <tr class="ta-c">
+              <th class="ta-c" style="width: 20%;">ID</th>
+              <th class="ta-c" style="width: 30%;">Username</th>
+              <th class="ta-c" style="width: 30%;">Email</th>
+              <th class="ta-c" style="width: 20%;">Admin</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="ta-c">
             ${users
               .map(
                 (
@@ -38,7 +37,7 @@ export default async function openUsersData(): Promise<void> {
             <tr>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.id}</td>
               <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.username}</td>
-              <td class="ullipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
+              <td class="ellipsis" style="${i === 0 ? "border-top: none;" : ""}">${user.email}</td>
               <td style="${i === 0 ? "border-top: none;" : ""}">${user.isAdmin}</td>
             </tr>
             `,

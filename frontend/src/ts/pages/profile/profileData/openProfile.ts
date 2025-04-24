@@ -19,7 +19,7 @@ export default async function openProfileData(): Promise<void> {
       : user.username;
 
     container.innerHTML = `
-      <div class="profile-container container mt-2 dp-f fd-c ai-c gp-50">
+      <div class="profile-container container mt-4 dp-f fd-c ai-c gp-50">
         <div class="upper-container br-20 dp-f fd-c p-1">
           <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
             <h1 class="">Profile</h1>

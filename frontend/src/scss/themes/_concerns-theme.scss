@@ -1,0 +1,83 @@
+body[data-page="concerns"] {
+  .concerns-box {
+    background-color: var(--secondary);
+
+    .concern-popup-header {
+      background: var(--neutral-light-1);
+    }
+
+    .concern-popup-controls {
+      // box-shadow: 0 1px 0 0 var(--foreground);
+
+      .concern-status {
+        border-bottom: 1px solid var(--foreground);
+
+        &::before {
+          background-color: var(--accent);
+        }
+
+        // &.pending-selected {
+        //   &.selected::before {
+        //   }
+        // }
+        //
+        // &.in-progress-selected {
+        //   &.selected::before {
+        //   }
+        // }
+        //
+        // &.resolved-selected {
+        //   &.selected::before {
+        //   }
+        // }
+      }
+    }
+  }
+
+  form {
+    background-color: var(--secondary);
+
+    // .form-header {
+    // background-color: var(--neutral-light-2);
+    // }
+
+    .form-body {
+      textarea {
+        color: var(--foreground);
+        caret: var(--foreground);
+        background-color: var(--secondary);
+      }
+    }
+
+    // .form-footer {
+    // }
+  }
+}
+
+[data-theme="dark"] {
+  body[data-page="concerns"] {
+    // .form-header {
+    // border-bottom: 1px solid white;
+    // }
+
+    .form-body {
+      textarea {
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+    }
+  }
+}
+
+[data-theme="light"] {
+  body[data-page="concerns"] {
+    // .form-header {
+    // border-bottom: 1px solid black;
+    // }
+
+    .form-body {
+      textarea {
+        border: 1px solid rgba(0, 0, 0, 0.6) !important;
+      }
+    }
+  }
+}

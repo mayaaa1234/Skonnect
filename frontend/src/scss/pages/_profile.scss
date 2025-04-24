@@ -3,7 +3,15 @@
 @use "../layout/nav" as *;
 // @use "sass:math";
 
+// html,
+// body {
+//   height: 100%;
+// }
+
 body[data-page="profile"] {
+  display: flex;
+  flex-direction: column;
+
   @include xxl {
     .show-sidebar-container {
       z-index: 10;
@@ -28,33 +36,18 @@ body[data-page="profile"] {
     //     grid-area: footer;
     //   }
     //
-    #data-container {
-      height: auto;
-      @include mobile {
-        height: 100dvh !important;
-      }
-    }
+    // min-height: calc(100vh - $nav-height);
   }
 
   &:is(button, input):focus {
     outline: none !important;
   }
 
-  // @include mobile{
-  //   // height: 100dvh !important;
-  //   // padding-top: $nav-height !important;
-  // }
-
   #data-container {
-    height: auto;
-    min-height: 800px; // for stability when clearing
-
-    // becuase of this the direct child of the
-    // contianer needs to be another sort of
-    // wrapper container
-    // > * {
-    //   max-width: 1450px;
-    // }
+    flex: 1;
+    @include mobile {
+      height: 100dvh !important;
+    }
   }
 
   .profile-container {

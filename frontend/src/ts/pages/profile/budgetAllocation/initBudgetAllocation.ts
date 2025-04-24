@@ -34,12 +34,12 @@ async function initBudgetAllocationDOM() {
 
   try {
     const budgetAllocations = await getAllBudgetAllocationRow();
+    // <h1 class="mt-2 fs-2-xs fs-3-lg ta-c container gradient-text">
+    //   Annual Budget Youth Invesment Plan ${year} Itemization
+    // </h1>
 
     const budgetAllocationDOM = `
       <div class="dp-f jc-c ai-c fd-c container">
-        <h1 class="mt-2 fs-2-xs fs-3-lg ta-c container gradient-text">
-          Annual Budget Youth Invesment Plan ${year} Itemization
-        </h1>
 
         <div class="table-wrapper dp-f fd-c ai-c">
           <div class="w-100 dp-f ai-c jc-c mt-4 gp-15 table-controls">

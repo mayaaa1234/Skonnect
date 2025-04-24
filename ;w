@@ -1,0 +1,33 @@
+const statusButtons =
+  document.querySelectorAll<HTMLDivElement>(".concern-status");
+const container = document.querySelector(
+  ".concern-popup-body",
+) as HTMLDivElement;
+
+statusButtons.forEach((btn) => {
+  const status = btn.dataset.status;
+
+  btn.addEventListener("click", () => {
+    statusButtons.forEach((b) => b.classList.remove("selected"));
+
+    btn.classList.add("selected");
+
+    switch (status) {
+      case "pending":
+        openPending();
+        break;
+
+      case "inProgress":
+        openInProgress();
+        break;
+
+      case "resolved":
+        openResolved();
+        break;
+    }
+  });
+});
+
+function openPending() {}
+function openInProgress() {}
+function openResolved() {}

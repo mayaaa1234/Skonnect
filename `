@@ -11,10 +11,10 @@
         <!--     </h1> -->
         <!-- </header> -->
 
-        <main class="events mb-4 mt-4">
-            <div class="submit-concern-container dp-f fd-c gp-10">
+        <main class="events pb-4 mt-4">
+            <div class="container concern-container dp-f fd-c gp-10">
                 <button class="view-concerns btn as-fe">View concerns</button>
-                <form class="border-subtle-effect pl-2 pr-2 br-20">
+                <form class="border-subtle-effect pl-1 pr-1 br-5">
                     <div class="pt-2 pb-1 form-header">
                         <h3 class="text-dark-accent">
                             Submit concerns or suggestions
@@ -22,72 +22,27 @@
                     </div>
                     <div class="form-body">
                         <textarea
-                            class="w-100 br-20"
+                            class="w-100 br-5"
                             rows="8"
                             name=""
                             id=""
                         ></textarea>
                     </div>
                     <div class="form-footer pt-1 pb-2">
-                        <button class="br-40 p-1 btn-dark-accent w-100">
+                        <button class="br-5 p-1 btn-dark-accent w-100">
                             Submit
                         </button>
                     </div>
                 </form>
             </div>
-
-            <aside class="concerns-aside-box">
-                <div class="br-20 border-subtle-effect aside concerns-box">
-                    <div class="dp-f concern-popup-controls">
-                        <div
-                            data-status="pending"
-                            class="ta-c concern-status selected"
-                        >
-                            <span
-                                class="pending bgc-mac-red concern-popup-circle"
-                            ></span>
-                            <p>Pending</p>
-                        </div>
-
-                        <!-- <div class="separator">|</div> -->
-                        <!-- <div class="ta-c concern-status"> -->
-                        <!--     <span -->
-                        <!--         class="acknowlegded bgc-mac-blue concern-popup-circle" -->
-                        <!--     ></span> -->
-                        <!--     <p>Acknowlegded</p> -->
-                        <!-- </div> -->
-
-                        <div
-                            data-status="inProgress"
-                            class="ta-c concern-status"
-                        >
-                            <span
-                                class="in-progress bgc-progress concern-popup-circle"
-                            ></span>
-                            <p>In Progress</p>
-                        </div>
-
-                        <!-- <div class="separator">|</div> -->
-
-                        <div data-status="resolved" class="ta-c concern-status">
-                            <span
-                                class="resolved bgc-mac-green concern-popup-circle"
-                            ></span>
-                            <p>Resolved</p>
-                        </div>
-                    </div>
-
-                    <div class="container concern-popup-body"></div>
-                </div>
-            </aside>
         </main>
 
         <div class="container concern-popup-overlay">
-            <div class="concerns-box popup">
+            <div class="concern-popup">
                 <div class="concern-popup-header dp-f">
                     <button class="btn-no-hover p-1 close-concern-popup-btn">
                         <svg
-                            class="close-icon"
+                            class=""
                             height="24px"
                             viewBox="0 -960 960 960"
                             width="24px"
@@ -101,10 +56,7 @@
                 </div>
 
                 <div class="dp-f concern-popup-controls">
-                    <div
-                        data-status="pending"
-                        class="ta-c concern-status selected"
-                    >
+                    <div class="ta-c concern-status">
                         <span
                             class="pending bgc-mac-red concern-popup-circle"
                         ></span>
@@ -119,7 +71,7 @@
                     <!--     <p>Acknowlegded</p> -->
                     <!-- </div> -->
 
-                    <div data-status="inProgress" class="ta-c concern-status">
+                    <div class="gradient-border-1 ta-c concern-status">
                         <span
                             class="in-progress bgc-progress concern-popup-circle"
                         ></span>
@@ -128,7 +80,7 @@
 
                     <!-- <div class="separator">|</div> -->
 
-                    <div data-status="resolved" class="ta-c concern-status">
+                    <div class="ta-c concern-status">
                         <span
                             class="resolved bgc-mac-green concern-popup-circle"
                         ></span>

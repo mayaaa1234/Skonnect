@@ -47,6 +47,7 @@ import auth from "./routes/auth.ts";
 import user from "./routes/users.ts";
 import slides from "./routes/slides.ts";
 import budgetAllocation from "./routes/budgetAllocation.ts";
+import concerns from "./routes/concerns.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
@@ -87,6 +88,7 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", user);
 app.use("/api/v1/slides", slides);
 app.use("/api/v1/budgetAllocation", budgetAllocation);
+app.use("/api/v1/concerns", concerns);
 
 //errors
 app.use(notFound);

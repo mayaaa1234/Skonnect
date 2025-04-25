@@ -28,7 +28,8 @@ body[data-page="concerns"] {
         .form-body {
           textarea {
             outline: none;
-            padding-left: 4px;
+
+            padding: 8px;
             resize: none;
           }
         }
@@ -88,8 +89,8 @@ body[data-page="concerns"] {
         // border: 1px solid white;
         // margin-left: 0.5rem;
         // margin-right: 0.5rem;
-        padding-top: 0.55rem;
-        padding-bottom: 0.55rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
         cursor: pointer;
         position: relative;
 

@@ -50,6 +50,9 @@ async function openSelectedData(action: string): Promise<void> {
     case "budgetAllocation":
       await initBudgetAllocationPage();
       break;
+    case "concerns":
+      await initConcernsPage();
+      break;
     default:
       console.warn(`Unhandled action: ${action}`);
   }

@@ -2,6 +2,10 @@
 // @use "../abstracts/variables" as *;
 @use "../../abstracts/mixins" as *;
 
+html {
+  scroll-behavior: smooth;
+}
+
 // adjust height for the fixed nav excpet for signup and login
 // cause they don't have nav bar attached to them
 body:not([data-page="signup"], [data-page="login"]) {

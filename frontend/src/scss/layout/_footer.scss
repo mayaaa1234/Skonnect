@@ -3,7 +3,7 @@
 %footer-layout {
   display: grid;
   place-content: center;
-  padding-top: 40px;
+  padding-top: 20px;
   padding-bottom: 20px;
   // height: auto;
   // width: 100%;
@@ -22,7 +22,7 @@ footer {
   @extend %footer-layout;
 
   .socials {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 20px;

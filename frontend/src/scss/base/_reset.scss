@@ -7,33 +7,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  // margin: 0;
-  // padding: 0;
 }
-
-html {
-  scroll-behavior: smooth;
-}
-
-//AUTO COMPELETE IS OFF SO NEED FOR THIS PROJECT
-// input:-webkit-autofill:invalid,
-// input:-webkit-autofill:hover,
-// input:-webkit-autofill:focus,
-// input:-webkit-autofill:active,
-// input:-webkit-autofill {
-//   color: var(--foreground) !important;
-//   caret-color: var(--foreground) !important;
-//   -webkit-background-clip: text !important;
-//   -webkit-text-fill-color: var(--foreground) !important;
-//   -webkit-box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
-//   box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
-//   // -webkit-box-shadow: transparent;
-//   // box-shadow: transparent;
-// }
-// input[data-autocompleted] {
-//   -webkit-text-fill-color: var(--foreground) !important;
-//   color: var(--foreground) !important;
-// }
 
 /*
   2. Remove default margin
@@ -95,3 +69,23 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+//AUTO COMPELETE IS OFF SO NEED FOR THIS PROJECT
+// input:-webkit-autofill:invalid,
+// input:-webkit-autofill:hover,
+// input:-webkit-autofill:focus,
+// input:-webkit-autofill:active,
+// input:-webkit-autofill {
+//   color: var(--foreground) !important;
+//   caret-color: var(--foreground) !important;
+//   -webkit-background-clip: text !important;
+//   -webkit-text-fill-color: var(--foreground) !important;
+//   -webkit-box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
+//   box-shadow: inset 0 0 0px 9999px var(--secondary) !important;
+//   // -webkit-box-shadow: transparent;
+//   // box-shadow: transparent;
+// }
+// input[data-autocompleted] {
+//   -webkit-text-fill-color: var(--foreground) !important;
+//   color: var(--foreground) !important;
+// }

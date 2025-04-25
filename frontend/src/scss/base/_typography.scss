@@ -36,6 +36,7 @@ $font-size: (
   "6": 3.5rem,
   "7": 4rem,
   "8": 4.5rem,
+  "9": 5rem,
 );
 
 @each $size, $value in $font-size {

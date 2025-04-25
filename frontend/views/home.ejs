@@ -5,15 +5,15 @@
     <body data-page="home">
         <%- include('./partials/nav.ejs') %>
 
-        <section class="hero">
-            <div class="hero-top">
+        <section class="banner">
+            <div class="banner-top">
                 <img
-                    width="75px"
-                    class="sk-logo-1"
+                    width="73px"
+                    class="img-l sk-logo-1"
                     src="sk-data/sk.svg"
                     alt=""
                 />
-                <div class="hero-info ta-c">
+                <div class="banner-info ta-c">
                     <p>Republic of the Philippines</p>
                     <p>DISTRICT VI, CITY OF MANILA</p>
                     <p>BARANGAY 633 – ZONE 64</p>
@@ -23,19 +23,37 @@
                 </div>
 
                 <img
-                    class="sk-logo-2 br-full"
-                    width="75px"
+                    class="img-r sk-logo-2 br-full"
+                    width="69px"
                     src="sk-data/sk1.svg"
                     alt=""
                 />
             </div>
         </section>
 
-        <section class="services container pt-3 pb-5">
-            <h2 class="fs-3-xs fs-4-md ta-c col-12-xs gradient-text mb-2 pt-2">
-                Explore SKonnect
-            </h2>
+        <section class="hero mt-1">
+            <div class="dp-f jc-c ai-c hero-container container">
+                <div class="hero-text-container">
+                    <h1 class="fs-3-xs fs-7-md ta-c col-12-xs gradient-text">
+                        SKonnect
+                    </h1>
+                    <h2 class="ta-c">
+                        Enchancing Youth Collaboration and Transparency
+                    </h2>
+                </div>
 
+                <div class="img-container">
+                    <img
+                        style="width: 150px"
+                        class="sk-char"
+                        src="assets/img/skChar-t.png"
+                        alt="SK Character Image"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <section class="services container mt-1 pb-3">
             <div class="gp-30 pb-2 cards-container">
                 <!-- <p class="hidden services-txt">Services</p> -->
 
@@ -109,7 +127,7 @@
                 </div>
                 <div class="events card hidden p-2 br-20 d">
                     <div class="">
-                        <strong class="card-title">Projects & Events</strong>
+                        <strong class="card-title">Projects and Events</strong>
                         <svg
                             class="default"
                             xmlns="http://www.w3.org/2000/svg"

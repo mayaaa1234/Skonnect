@@ -45,13 +45,15 @@ body[data-page="profile"] {
 
   #data-container {
     flex: 1;
+    padding-bottom: 20px;
+
     @include mobile {
       height: 100dvh !important;
     }
   }
 
   .profile-container {
-    height: calc(100vh - #{$nav-height}) !important;
+    // height: calc(100vh - #{$nav-height}) !important;
     width: min(100%, 1400px);
 
     .lower-container,

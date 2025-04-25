@@ -88,7 +88,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       </button>
       <button
         id="btn-open-upload-popup"
-        class="p-1 br-40 btn-outlined-dark-accent  control-btn"
+        class="p-1 br-40 btn-outlined-dark-accent control-btn"
       >
         Upload
       </button>
@@ -131,7 +131,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
               <div class="img-preview-container"></div>
             </div>
 
-            <button type="submit">Upload</button>
+            <button class="br-20" type="submit">Upload</button>
           </form>
         </div>
       </div>

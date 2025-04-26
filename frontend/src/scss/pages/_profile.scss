@@ -46,6 +46,8 @@ body[data-page="profile"] {
   #data-container {
     flex: 1;
     padding-bottom: 20px;
+    margin-top: -24px;
+    position: relative;
 
     @include mobile {
       height: 100dvh !important;

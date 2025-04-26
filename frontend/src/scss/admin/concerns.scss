@@ -1,0 +1,36 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+// @use "../layout/nav" as *;
+
+// body[data-page="profile"] {
+// #data-container {
+.concerns-container {
+  width: min(90%, 1800px);
+
+  // Left Side
+  .concerns-manager {
+    flex: 0 1 800px;
+    height: 750px;
+
+    .concern-controls > button {
+      min-width: 100px;
+    }
+  }
+
+  // Right Side
+  aside#concerns-aside-box {
+    flex: 0 1 750px;
+    padding-right: 0 !important;
+    display: block !important;
+
+    .concerns-box {
+      width: unset !important;
+    }
+  }
+}
+
+@include xl {
+  .concerns-container {
+    flex-direction: row;
+  }
+}

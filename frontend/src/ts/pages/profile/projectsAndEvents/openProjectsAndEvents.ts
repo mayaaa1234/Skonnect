@@ -152,7 +152,8 @@ export default async function openProjectsAndEventsData(): Promise<void> {
 
     // Build slideshow container with data from DB
     const slideshowContainer = document.createElement("div");
-    slideshowContainer.className = "slideshow-container mt-2 dp-f fd-c";
+    slideshowContainer.className =
+      "slideshow-container border-subtle-effect mt-2 dp-f fd-c";
     slideshowContainer.innerHTML = slidesDOM;
 
     // Build wrapper for controls and slideshow

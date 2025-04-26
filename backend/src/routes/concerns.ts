@@ -7,23 +7,14 @@ import authAdmin from "../middlewares/authAdmin.ts";
 import {
   getAllConcerns,
   submitConcern,
-  rejectConcern,
-  acknowledgeConcern,
-  resolveConcern,
-  processConcern,
-  getRejectedConcerns,
-  getResolvedConcerns,
+  updateConcernStatus,
 } from "../controllers/concerns.ts";
 
 router.get("/", authUser, getAllConcerns);
+router.get("/status/:id", authUser, getAllConcerns);
+
 router.post("/", authUser, submitConcern);
 
-router.put("/:id/reject", authAdmin, rejectConcern);
-router.put("/:id/acknowledge", authAdmin, acknowledgeConcern);
-router.put("/:id/process", authAdmin, processConcern);
-router.put("/:id/resolve", authAdmin, resolveConcern);
-
-router.get("/rejected", authAdmin, getRejectedConcerns);
-router.get("/resolved", authAdmin, getResolvedConcerns);
+router.put("/status/:id", authAdmin, updateConcernStatus);
 
 export default router;

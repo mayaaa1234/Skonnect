@@ -2,7 +2,9 @@ import {
   BudgetAllocation,
   getAllBudgetAllocationRow,
 } from "../profile/budgetAllocation/initBudgetAllocation.ts";
-import { html } from "lit-html";
+// import { html } from "lit-html";
+
+// import SkeletonLoader from "@utils/skeletonLoader";
 
 async function initBudgetAllocationDOM() {
   const year = new Date().getFullYear();

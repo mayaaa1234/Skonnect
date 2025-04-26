@@ -1,0 +1,25 @@
+.concerns-container {
+  .concerns-manager {
+    background-color: var(--secondary) !important;
+
+    .status-btn {
+      &.selected {
+        background-color: var(--accent) !important;
+        color: var(--foreground) !important;
+      }
+
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+
+    .concern {
+      border: 1px solid var(--foreground);
+    }
+  }
+}
+
+[data-theme="dark"] {
+}
+[data-theme="light"] {
+}

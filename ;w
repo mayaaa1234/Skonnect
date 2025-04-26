@@ -44,7 +44,6 @@ export const submitConcern = async (
   if (!concern_owner_email || !concern_owner_username) {
     throw mkCustomError({ status: 400, msg: "Missing user info from token" });
   }
-
   if (!message || typeof message !== "string" || message.length > 2000) {
     throw mkCustomError({
       status: 400,
@@ -94,11 +93,10 @@ export const submitConcern = async (
 
 // PUT / - update concern status
 export async function updateConcernStatus(req: Request, res: Response) {
-  const { id } = req.params;
-  const { newStatus, adminResponse } = req.body;
+  const { id, newStatus, adminResponse } = req.params;
 
   if (!id || !newStatus) {
-    throw mkCustomError({ status: 400, msg: "Missing required parameters" });
+    throw mkCustomError({ status: 400, msg: "Missing parameters" });
   }
 
   const validStatuses = ["rejected", "acknowledged", "in_progress", "resolved"];

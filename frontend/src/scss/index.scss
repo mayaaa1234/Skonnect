@@ -13,6 +13,7 @@
 @forward "components/cards";
 @forward "components/buttons";
 @forward "components/notif";
+@forward "components/spinner";
 
 // layouts
 @forward "layout/grid";
@@ -47,10 +48,11 @@
 @forward "admin/users.scss";
 @forward "admin/projectsAndEvents.scss";
 @forward "admin/budget-allocatioin.scss";
-// @forward "admin/profile.scss";
+@forward "admin/concerns.scss";
 
 // admin theme
 @forward "admin-themes/profile-theme";
 @forward "admin-themes/admin-projects-and-events-theme";
 @forward "admin-themes/admin-budget-allocation-theme";
 @forward "admin-themes/admin-users-theme";
+@forward "admin-themes/concerns-theme";

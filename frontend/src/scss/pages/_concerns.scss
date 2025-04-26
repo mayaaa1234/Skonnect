@@ -1,7 +1,8 @@
 @use "../abstracts/mixins" as *;
 @use "../layout/nav" as *;
 
-body[data-page="concerns"] {
+body[data-page="concerns"],
+.concerns-container {
   main {
     // height: calc(100vh - $nav-height);
     margin-bottom: 220px !important;
@@ -127,8 +128,16 @@ body[data-page="concerns"] {
   }
 }
 
-body[data-page="concerns"] {
+body[data-page="concerns"],
+.concerns-container {
   @include xxl {
+    .concerns-aside-box {
+      padding-right: 24px;
+      // border: 1px solid white;
+      flex: 0 1 800px;
+      display: block !important;
+    }
+
     .concern-popup-overlay {
       display: none;
     }
@@ -139,13 +148,6 @@ body[data-page="concerns"] {
       .submit-concern-container {
         padding-left: 24px;
         flex: 0 1 700px;
-      }
-
-      .concerns-aside-box {
-        padding-right: 24px;
-        // border: 1px solid white;
-        flex: 0 1 800px;
-        display: block !important;
       }
 
       .submit-concern-container > form {

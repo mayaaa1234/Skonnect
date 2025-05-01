@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Attach validation handlers (live validation on input activity)
+  // Attach validation handlers (live validation on each input activity)
   for (const field of Array.from(form.elements)) {
     if (field instanceof HTMLInputElement) {
       field.addEventListener("input", () => validateField(field));

@@ -1,0 +1,40 @@
+// FRONTEND TSCONFIG
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "../",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    // "composite": true,
+    "typeRoots": [
+      "../../node_modules/@types",
+    ],
+    "types": [
+      "node",
+      // "../types/serverError.d.ts"
+    ],
+    "baseUrl": "../src",
+    "paths": {
+      "@utils/*": [
+        "ts/utils/*"
+      ],
+      "@ts-pages/*": [
+        "ts/pages/*"
+      ],
+    },
+  },
+  "include": [
+    "../src/**/*",
+    "../main.ts",
+  ],
+  "exclude": [
+    "../../node_modules",
+    "../../backend/**/*",
+    "../configs/**/*"
+  ],
+}

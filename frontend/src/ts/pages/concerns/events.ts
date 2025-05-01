@@ -1,80 +1,162 @@
-// const statusButtons =
 //   document.querySelectorAll<HTMLDivElement>(".concern-status");
+// import type { Concern } from "@ts/profile/concernsPage/api.ts";
+import { notifyError, notifySuccess } from "../../utils/showNotif.ts";
+import { showLoading, hideLoading } from "../../components/loadingSpinner.ts";
+import { renderConcernList } from "../profile/concernsPage/UI.ts";
+
+import {
+  Concern,
+  fetchAllConcerns,
+  submitConcern,
+} from "../profile/concernsPage/api.ts";
+
+// const VIEW_CONTAINERS_CLASSNAMES = {
+//   name: "concern-popup-body concern-view-status",
+//   name: "concern-popup-body concern-view-status"
+// }
+
 const container = document.querySelector(
   ".concern-popup-body",
 ) as HTMLDivElement;
+
 const popupOverlay = document.querySelector(
   ".concern-popup-overlay",
 ) as HTMLElement;
-const viewConcernsBtn = document.querySelector(".view-concerns") as HTMLElement;
-const closeBtn = document.querySelector(
-  ".close-concern-popup-btn",
-) as HTMLElement;
 
-const popupButtons = document.querySelectorAll<HTMLDivElement>(
-  ".concern-popup-overlay .concern-status",
-);
+async function openPopupConcernStatus(status: Concern["status"]) {
+  try {
+    const concerns: Concern[] = await fetchAllConcerns();
+
+    const viewStatusContainer = document.querySelector(
+      ".concern-popup-view-status",
+    ) as HTMLElement;
+    if (!viewStatusContainer) {
+      console.log("viewstatus not found.");
+      return;
+    }
+    console.log("aspdfj");
+    viewStatusContainer.innerHTML = "";
+
+    viewStatusContainer.innerHTML = `
+      ${renderConcernList(concerns, status)}
+      `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function openAsideConcernStatus(status: Concern["status"]) {
+  try {
+    const concerns: Concern[] = await fetchAllConcerns();
+
+    const viewStatusContainer = document.querySelector(
+      ".concern-view-status",
+    ) as HTMLElement;
+
+    if (!viewStatusContainer) {
+      console.log("viewstatus not found.");
+      return;
+    }
+    console.log("aspdfj");
+    viewStatusContainer.innerHTML = "";
+
+    viewStatusContainer.innerHTML = `
+      ${renderConcernList(concerns, status)}
+      `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const form = document.querySelector(".submit-concern-form") as HTMLFormElement;
+
+const errDiv = document.querySelector(".error") as HTMLDivElement;
+const submitBtn = form.querySelector("button") as HTMLButtonElement;
+const message = document.querySelector(
+  ".form-textarea-message",
+) as HTMLTextAreaElement;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // const formData = new FormData(form);
+  // const data = Object.fromEntries(formData.entries());
+  const msg = message.value.trim();
+
+  if (!msg) {
+    errDiv.style.display = "block";
+    errDiv.classList.add("ta-c");
+    errDiv.textContent = "field can't be empty";
+    return;
+  } else {
+    errDiv.style.display = "none";
+  }
+
+  console.log(msg);
+
+  try {
+    showLoading(submitBtn, "small");
+    await submitConcern(msg);
+    hideLoading();
+    submitBtn.innerText = "Submit";
+    notifySuccess("Concern submitted succesfully");
+    message.value = "";
+  } catch (err) {
+    submitBtn.innerText = "Submit";
+    hideLoading();
+    notifyError("Submit concern failed, please try again");
+    console.error("Failed to submit concern:", err);
+  }
+});
+
 const asideButtons = document.querySelectorAll<HTMLDivElement>(
   ".concerns-aside-box .concern-status",
 );
-
-popupButtons.forEach((btn) => {
-  const status = btn.dataset.status;
-  btn.addEventListener("click", () => {
-    popupButtons.forEach((b) => b.classList.remove("selected"));
-    btn.classList.add("selected");
-
-    switch (status) {
-      case "pending":
-        openPending();
-        break;
-      case "inProgress":
-        openInProgress();
-        break;
-      case "resolved":
-        openResolved();
-        break;
-    }
-  });
-});
-
 asideButtons.forEach((btn) => {
-  const status = btn.dataset.status;
+  const status = btn.dataset.status as Concern["status"];
   btn.addEventListener("click", () => {
     asideButtons.forEach((b) => b.classList.remove("selected"));
     btn.classList.add("selected");
 
-    switch (status) {
-      case "pending":
-        openPending();
-        break;
-      case "inProgress":
-        openInProgress();
-        break;
-      case "resolved":
-        openResolved();
-        break;
-    }
+    openAsideConcernStatus(status);
   });
 });
 
+const viewConcernsBtn = document.querySelector(
+  ".view-popup-concerns-btn",
+) as HTMLElement;
 viewConcernsBtn.addEventListener("click", () => {
   popupOverlay.classList.remove("close");
   popupOverlay.classList.add("open");
 });
 
+const closeBtn = document.querySelector(
+  ".close-concern-popup-btn",
+) as HTMLElement;
 closeBtn.addEventListener("click", () => {
   popupOverlay.classList.add("close");
 });
 
-function openPending() {
-  console.log("hello");
-}
+const popupButtons = document.querySelectorAll<HTMLDivElement>(
+  ".concern-popup-overlay .concern-status",
+);
+popupButtons.forEach((btn) => {
+  const status = btn.dataset.status as Concern["status"];
+  btn.addEventListener("click", () => {
+    popupButtons.forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
 
-function openInProgress() {
-  console.log("hello");
-}
+    openPopupConcernStatus(status);
+  });
+});
 
-function openResolved() {
-  console.log("hello");
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const viewStatusContainer = document.querySelector(
+    ".concern-view-status",
+  ) as HTMLElement;
+
+  if (!viewStatusContainer) {
+    console.log("viewstatus not found.");
+    return;
+  }
+  openAsideConcernStatus("rejected");
+});

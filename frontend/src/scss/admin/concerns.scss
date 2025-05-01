@@ -5,32 +5,52 @@
 // body[data-page="profile"] {
 // #data-container {
 .concerns-container {
-  width: min(90%, 1800px);
+  width: min(100%, 1800px);
 
   // Left Side
   .concerns-manager {
+    overflow-y: auto;
     flex: 0 1 800px;
+    width: min(100%, 800px) !important;
     height: 750px;
 
+    .concern-controls {
+      flex-wrap: wrap;
+    }
     .concern-controls > button {
       min-width: 100px;
+    }
+
+    .status-btn:not(.selected) {
+      opacity: 0.6;
     }
   }
 
   // Right Side
   aside#concerns-aside-box {
+    position: relative;
     flex: 0 1 750px;
     padding-right: 0 !important;
     display: block !important;
+    padding-left: 0 !important;
 
-    .concerns-box {
-      width: unset !important;
+    .concern-view-controls {
     }
+
+    // .aside-box-concern {
+    //   border-bottom: 1px solid var(--foreground-soft);
+    // }
   }
 }
 
+@include max-bp("614px") {
+  .concern-view-controls {
+    flex-wrap: wrap;
+  }
+}
 @include xl {
   .concerns-container {
+    gap: 40px;
     flex-direction: row;
   }
 }

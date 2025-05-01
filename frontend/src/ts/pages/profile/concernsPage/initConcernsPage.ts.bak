@@ -1,0 +1,343 @@
+import { html } from "lit-html";
+
+interface Concern {
+  id: number;
+  message: string;
+  concern_owner_username: string;
+  concern_owner_email: string;
+  status: "default" | "rejected" | "acknowledged" | "in_progress" | "resolved";
+  response: string;
+}
+
+const DEFAULT_CONCERN_STATUS = "default";
+const STATUS_BUTTONS = [
+  { action: "default", label: "Default" },
+  { action: "rejected", label: "Reject" },
+  { action: "acknowledged", label: "Acknowledge" },
+  { action: "in_progress", label: "Process" },
+  { action: "resolved", label: "Resolve" },
+] as const;
+
+const container = document.getElementById("data-container") as HTMLElement;
+
+function renderConcernItem(c: Concern): string {
+  const imgUrl = `assets/img/${
+    c.id % 2 ? "default-profile1.png" : "default-profile2.png"
+  }`;
+
+  return `
+    <li class="concern p-1 mb-3">
+      <div class="concern-controls mb-1 dp-f ai-c jc-fe gp-10"
+        data-current-status="${c.status}"
+        data-status-id="${c.id}"
+       >
+        ${STATUS_BUTTONS.map(
+          ({ action, label }) => `
+          <button
+            data-action="${action}"
+            class="btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
+          >${label}</button>
+        `,
+        ).join("")}
+      </div>
+
+      <div class="user-info mb-1 dp-f ai-c gp-10">
+        <img
+          class="profile-pic"
+          style="width:30px;border-radius:50%;"
+          src="${imgUrl}"
+          alt="@${c.concern_owner_username}"
+        />
+        <h4>@${c.concern_owner_username}</h4>
+      </div>
+
+      <p style="white-space:normal;" class="msg ellipsis">
+        ${c.message}
+      </p>
+    </li>
+  `;
+}
+
+// function renderAsideBoxConcernMessagePopup() {}
+
+function renderAsideBoxConcernList(concerns: Concern[]): string {
+  if (concerns.length === 0) {
+    return `
+<div class="muted-2 empty-concern-list-container">
+  <p class="">empty concern list...</p>
+</div>
+`;
+  }
+  const html = concerns
+    .map((c) => {
+      const imgUrl = `assets/img/${c.id % 2 ? "default-profile1.png" : "default-profile2.png"}`;
+      return `
+      <li class="concern aside-box-concern p-1 mb-1">
+        <div class="user-info mb-1 dp-f ai-c gp-10">
+          <img
+            class="profile-pic"
+            style="width:30px; border-radius:50%;"
+            src="${imgUrl}"
+            alt="@${c.concern_owner_username}"
+          />
+          <h4>@${c.concern_owner_username}</h4>
+        </div>
+        <p style="white-space:normal;" class="msg ellipsis">
+          ${c.message}
+        </p>
+      </li>
+    `;
+    })
+    .join("");
+
+  return `
+    <ul class="lst-n p-1 pt-2 pb-2">
+      ${html}
+    </ul>
+`;
+}
+
+async function loadDOM(): Promise<void> {
+  const concerns: Concern[] = await fetchAllConcerns();
+
+  const itemsHtml = concerns.map(renderConcernItem).join("");
+
+  container.innerHTML = `
+    <div class="p-1 concerns-container container dp-f ai-c fd-c jc-c gp-60 mt-4">
+      <div class="p-1 border-subtle-effect br-20 concerns-manager">
+        <ul class="lst-n p-1 pt-2 pb-2 concerns-list">
+          ${itemsHtml}
+        </ul>
+      </div>
+
+
+    <aside id="concerns-aside-box" class="concerns-aside-box">
+      <div class="br-20 border-subtle-effect aside concerns-box">
+        <div class="dp-f concern-view-controls">
+          <div data-status="rejected" class="ta-c concern-status selected">
+            <span class="pending bgc-mac-red concern-popup-circle"></span>
+            <p>Rejected</p>
+          </div>
+
+          <div data-status="acknowledged" class="ta-c concern-status ">
+            <span class="pending bgc-mac-blue concern-popup-circle"></span>
+            <p>Acknowlegded</p>
+          </div>
+
+          <div data-status="in_progress" class="ta-c concern-status">
+            <span class="in-progress bgc-progress concern-popup-circle"></span>
+            <p>In Progress</p>
+          </div>
+
+          <div data-status="resolved" class="ta-c concern-status">
+            <span class="resolved bgc-mac-green concern-popup-circle"></span>
+            <p>Resolved</p>
+          </div>
+        </div>
+
+        <div class="concern-popup-body">
+            ${renderAsideBoxConcernList(filteredConcerns(concerns, "rejected"))}</div>
+      </div>
+    </aside>
+    </div>
+  `;
+}
+
+//
+// Events
+//
+
+function highlightDefaultStatusBtns(): void {
+  document
+    .querySelectorAll<HTMLDivElement>(".concern-controls")
+    .forEach((cc) => {
+      const status = cc.dataset.currentStatus || DEFAULT_CONCERN_STATUS;
+      const btn = cc.querySelector(`[data-action="${status}"]`);
+      btn?.classList.add("selected");
+    });
+}
+
+async function UpdateSelectedStatusBtnToDB(
+  btn: HTMLButtonElement,
+): Promise<void> {
+  const cc = btn.closest<HTMLDivElement>(".concern-controls");
+  if (!cc) return;
+
+  const newStatus = btn.dataset.action;
+  const prevStatus = cc.dataset.currentStatus;
+  if (prevStatus === newStatus) return;
+
+  const id = Number(cc.dataset.statusId);
+  if (isNaN(id)) return;
+
+  // Store previous status for aside check
+  const oldStatus = cc.dataset.currentStatus;
+
+  // Update UI immediately
+  const prevBtn = cc.querySelector<HTMLButtonElement>(".selected");
+  prevBtn?.classList.remove("selected");
+  btn.classList.add("selected");
+
+  try {
+    await updateConcernStatus(id, newStatus!);
+    cc.dataset.currentStatus = newStatus!;
+
+    // Refresh aside if viewing related status
+    const asideCurrentStatus = document.querySelector<HTMLDivElement>(
+      ".concern-view-controls .concern-status.selected",
+    )?.dataset.status;
+
+    // Refresh if either:
+    // 1. Aside shows the old status (item should be removed)
+    // 2. Aside shows the new status (item should be added)
+    if (
+      asideCurrentStatus &&
+      (asideCurrentStatus === oldStatus || asideCurrentStatus === newStatus)
+    ) {
+      const currentAsideBtn = document.querySelector<HTMLDivElement>(
+        `[data-status="${asideCurrentStatus}"]`,
+      );
+      if (currentAsideBtn) {
+        await openSelectedAsideBoxConcerns(currentAsideBtn);
+      }
+    }
+  } catch (err) {
+    console.error("Update failed:", err);
+    btn.classList.remove("selected");
+    prevBtn?.classList.add("selected");
+  }
+}
+
+async function openSelectedAsideBoxConcerns(
+  asideBtn: HTMLDivElement,
+): Promise<void> {
+  const asideBoxBody = document.querySelector(
+    ".concern-popup-body",
+  ) as HTMLDivElement;
+  if (!asideBoxBody) return;
+
+  let concerns: Concern[];
+  try {
+    concerns = await fetchAllConcerns();
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+
+  const controls = asideBtn.closest<HTMLDivElement>(
+    ".concern-view-controls",
+  ) as HTMLElement;
+  const prevSelected = controls.querySelector(
+    ".concern-status.selected",
+  ) as HTMLDivElement | null;
+
+  const prevStatus = prevSelected?.dataset.status;
+  const currStatus = asideBtn.dataset.status || "rejected";
+  if (prevStatus === currStatus) return;
+
+  // update  ui
+  prevSelected?.classList.remove("selected");
+  asideBoxBody.innerHTML = "";
+  asideBtn.classList.add("selected");
+
+  // filter and render
+  const renderedConcernsHTML = renderAsideBoxConcernList(
+    filteredConcerns(concerns, currStatus as Concern["status"]),
+  );
+  asideBoxBody.insertAdjacentHTML("beforeend", renderedConcernsHTML);
+
+  // reverting ui if there's error
+  if (asideBtn && filteredConcerns.length === 0 && prevSelected) {
+    asideBtn.classList.remove("selected");
+    prevSelected.classList.add("selected");
+  }
+}
+
+function initEvents(): void {
+  container.addEventListener("click", (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const statusBtn = target.closest<HTMLButtonElement>(".status-btn");
+    const asideBtn = target.closest<HTMLDivElement>(".concern-status");
+
+    if (statusBtn) {
+      UpdateSelectedStatusBtnToDB(statusBtn);
+    }
+
+    if (asideBtn) {
+      openSelectedAsideBoxConcerns(asideBtn);
+    }
+  });
+}
+
+//
+// Fetches
+//
+
+async function fetchAllConcerns(): Promise<Concern[]> {
+  const res = await fetch("/api/v1/concerns", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+
+  return await res.json();
+}
+
+async function submitConcern(): Promise<void> {
+  const res = await fetch("/api/v1/concerns", {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+  // return await res.json();
+}
+
+async function updateConcernStatus(
+  id: number,
+  newStatus: string,
+): Promise<void> {
+  console.log({ id, newStatus });
+  const res = await fetch(`/api/v1/concerns/status/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ newStatus }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+}
+
+// Utils
+
+export const filteredConcerns = (
+  concerns: Concern[],
+  status: Concern["status"],
+) => {
+  return concerns.filter((c) => c.status === status);
+};
+
+// const refreshAsideList = (status: Concern["status"]) => {
+//   const asideBody = document.querySelector<HTMLDivElement>(
+//     ".concern-popup-body",
+//   );
+//   if (!asideBody) return;
+//   asideBody.innerHTML = "";
+// };
+
+// Main Export
+
+export default async function initConcernsPage() {
+  await loadDOM();
+  initEvents();
+  highlightDefaultStatusBtns();
+}

@@ -1,3 +1,5 @@
+const maxNotif = 4;
+
 const showNotification = (
   message: string,
   type: "success" | "error" | "warning" | "info" | "gradient",
@@ -6,6 +8,8 @@ const showNotification = (
   const container =
     document.getElementById("notification-container") ||
     createNotificationContainer();
+
+  if (container.children.length >= maxNotif) return;
 
   const notification = document.createElement("div");
   notification.className = `notification ${type} ${instant ? "no-animation" : ""}`;

@@ -157,18 +157,18 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     slideshowContainer.innerHTML = slidesDOM;
 
     // Build wrapper for controls and slideshow
-    const projectsAndEventsContiner = document.createElement("div");
-    projectsAndEventsContiner.classList.add(
+    const projectsAndEventsContainer = document.createElement("div");
+    projectsAndEventsContainer.classList.add(
       "projects-and-events-container",
       "container",
       "events",
     );
 
     // projectsAndEventsContiner.appendChild(header);
-    projectsAndEventsContiner.appendChild(slideshowsControls);
-    projectsAndEventsContiner.appendChild(slideshowContainer);
+    projectsAndEventsContainer.appendChild(slideshowsControls);
+    projectsAndEventsContainer.appendChild(slideshowContainer);
 
-    container.appendChild(projectsAndEventsContiner);
+    container.appendChild(projectsAndEventsContainer);
 
     await initSlideIndexesAndEvents();
     // uploadEventListener();

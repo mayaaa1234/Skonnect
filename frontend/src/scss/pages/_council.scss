@@ -1,0 +1,115 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+// @use "../layout/nav" as *;
+
+body[data-page="council"] {
+  display: flex;
+  flex-direction: column;
+  main {
+    flex: 1;
+  }
+
+  .council-slideshow-container {
+    width: min(95%, 450px);
+    position: relative;
+    margin: auto;
+
+    /* hide the images by default */
+    .slides-sm,
+    .slides-lg {
+      display: none;
+
+      img {
+        height: 500px;
+        margin: 0 auto;
+        border-radius: 20px;
+      }
+    }
+
+    /* next & previous buttons */
+    .prev,
+    .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      // left: 0px;
+      transform: translateY(-50%);
+      width: auto;
+      // margin-top: -22px;
+      padding: 16px;
+      color: var(--foreground);
+      font-weight: bold;
+      font-size: 24px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+    .prev {
+      left: -20px;
+    }
+    .next {
+      right: -20px;
+    }
+
+    .dot {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+      margin-top: 15px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .active {
+      background-color: var(--accent);
+    }
+
+    .dot:hover {
+      background-color: #717171;
+    }
+
+    .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  @include xl {
+    .prev {
+      left: -40px !important;
+    }
+
+    .next {
+      right: -40px !important;
+    }
+  }
+
+  @include xxl {
+    .council-slideshow-container {
+      width: min(95%, 1400px);
+    }
+
+    .council-slideshow-container-sm-screens {
+      display: none !important;
+    }
+    .council-slideshow-container-lg-screens {
+      display: block !important;
+    }
+  }
+}

@@ -5,6 +5,7 @@ $themes: (
     "accent": rgb(0, 130, 159),
     "neutral": rgb(31, 33, 37),
     "foreground": rgb(243, 243, 243),
+    "foreground-soft": rgba(243, 243, 243, 0.2),
     // "foreground": #f3f3f3,
     "shimmer-placeholder": rgb(31, 33, 36),
     // "tertiary": rgb(36, 38, 41),
@@ -20,6 +21,7 @@ $themes: (
     // "contrast": #8dd6f959,
     // "foreground": #141216,
     "foreground": black,
+    "foreground-soft": rgba(0, 0, 0, 0.2),
   ),
 );
 

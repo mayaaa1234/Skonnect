@@ -5,7 +5,11 @@
   bottom: 20px;
   left: 20px;
   z-index: 10001;
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
+}
+
+.notification:not(:first-child) {
+  margin-top: 12px;
 }
 
 .notification {

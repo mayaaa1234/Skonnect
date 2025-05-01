@@ -33,44 +33,26 @@ export const submitConcern = async (
     throw mkCustomError({ status: 400, msg: "No data provided." });
   }
 
-  if (!req.user) {
-    throw mkCustomError({ status: 401, msg: "User not authenticated" });
-  }
-
   const { message } = req.body;
   const { email: concern_owner_email, username: concern_owner_username } =
-    req.user;
+    req.user!;
 
+  console.log("submit concern msg: ", message);
   if (!concern_owner_email || !concern_owner_username) {
     throw mkCustomError({ status: 400, msg: "Missing user info from token" });
   }
 
-  if (!message || typeof message !== "string" || message.length > 2000) {
+  if (!message || typeof message !== "string") {
     throw mkCustomError({
       status: 400,
-      msg: "Message is required and must be ≤ 2000 characters.",
+      msg: "Message is required",
     });
   }
 
-  if (
-    !concern_owner_email ||
-    typeof concern_owner_email !== "string" ||
-    concern_owner_email.length > 100
-  ) {
+  if (message.length > 2000) {
     throw mkCustomError({
       status: 400,
-      msg: "Email is required and must be ≤ 100 characters.",
-    });
-  }
-
-  if (
-    !concern_owner_username ||
-    typeof concern_owner_username !== "string" ||
-    concern_owner_username.length > 55
-  ) {
-    throw mkCustomError({
-      status: 400,
-      msg: "Username is required and must be ≤ 55 characters.",
+      msg: "Message must be ≤ 2000 characters.",
     });
   }
 
@@ -92,21 +74,35 @@ export const submitConcern = async (
   res.status(201).json({ id: concernId });
 };
 
-// PUT / - update concern status
+// PATCH / - update concern status
 export async function updateConcernStatus(req: Request, res: Response) {
   const { id } = req.params;
   const { newStatus, adminResponse } = req.body;
 
-  if (!id || !newStatus) {
-    throw mkCustomError({ status: 400, msg: "Missing required parameters" });
+  console.log("DEBUG newStatus:", newStatus);
+
+  if (!id) {
+    throw mkCustomError({ status: 400, msg: "Missing required id parameter" });
   }
 
-  const validStatuses = ["rejected", "acknowledged", "in_progress", "resolved"];
+  if (typeof newStatus !== "string" || newStatus.trim() === "") {
+    throw mkCustomError({
+      status: 400,
+      msg: "Missing or invalid newStatus parameter",
+    });
+  }
+
+  const validStatuses = [
+    "default",
+    "rejected",
+    "acknowledged",
+    "in_progress",
+    "resolved",
+  ];
   if (!validStatuses.includes(newStatus)) {
     throw mkCustomError({ status: 400, msg: "Invalid Status" });
   }
 
-  // Update both status and response
   await pool.execute(
     `
     UPDATE concerns_admin_action

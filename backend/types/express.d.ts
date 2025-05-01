@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { File } from "multer";
+// import { File } from "multer";
 
 declare global {
   namespace Express {

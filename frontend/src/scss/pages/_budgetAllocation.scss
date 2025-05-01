@@ -3,6 +3,12 @@
 @use "../layout/nav" as *;
 
 body[data-page="budget-alloc"] {
+  display: flex;
+  flex-direction: column;
+  main {
+    flex: 1;
+  }
+
   @include mobile {
     min-height: 100dvh !important;
   }
@@ -17,8 +23,8 @@ body[data-page="budget-alloc"] {
 
   th,
   td {
-    // border: 1px solid var(--foreground);
-    border: 1px solid var(--accent);
+    border: 1px solid var(--foreground);
+    // border: 1px solid var(--accent);
     border-radius: 10px;
     // border-radius: 5px;
     text-align: center;

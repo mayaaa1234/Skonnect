@@ -3,7 +3,7 @@ import openProjectsAndEventsData from "./openProjectsAndEvents.ts";
 import uploadEventListener from "./upload.ts";
 import deleteSlideshowEventListener from "./delete.ts";
 
-import onDOMReady from "../../../utils/onDOMReady";
+import onDOMReady from "../../../utils/onDOMReady.ts";
 
 export default async function initProjectsAndEventsPage() {
   onDOMReady(async () => {

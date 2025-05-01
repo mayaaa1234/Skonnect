@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-page="council" data-theme="dark" class="">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body class="" data-page="council">
+        <%- include('./partials/nav.ejs') %>
+
+        <header class="header mt-4">
+            <h1 class="fs-2-xs fs-3-lg ta-c w-100 gradient-text">
+                SK Council Members and Information
+            </h1>
+        </header>
+
+        <main class="council mb-4 mt-4">
+            <!-- small screen slideshow -->
+            <div
+                class="container council-slideshow-container-sm-screens council-slideshow-container"
+            >
+                <div class="slides-sm fade">
+                    <img
+                        src="//unsplash.it/400/406"
+                        class="h-350px"
+                        style="width: 100%"
+                    />
+                </div>
+                <div class="slides-sm fade">
+                    <img
+                        src="//unsplash.it/400/410"
+                        class="h-350px"
+                        style="width: 100%"
+                    />
+                </div>
+                <div class="slides-sm fade">
+                    <img
+                        class="h-350px"
+                        src="//unsplash.it/400/418"
+                        style="width: 100%"
+                    />
+                </div>
+
+                <a class="prev" data-slide-control="prev">&#10094;</a>
+                <a class="next" data-slide-control="next">&#10095;</a>
+
+                <div style="text-align: center">
+                    <span class="dot dot-sm" data-dot="1"></span>
+                    <span class="dot dot-sm" data-dot="2"></span>
+                    <span class="dot dot-sm" data-dot="3"></span>
+                </div>
+            </div>
+
+            <!-- large screen slideshow -->
+            <div
+                class="container council-slideshow-container-lg-screens council-slideshow-container dp-n"
+            >
+                <div class="gp-30 ai-c jc-c slides-lg fade">
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                </div>
+                <div class="gp-30 ai-c jc-c slides-lg fade">
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/430" style="width: 33%" />
+                </div>
+                <div class="gp-30 ai-c jc-c slides-lg fade">
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/411" style="width: 33%" />
+                    <img src="//unsplash.it/400/410" style="width: 33%" />
+                </div>
+
+                <a class="prev" data-slide-control="prev">&#10094;</a>
+                <a class="next" data-slide-control="next">&#10095;</a>
+
+                <div style="text-align: center">
+                    <span class="dot dot-lg" data-dot="1"></span>
+                    <span class="dot dot-lg" data-dot="2"></span>
+                    <span class="dot dot-lg" data-dot="3"></span>
+                </div>
+            </div>
+        </main>
+
+        <%- include('./partials/footer.ejs') %>
+
+        <script type="module" src="app.bundle.js"></script>
+        <script type="module" src="nav.bundle.js"></script>
+        <script defer type="module" src="council.bundle.js"></script>
+    </body>
+</html>

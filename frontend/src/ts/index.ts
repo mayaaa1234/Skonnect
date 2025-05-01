@@ -7,7 +7,7 @@ import "./states/pages/profile/state.ts";
 // import "./states/authInput.ts";
 
 // page states
-import {
-  clearActiveSidebar,
-  clearSidebarSelectedKey,
-} from "./pages/profile/sidebar/events.ts";
+// import {
+//   clearActiveSidebar,
+//   clearSidebarSelectedKey,
+// } from "./pages/profile/sidebar/events.ts";

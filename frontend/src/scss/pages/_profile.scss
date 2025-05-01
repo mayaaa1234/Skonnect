@@ -7,6 +7,7 @@
 // body {
 //   height: 100%;
 // }
+$show-sidebar-container-width: 65px;
 
 body[data-page="profile"] {
   display: flex;
@@ -17,7 +18,7 @@ body[data-page="profile"] {
       z-index: 10;
       position: fixed;
       background-color: var(--neutral);
-      width: 65px;
+      width: $show-sidebar-container-width;
       height: 100vh;
       top: $nav-height;
     }
@@ -46,11 +47,16 @@ body[data-page="profile"] {
   #data-container {
     flex: 1;
     padding-bottom: 20px;
+    padding-left: $show-sidebar-container-width;
     margin-top: -24px;
     position: relative;
 
     @include mobile {
       height: 100dvh !important;
+    }
+    @include max-bp("1535px") {
+      margin-top: -72px !important;
+      padding-left: 0 !important;
     }
   }
 

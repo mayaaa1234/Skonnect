@@ -205,6 +205,10 @@ body[data-page="home"] {
         }
       }
 
+      @include xl {
+        margin-top: 50px;
+      }
+
       p {
         margin-bottom: -30px;
         justify-self: start;

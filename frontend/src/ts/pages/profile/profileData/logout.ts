@@ -1,4 +1,5 @@
-import { setState } from "../../utils/setGetState.ts";
+// import { setState } from "../../utils/setGetState.ts";
+// import { setState } from "@utils/setGetState.ts";
 
 export default async function logoutEventListener() {
   const logoutBtn = document.querySelector(".logout");

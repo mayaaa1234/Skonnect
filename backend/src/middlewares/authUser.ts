@@ -40,7 +40,7 @@ const authUser = async (
       isAdmin: boolean;
     };
 
-    console.log("authUser middleware: ", { decoded });
+    // console.log("authUser middleware: ", { decoded });
 
     req.user = decoded; // sent to ts
     res.locals.user = decoded; // sent to ejs

@@ -15,6 +15,6 @@ router.get("/status/:id", authUser, getAllConcerns);
 
 router.post("/", authUser, submitConcern);
 
-router.put("/status/:id", authAdmin, updateConcernStatus);
+router.patch("/status/:id", authAdmin, updateConcernStatus);
 
 export default router;

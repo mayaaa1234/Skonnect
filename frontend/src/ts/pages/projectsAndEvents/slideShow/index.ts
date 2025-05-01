@@ -1,5 +1,5 @@
 // import "./fetchSlides.ts";
-import loadSlideshows from "./slidesDOM";
+import loadSlideshows from "./slidesDOM.ts";
 import initSlideIndexesAndEvents from "./slideEvents.ts";
 
 document.addEventListener("DOMContentLoaded", async () => {

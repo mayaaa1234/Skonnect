@@ -1,8 +1,12 @@
-import initProfilePage from "../profileData/initProfile";
-import initUsersPage from "../users/initUsers";
-import initProjectsAndEventsPage from "../projectsAndEvents/initProjectsAndEvents";
-import initBudgetAllocationPage from "../budgetAllocation/initBudgetAllocation";
-import initConcernsPage from "../concernsPage/initConcernsPage";
+import initProfilePage from "../profileData/initProfile.ts";
+import initUsersPage from "../users/initUsers.ts";
+import initProjectsAndEventsPage from "../projectsAndEvents/initProjectsAndEvents.ts";
+import initBudgetAllocationPage from "../budgetAllocation/initBudgetAllocation.ts";
+import initConcernsPage from "../concernsPage/initConcernsPage.ts";
+import {
+  showLoading,
+  hideLoading,
+} from "../../../components/loadingSpinner.ts";
 
 // Define all valid page keys in one place
 type PageKey =
@@ -49,10 +53,11 @@ async function selectPage(page: PageKey): Promise<void> {
   clearContainer();
   highlightButton(page);
   setSelectedPage(page);
-  showLoading();
+  showLoading(container);
 
   try {
     await pageInitHandlers[page]();
+    hideLoading();
   } catch (error) {
     showError(error);
   } finally {
@@ -70,27 +75,27 @@ function highlightButton(page: PageKey): void {
   });
 }
 
-// NOTE: put these two in utils later
-function showLoading(): void {
-  container.innerHTML = "";
-
-  const loader = document.createElement("div");
-  loader.id = "loading-indicator";
-  loader.className = "spinner";
-
-  container.appendChild(loader);
-}
-
-function hideLoading(): void {
-  const loader = document.getElementById("loading-indicator");
-  if (loader) loader.remove();
-}
+// // NOTE: put these two in utils later
+// function showLoading(): void {
+//   container.innerHTML = "";
+//
+//   const loader = document.createElement("div");
+//   loader.id = "loading-indicator";
+//   loader.className = "spinner";
+//
+//   container.appendChild(loader);
+// }
+//
+// function hideLoading(): void {
+//   const loader = document.getElementById("loading-indicator");
+//   if (loader) loader.remove();
+// }
 
 function showError(error: any): void {
   const errEl = document.createElement("div");
   errEl.id = "error-indicator";
   errEl.textContent = "Failed to load content.";
-  errEl.className = "error";
+  errEl.className = "error pt-3 mt-5 ta-c";
   container.appendChild(errEl);
   console.error(error);
 }

@@ -1,25 +1,41 @@
 .concerns-container {
+  // this a component shared
+  .concern {
+    border-bottom: 1px solid var(--foreground-soft);
+  }
+
   .concerns-manager {
     background-color: var(--secondary) !important;
 
     .status-btn {
-      &.selected {
-        background-color: var(--accent) !important;
+      &:hover {
+        background-color: transparent !important;
         color: var(--foreground) !important;
       }
 
-      &:hover {
-        background-color: transparent !important;
-      }
-    }
+      &.selected {
+        background-color: var(--accent) !important;
+        color: var(--foreground) !important;
+        color: white !important;
 
-    .concern {
-      border: 1px solid var(--foreground);
+        &:hover {
+          background-color: var(--accent) !important;
+          color: white !important;
+        }
+      }
     }
   }
 }
 
 [data-theme="dark"] {
 }
+
 [data-theme="light"] {
+  .concerns-container {
+    .status-btn {
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
 }

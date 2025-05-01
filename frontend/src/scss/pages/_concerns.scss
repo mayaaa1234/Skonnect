@@ -14,7 +14,7 @@ body[data-page="concerns"],
     .submit-concern-container {
       width: min(90%, 800px);
 
-      .view-concerns {
+      .view-popup-concerns-btn {
         background-color: transparent;
         color: var(--foreground);
         @include xxl {
@@ -23,6 +23,9 @@ body[data-page="concerns"],
       }
 
       form {
+        @include lg {
+          padding: 0 24px !important;
+        }
         .form-header {
         }
 
@@ -41,6 +44,7 @@ body[data-page="concerns"],
     }
 
     .concerns-aside-box {
+      position: relative;
       display: none;
     }
   }
@@ -68,7 +72,19 @@ body[data-page="concerns"],
     //   margin-top: 50px;
     // }
     width: min(100%, 800px);
-    height: 600px;
+    @include xs {
+      margin-top: 80px;
+      height: 600px;
+
+      // .empty-list-container {
+      //   top: 10px;
+      // }
+    }
+
+    @include xl {
+      margin-top: 0 !important;
+      height: 600px;
+    }
 
     .concern-popup-header {
       border-top-left-radius: 5px;
@@ -79,7 +95,7 @@ body[data-page="concerns"],
       }
     }
 
-    .concern-popup-controls {
+    .concern-view-controls {
       .concern-status {
         display: flex;
         // flex-direction: column;

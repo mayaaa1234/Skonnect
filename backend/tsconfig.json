@@ -1,0 +1,33 @@
+// BACKEND TSCONFIG
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    // "composite": true,
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "src",
+    "moduleDetection": "force",
+    "typeRoots": [
+      "../node_modules/@types",
+    ],
+    "baseUrl": "src",
+    "paths": {},
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "esnext"
+    ],
+  },
+  "include": [
+    "./src/**/*",
+    "./types/*"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../frontend/**/*",
+    "./configs/**/*",
+    "./dist/**/*"
+  ],
+}

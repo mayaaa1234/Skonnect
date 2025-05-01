@@ -31,6 +31,7 @@ const config = {
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
     profile: ["./frontend/src/ts/pages/profile/profileEntry.ts"],
     nav: ["./frontend/src/ts/pages/nav/navEntry.ts"],
+    council: ["./frontend/src/ts/pages/council/councilEntry.ts"],
     projectsAndEvents: [
       "./frontend/src/ts/pages/projectsAndEvents/projectsAndEventsEntry.ts",
     ],
@@ -58,7 +59,9 @@ const config = {
     extensions: [".scss", ".tsx", ".jsx", ".ts", ".js", ".hbs"],
     alias: {
       "@utils": path.resolve(process.cwd(), "frontend/src/ts/utils"),
-      "@ts": path.resolve(process.cwd(), "frontend/src/ts"),
+      "@components": path.resolve(process.cwd(), "frontend/src/ts/components"),
+      "@ts-pages": path.resolve(process.cwd(), "frontend/src/ts/pages"),
+      "@scss": path.resolve(process.cwd(), "frontend/src/scss"),
     },
   },
 
@@ -137,7 +140,7 @@ const config = {
           options: {
             presets: ["@babel/preset-env", "@babel/preset-typescript"],
             plugins: [
-              ["@babel/plugin-transform-runtime"], // Avoids regenerator issues
+              ["@babel/plugin-transform-runtime"],
               //[
               //  "module-resolver",
               //  {

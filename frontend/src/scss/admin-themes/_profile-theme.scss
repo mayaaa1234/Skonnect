@@ -4,8 +4,8 @@ body[data-page="profile"] {
   // background-color: var(--accent);
 
   .profile-container {
-    .upper-container,
-    .lower-container {
+    .upper-container {
+      // .lower-container {
       background-color: var(--secondary);
       color: var(--foreground);
     }

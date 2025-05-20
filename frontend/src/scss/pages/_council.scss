@@ -21,8 +21,15 @@ body[data-page="council"] {
 
       img {
         height: 500px;
-        margin: 0 auto;
+        // margin: 0 auto;
         border-radius: 20px;
+      }
+    }
+
+    .slides-lg {
+      justify-content: start !important;
+      img {
+        max-width: 33%;
       }
     }
 

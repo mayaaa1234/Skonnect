@@ -23,9 +23,9 @@ export default async function openProfileData(): Promise<void> {
         <div class="upper-container br-20 dp-f fd-c p-1">
           <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
             <h1 class="">Profile</h1>
-            <button class="p-1 as-s br-40 btn-outlined-dark-accent test">
-              Edit profile
-            </button>
+            <!-- <button class="p-1 as-s br-40 btn-outlined-dark-accent test"> -->
+            <!--   Edit profile -->
+            <!-- </button> -->
           </div>
           <div class="br-20 w-100 p-1 upper-bottom">
             <div class="mb-2 ml-n1 avatar">
@@ -46,7 +46,7 @@ export default async function openProfileData(): Promise<void> {
           </div>
         </div>
         <div class="lower-container dp-f p-3 jc-sb ai-c br-20">
-          <div>some text</div>
+          <div></div>
           <button class="logout btn-dark-accent br-40 p-1 w-100px">
             Logout
           </button>

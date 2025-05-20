@@ -58,6 +58,7 @@ function setupSlideshowControls(): void {
 
   document.querySelectorAll<HTMLElement>("[data-dot]").forEach((el) => {
     el.addEventListener("click", () => {
+      console.log("dot clicked");
       const index = parseInt(el.getAttribute("data-dot") || "1", 10);
       currentSlide(index);
     });

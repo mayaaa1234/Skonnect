@@ -12,7 +12,7 @@ export default async function openProfileData(): Promise<void> {
     const user = await response.json();
 
     const profileImg = user.isAdmin
-      ? "assets/img/makise.jpg"
+      ? "assets/img/admin-profile.png"
       : "assets/img/default-profile1.png";
     const usernameDisplay = user.isAdmin
       ? `${user.username} (ADMIN)`

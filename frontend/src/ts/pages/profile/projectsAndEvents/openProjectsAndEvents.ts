@@ -78,14 +78,14 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       })
       .join("");
 
+    // <button
+    //   id="btn-edit-slideshows"
+    //   class="p-1 br-40 btn-dark-accent edit-btn control-btn"
+    // >
+    //   Edit
+    // </button>
     const controlBtns = `
     <div class="control-btn-container">
-      <button
-        id="btn-edit-slideshows"
-        class="p-1 br-40 btn-dark-accent edit-btn control-btn"
-      >
-        Edit
-      </button>
       <button
         id="btn-open-upload-popup"
         class="p-1 br-40 btn-outlined-dark-accent control-btn"

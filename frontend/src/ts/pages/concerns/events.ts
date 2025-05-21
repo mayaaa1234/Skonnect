@@ -98,7 +98,7 @@ form.addEventListener("submit", async (e) => {
     await submitConcern(msg);
     hideLoading();
     submitBtn.innerText = "Submit";
-    notifySuccess("Concern submitted succesfully");
+    notifySuccess("Concern submitted successfully, please wait for admin response");
     message.value = "";
   } catch (err) {
     submitBtn.innerText = "Submit";

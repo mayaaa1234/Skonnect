@@ -108,7 +108,9 @@ export default async function loadSlideshows(): Promise<void> {
               ${imagesDOM}
               <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
               <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
-              <p class="caption">${s.caption ? s.caption : ""}</p>
+              <p 
+style="max-width: 90%;"
+class="ellipsis caption">${s.caption ? s.caption : ""}</p>
             </div>
             <div class="dots-container" style="text-align: center">
               ${dotsDOM}

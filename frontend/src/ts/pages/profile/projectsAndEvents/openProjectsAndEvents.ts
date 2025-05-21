@@ -53,7 +53,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
               ${imagesDOM}
               <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
               <a class="next" data-slideshow-id="${s.id}">&#10095;</a>
-              <p style="font-size: 14px;" class="caption">${s.caption}</p>
+              <p style="font-size: 12px; max-width: 220px;" class="ellipsis caption">${s.caption}</p>
 
               <button class="slideshow-del-btn btn">
                 <svg

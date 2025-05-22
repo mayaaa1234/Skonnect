@@ -13,6 +13,11 @@ body[data-page="budget-alloc"] {
     min-height: 100dvh !important;
   }
 
+  @include max-bp("489px") {
+    table {
+      font-size: 14px;
+    }
+  }
   table {
     width: min(90%, 1400px);
     border-collapse: separate;

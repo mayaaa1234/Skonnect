@@ -13,31 +13,18 @@ body[data-page="profile"] {
   display: flex;
   flex-direction: column;
 
+  .show-sidebar-container {
+    z-index: 10;
+  }
+
   @include xxl {
     .show-sidebar-container {
-      z-index: 10;
       position: fixed;
       background-color: var(--neutral);
       width: $show-sidebar-container-width;
       height: 100vh;
       top: $nav-height;
     }
-    //   display: grid;
-    //   grid-template-areas:
-    //     "show-sidebar main"
-    //     "footer footer";
-    //   grid-template-rows: 1fr auto;
-    //   grid-template-columns: 65px 1fr;
-    //
-    //   .show-sidebar-container {
-    //     background-color: var(--neutral) !important;
-    //   }
-    //
-    //   footer {
-    //     grid-area: footer;
-    //   }
-    //
-    // min-height: calc(100vh - $nav-height);
   }
 
   &:is(button, input):focus {
@@ -54,6 +41,7 @@ body[data-page="profile"] {
     @include mobile {
       height: 100dvh !important;
     }
+
     @include max-bp("1535px") {
       margin-top: -72px !important;
       padding-left: 0 !important;
@@ -111,28 +99,6 @@ $sidebar-width: min(350px, 80%);
     // bar position (cause overflow will be toggled too)
     overflow: hidden;
 
-    body {
-      position: relative;
-      overflow-x: hidden;
-
-      &::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 90;
-        background-color: rgba(0, 0, 0, 0.6);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-      }
-
-      #data-container {
-        transition: transform 0.3s ease;
-        transform: translateX(0);
-        // border: 1px solid blue;
-      }
-    }
-
     &.active-sidebar {
       body {
         overflow: hidden; // disable scrolling if sidebar is open
@@ -149,6 +115,29 @@ $sidebar-width: min(350px, 80%);
         #data-container {
           transform: translateX($sidebar-width);
         }
+      }
+    }
+
+    body {
+      position: relative;
+      overflow-x: hidden;
+
+      // dark overlay fg
+      &::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      #data-container {
+        transition: transform 0.3s ease;
+        transform: translateX(0);
+        // border: 1px solid blue;
       }
     }
   }
@@ -172,29 +161,24 @@ $sidebar-width: min(350px, 80%);
 }
 
 @include min-bp("1359px") {
-  #data-container {
-    // border: 1px solid white;
-
-    width: 100%;
-    transition:
-      width 0.3s ease,
-      transform 0.3s ease !important;
-  }
-
   html[data-page="profile"] {
-    // overflow: auto !important;
-
     &.active-sidebar {
       #data-container {
         width: calc(100% - #{$sidebar-width}) !important;
       }
     }
+
+    #data-container {
+      // border: 1px solid white;
+      width: 100%;
+      transition:
+        width 0.3s ease,
+        transform 0.3s ease !important;
+    }
   }
 }
 
-//
 // PURELY SIDEBAR STYLES NOT RELATED TO TOGGLING LOGIC
-//
 
 #sidebar {
   border-top-right-radius: 15px;

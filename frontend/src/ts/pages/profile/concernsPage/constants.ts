@@ -6,6 +6,7 @@ const STATUS_BUTTONS = [
   { action: "acknowledged", label: "Acknowledge" },
   { action: "in_progress", label: "Process" },
   { action: "resolved", label: "Resolve" },
+  { action: "delete", label: "Delete" },
 ] as const;
 
 const ASIDE_SECTIONS = [

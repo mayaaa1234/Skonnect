@@ -114,3 +114,10 @@ export async function updateConcernStatus(req: Request, res: Response) {
 
   res.json({ msg: "success" });
 }
+
+export async function deleteConcern(req: Request, _res: Response) {
+  await pool.execute(
+    `DELETE FROM concerns WHERE id = ?`,
+    [req.params.id],
+  )
+}

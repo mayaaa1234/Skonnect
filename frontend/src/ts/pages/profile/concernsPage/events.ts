@@ -1,6 +1,6 @@
 import { Concern, fetchAllConcerns } from "./api.ts";
 import { DEFAULT_CONCERN_STATUS, STATUS_BUTTONS } from "./constants.ts";
-import { updateConcernStatusToDB } from "./api.ts";
+import { updateConcernStatusToDB, deleteConcern } from "./api.ts";
 import { renderConcernList } from "./UI.ts";
 
 const container = document.getElementById("data-container") as HTMLDivElement;
@@ -58,7 +58,7 @@ async function openAsideConcernStatus(status: Concern["status"]) {
   }
 }
 
-function initEvents(): void {
+async function initEvents() {
   container.addEventListener("click", async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
 
@@ -67,6 +67,22 @@ function initEvents(): void {
     if (statusBtn) {
       const sc = statusBtn.closest(".concern-controls") as HTMLDivElement;
       const id = Number(sc.dataset.statusId) as Concern["id"];
+
+      if (statusBtn.dataset.action === "delete") {
+        statusBtn.closest<HTMLDivElement>("li")?.remove();
+        deleteConcern(id);
+
+        // refresh opened aside concern status for UI update
+        const vc = document.querySelector(
+          ".concern-view-controls",
+        ) as HTMLElement;
+        const asideSelected = vc.querySelector(".selected") as HTMLElement;
+        const asideOpenedStatus = asideSelected?.dataset
+          .status as Concern["status"];
+        await openAsideConcernStatus(asideOpenedStatus);
+
+        return;
+      }
 
       const newStatus = statusBtn.dataset.action as Concern["status"];
 
@@ -86,7 +102,7 @@ function initEvents(): void {
         const asideSelected = vc.querySelector(".selected") as HTMLElement;
         const asideOpenedStatus = asideSelected?.dataset
           .status as Concern["status"];
-        openAsideConcernStatus(asideOpenedStatus);
+        await openAsideConcernStatus(asideOpenedStatus);
       } catch (err) {
         console.error(err);
         highlighSelectedStatusBtn(statusBtn, "revertUI");

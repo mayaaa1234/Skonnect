@@ -77,4 +77,5 @@ export {
   updateConcernStatusToDB,
   submitConcern,
   fetchAllConcerns,
+  deleteConcern
 };

@@ -8,6 +8,7 @@ import {
   getAllConcerns,
   submitConcern,
   updateConcernStatus,
+  deleteConcern,
 } from "../controllers/concerns.ts";
 
 router.get("/", authUser, getAllConcerns);
@@ -16,5 +17,7 @@ router.get("/status/:id", authUser, getAllConcerns);
 router.post("/", authUser, submitConcern);
 
 router.patch("/status/:id", authAdmin, updateConcernStatus);
+
+router.delete("/:id", authAdmin, deleteConcern);
 
 export default router;

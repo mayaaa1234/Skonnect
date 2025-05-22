@@ -12,6 +12,7 @@ function renderConcernStatusBtn(c: Concern): string {
     ({ action, label }) => `
       <button
         data-action="${action}"
+        style="${action === "delete" ? "border: 1px solid red !important" : ""}"
         class="btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
       >${label}</button>
     `,
@@ -73,19 +74,35 @@ function renderConcernList(
 async function loadDOM(): Promise<void> {
   const concerns: Concern[] = await fetchAllConcerns();
 
-  container.innerHTML = `
-<div class=" p-1 concerns-container container dp-f ai-c fd-c jc-c mt-4">
-  <div class="p-1 border-subtle-effect br-20 concerns-manager">
-    <ul class="lst-n p-1 pt-2 pb-2 concerns-list">
-      ${concerns
-      .map((c) => {
-        return `
+  const listHtml = concerns.length
+    ? concerns
+      .map(c => `
+          <li>
             ${renderConcernStatusBtn(c)}
             ${renderConcernItem(c)}
-          `;
-      })
-      .join("")}
+          </li>
+        `)
+      .join("")
+    : `<li 
+class="">
+         <p 
+          style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+          "
+class="empty-concern-list muted-2">Empty List…</p>
+       </li>`;
 
+  container.innerHTML = `
+<div class=" p-1 concerns-container container dp-f ai-c fd-c jc-c mt-4">
+  <div 
+
+          style="position: relative;"
+    class="p-1 border-subtle-effect br-20 concerns-manager">
+    <ul class="lst-n p-1 pt-2 pb-2 concerns-list">
+          ${listHtml}
     </ul>
   </div>
 

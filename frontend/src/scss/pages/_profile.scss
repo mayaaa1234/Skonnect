@@ -39,7 +39,7 @@ body[data-page="profile"] {
     position: relative;
 
     @include mobile {
-      height: 100dvh !important;
+      // height: 100dvh !important;
     }
 
     @include max-bp("1535px") {
@@ -55,6 +55,7 @@ body[data-page="profile"] {
     .lower-container,
     .upper-container {
       width: 100%;
+      // border: 1px solid white;
       // width: min(100%, 1400px);
     }
   }

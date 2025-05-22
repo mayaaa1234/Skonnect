@@ -9,20 +9,19 @@ function renderConcernStatusBtn(c: Concern): string {
        data-current-status="${c.status}"
        data-status-id="${c.id}">
     ${STATUS_BUTTONS.map(
-      ({ action, label }) => `
+    ({ action, label }) => `
       <button
         data-action="${action}"
         class="btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
       >${label}</button>
     `,
-    ).join("")}
+  ).join("")}
   </div>`;
 }
 
 function renderConcernItem(c: Concern): string {
-  const imgUrl = `assets/img/${
-    c.id % 2 ? "default-profile1.png" : "default-profile2.png"
-  }`;
+  const imgUrl = `assets/img/${c.id % 2 ? "default-profile1.png" : "default-profile2.png"
+    }`;
 
   return `
     <div 
@@ -49,6 +48,7 @@ class="concern p-1 mb-1">
 function renderConcernList(
   concerns: Concern[],
   status?: Concern["status"],
+  adjustEmptyListPos: boolean = false
 ): string {
   const list = status ? filterConcerns(concerns, status) : concerns;
 
@@ -57,12 +57,12 @@ function renderConcernList(
       <div 
           style="
                 position: absolute;
-                top: 50%;
+                top: ${adjustEmptyListPos ? "75%" : "50%"};
                 left: 50%;
                 transform: translate(-50%, -50%);
           "
           class="muted-2 empty-concern-list-container">
-                  <p>Empty list...</p>
+                  <p class="empty-concern-list">Empty list...</p>
       </div>
     `;
   }
@@ -78,13 +78,13 @@ async function loadDOM(): Promise<void> {
   <div class="p-1 border-subtle-effect br-20 concerns-manager">
     <ul class="lst-n p-1 pt-2 pb-2 concerns-list">
       ${concerns
-        .map((c) => {
-          return `
+      .map((c) => {
+        return `
             ${renderConcernStatusBtn(c)}
             ${renderConcernItem(c)}
           `;
-        })
-        .join("")}
+      })
+      .join("")}
 
     </ul>
   </div>

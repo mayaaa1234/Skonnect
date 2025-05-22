@@ -34,11 +34,10 @@ async function openPopupConcernStatus(status: Concern["status"]) {
       console.log("viewstatus not found.");
       return;
     }
-    console.log("aspdfj");
     viewStatusContainer.innerHTML = "";
 
     viewStatusContainer.innerHTML = `
-      ${renderConcernList(concerns, status)}
+      ${renderConcernList(concerns, status, true)}
       `;
   } catch (error) {
     console.log(error);
@@ -57,7 +56,6 @@ async function openAsideConcernStatus(status: Concern["status"]) {
       console.log("viewstatus not found.");
       return;
     }
-    console.log("aspdfj");
     viewStatusContainer.innerHTML = "";
 
     viewStatusContainer.innerHTML = `
@@ -121,12 +119,15 @@ asideButtons.forEach((btn) => {
   });
 });
 
+// Viewing concern list on sm screens
+
 const viewConcernsBtn = document.querySelector(
   ".view-popup-concerns-btn",
 ) as HTMLElement;
 viewConcernsBtn.addEventListener("click", () => {
   popupOverlay.classList.remove("close");
   popupOverlay.classList.add("open");
+  openPopupConcernStatus("rejected");
 });
 
 const closeBtn = document.querySelector(
@@ -139,6 +140,7 @@ closeBtn.addEventListener("click", () => {
 const popupButtons = document.querySelectorAll<HTMLDivElement>(
   ".concern-popup-overlay .concern-status",
 );
+
 popupButtons.forEach((btn) => {
   const status = btn.dataset.status as Concern["status"];
   btn.addEventListener("click", () => {
@@ -150,13 +152,13 @@ popupButtons.forEach((btn) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const viewStatusContainer = document.querySelector(
-    ".concern-view-status",
-  ) as HTMLElement;
-
-  if (!viewStatusContainer) {
-    console.log("viewstatus not found.");
-    return;
-  }
+  // const viewStatusContainer = document.querySelector(
+  //   ".concern-view-status",
+  // ) as HTMLElement;
+  //
+  // if (!viewStatusContainer) {
+  //   console.log("viewstatus not found.");
+  //   return;
+  // }
   openAsideConcernStatus("rejected");
 });

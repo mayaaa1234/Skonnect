@@ -15,6 +15,7 @@ body[data-page="concerns"],
       width: min(90%, 800px);
 
       .view-popup-concerns-btn {
+        text-decoration: underline;
         background-color: transparent;
         color: var(--foreground);
         @include xxl {

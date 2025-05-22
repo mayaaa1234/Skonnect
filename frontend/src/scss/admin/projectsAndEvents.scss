@@ -288,6 +288,9 @@ body[data-page="profile"] {
             background-color 0.2s ease;
           position: relative;
           height: 300px;
+          @media (max-height: 786px) {
+            height: 250px !important;
+          }
 
           &.dragover {
             border-color: #5d9cec;

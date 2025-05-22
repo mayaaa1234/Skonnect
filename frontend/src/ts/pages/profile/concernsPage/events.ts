@@ -5,6 +5,9 @@ import { renderConcernList } from "./UI.ts";
 
 const container = document.getElementById("data-container") as HTMLDivElement;
 
+// type ConcernStatus = Concern["status"];
+// type Action = ConcernStatus | "delete";
+
 function highlightStatusBtnsOnLoad(): void {
   document
     .querySelectorAll<HTMLDivElement>(".concern-controls")
@@ -57,7 +60,7 @@ async function openAsideConcernStatus(status: Concern["status"]) {
     console.log(error);
   }
 }
-
+//
 async function initEvents() {
   container.addEventListener("click", async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -129,4 +132,129 @@ async function initEvents() {
   });
 }
 
+// function initEvents(): void {
+//   document.addEventListener("click", async (e: MouseEvent) => {
+//     const target = e.target as HTMLElement;
+//
+//     //
+//     // 1) Toggle mobile dropdown on label click
+//     //
+//     if (target.closest(".status-dropdown-label")) {
+//       const wrapper = target
+//         .closest<HTMLElement>(".concern-controls")!;
+//       const menu = wrapper.querySelector<HTMLElement>(
+//         ".status-dropdown-menu"
+//       )!;
+//       const isOpen = wrapper.classList.toggle("open");
+//       menu.style.display = isOpen ? "block" : "none";
+//       return;
+//     }
+//
+//     //
+//     // 2) Mobile dropdown option click
+//     //
+//     const opt = target.closest<HTMLButtonElement>(".dropdown-option");
+//     if (opt) {
+//       const action = opt.dataset.action! as Action;
+//       const statusId = Number(opt.dataset.statusId);
+//       const wrapper = opt.closest<HTMLElement>(".concern-controls")!;
+//       const labelEl = wrapper.querySelector<HTMLElement>(
+//         ".status-dropdown-label"
+//       )!;
+//       const menu = wrapper.querySelector<HTMLElement>(
+//         ".status-dropdown-menu"
+//       )!;
+//
+//       // update UI
+//       labelEl.innerHTML = `<p>Status: ${opt.innerText} <span class="arr-down">⌄</span></p>`;
+//       wrapper.dataset.currentStatus = action as ConcernStatus;
+//       wrapper.classList.remove("open");
+//       menu.style.display = "none";
+//
+//       // perform action
+//       if (action === "delete") {
+//         const li = opt.closest("li") as HTMLLIElement | null;
+//         li?.remove();
+//         await deleteConcern(statusId);
+//       } else {
+//         await updateConcernStatusToDB(statusId, action as ConcernStatus);
+//         wrapper
+//           .querySelectorAll<HTMLElement>(".dropdown-option")
+//           .forEach((btn) =>
+//             btn.classList.toggle("selected", btn === opt)
+//           );
+//       }
+//
+//       // refresh aside
+//       const vc = document.querySelector<HTMLElement>(
+//         ".concern-view-controls"
+//       )!;
+//       const asideSel = vc.querySelector<HTMLElement>(".selected")!;
+//       await openAsideConcernStatus(
+//         asideSel.dataset.status! as ConcernStatus
+//       );
+//       return;
+//     }
+//
+//     //
+//     // 3) Desktop status‐button click
+//     //
+//     const statusBtn = target.closest<HTMLButtonElement>(".status-btn");
+//     if (statusBtn) {
+//       const wrapper = statusBtn.closest<HTMLElement>(
+//         ".concern-controls"
+//       )!;
+//       const id = Number(wrapper.dataset.statusId);
+//       const action = statusBtn.dataset.action! as Action;
+//
+//       if (action === "delete") {
+//         const li = statusBtn.closest("li") as HTMLLIElement | null;
+//         li?.remove();
+//         await deleteConcern(id);
+//       } else {
+//         await updateConcernStatusToDB(id, action as ConcernStatus);
+//         highlighSelectedStatusBtn(statusBtn);
+//       }
+//
+//       // refresh aside
+//       const vc = document.querySelector<HTMLElement>(
+//         ".concern-view-controls"
+//       )!;
+//       const asideSel = vc.querySelector<HTMLElement>(".selected")!;
+//       await openAsideConcernStatus(
+//         asideSel.dataset.status! as ConcernStatus
+//       );
+//       return;
+//     }
+//
+//     //
+//     // 4) Aside-status tabs click
+//     //
+//     const asideBtn = target.closest<HTMLElement>(".concern-status");
+//     if (asideBtn) {
+//       const viewControls = asideBtn.closest<HTMLDivElement>(
+//         ".concern-view-controls"
+//       )!;
+//       viewControls.querySelector(".selected")?.classList.remove("selected");
+//       asideBtn.classList.add("selected");
+//       await openAsideConcernStatus(
+//         asideBtn.dataset.status! as ConcernStatus
+//       );
+//       return;
+//     }
+//
+//     //
+//     // 5) Click outside: close any open dropdown
+//     //
+//     document
+//       .querySelectorAll<HTMLElement>(".concern-controls.open")
+//       .forEach((wrapper) => {
+//         wrapper.classList.remove("open");
+//         const menu = wrapper.querySelector<HTMLElement>(
+//           ".status-dropdown-menu"
+//         )!;
+//         menu.style.display = "none";
+//       });
+//   });
+// }
 export { initEvents, highlightStatusBtnsOnLoad, openAsideConcernStatus };

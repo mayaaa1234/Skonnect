@@ -20,6 +20,59 @@ function renderConcernStatusBtn(c: Concern): string {
   </div>`;
 }
 
+
+
+// function renderConcernStatusBtn(c: Concern): string {
+//   const origControls = `
+//     <div class="concern-controls mb-1 dp-f ai-c jc-fe gp-10"
+//          data-current-status="${c.status}"
+//          data-status-id="${c.id}">
+//       ${STATUS_BUTTONS.map(
+//     ({ action, label }) => `
+//         <button
+//           data-action="${action}"
+//           style="${action === "delete" ? "border: 1px solid red !important" : ""}"
+//           class="btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
+//         >${label}</button>
+//       `).join("")}
+//     </div>
+//   `;
+//
+//   // mobile dropdown version
+//   const currentLabel = STATUS_BUTTONS.find(b => b.action === c.status)!.label;
+//   const mobileControls = `
+//     <div class="concern-controls mb-1 dp-f ai-c jc-fe gp-10"
+//          data-current-status="${c.status}"
+//          data-status-id="${c.id}"
+//          style="position: relative; overflow: visible;"
+//     >
+//       <div class="cs-p status-dropdown-label br-20 p-1">
+//         Status: ${currentLabel} <span class="arr-down">⌄</span>
+//       </div>
+//
+//       <div class="status-dropdown-menu">
+//         ${STATUS_BUTTONS.map(
+//     ({ action, label }) => `
+//           <button
+//             class="dropdown-option btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
+//             data-action="${action}"
+//             data-status-id="${c.id}"
+//           >${label}</button>
+//         `).join("")}
+//       </div>
+//     </div>
+//   `;
+//
+//   return `
+//     <div class="status-desktop">
+//       ${origControls}
+//     </div>
+//     <div class="status-mobile">
+//       ${mobileControls}
+//     </div>
+//   `;
+// }
+
 function renderConcernItem(c: Concern): string {
   const imgUrl = `assets/img/${c.id % 2 ? "default-profile1.png" : "default-profile2.png"
     }`;

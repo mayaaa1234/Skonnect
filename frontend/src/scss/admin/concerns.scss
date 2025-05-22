@@ -19,11 +19,65 @@
     }
     .concern-controls > button {
       min-width: 100px;
+      @include max-bp("769px") {
+        min-width: initial !important;
+        font-size: 14px;
+      }
     }
 
     .status-btn:not(.selected) {
       opacity: 0.6;
     }
+
+    // Drop down controls
+
+    // .arr-down {
+    //   // padding-bottom: 20px;
+    //   font-size: 1.8rem;
+    // }
+    //
+    // .status-dropdown-menu {
+    //   transition: opacity 0.2s ease;
+    // }
+    // /* Hide the alternate entirely by default */
+    // .status-desktop,
+    // .status-mobile {
+    //   display: none;
+    // }
+    //
+    // /* ≥769px: show original buttons */
+    // @media (min-width: 769px) {
+    //   .status-desktop {
+    //     display: block;
+    //   }
+    // }
+    //
+    // /* <769px: show dropdown version */
+    // @media (max-width: 768px) {
+    //   .status-mobile {
+    //     display: block;
+    //   }
+    // }
+    //
+    // /* dropdown menu hidden until we add .open */
+    // .status-dropdown-menu {
+    //   display: none;
+    //   position: absolute;
+    //   top: 100%;
+    //   left: 0;
+    //   margin-top: 4px;
+    //   background: var(--neutral);
+    //   border: 1px solid var(--foreground-soft);
+    //   border-radius: 4px;
+    //   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    //   z-index: 100;
+    //   padding: 4px;
+    // }
+    //
+    // /* show when .open is toggled */
+    // .concern-controls.open .status-dropdown-menu {
+    //   display: block;
+    // }
   }
 
   // Right Side

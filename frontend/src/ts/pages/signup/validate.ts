@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!value) {
           showError(field, "field can't be empty.");
         } else if (!field.validity.valid) {
-          showError(field, "not a valid email.");
+          showError(field, "email is not valid.");
         } else {
           clearError(field);
         }

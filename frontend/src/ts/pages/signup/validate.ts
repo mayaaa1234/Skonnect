@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateField(field: HTMLInputElement) {
     const value = field.value.trim();
     const { name } = field;
+    field.value = value; // update the value with the trimmed one
 
     const passwordField = form?.elements.namedItem(
       "password",
@@ -102,12 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Form submission handler
   form.addEventListener("submit", async (e: SubmitEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains("theme-btn")) {
-      e.preventDefault();
-      return;
-    }
-
     e.preventDefault();
 
     // Validate all fields

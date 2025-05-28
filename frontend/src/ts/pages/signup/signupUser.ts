@@ -1,6 +1,8 @@
 import { setState } from "../../utils/setGetState.ts";
 import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
 
+const signupContainer = document.querySelector(".signup-form-container")
+
 export interface SignupData {
   username: string;
   email: string;
@@ -38,23 +40,6 @@ const signupUser = async (jsonData: SignupData) => {
           if (errorDiv) {
             errorDiv.textContent = message as string;
           }
-
-          // Add invalid class to the input field
-          // this is useful when:
-          // .invalid {
-          //  border: 2px solid red;
-          //  background-color: #ffe6e6;
-          //}
-
-          //tho not gonna use it in this project
-
-          //const inputField = document.querySelector(
-          //  `input[name="${fieldName}"]`,
-          //) as HTMLInputElement | null;
-          //
-          //if (inputField) {
-          //  inputField.classList.add("invalid");
-          //}
         });
       }
 

@@ -102,7 +102,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
             <p class="upload-note muted">
               <span class="text-warn">For this to work:</span> <br />
               supported files: png, jpg, jpeg, webp<br />
-              max images: 8 (this is for storage considerations)
+              max images: 8 (this is for server storage considerations)
             </p>
             <!-- <button id="close-upload-popup">&times;</button> -->
           </div>

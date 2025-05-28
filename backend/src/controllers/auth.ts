@@ -7,13 +7,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const signup = async (req: Request, res: Response): Promise<void> => {
-  const {
-    username,
-    email,
-    password,
-    confirmPassword,
-    adminKey = null,
-  } = req.body;
+  const username = req.body.username?.trim() ?? "";
+  const email = req.body.email?.trim() ?? "";
+  const password = req.body.password?.trim() ?? "";
+  const confirmPassword = req.body.confirmPassword?.trim() ?? "";
+  const adminKey = req.body.adminKey?.trim() || null;
 
   let isAdmin = false;
   if (adminKey) {

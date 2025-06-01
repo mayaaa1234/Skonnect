@@ -28,7 +28,7 @@ const showNotification = (
   setTimeout(() => {
     notification.classList.add("hide");
     setTimeout(() => notification.remove(), 400); // this waits for the the opacity fade time set in _notif.scss
-  }, 3000);
+  }, 3500);
 };
 
 const createNotificationContainer = () => {

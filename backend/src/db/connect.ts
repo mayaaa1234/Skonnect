@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 
-console.log("MYSQLPORT:", process.env.MYSQL_PUBLIC_URL);
+// console.log("MYSQLPORT:", process.env.MYSQL_PUBLIC_URL);
 
 const connectDB = () => {
   if (process.env.NODE_ENV === "development") {

@@ -1,11 +1,16 @@
-import signupUser from "./signupUser.ts";
+import signupValidation, { SignupData } from "./signupValidation.ts";
 import autoFillForm from "../../utils/scripts/autoFillForm.ts";
-import type { SignupData } from "./signupUser.ts";
+// import type { SignupData } from "./signupValidation.ts";
+
+import { showLoading } from "@components/loadingSpinner.ts";
+const submitBtn = document.querySelector(
+  ".submit-signup-btn",
+) as HTMLButtonElement;
 
 document.addEventListener("DOMContentLoaded", () => {
   //WARN: this is for quick testing only and should be removed on prod
   if (process.env.NODE_ENV !== "production") {
-    //autoFillForm();
+    autoFillForm();
   }
 
   const form = document.getElementById("signup-form") as HTMLFormElement | null;
@@ -123,8 +128,19 @@ document.addEventListener("DOMContentLoaded", () => {
       formData as unknown as Iterable<[string, FormDataEntryValue]>,
     ) as unknown as SignupData;
 
+    // save this temporarily for otp functionality
+    // after successful validation
+    const { email } = jsonData;
+    sessionStorage.setItem("email", email);
+
     //console.log({ jsonData });
-    await signupUser(jsonData);
     //form.reset();
+
+    submitBtn.disabled = true;
+    const originalContent = submitBtn.innerHTML;
+    showLoading(submitBtn, "small");
+    await signupValidation(jsonData);
+    submitBtn.innerHTML = originalContent;
+    submitBtn.disabled = false;
   });
 });

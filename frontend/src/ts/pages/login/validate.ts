@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userIdentifier = form.querySelector(
       "#user-identifier",
     ) as HTMLInputElement;
-    const value = userIdentifier.value.trim();
+    const credential = userIdentifier.value.trim();
 
     const passwordInput = form.querySelector(
       'input[name="password"]',
@@ -108,15 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const loginData: LoginData = {
       password: passwordInput.value,
+      credential: credential
     };
 
     // if the value matches the email regex, add it as an email,
     // otherwise as username.
-    if (emailRegex.test(value)) {
-      loginData.email = value;
-    } else {
-      loginData.username = value;
-    }
+    // if (emailRegex.test(value)) {
+    //   loginData.credentials = value;
+    // } else {
+    //   loginData.credentials = value;
+    // }
 
     await loginUser(loginData);
   });

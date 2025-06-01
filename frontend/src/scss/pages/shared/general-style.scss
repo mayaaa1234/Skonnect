@@ -8,7 +8,7 @@ html {
 
 // adjust height for the fixed nav excpet for signup and login
 // cause they don't have nav bar attached to them
-body:not([data-page="signup"], [data-page="login"]) {
+body:not([data-page="signup"], [data-page="otp"], [data-page="login"]) {
   height: 100vh;
   padding-top: $nav-height !important;
   overflow-y: auto;

@@ -12,7 +12,14 @@
       "../node_modules/@types"
     ],
     "baseUrl": "src",
-    "paths": {},
+    "paths": {
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@ts-pages/*": [
+        "pages/*"
+      ]
+    },
     "types": [
       "node"
     ],

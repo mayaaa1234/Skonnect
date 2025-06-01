@@ -6,6 +6,7 @@ import {
   landingPage,
   homePage,
   signupPage,
+  otpPage,
   loginPage,
   profilePage,
   aboutPage,
@@ -17,6 +18,7 @@ import {
 
 router.get("/", redirectAuth(), landingPage);
 router.get("/signup", redirectAuth(), signupPage);
+router.get("/signup/otp-authentication", redirectAuth(), otpPage);
 router.get("/login", redirectAuth(), loginPage);
 
 // protected routes

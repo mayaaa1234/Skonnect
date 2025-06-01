@@ -12,17 +12,24 @@ const signupPage = (_req: Request, res: Response): void => {
   });
 };
 
+const otpPage = (_req: Request, res: Response): void => {
+  res.render("otpPage", {
+    title: "otp-authentication",
+  });
+};
+
 const loginPage = (_req: Request, res: Response): void => {
   res.render("login", {
     title: "Login",
   });
 };
 
-const suggestionPage = (_req: Request, res: Response): void => {
-  res.render("suggestions", {
-    title: "Submit Suggestions",
-  });
-};
+// const suggestionPage = (_req: Request, res: Response): void => {
+//   res.render("suggestions", {
+//     title: "Submit Suggestions",
+//   });
+// };
+
 const aboutPage = (_req: Request, res: Response): void => {
   res.render("about", {
     title: "About",
@@ -104,6 +111,7 @@ const budgetAllocationPage = (_req: Request, res: Response): void => {
 export {
   landingPage,
   signupPage,
+  otpPage,
   loginPage,
   homePage,
   profilePage,

@@ -4,12 +4,12 @@ dotenv.config();
 import "express-async-errors";
 import process from "process";
 import path from "path";
-import fs from "fs";
+// import fs from "fs";
 
 import express from "express";
 import favicon from "serve-favicon";
 import morgan from "morgan";
-import session from "express-session";
+// import session from "express-session";
 
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.ts";
@@ -48,11 +48,12 @@ import user from "./routes/users.ts";
 import slides from "./routes/slides.ts";
 import budgetAllocation from "./routes/budgetAllocation.ts";
 import concerns from "./routes/concerns.ts";
+import otp from "./routes/otp.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
 import { errorHandler } from "./middlewares/errorHandler.ts";
-import { budgetAllocationPage } from "./controllers/pages.ts";
+// import { budgetAllocationPage } from "./controllers/pages.ts";
 
 // NOTE : src attr path's given to elems from
 // ejs files should be relative to this publicDir
@@ -73,15 +74,6 @@ app.set("view options", { rmWhitespace: true });
 app.set("views", path.join(process.cwd(), "frontend/views"));
 app.use(morgan("dev"));
 
-//app.use(sessionMiddleware);
-//app.use(attachSessionData);
-
-//app.use((_req, res, next) => {
-//  res.locals.env = process.env.NODE_ENV;
-//  console.log("sending locals:", res.locals.env);
-//  next();
-//});
-
 // routes
 app.use("/", pages);
 app.use("/api/v1/auth", auth);
@@ -89,6 +81,7 @@ app.use("/api/v1/users", user);
 app.use("/api/v1/slides", slides);
 app.use("/api/v1/budgetAllocation", budgetAllocation);
 app.use("/api/v1/concerns", concerns);
+app.use("/api/v1/otp", otp);
 
 //errors
 app.use(notFound);

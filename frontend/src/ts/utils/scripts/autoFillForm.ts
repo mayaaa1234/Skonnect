@@ -35,7 +35,7 @@ export default function autofillForm(): void {
   // for signup
   if (usernameInput) usernameInput.value = username;
   //if (emailInput) emailInput.value = email;
-  if (emailInput) emailInput.value = "maya123@gmail.com";
+  if (emailInput) emailInput.value = `francia.j.bscs@gmail.com`;
   if (passwordInput) passwordInput.value = "asdfasdf";
   if (confirmPasswordInput) confirmPasswordInput.value = "asdfasdf";
 }

@@ -11,11 +11,11 @@ export const errorHandler = (
 ) => {
   if (err instanceof CustomError) {
     if (err.message) console.error("Error message:", err.message);
-    if (err.objectErr) console.error("Error message:", err.objectErr);
+    if (err.errors) console.error("Error message:", err.errors);
 
     return res.status(err.statusCode).json({
       msg: err.message ?? undefined,
-      errs: err.objectErr ?? undefined, // send multiple errors if available
+      errs: err.errors ?? undefined, // send multiple errors if available
     });
   }
 
@@ -30,7 +30,7 @@ export const errorHandler = (
     .status(500)
     .json({ msg: "Something went wrong, please try again later." });
 
-  _next(err);
+  // _next(err);
 };
 
 //import { CustomError } from "../errors/CustomError.ts";

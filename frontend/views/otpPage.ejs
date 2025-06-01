@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+    <!--HEAD-->
+    <%- include('./partials/head.ejs') %>
+    <body data-page="otp" class="">
+        <!-- <div class="overlay"> -->
+        <!--     <img src="assets/img/bg.jpg" alt="" /> -->
+        <!-- </div> -->
+        <div class="auth-wrapper container">
+            <form
+                autocomplete="off"
+                id="otp-form"
+                class="border-subtle-effect br-20"
+                action=""
+                novalidate
+            >
+                <h2 class="gradient-text">OTP Authentication</h2>
+                <p class="muted-2">Enter the 6 digit otp sent to your email</p>
+
+                <input
+                    maxlength="11"
+                    inputmode="numeric"
+                    type="text"
+                    class="otp-input gradient-text br-10 mt-3 mb-2"
+                    id="otp-input"
+                />
+                <div class="mt-n1 error-div text-error fs-n1-xs"></div>
+
+                <div class="gp-20 dp-n">
+                    <p class="muted">Expires in: 10:00</p>
+                    <p class="muted">Attempts remaining: 5</p>
+                </div>
+
+                <button
+                    type="submit"
+                    class="submit-otp-btn submit p-1 br-40 btn-dark-accent"
+                >
+                    Verify
+                </button>
+
+                <div class="time-attempts-container mb-1 dp-f gp-30">
+                    <p class="attempts-left fs-n1-xs"></p>
+                    <p class="time-left fs-n1-xs"></p>
+                </div>
+
+                <div class="otp-resend-container dp-f ai-c fd-c gp-5">
+                    <div class="dp-f gp-5">
+                        <p>Didn't receive an OTP?</p>
+                        <button
+                            type="button"
+                            class="resend-otp-btn btn btn-no-hover"
+                        >
+                            Resend
+                        </button>
+                    </div>
+                    <div
+                        class="resend-err-div"
+                        data-err-for="resend-button"
+                    ></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-dark-secondary login-left auth-filler-bg">
+            <h1 class="fs-3-xs fs-5-xl">Get Started Now!</h1>
+            <h1 class="fs-3-xs">
+                Signup to <span class="gradient-text">SKonnect</span>
+            </h1>
+        </div>
+
+        <!--FOOTER --commented out -->
+        <%# include('./partials/footer.ejs') %>
+
+        <script type="module" src="/app.bundle.js" defer></script>
+        <script type="module" src="/signup.bundle.js" defer></script>
+        <script type="module" src="/otp.bundle.js" defer></script>
+    </body>
+</html>

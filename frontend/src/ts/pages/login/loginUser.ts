@@ -2,8 +2,9 @@ import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
 import { setState } from "../../utils/setGetState.ts";
 
 export interface LoginData {
-  username?: string;
-  email?: string;
+  // username?: string;
+  // email?: string;
+  credential: string;
   password: string;
 }
 

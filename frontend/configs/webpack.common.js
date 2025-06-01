@@ -29,13 +29,13 @@ const config = {
     home: ["./frontend/src/ts/pages/home/homeEntry.ts"],
     login: ["./frontend/src/ts/pages/login/loginEntry.ts"],
     signup: ["./frontend/src/ts/pages/signup/signupEntry.ts"],
+    otp: ["./frontend/src/ts/pages/otp/otpEntry.ts"],
     profile: ["./frontend/src/ts/pages/profile/profileEntry.ts"],
     nav: ["./frontend/src/ts/pages/nav/navEntry.ts"],
     council: ["./frontend/src/ts/pages/council/councilEntry.ts"],
     projectsAndEvents: [
       "./frontend/src/ts/pages/projectsAndEvents/projectsAndEventsEntry.ts",
     ],
-
     concerns: ["./frontend/src/ts/pages/concerns/concernsEntry.ts"],
     budgetAllocation: [
       "./frontend/src/ts/pages/budgetAllocation/budgetAllocationEntry.ts",

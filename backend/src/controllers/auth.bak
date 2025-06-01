@@ -1,0 +1,150 @@
+
+// import type { Request, Response } from "express";
+// import User from "../models/User.ts";
+// import mkCustomError from "../errors/CustomError.ts";
+// import jwt from "jsonwebtoken";
+// import { otpRequest, otpVerify } from "../services/otpService.ts"
+// import * as tempStore from "../utils/tempStore.ts"
+// // import dotenv from "dotenv";
+// // dotenv.config();
+//
+// const signupValidation = async (req: Request, res: Response): Promise<void> => {
+//   const data = req.body
+//   const getTrimmedField = (field: any) =>
+//     typeof field === "string" ? field.trim() : "";
+//
+//   const username = getTrimmedField(data.username);
+//   const email = getTrimmedField(data.email);
+//   const password = getTrimmedField(data.password);
+//   const confirmPassword = getTrimmedField(data.confirmPassword);
+//   const adminKey = data.adminKey || null;
+//
+//   let isAdmin = false;
+//   if (adminKey) {
+//     if (adminKey !== process.env.ADMIN_KEY) {
+//       throw mkCustomError({ status: 401 });
+//     }
+//     isAdmin = true;
+//   }
+//
+//   // const user = new User(username, email, password, confirmPassword, isAdmin);
+//   await User.signupValidation(username, email, password, confirmPassword);
+//
+//   // this sends the otp both in sql table temporarily
+//   // and the email of the user
+//   const otp = await otpRequest(email);
+//
+//   // save the data temporarily to be 
+//   // used in signupVerification later
+//   tempStore.setSignupTempData(email, {
+//     username, email, password, isAdmin, otp
+//   })
+//
+//   res.sendStatus(200)
+// };
+//
+// const signupVerification = async (req: Request, res: Response): Promise<void> => {
+//
+//   const { username, email, password } = req.body
+//   const otp = await otpRequest(email);
+//   await otpVerify(otp, email);
+//   await User.saveDB();
+//
+//   const token = jwt.sign(
+//     {
+//       // user has id sent from sql 
+//       // after saving from db
+//       userId: user.id,
+//       username: user.username,
+//       email: user.email,
+//       isAdmin: user.isAdmin,
+//     },
+//     process.env.JWT_SECRET as string,
+//     {
+//       expiresIn: process.env.JWT_LIFETIME,
+//     } as jwt.SignOptions,
+//   );
+//
+//   res.cookie("authorization", token, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === "production",
+//     sameSite: "strict",
+//     signed: true,
+//     maxAge: Number(process.env.COOKIE_MAX_AGE),
+//     path: "/",
+//   });
+//
+//   res.status(201).json({
+//     // success: { msg: "ok" }
+//     user: { userId: user.id, name: user.username },
+//     token,
+//   });
+// }
+// const login = async (req: Request, res: Response) => {
+//   console.log("Received login request:", req.body);
+//
+//   const { username = null, email = null, password } = req.body;
+//
+//   const user = new User(username, email, password);
+//
+//   await user.loginValidation();
+//
+//   const token = jwt.sign(
+//     {
+//       userId: user.id,
+//       username: user.username,
+//       email: user.email,
+//       isAdmin: user.isAdmin,
+//     },
+//     process.env.JWT_SECRET as string,
+//     {
+//       expiresIn: process.env.JWT_LIFETIME as string,
+//     } as jwt.SignOptions,
+//   );
+//
+//   console.log("LOGIN USER INFO:", {
+//     username: user.username ?? "not used when logging in",
+//     email: user.email ?? "not used when logging in",
+//     password: user.password,
+//     token,
+//   });
+//
+//   res.cookie("authorization", token, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === "production",
+//     sameSite: "strict",
+//     signed: true,
+//     maxAge: Number(process.env.COOKIE_MAX_AGE),
+//     path: "/",
+//   });
+//
+//   res.status(200).json({
+//     user: { userId: user.id, username: user.username },
+//     //token,
+//   });
+// };
+//
+// const logout = async (_req: Request, res: Response) => {
+//   //await new Promise<void>((resolve, _reject) => {
+//   //req.session.destroy((err) => {
+//   //  if (err) next(mkCustomError("Session destruction failed", 500));
+//   //  resolve();
+//   //});
+//
+//   res.set(
+//     "Cache-Control",
+//     "no-store, no-cache, must-revalidate, proxy-revalidate",
+//   );
+//   res.set("Pragma", "no-cache");
+//   res.set("Expires", "0");
+//   res.clearCookie("authorization", {
+//     path: "/",
+//     domain: "",
+//   });
+//
+//   res.status(200).json({
+//     success: true,
+//   });
+//   //});
+// };
+// export { signupValidation, signupVerification, login, logout };

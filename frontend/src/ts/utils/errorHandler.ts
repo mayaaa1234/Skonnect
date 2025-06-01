@@ -10,7 +10,8 @@ type CustomError = Error & {
   response?: Response;
 };
 
-// Handles errors from fetch responses and throws enriched Error objects
+// Handles errors from fetch responses
+// and throws enriched Error objects
 export default class ErrorHandler {
   static async handleResponseError(response: Response) {
     let errorData: ErrorResponse = {};
@@ -25,7 +26,6 @@ export default class ErrorHandler {
     error.details = errorData.errs;
     error.response = response;
 
-    // console.error(error);
     throw error;
   }
 }

@@ -24,8 +24,10 @@
 
 // pages
 @forward "pages/shared/general-style";
+@forward "pages/shared/general-theme";
 @forward "pages/landing";
 @forward "pages/auth";
+@forward "pages/otp";
 @forward "pages/home";
 @forward "pages/profile";
 @forward "pages/about";
@@ -35,10 +37,11 @@
 @forward "pages/council";
 
 // themes
-@forward "themes/gen-themes";
+// @forward "themes/gen-themes";
 @forward "themes/nav-theme";
 @forward "themes/landing-theme";
 @forward "themes/auth-theme";
+@forward "themes/otp-theme";
 @forward "themes/home-theme";
 @forward "themes/budget-allocation";
 @forward "themes/concerns-theme";

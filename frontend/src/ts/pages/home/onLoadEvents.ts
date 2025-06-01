@@ -5,6 +5,7 @@ const manualResizeTrigger = true; // WARN: temporary to flail err
 
 // notif message
 const signupMsg = sessionStorage.getItem("signupSuccessNotif");
+
 const loginMsg = sessionStorage.getItem("loginWelcomeNotif");
 if (signupMsg) {
   notifyGradient(signupMsg);

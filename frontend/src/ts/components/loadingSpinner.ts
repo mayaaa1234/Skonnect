@@ -3,11 +3,11 @@ function showLoading(container: HTMLElement, size?: "small"): void {
 
   // spinner container
   const spinnerContainer = document.createElement("div");
-  spinnerContainer.id = "spinnerContainer";
+  spinnerContainer.id = "spinner-container";
 
   // spinner
   const spinner = document.createElement("div");
-  spinner.id = "loadingSpinner";
+  spinner.id = "spinner";
 
   spinnerContainer.appendChild(spinner);
 
@@ -19,7 +19,7 @@ function showLoading(container: HTMLElement, size?: "small"): void {
 }
 
 function hideLoading(): void {
-  const spinner = document.getElementById("spinnerContainer");
+  const spinner = document.getElementById("spinner-container");
   if (spinner) spinner.remove();
 }
 

@@ -1,15 +1,15 @@
 export class CustomError extends Error {
   statusCode: number;
-  public objectErr?: { [key: string]: string };
+  public errors?: { [key: string]: string };
 
   constructor(
     statusCode: number,
     message?: string,
-    objectErr?: { [key: string]: string }, // ths if server wants to send multiple err's
+    errors?: { [key: string]: string }, // ths if server wants to send multiple err's
   ) {
     super(message);
     this.statusCode = statusCode;
-    this.objectErr = objectErr;
+    this.errors = errors;
   }
 }
 

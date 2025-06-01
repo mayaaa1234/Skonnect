@@ -13,6 +13,8 @@ const redirectAuth = () => {
     const token = req.signedCookies.authorization;
     const currentPath = req.path; // get the requested route
 
+    const signupValidation = req.cookies.signupValid === "true";
+
     let user = null;
     if (token) {
       try {
@@ -39,6 +41,15 @@ const redirectAuth = () => {
       "/concerns-or-suggestions",
       "/council-information",
     ];
+
+    if (currentPath === "/signup/otp-authentication") {
+      if (user) {
+        return res.redirect(302, "/home");
+      }
+      if (!signupValidation) {
+        return res.redirect(302, "/signup");
+      }
+    }
 
     // Landing page: if authenticated, redirect to home
     if (user && currentPath === "/") {

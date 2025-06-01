@@ -4,7 +4,8 @@
 // specific customization of each at the bottom
 
 body[data-page="login"],
-body[data-page="signup"] {
+body[data-page="signup"],
+body[data-page="otp"] {
   height: 100vh;
   display: flex;
   // align-items: center;

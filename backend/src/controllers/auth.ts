@@ -1,56 +1,77 @@
 import type { Request, Response } from "express";
 import User from "../models/User.ts";
-//import { asyncWrapper } from "../middlewares/asyncWrapper.ts";
 import mkCustomError from "../errors/CustomError.ts";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
+import { otpRequest, otpVerify } from "../services/otpService.ts";
+import {
+  setTempSignupData,
+  getTempSignupData,
+  deleteTempSignupData,
+} from "utils/tempSignupStore.ts";
 
-const signup = async (req: Request, res: Response): Promise<void> => {
-  const username = req.body.username?.trim() ?? "";
-  const email = req.body.email?.trim() ?? "";
-  const password = req.body.password?.trim() ?? "";
-  const confirmPassword = req.body.confirmPassword?.trim() ?? "";
-  const adminKey = req.body.adminKey?.trim() || null;
+export const signupValidation = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { username, email, password, confirmPassword, adminKey } = req.body;
 
   let isAdmin = false;
   if (adminKey) {
-    if (adminKey !== process.env.ADMIN_KEY) {
-      throw mkCustomError({ status: 401, msg: "Invalid admin key." });
-    }
+    if (adminKey !== process.env.ADMIN_KEY)
+      throw mkCustomError({ status: 401 });
     isAdmin = true;
   }
-
-  const user = new User(username, email, password, confirmPassword, isAdmin);
-  await user.signupValidation();
-  await user.saveDB();
-
-  //user has id from sql auto increment
-  const token = jwt.sign(
-    {
-      userId: user.id,
-      username: user.username,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    },
-    process.env.JWT_SECRET as string,
-    {
-      expiresIn: process.env.JWT_LIFETIME,
-    } as jwt.SignOptions,
+  // validation
+  await User.signupValidation(
+    username.trim(),
+    email.trim(),
+    password.trim(),
+    confirmPassword.trim(),
   );
 
-  // attaching username to sesssion
-  //req.session.user = {
-  //  id: user.id,
-  //  username: user.username,
-  //};
-  //// saving it
-  //await new Promise<void>((resolve, _reject) => {
-  //  req.session.save((err) => {
-  //    if (err) throw mkCustomError("Session save failed.", 500);
-  //    resolve();
-  //  });
-  //});
+  // generate and send OTP
+  const otpRecord = await otpRequest(email);
+
+  // drop the otp and only send the info
+  const { otp, ...otpInfo } = otpRecord;
+
+  // store temp data for verification
+  await setTempSignupData(username, email, password, isAdmin, otp);
+
+  res.status(200).json({ otpInfo });
+};
+
+export const signupVerification = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { email, otp } = req.body;
+  console.log("sign up verification:", { email, otp });
+
+  const tempData = await getTempSignupData(email);
+  if (!tempData)
+    throw mkCustomError({
+      status: 400,
+      msg: "temp data error: signup session expired or not found",
+    });
+
+  // verify OTP
+  await otpVerify(email, otp);
+  // const { otp: droppedOtp, ...otpInfo } = otpRecord;
+
+  // create user
+  const { username, password, isAdmin } = tempData;
+  const userId = await User.saveDB(username, email, password, isAdmin);
+
+  // delete temp data
+  await deleteTempSignupData(email);
+
+  // issue JWT
+  const token = jwt.sign(
+    { userId, username, email, isAdmin },
+    process.env.JWT_SECRET as string,
+    { expiresIn: process.env.JWT_LIFETIME } as jwt.SignOptions,
+  );
 
   res.cookie("authorization", token, {
     httpOnly: true,
@@ -61,43 +82,27 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     path: "/",
   });
 
-  // can only send one of these two and there's a trade off we'll see about it
-  res.status(201).json({
-    user: { userId: user.id, name: user.username },
-    token,
-  });
-
-  //res.redirect(201, "/home");
+  // console.log("signup verification: ", userName);
+  res.status(201).json({ user: { userId, username }, token });
 };
 
-const login = async (req: Request, res: Response) => {
-  console.log("Received login request:", req.body);
+export const login = async (req: Request, res: Response): Promise<void> => {
+  const { credential, password } = req.body;
 
-  const { username = null, email = null, password } = req.body;
+  // login validation
+  const {
+    id: userId,
+    username,
+    email,
+    isAdmin,
+  } = await User.loginValidation(credential.trim(), password.trim());
 
-  const user = new User(username, email, password);
-
-  await user.loginValidation();
-
+  // issue JWT
   const token = jwt.sign(
-    {
-      userId: user.id,
-      username: user.username,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    },
+    { userId, username, email, isAdmin },
     process.env.JWT_SECRET as string,
-    {
-      expiresIn: process.env.JWT_LIFETIME as string,
-    } as jwt.SignOptions,
+    { expiresIn: process.env.JWT_LIFETIME } as jwt.SignOptions,
   );
-
-  console.log("LOGIN USER INFO:", {
-    username: user.username ?? "not used when logging in",
-    email: user.email ?? "not used when logging in",
-    password: user.password,
-    token,
-  });
 
   res.cookie("authorization", token, {
     httpOnly: true,
@@ -108,19 +113,10 @@ const login = async (req: Request, res: Response) => {
     path: "/",
   });
 
-  res.status(200).json({
-    user: { userId: user.id, username: user.username },
-    //token,
-  });
+  res.status(200).json({ user: { userId, username }, token });
 };
 
-const logout = async (_req: Request, res: Response) => {
-  //await new Promise<void>((resolve, _reject) => {
-  //req.session.destroy((err) => {
-  //  if (err) next(mkCustomError("Session destruction failed", 500));
-  //  resolve();
-  //});
-
+export const logout = async (_req: Request, res: Response) => {
   res.set(
     "Cache-Control",
     "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -135,6 +131,4 @@ const logout = async (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
   });
-  //});
 };
-export { signup, login, logout };

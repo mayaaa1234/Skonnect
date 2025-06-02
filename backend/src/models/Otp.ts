@@ -31,7 +31,7 @@ export default class Otp {
 
   static async send(email: string): Promise<OtpRecord> {
     const otp = this.generateNumericOTP();
-    console.log("otp sent: ", otp);
+    // console.log("otp sent: ", otp);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     // couple of validations before sending otp
@@ -171,7 +171,7 @@ export default class Otp {
       `SELECT cooldown, last_requested_at, request_count FROM otp_resend_requests WHERE email = ?`,
       [email],
     );
-    console.log("otp resend state: ", rows);
+    // console.log("otp resend state: ", rows);
     const record = rows[0];
 
     // If cooldown active, throw error
@@ -210,7 +210,7 @@ export default class Otp {
 
     // If 3rd request, apply cooldown and reset
     if (record.request_count + 1 >= 3) {
-      console.log("setting cooldown hit");
+      // console.log("setting cooldown hit");
       await pool.execute(
         `UPDATE otp_resend_requests SET cooldown = NOW() + INTERVAL 10 MINUTE, request_count = 0 WHERE email = ? AND cooldown IS NULL`,
         [email],

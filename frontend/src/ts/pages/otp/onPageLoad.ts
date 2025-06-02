@@ -1,6 +1,7 @@
 import { notifyError } from "@utils/showNotif.ts";
 import { getOtpInfoByEmail } from "./otpApi.ts";
 import {
+  clearInput,
   setInputDisabled,
   setResendDisabled,
   setSubmitDisabled,
@@ -12,8 +13,11 @@ import {
 } from "./attempts-timer.ts";
 
 const errDiv = document.querySelector(".error-div") as HTMLDivElement;
+const otpInput = document.querySelector(".otp-input") as HTMLInputElement;
 
 export default async function RenderOtpStateOnLoad() {
+  otpInput.focus();
+
   const email = sessionStorage.getItem("email");
   if (!email) {
     notifyError("Something went wrong, try signing up again later");
@@ -31,7 +35,8 @@ export default async function RenderOtpStateOnLoad() {
   const { cooldown, attempts_left, expires_at } = otpInfo;
 
   if (attempts_left <= 0 && cooldown && new Date(cooldown) > new Date()) {
-    errDiv.innerText = "max attempts reached, click resend to try again";
+    clearInput();
+    errDiv.innerText = "max attempts reached. click resend to try again";
     setSubmitDisabled(true);
     setInputDisabled(true);
     renderResendCooldownInInterval(cooldown.toString());
@@ -46,7 +51,8 @@ export default async function RenderOtpStateOnLoad() {
   }
 
   if (attempts_left <= 0) {
-    errDiv.innerText = "max attempts reached, click resend to try again";
+    clearInput();
+    errDiv.innerText = "max attempts reached. click resend to try again";
     setSubmitDisabled(true);
     setInputDisabled(true);
     return;
@@ -57,7 +63,7 @@ export default async function RenderOtpStateOnLoad() {
     console.log("is expired hit");
     setSubmitDisabled(true);
     setInputDisabled(true);
-    errDiv.innerText = "OTP expired, please request a new OTP";
+    errDiv.innerText = "OTP expired. please request a new OTP";
     return;
   }
 

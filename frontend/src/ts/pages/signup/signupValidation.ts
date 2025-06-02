@@ -1,5 +1,5 @@
 // import { setState } from "../../utils/setGetState.ts";
-import { notifySuccess, notifyError } from "../../utils/showNotif.ts";
+import { notifyError } from "../../utils/showNotif.ts";
 
 export interface SignupData {
   username: string;

@@ -9,6 +9,13 @@ export function setSubmitDisabled(isDisabled: boolean) {
   }
 }
 
+export function clearInput() {
+  const input = document.querySelector(".otp-input");
+  if (input instanceof HTMLInputElement) {
+    input.value = "";
+  }
+}
+
 export function setInputDisabled(isDisabled: boolean) {
   const input = document.querySelector(".otp-input");
   if (input instanceof HTMLInputElement) {

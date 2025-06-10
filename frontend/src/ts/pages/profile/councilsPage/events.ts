@@ -1,17 +1,19 @@
-import { notifyError, notifySuccess, notifyInfo } from "@utils/showNotif.ts";
-import initProjectsAndEventsPage from "./initProjectsAndEvents.ts";
+import { notifyError, notifyInfo } from "@utils/showNotif.ts";
+import { fetchAllImageURLs } from "./data.ts";
+import openCouncilPage from "./page.ts";
 
-export default function uploadEventListener() {
-  const overlay = document.getElementById("projects-upload-popup-overlay")!;
+export default function initEvents() {
+  const overlay = document.getElementById("council-upload-popup-overlay")!;
   const openPopup = document.getElementById("btn-open-upload-popup");
-  // const editSlideshows = document.getElementById("btn-edit-slideshows");
-  const inputCaption = document.querySelector(
-    ".upload-input-caption",
+  const editSlideshows = document.getElementById("btn-edit-slideshows");
+  const dropZone = document.getElementById("drop-zone-council") as HTMLElement;
+  const fileInput = document.getElementById(
+    "image-upload-council",
   ) as HTMLInputElement;
-
-  const fileInput = document.getElementById("image-upload") as HTMLInputElement;
-  const dropZone = document.getElementById("drop-zone") as HTMLElement;
   const nav = document.querySelector("nav")!;
+  const previewContainer = document.querySelector(
+    ".img-preview-container",
+  ) as HTMLElement;
 
   // TOGGLE, DRAG, AND DROP EVENTS
 
@@ -21,13 +23,8 @@ export default function uploadEventListener() {
   }
   openPopup.addEventListener("click", () => {
     shownPreviews.clear();
-    fileInput.value = "";
 
     overlay?.classList.add("show");
-    inputCaption?.focus();
-
-    previewContainer.innerHTML = "";
-    fileInput.value = "";
 
     const instructionText = dropZone?.querySelector(
       "p:first-child",
@@ -41,6 +38,11 @@ export default function uploadEventListener() {
     if (overlay?.matches(".show")) {
       if (e.target === overlay || e.target === nav) {
         overlay?.classList.remove("show");
+
+        // clear
+        // previewContainer.innerHTML = "";
+        // fileInput.value = "";
+        // shownPreviews.clear();
       }
     }
   });
@@ -63,10 +65,14 @@ export default function uploadEventListener() {
 
   // UPLOADING THE FILE FORM
 
-  const form = document.getElementById("upload-form") as HTMLFormElement;
+  const form = document.getElementById(
+    "council-upload-form",
+  ) as HTMLFormElement;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    shownPreviews.clear();
 
     const files = fileInput.files;
 
@@ -88,7 +94,6 @@ export default function uploadEventListener() {
 
     // add in the caption and the images
     const formData = new FormData();
-    formData.append("caption", inputCaption.value.trim());
     for (const file of fileArray) {
       formData.append("images", file);
     }
@@ -98,7 +103,7 @@ export default function uploadEventListener() {
     }
 
     try {
-      const res = await fetch("api/v1/slides", {
+      const res = await fetch("api/v1/councils/upload", {
         method: "POST",
         body: formData,
       });
@@ -110,12 +115,13 @@ export default function uploadEventListener() {
       }
 
       // Success??
-      await initProjectsAndEventsPage();
-
       overlay?.classList.remove("show");
       notifyInfo("Uploading files...");
-      const result = await res.json();
-      console.log("Upload success:", result);
+      // const result = await res.json();
+      // console.log("Upload success:", result);
+
+      // refresh page
+      await openCouncilPage();
     } catch (err) {
       console.error("Upload error:", err);
     }
@@ -146,21 +152,19 @@ export default function uploadEventListener() {
     }
   });
 
-  const previewContainer = document.querySelector(
-    ".img-preview-container",
-  ) as HTMLElement;
-
   const shownPreviews = new Set<string>(); // file.name + file.size
-
+  // let previewLock = false;
   function showPreviews(files: FileList | null) {
-    // Clear existing previews but keep the input
+    // if (previewLock) return;
+    // previewLock = true;
+
+    // Clear existing previews except instructions
     Array.from(dropZone?.children).forEach((child) => {
       if (child.id !== "image-upload" && !child.matches("p:first-child")) {
         child.remove();
       }
     });
 
-    // Toggle initial text visibility
     const instructionText = dropZone?.querySelector(
       "p:first-child",
     ) as HTMLElement;
@@ -168,7 +172,10 @@ export default function uploadEventListener() {
       instructionText.style.display = files?.length ? "none" : "block";
     }
 
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+      // previewLock = false;
+      return;
+    }
 
     Array.from(files).forEach((file) => {
       const hash = `${file.name}-${file.size}`;
@@ -196,6 +203,47 @@ export default function uploadEventListener() {
     });
 
     dropZone.appendChild(previewContainer);
-    dropZone?.appendChild(previewContainer);
+
+    // Unlock after brief delay (in case of rapid events)
+    // setTimeout(() => {
+    //   previewLock = false;
+    // }, 100);
   }
+
+  // DELETING IMAGES
+
+  const container = document.getElementById("data-container") as HTMLElement;
+
+  container.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+
+    const deleteBtn = target.closest("button.delete") as HTMLElement | null;
+    if (!deleteBtn) return;
+
+    const imgContainer = deleteBtn.closest(
+      ".council-image-item",
+    ) as HTMLElement | null;
+    if (!imgContainer) return;
+
+    const id = imgContainer.dataset.id;
+    if (!id) return;
+
+    fetch(`/api/v1/councils/delete/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to delete");
+        imgContainer.remove();
+
+        const remaining = container.querySelectorAll(".council-image-item");
+        if (remaining.length === 0) {
+          document.querySelector(".image-list-container")!.innerHTML =
+            "<h4 class='muted-2'>Empty council images...</h4>";
+        }
+      })
+      .catch((err) => {
+        notifyError("Failed to delete image. Please try again later.");
+        console.error("Error deleting slideshow:", err);
+      });
+  });
 }

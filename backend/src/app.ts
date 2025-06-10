@@ -49,6 +49,7 @@ import slides from "./routes/slides.ts";
 import budgetAllocation from "./routes/budgetAllocation.ts";
 import concerns from "./routes/concerns.ts";
 import otp from "./routes/otp.ts";
+import councils from "./routes/councils.ts";
 
 // middlewares
 import { notFound } from "./middlewares/notFound.ts";
@@ -82,6 +83,7 @@ app.use("/api/v1/slides", slides);
 app.use("/api/v1/budgetAllocation", budgetAllocation);
 app.use("/api/v1/concerns", concerns);
 app.use("/api/v1/otp", otp);
+app.use("/api/v1/councils", councils);
 
 //errors
 app.use(notFound);

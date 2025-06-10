@@ -1,7 +1,7 @@
 import { notifySuccess, notifyError } from "@utils/showNotif.ts";
 
 export default async function initBudgetAllocationPage() {
-  await getAllBudgetAllocationRow();
+  // await getAllBudgetAllocationRow();
   await initBudgetAllocationDOM();
 
   initTableEventListener();
@@ -15,7 +15,7 @@ export default async function initBudgetAllocationPage() {
     .forEach(attachNumberFormatting);
 }
 
-import { html } from "lit-html";
+// import { html } from "lit-html";
 
 export interface BudgetAllocation {
   id: number;
@@ -23,10 +23,6 @@ export interface BudgetAllocation {
   amount: number;
   items: string;
 }
-
-// <th style="width=">Category</th>
-// <th class="" style="width: 20%">Amount (₱)</th>
-// <th style="width=">Description / Details</th>
 
 async function initBudgetAllocationDOM() {
   const container = document.getElementById("data-container") as HTMLElement;
@@ -75,13 +71,13 @@ async function initBudgetAllocationDOM() {
             </thead>
             <tbody>
               ${budgetAllocations
-        .map((alloc) => {
-          return `
+                .map((alloc) => {
+                  return `
           <tr data-row-id="${alloc.id}">
             <td><input class="ellipsis" data-original-value="${alloc.category}" maxlength="55" type="text" value="${alloc.category}"></td>
             <td><input data-original-value="${alloc.amount}" class="amount-input ellipsis" max="1000000" inputmode="numeric" type="text" value="${alloc.amount.toLocaleString(
-            "en-US",
-          )}"></td>
+              "en-US",
+            )}"></td>
             <td><input class="ellipsis" data-original-value="${alloc.items}" maxlength="155" type="text" value="${alloc.items}">
 <button class="ellipsis btn-no-hover btn-del">
 <svg class='del-icon' height="24px" viewBox="0 -960 960 960" width="24px" fill="#D16D6A"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
@@ -90,8 +86,8 @@ async function initBudgetAllocationDOM() {
           </tr>
 
           `;
-        })
-        .join("")}
+                })
+                .join("")}
               <tr>
                 <td><h4 class="text-tip">Total</h4></td>
                 <td>
@@ -277,6 +273,8 @@ function initSaveBtnEventListener() {
           );
         }
 
+        // refresh the DOM
+        await initBudgetAllocationPage();
         // notifySuccess("Updated successfully");
       } catch (error: any) {
         notifyError(error.message || "Update failed, please try again");
@@ -350,6 +348,13 @@ function initDeleteBtnEventListener() {
       if (rowId) {
         await deleteBudgetAllocationRow(rowId);
         row.remove();
+
+        // update total
+        const totalEl = document.getElementById("totalAllocation");
+        if (totalEl) {
+          totalEl.textContent =
+            calculateTotalAllocation().toLocaleString("en-US");
+        }
       } else {
         // for new unsaved rows
         row.remove();
@@ -409,6 +414,7 @@ async function addBudgetAllocationRow(
     throw new Error(`HTTP error! status: ${res.status}`);
   }
 }
+
 async function updateBudgetAllocationRow(
   id: number,
   category: string,

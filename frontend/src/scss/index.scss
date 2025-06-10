@@ -54,6 +54,7 @@
 @forward "admin/projectsAndEvents.scss";
 @forward "admin/budget-allocatioin.scss";
 @forward "admin/concerns.scss";
+@forward "admin/council";
 
 // admin theme
 @forward "admin-themes/profile-theme";
@@ -61,3 +62,4 @@
 @forward "admin-themes/admin-budget-allocation-theme";
 @forward "admin-themes/admin-users-theme";
 @forward "admin-themes/concerns-theme";
+@forward "admin-themes/council-theme";

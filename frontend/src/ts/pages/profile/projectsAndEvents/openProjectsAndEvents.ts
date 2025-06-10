@@ -1,5 +1,5 @@
 const container = document.getElementById("data-container") as HTMLElement;
-import { html } from "lit-html";
+
 import {
   Slideshow,
   fetchAllSlideShows,
@@ -10,14 +10,10 @@ import uploadEventListener from "./upload.ts";
 
 export default async function openProjectsAndEventsData(): Promise<void> {
   // initSlideSkeletons();
+  container.innerHTML = "";
 
   try {
     const slideshows: Slideshow[] = await fetchAllSlideShows();
-    // if (!slideshows[0]) {
-    //   container.innerHTML = `
-    //   <div>Empty Slideshows...</div>
-    //   `;
-    // }
 
     const slidesDOM = slideshows
 
@@ -95,14 +91,14 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     </div>`;
 
     const uploadPopup = `
-      <div class="upload-popup-overlay" id="upload-popup-overlay">
+      <div class="upload-popup-overlay" id="projects-upload-popup-overlay">
         <div class="upload-popup">
           <div class="popup-header">
             <h2 class="gradient-text">Upload Images</h2>
-            <p class="upload-note muted">
+            <p class="upload-note muted-2">
               <span class="text-warn">For this to work:</span> <br />
               supported files: png, jpg, jpeg, webp<br />
-              max images: 8 (this is for server storage considerations)
+              max images: 15 (this is for server storage considerations)
             </p>
             <!-- <button id="close-upload-popup">&times;</button> -->
           </div>
@@ -169,25 +165,23 @@ export default async function openProjectsAndEventsData(): Promise<void> {
     projectsAndEventsContainer.appendChild(slideshowContainer);
 
     container.appendChild(projectsAndEventsContainer);
+    if (slideshows.length === 0) {
+      const el = document.querySelector(".slideshow-container") as HTMLElement;
+      if (el) el.style.display = "none";
+
+      const emptyMessage = document.createElement("div");
+      emptyMessage.className = "empty-message pt-3 mt-5 ta-c";
+      emptyMessage.innerHTML = `
+        <h4 
+          style="border-bottom: 1px solid white;"
+          class="fs-2-md p-1 ">Empty List...</h4>`;
+
+      projectsAndEventsContainer.appendChild(emptyMessage);
+      return;
+    }
 
     await initSlideIndexesAndEvents();
     // uploadEventListener();
-    if (!slideshows.length) {
-      console.log("empty");
-
-      const container = document.getElementById(
-        "data-container",
-      ) as HTMLElement;
-      container.insertAdjacentHTML(
-        "beforeend",
-        `
-          <h2 class="mt-3 ta-c">Empty...</h2>
-          </br>
-          </br>
-        `,
-      );
-      return;
-    }
   } catch (error) {
     console.error("Error in loadSlideshows:", error);
   }

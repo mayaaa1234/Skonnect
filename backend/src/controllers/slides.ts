@@ -43,6 +43,14 @@ export async function uploadSlideshow(req: Request, res: Response) {
 
   // insert each image into the "slideshow_images" table.
   for (const file of files) {
+    const type = await imageType(file.buffer);
+    if (!type || !type.mime.startsWith("image/")) {
+      throw mkCustomError({
+        status: 415,
+        msg: "Only valid image files are allowed",
+      });
+    }
+
     await pool.execute(
       "INSERT INTO slideshow_images (slideshow_id, image) VALUES (?, ?)",
       [slideshowId, file.buffer],
@@ -134,11 +142,6 @@ export async function getAllSlideshows(
       })),
   }));
 
-  // response.forEach((slideshow) => {
-  //   console.log(`Slideshow ID: ${slideshow.id}`);
-  //   console.log("Images:", slideshow.images); // Logs the images array
-  // });
-  // console.log({ response });
   res.json(response);
 }
 

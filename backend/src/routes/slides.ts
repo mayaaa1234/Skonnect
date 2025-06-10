@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authAdmin from "../middlewares/authAdmin.ts";
-import multer from "multer";
+import uploadMany from "../middlewares/upload.ts";
+
 import {
   getSlideshowImage,
   getAllSlideshows,
@@ -8,8 +9,6 @@ import {
   updateSlideshow,
   deleteSlideshow,
 } from "../controllers/slides.ts";
-
-import uploadMany from "../middlewares/upload.ts";
 
 const router = Router();
 

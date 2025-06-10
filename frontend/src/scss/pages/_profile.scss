@@ -115,6 +115,7 @@ $sidebar-width: min(350px, 80%);
 
         #data-container {
           transform: translateX($sidebar-width);
+          padding-left: initial;
         }
       }
     }
@@ -136,7 +137,7 @@ $sidebar-width: min(350px, 80%);
       }
 
       #data-container {
-        transition: transform 0.3s ease;
+        transition: all 0.3s ease;
         transform: translateX(0);
         // border: 1px solid blue;
       }

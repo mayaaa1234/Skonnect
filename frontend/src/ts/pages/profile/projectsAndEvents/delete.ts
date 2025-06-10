@@ -4,8 +4,6 @@ export default async function deleteSlideshowEventListener(): Promise<void> {
   container.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
 
-    console.log("click");
-
     const deleteBtn = target.closest(
       ".slideshow-del-btn",
     ) as HTMLElement | null;

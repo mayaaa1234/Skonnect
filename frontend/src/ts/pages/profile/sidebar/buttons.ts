@@ -3,6 +3,8 @@ import initUsersPage from "../users/initUsers.ts";
 import initProjectsAndEventsPage from "../projectsAndEvents/initProjectsAndEvents.ts";
 import initBudgetAllocationPage from "../budgetAllocation/initBudgetAllocation.ts";
 import initConcernsPage from "../concernsPage/initConcernsPage.ts";
+import initCouncilsPage from "../councilsPage/initCouncilsPage.ts";
+
 import {
   showLoading,
   hideLoading,
@@ -14,7 +16,8 @@ type PageKey =
   | "users"
   | "projectsAndEvents"
   | "budgetAllocation"
-  | "concerns";
+  | "concerns"
+  | "council";
 
 // Storage key and default page
 const STORAGE_KEY = "selectedSidebarBtn";
@@ -27,6 +30,7 @@ const pageInitHandlers: Record<PageKey, () => Promise<void>> = {
   projectsAndEvents: initProjectsAndEventsPage,
   budgetAllocation: initBudgetAllocationPage,
   concerns: initConcernsPage,
+  council: initCouncilsPage,
 };
 
 const container = document.getElementById("data-container") as HTMLElement;

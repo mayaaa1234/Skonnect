@@ -9,7 +9,7 @@ export default async function initProjectsAndEventsPage() {
   onDOMReady(async () => {
     await openProjectsAndEventsData();
     // await initSlideIndexesAndEvents();
-    await uploadEventListener();
+    uploadEventListener();
     await deleteSlideshowEventListener();
   });
 }

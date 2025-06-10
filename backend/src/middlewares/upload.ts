@@ -1,10 +1,9 @@
 import multer from "multer";
-import path from "path";
+// import path from "path";
 
 // Storage configuration
 const storage = multer.memoryStorage(); // Stores files in memory as buffer
 
-// File filter to allow only specific file types
 const fileFilter = (
   _req: Express.Request,
   file: Express.Multer.File,
@@ -33,7 +32,7 @@ const upload = multer({
 // just gonna use upload.array cause upload.field too much for this projects usecase
 //it's typed as: { [fieldname: string]: Express.Multer.File[] }
 
-const uploadMany = upload.array("images", 8);
+const uploadMany = upload.array("images", 15);
 //export const uploadSingle = upload.single("file"); // not used
 
 export default uploadMany;

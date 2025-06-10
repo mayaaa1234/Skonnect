@@ -20,7 +20,7 @@ export default async function openProfileData(): Promise<void> {
 
     container.innerHTML = `
       <div class="profile-container container mt-4 dp-f fd-c ai-c gp-30">
-        <div class="upper-container br-20 dp-f fd-c p-1">
+        <div class="upper-container border-subtle-effect br-20 dp-f fd-c p-1">
           <div class="br-20 js-s upper-top p-1 dp-f ai-c jc-sb w-100">
             <h1 class="">Profile</h1>
             <!-- <button class="p-1 as-s br-40 btn-outlined-dark-accent test"> -->

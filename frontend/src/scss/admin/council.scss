@@ -1,167 +1,56 @@
 @use "../abstracts/mixins" as *;
-@use "../abstracts/variables" as *;
 
 body[data-page="profile"] {
+  .council-page-container {
+    padding: 0 24px;
+    // border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .image-list-container {
+    align-items: center;
+    display: inline-flex;
+    margin-inline: auto;
+    flex-direction: column;
+    gap: 20px;
+    height: 420px;
+    overflow-y: auto;
+    // border: 1px solid red;
+    padding: 24px 12px;
+  }
+
+  button.delete {
+    position: absolute;
+    left: -12px;
+    top: -12px;
+  }
+
+  @include lg {
+    .council-page-container {
+    }
+
+    .image-list-container {
+      height: auto;
+      overflow-y: initial;
+      display: grid;
+      margin-inline: initial;
+
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      place-items: center;
+    }
+  }
+
+  // UPLOAD POPUP
+
   @include xl {
     .upload-popup {
       width: 900px;
     }
   }
 
-  .projects-and-events-container > * {
-    margin-inline: auto;
-  }
-
-  .slideshow-del-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background-color: transparent;
-    border: 0;
-  }
-  // <img src="assets/svg/delete.svg" alt="">
-
-  .slideshows-control-container {
-    // border: 1px solid white;
-    border-radius: 20px;
-    max-width: 1400px;
-    display: flex;
-    justify-content: end;
-
-    .control-btn-container {
-      display: flex;
-      gap: 15px;
-    }
-
-    button {
-      width: 100px;
-    }
-  }
-
-  %titles {
-    padding-bottom: 5px;
-    font-weight: bold;
-  }
-
-  .slideshow-container {
-    padding: 24px;
-    width: 100%;
-    max-width: 1400px;
-    border-radius: 8px;
-    // border: 1px solid rgb(255 255 255 / 0.2);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, auto));
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    // gap: 60px;
-
-    .slideshow {
-      // overflow: hidde;
-      // border: 1px solid white;
-
-      .caption {
-        @extend %titles;
-        padding-left: 7px;
-        position: absolute;
-        bottom: 7.8%;
-        left: 50%;
-        transform: translateX(-50%);
-        // color: var(--fore);
-
-        // @include xs {
-        //   font-size: $font-size-xs;
-        // }
-
-        @include xl {
-          font-size: $font-size-md;
-          text-align: center;
-        }
-      }
-
-      .slides-container {
-        // border: 1px solid white;
-        position: relative;
-
-        .slides {
-          display: none;
-
-          img {
-            border-radius: 5px;
-          }
-        }
-
-        .prev,
-        .next {
-          cursor: pointer;
-          position: absolute;
-          bottom: 26px;
-          // transform: translateY(-50%);
-          width: auto;
-          padding: 4px 16px;
-          // font-weight: bold;
-          font-size: 14px;
-          transition: 0.6s ease;
-          border-radius: 0 3px 3px 0;
-          user-select: none;
-          // background-color: var(--accent) !important;
-
-          &:hover {
-            border-radius: 8px;
-            opacity: 0.8;
-            background-color: var(--accent) !important;
-          }
-        }
-
-        .next {
-          right: 0;
-          border-radius: 3px 0 0 3px;
-        }
-      }
-    }
-
-    .dots-container {
-      margin-top: -15px;
-    }
-
-    .dot {
-      cursor: pointer;
-      height: 10px;
-      width: 10px;
-      margin: 0 2px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.6s ease;
-
-      &.active {
-        background-color: var(--accent);
-      }
-
-      &:hover {
-        background-color: #717171;
-      }
-    }
-
-    /* Fading animation */
-    .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-
-    @keyframes fade {
-      from {
-        opacity: 0.4;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  }
-
-  // UPLOAD POPUP
-
-  #projects-upload-popup-overlay {
+  #council-upload-popup-overlay {
     display: none;
     position: fixed;
     inset: 0;
@@ -199,9 +88,6 @@ body[data-page="profile"] {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        // justify-content: space-between;
-        // align-items: center;
-        // margin-bottom: 1rem;
 
         h2 {
           margin: 0;
@@ -227,8 +113,6 @@ body[data-page="profile"] {
           outline: none;
           border: 0;
           border-bottom: 1px solid white;
-          // border: 1px solid white;
-          // padding: 0 36px 0 5px;
           padding-left: 5px;
           padding-top: 15px;
           // border-radius: 5px;
@@ -261,7 +145,7 @@ body[data-page="profile"] {
           cursor: pointer;
         }
 
-        #drop-zone {
+        #drop-zone-council {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -289,19 +173,9 @@ body[data-page="profile"] {
             background-color: #3a3f46;
           }
 
-          // input[type="file"] {
-          //   position: absolute;
-          //   inset: 0;
-          //   opacity: 0;
-          //   cursor: pointer;
-          // }
           input[type="file"] {
             position: absolute;
             inset: 0;
-            // top: 0;
-            // left: 0;
-            // width: 100%;
-            // height: 100%;
             opacity: 0;
             cursor: pointer;
             z-index: 1;

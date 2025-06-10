@@ -62,8 +62,17 @@ export default class Otp {
       await transporter.sendMail({
         from: process.env.SKONNECT_EMAIL,
         to: email,
-        subject: "OTP Verification",
-        html: `<h3>Your OTP is: <strong>${otp}</strong><br>Use it before it expires.</h3>`,
+        subject: "SKonnect OTP Verification",
+        html: `
+  <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; padding: 16px;">
+    <h2 style="margin-bottom: 12px; color: #222;">SKonnect OTP Verification</h2>
+    <p style="margin: 0 0 12px;">Your One-Time Password (OTP) is:</p>
+    <div style="font-size: 24px; font-weight: bold; color: #2c3e50; margin: 8px 0; letter-spacing: 2px;">
+      ${otp}
+    </div>
+    <p style="margin-top: 16px;">Please use it within the next few minutes before it expires.</p>
+  </div>
+`,
       });
     } catch (error) {
       console.error("Failed to send email", error);

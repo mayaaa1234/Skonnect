@@ -77,7 +77,7 @@ export default async function loadSlideshows(): Promise<void> {
                 <img
                   src="${img.url}"
                   class="br-default"
-                  style="height: 750px; width: 650px"
+                  style="height: 550px; width: 475px"
                 />
               </div>
             `;
@@ -104,7 +104,7 @@ export default async function loadSlideshows(): Promise<void> {
 
         return `
           <div class="slideshow" data-slideshow-id="${s.id}">
-            <div class="slides-container" style="height: 775px; width: 650px;">
+            <div class="slides-container" style="height: 575px; width: 475px;">
               ${imagesDOM}
               <a class="prev" data-slideshow-id="${s.id}">&#10094;</a>
               <a class="next" data-slideshow-id="${s.id}">&#10095;</a>

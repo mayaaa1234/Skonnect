@@ -201,7 +201,7 @@ function initOtpSubmit() {
 
           sessionStorage.setItem(
             "signupSuccessNotif",
-            `Welcome to SKonnect, ${result.user.username}! Your account has been successfully created`,
+            `Hello ${result.user.username}! Your account has been successfully created`,
           );
           window.location.href = "/home";
         }

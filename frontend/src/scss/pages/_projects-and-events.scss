@@ -72,19 +72,18 @@ body[data-page="events"] {
               height: 600px !important;
             }
 
-            .prev {
-              left: 3px !important;
-            }
+            // .prev {
+            //   left: 3px !important;
+            // }
+            //
+            // .next {
+            //   right: 3px !important;
+            // }
 
-            .next {
-              right: 3px !important;
-            }
-
-            .prev,
-            .next {
-              font-size: 18px !important;
-              bottom: -6px !important;
-            }
+            // .prev,
+            // .next {
+            //   font-size: 18px !important;
+            // }
 
             .caption {
               // padding: 0 12px;
@@ -107,18 +106,19 @@ body[data-page="events"] {
 
           .caption {
             position: absolute;
-            bottom: 5%;
+            bottom: 7%;
             left: 50%;
             transform: translateX(-50%);
             @extend %titles;
             padding-left: 7px;
 
             @include xs {
-              font-size: $font-size-md;
+              // font-size: $font-size-md;
             }
 
             @include xl {
-              font-size: $font-size-lg;
+              font-size: $font-size-md;
+              // font-size: $font-size-lg;
               text-align: center;
             }
           }
@@ -127,7 +127,7 @@ body[data-page="events"] {
           .next {
             cursor: pointer;
             position: absolute;
-            bottom: 0;
+            bottom: -6px;
             left: 25px;
             transform: translateY(-50%);
             width: auto;

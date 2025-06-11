@@ -1,7 +1,7 @@
-// import "./events.ts";
-import openCouncilPage from "./ui.ts";
+import initSlideShow from "./events.ts";
+import renderSlides from "./ui.ts";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  //
-  await openCouncilPage();
+  await renderSlides();
+  initSlideShow();
 });

@@ -122,44 +122,44 @@ body[data-page="council"] {
 
   // COUNCIL PAGE CONTAINER //
 
-  .council-page-container {
-    padding: 0 24px;
-    // border: 1px solid blue;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .image-list-container {
-    align-items: center;
-    display: inline-flex;
-    margin-inline: auto;
-    flex-direction: column;
-    gap: 30px;
-    height: 420px;
-    overflow-y: auto;
-    // border: 1px solid red;
-    padding: 32px 24px;
-  }
-
-  button.delete {
-    position: absolute;
-    left: -12px;
-    top: -12px;
-  }
-
-  @include lg {
-    .council-page-container {
-    }
-
-    .image-list-container {
-      height: auto;
-      overflow-y: initial;
-      display: grid;
-      margin-inline: initial;
-
-      grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
-      place-items: center;
-    }
-  }
+  // .council-page-container {
+  //   padding: 0 24px;
+  //   // border: 1px solid blue;
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 20px;
+  // }
+  //
+  // .image-list-container {
+  //   align-items: center;
+  //   display: inline-flex;
+  //   margin-inline: auto;
+  //   flex-direction: column;
+  //   gap: 30px;
+  //   height: 420px;
+  //   overflow-y: auto;
+  //   // border: 1px solid red;
+  //   padding: 32px 24px;
+  // }
+  //
+  // button.delete {
+  //   position: absolute;
+  //   left: -12px;
+  //   top: -12px;
+  // }
+  //
+  // @include lg {
+  //   .council-page-container {
+  //   }
+  //
+  //   .image-list-container {
+  //     height: auto;
+  //     overflow-y: initial;
+  //     display: grid;
+  //     margin-inline: initial;
+  //
+  //     grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+  //     place-items: center;
+  //   }
+  // }
 }

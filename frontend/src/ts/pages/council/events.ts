@@ -5,9 +5,11 @@ function showSlides(n: number): void {
   const lgContainer = document.querySelector<HTMLElement>(
     ".council-slideshow-container-lg-screens",
   );
-  // INFO: '!!' converts result into bool
+  // // INFO: '!!' converts result into bool
   const isLargeScreen = !!(lgContainer && lgContainer.offsetParent);
+  // const isLargeScreen = window.innerWidth >= thresholdPx;
   console.log("islg", isLargeScreen);
+
   const slides = document.getElementsByClassName(
     isLargeScreen ? "slides-lg" : "slides-sm",
   ) as HTMLCollectionOf<HTMLElement>;
@@ -82,7 +84,7 @@ window.addEventListener("resize", () => {
   lastWindowWidth = newWidth;
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+export default function initSlideshow() {
   setupSlideshowControls();
   showSlides(slideIndex);
-});
+}

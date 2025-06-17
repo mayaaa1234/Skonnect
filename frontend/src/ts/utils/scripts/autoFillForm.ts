@@ -5,7 +5,8 @@ function generateRandomString(length: number): string {
 }
 
 export default function autofillForm(): void {
-  const username = `user_${generateRandomString(5)}`;
+  // const username = `user_${generateRandomString(5)}`;
+  const username = `testuser123`;
   const email = `random-${generateRandomString(5)}@example.com`;
 
   const usernameInput = document.getElementById(

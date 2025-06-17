@@ -194,10 +194,6 @@ function initTableEventListener() {
   });
 }
 
-// function initTotalAllocationListener() {
-//   const table = document.querySelector("table")!;
-// }
-
 function initSaveBtnEventListener() {
   const saveBtn = document.querySelector(".btn-save") as HTMLButtonElement;
   if (saveBtn.matches("btn-save-dark-5-no-hover")) return;
@@ -224,13 +220,17 @@ function initSaveBtnEventListener() {
       items: string,
     ) => {
       if (!category) {
-        throw new Error("Invalid category row/s");
+        throw new Error(
+          "Invalid category column. Must be characters and should not be empty",
+        );
       }
       if (!amount) {
-        throw new Error("Invalid allocation row/s");
+        throw new Error(
+          "Invalid budget allocation column. Must be numbers and should not be empty",
+        );
       }
       if (!items) {
-        throw new Error("Invalid description row/s");
+        throw new Error("Invalid description. Should not be empty");
       }
     };
 

@@ -9,20 +9,21 @@ function renderConcernStatusBtn(c: Concern): string {
        data-current-status="${c.status}"
        data-status-id="${c.id}">
     ${STATUS_BUTTONS.map(
-    ({ action, label }) => `
+      ({ action, label }) => `
       <button
         data-action="${action}"
         style="${action === "delete" ? "border: 1px solid red !important" : ""}"
         class="btn-outlined-dark-accent br-20 p-1 mb-1 status-btn"
       >${label}</button>
     `,
-  ).join("")}
+    ).join("")}
   </div>`;
 }
 
 function renderConcernItem(c: Concern): string {
-  const imgUrl = `assets/img/${c.id % 2 ? "default-profile1.png" : "default-profile2.png"
-    }`;
+  const imgUrl = `assets/img/${
+    c.id % 2 ? "default-profile1.png" : "default-profile2.png"
+  }`;
 
   return `
     <div 
@@ -49,7 +50,7 @@ class="concern p-1 mb-1">
 function renderConcernList(
   concerns: Concern[],
   status?: Concern["status"],
-  adjustEmptyListPos: boolean = false
+  adjustEmptyListPos: boolean = false,
 ): string {
   const list = status ? filterConcerns(concerns, status) : concerns;
 
@@ -76,13 +77,15 @@ async function loadDOM(): Promise<void> {
 
   const listHtml = concerns.length
     ? concerns
-      .map(c => `
+        .map(
+          (c) => `
           <li>
             ${renderConcernStatusBtn(c)}
             ${renderConcernItem(c)}
           </li>
-        `)
-      .join("")
+        `,
+        )
+        .join("")
     : `<li 
 class="">
          <p 

@@ -1,12 +1,8 @@
-import type {
-  ResultSetHeader,
-  RowDataPacket,
-} from "mysql2/promise";
+import type { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 import pool from "../db/pool.ts";
 import bcrypt from "bcrypt";
 import mkCustomError from "../errors/CustomError.ts";
-
 
 const emailRegex = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -24,8 +20,7 @@ export default class User {
     if (!username || username.length < 4)
       errs.username = "username must be at least 4 characters long.";
 
-    if (!email || !emailRegex.test(email))
-      errs.email = "email is not valid.";
+    if (!email || !emailRegex.test(email)) errs.email = "email is not valid.";
 
     if (!password || password.length < 8)
       errs.password = "password must be at least 8 characters long.";
@@ -54,7 +49,12 @@ export default class User {
   static async loginValidation(
     credential: string,
     password: string,
-  ): Promise<{ id: number; username: string; email: string; isAdmin: boolean }> {
+  ): Promise<{
+    id: number;
+    username: string;
+    email: string;
+    isAdmin: boolean;
+  }> {
     const isEmail = emailRegex.test(credential);
     if (!credential)
       throw mkCustomError({ status: 400, msg: "provide username or email." });
@@ -110,9 +110,13 @@ export default class User {
     });
   }
 
-
   static async find(
-    filter?: Partial<{ id: number; username: string; email: string; isAdmin: boolean }>,
+    filter?: Partial<{
+      id: number;
+      username: string;
+      email: string;
+      isAdmin: boolean;
+    }>,
   ): Promise<RowDataPacket[]> {
     let query = "SELECT * FROM users";
     const values: any[] = [];

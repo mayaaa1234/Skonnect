@@ -14,7 +14,7 @@ export default async function logoutEventListener() {
         credentials: "include",
       });
 
-      if (!response.ok) {
+      if (response.ok) {
         throw new Error("Logout failed");
       }
       console.log("Logout success");

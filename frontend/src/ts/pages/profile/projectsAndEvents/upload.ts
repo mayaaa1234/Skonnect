@@ -21,13 +21,12 @@ export default function uploadEventListener() {
   }
   openPopup.addEventListener("click", () => {
     shownPreviews.clear();
+    previewContainer.innerHTML = "";
     fileInput.value = "";
+    inputCaption.value = "";
 
     overlay?.classList.add("show");
     inputCaption?.focus();
-
-    previewContainer.innerHTML = "";
-    fileInput.value = "";
 
     const instructionText = dropZone?.querySelector(
       "p:first-child",
@@ -109,11 +108,16 @@ export default function uploadEventListener() {
         throw new Error("Upload failed.");
       }
 
-      // Success??
+      // Success?? reload page to reflect new val
       await initProjectsAndEventsPage();
 
+      // clear input vals
+      shownPreviews.clear();
+      previewContainer.innerHTML = "";
+      inputCaption.value = "";
+
       overlay?.classList.remove("show");
-      notifyInfo("Uploading files...");
+      notifyInfo("Upload success");
       const result = await res.json();
       console.log("Upload success:", result);
     } catch (err) {
@@ -153,6 +157,9 @@ export default function uploadEventListener() {
   const shownPreviews = new Set<string>(); // file.name + file.size
 
   function showPreviews(files: FileList | null) {
+    previewContainer.innerHTML = "";
+    shownPreviews.clear();
+
     // Clear existing previews but keep the input
     Array.from(dropZone?.children).forEach((child) => {
       if (child.id !== "image-upload" && !child.matches("p:first-child")) {
@@ -196,6 +203,5 @@ export default function uploadEventListener() {
     });
 
     dropZone.appendChild(previewContainer);
-    dropZone?.appendChild(previewContainer);
   }
 }

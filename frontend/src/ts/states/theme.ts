@@ -5,8 +5,6 @@ import { setState, getState } from "../utils/setGetState.ts";
 
 //on load get the color saved scheme if nothing then set a default one
 document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = getState("theme");
-
   const theme = (getState("theme") as string) || "dark";
   document.documentElement.setAttribute("data-theme", theme);
   setState("theme", theme);

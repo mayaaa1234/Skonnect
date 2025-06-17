@@ -23,6 +23,8 @@ export default function initEvents() {
   }
   openPopup.addEventListener("click", () => {
     shownPreviews.clear();
+    fileInput.value = "";
+    previewContainer.innerHTML = "";
 
     overlay?.classList.add("show");
 
@@ -120,8 +122,9 @@ export default function initEvents() {
       // const result = await res.json();
       // console.log("Upload success:", result);
 
-      // refresh page
+      // refresh page and reinit events (i know event delegation is better)
       await openCouncilPage();
+      initEvents();
     } catch (err) {
       console.error("Upload error:", err);
     }
@@ -157,6 +160,8 @@ export default function initEvents() {
   function showPreviews(files: FileList | null) {
     // if (previewLock) return;
     // previewLock = true;
+    previewContainer.innerHTML = "";
+    shownPreviews.clear();
 
     // Clear existing previews except instructions
     Array.from(dropZone?.children).forEach((child) => {

@@ -1,4 +1,4 @@
-// BASE CONFIG
+// BASE TS CONFIG
 {
   "compilerOptions": {
     "strict": true,
@@ -20,12 +20,10 @@
     "strictBindCallApply": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "exclude": [
-    "node_modules",
-    "*/dist",
-    // "frontend/dist/",
-    // "backend/dist/",
+    "./node_modules",
+    "*/dist"
   ]
 }

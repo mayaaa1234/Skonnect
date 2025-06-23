@@ -35,6 +35,7 @@ export const signupValidation = async (
   // drop the otp and only send the info
   const { otp, ...otpInfo } = otpRecord;
 
+  console.log({ isAdmin });
   // store temp data for verification
   await setTempSignupData(username, email, password, isAdmin, otp);
 
@@ -61,6 +62,7 @@ export const signupVerification = async (
 
   // create user
   const { username, password, isAdmin } = tempData;
+  console.log({ tempData });
   const userId = await User.saveDB(username, email, password, isAdmin);
 
   // delete temp data

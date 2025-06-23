@@ -77,6 +77,32 @@ h6 {
   isolation: isolate;
 }
 
+li,
+ol {
+  list-style-type: none;
+}
+
+/* /* Firefox */
+/* .scrollable { */
+/*   scrollbar-width: thin !important; */
+/*   scrollbar-color: #555 transparent !important; */
+/* } 
+
+/* /* Chrome, Edge */
+/* .scrollable::-webkit-scrollbar { */
+/*   width: 6px !important; */
+/*   background: transparent !important; */
+/* } */
+/**/
+/* .scrollable::-webkit-scrollbar-thumb { */
+/*   background-color: #555 !important; */
+/*   border-radius: 3px !important; */
+/* } */
+/**/
+/* .scrollable::-webkit-scrollbar-track { */
+/*   background: transparent !important; */
+/* } */
+
 //AUTO COMPELETE IS OFF SO NEED FOR THIS PROJECT
 // input:-webkit-autofill:invalid,
 // input:-webkit-autofill:hover,

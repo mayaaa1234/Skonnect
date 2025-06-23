@@ -62,7 +62,7 @@ $utilities: (
   "margin": (
     "prefix": "m",
     "values": (
-      "auto": "auto",
+      "auto": auto,
       "0": 0,
       "1": $base-margin,
       "2": $base-margin * 2,
@@ -78,7 +78,7 @@ $utilities: (
   "margin-left": (
     "prefix": "ml",
     "values": (
-      "auto": "auto",
+      "auto": auto,
       "0": 0,
       "1": $base-margin,
       "2": $base-margin * 2,
@@ -94,7 +94,7 @@ $utilities: (
   "margin-right": (
     "prefix": "mr",
     "values": (
-      "auto": "auto",
+      "auto": auto,
       "0": 0,
       "1": $base-margin,
       "2": $base-margin * 2,
@@ -433,6 +433,7 @@ $utilities: (
   "height": (
     "prefix": "h",
     "values": (
+      "auto": auto,
       "5px": 5px,
       "10px": 10px,
       "15px": 15px,

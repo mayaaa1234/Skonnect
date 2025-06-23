@@ -2,18 +2,14 @@
 // import type { Concern } from "@ts/profile/concernsPage/api.ts";
 import { notifyError, notifySuccess } from "../../utils/showNotif.ts";
 import { showLoading, hideLoading } from "../../components/loadingSpinner.ts";
-import { renderConcernList } from "../profile/concernsPage/UI.ts";
+import { renderAsideList } from "../profile/concernsPage/UI.ts";
 
 import {
   Concern,
   fetchAllConcerns,
   submitConcern,
 } from "../profile/concernsPage/api.ts";
-
-// const VIEW_CONTAINERS_CLASSNAMES = {
-//   name: "concern-popup-body concern-view-status",
-//   name: "concern-popup-body concern-view-status"
-// }
+import { initTogleResponseBtnEvents } from "@ts-pages/profile/concernsPage/utils.ts";
 
 const container = document.querySelector(
   ".concern-popup-body",
@@ -37,7 +33,7 @@ async function openPopupConcernStatus(status: Concern["status"]) {
     viewStatusContainer.innerHTML = "";
 
     viewStatusContainer.innerHTML = `
-      ${renderConcernList(concerns, status, true)}
+      ${renderAsideList(concerns, status, true)}
       `;
   } catch (error) {
     console.log(error);
@@ -59,7 +55,7 @@ async function openAsideConcernStatus(status: Concern["status"]) {
     viewStatusContainer.innerHTML = "";
 
     viewStatusContainer.innerHTML = `
-      ${renderConcernList(concerns, status)}
+      ${renderAsideList(concerns, status)}
       `;
   } catch (error) {
     console.log(error);
@@ -96,7 +92,9 @@ form.addEventListener("submit", async (e) => {
     await submitConcern(msg);
     hideLoading();
     submitBtn.innerText = "Submit";
-    notifySuccess("Concern submitted successfully, please wait for admin response");
+    notifySuccess(
+      "Concern submitted successfully, please wait for admin response",
+    );
     message.value = "";
   } catch (err) {
     submitBtn.innerText = "Submit";
@@ -152,13 +150,6 @@ popupButtons.forEach((btn) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // const viewStatusContainer = document.querySelector(
-  //   ".concern-view-status",
-  // ) as HTMLElement;
-  //
-  // if (!viewStatusContainer) {
-  //   console.log("viewstatus not found.");
-  //   return;
-  // }
+  initTogleResponseBtnEvents();
   openAsideConcernStatus("rejected");
 });

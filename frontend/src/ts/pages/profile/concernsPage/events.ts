@@ -1,111 +1,118 @@
 import { Concern, fetchAllConcerns } from "./api.ts";
-import { DEFAULT_CONCERN_STATUS, STATUS_BUTTONS } from "./constants.ts";
-import { updateConcernStatusToDB, deleteConcern } from "./api.ts";
-import { renderConcernList } from "./UI.ts";
+import { DEFAULT_CONCERN_STATUS } from "./constants.ts";
+import { updateConcernDetails, deleteConcern } from "./api.ts";
+import { renderAsideList, loadDOM } from "./UI.ts";
+import {
+  populateConcernDetails,
+  openPopup,
+  highlightSelectedStatusBtn,
+  closePopup,
+  renderCurrentStatus,
+  formatStatus,
+} from "./utils.ts";
+import session from "express-session";
+import { notifyError } from "@utils/showNotif.ts";
+import html from "@utils/htmlTemp.ts";
 
 const container = document.getElementById("data-container") as HTMLDivElement;
 
-function highlightStatusBtnsOnLoad(): void {
-  document
-    .querySelectorAll<HTMLDivElement>(".concern-controls")
-    .forEach((cc) => {
-      const status = cc.dataset.currentStatus || DEFAULT_CONCERN_STATUS;
-      const btn = cc.querySelector(`[data-action="${status}"]`);
-      btn?.classList.add("selected");
-      console.log("hightlighted btn", btn);
-    });
-}
+// Event Delegation
 
-function highlighSelectedStatusBtn(
-  btn: HTMLButtonElement,
-  revert?: "revertUI",
-): void {
-  const cc = btn.closest<HTMLDivElement>(".concern-controls")!;
-  const selectedStatus = btn.dataset.action as Concern["status"];
-  const currentStatus = cc.dataset.currentStatus as Concern["status"];
+// const storedConcerns = JSON.parse(localStorage.getItem("concerns") || "[]");
 
-  // If reverting, restore previous UI state
-  if (revert === "revertUI") {
-    const prevBtn = cc.querySelector<HTMLButtonElement>(".selected");
-    btn.classList.remove("selected");
-    prevBtn?.classList.add("selected");
-    return;
-  }
-
-  if (selectedStatus === currentStatus) return;
-
-  // Update UI and values
-  const prevBtn = cc.querySelector<HTMLButtonElement>(".selected");
-  prevBtn?.classList.remove("selected");
-  btn.classList.add("selected");
-  cc.dataset.currentStatus = selectedStatus;
-}
-
-async function openAsideConcernStatus(status: Concern["status"]) {
-  try {
-    const concerns: Concern[] = await fetchAllConcerns();
-
-    const viewStatusContainer = document.querySelector(
-      ".aside-concern-view-status",
-    ) as HTMLElement;
-    viewStatusContainer.innerHTML = "";
-
-    viewStatusContainer.innerHTML = `
-      ${renderConcernList(concerns, status)}
-      `;
-  } catch (error) {
-    console.log(error);
-  }
-}
-//
 async function initEvents() {
-  container.addEventListener("click", async (e: MouseEvent) => {
+  document.body.addEventListener("click", async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
 
     // INFO: Concern Status Control Events
+
+    // Open popup
+    const openPopupBtn = target.closest(".open-details-popup") as HTMLElement;
+    if (openPopupBtn) {
+      const currentStatus =
+        openPopupBtn.closest<HTMLDivElement>(".pre-ctrl")?.dataset.status ??
+        DEFAULT_CONCERN_STATUS;
+      const id = openPopupBtn.dataset.statusId;
+
+      openPopup();
+      if (id) sessionStorage.setItem("currentConcernId", id);
+      populateConcernDetails(Number(id));
+    }
+
+    // Close popup
+    const cancelPopupBtn = target.closest(
+      ".cancel-status-popup-btn",
+    ) as HTMLButtonElement;
+    const closePopupBtn = target.closest(
+      ".close-status-popup-btn",
+    ) as HTMLButtonElement;
+    if (closePopupBtn || cancelPopupBtn) closePopup();
+
+    // Changing status inside popup
     const statusBtn = target.closest<HTMLButtonElement>(".status-btn");
-    if (statusBtn) {
-      const sc = statusBtn.closest(".concern-controls") as HTMLDivElement;
-      const id = Number(sc.dataset.statusId) as Concern["id"];
+    if (statusBtn) highlightSelectedStatusBtn(statusBtn);
 
-      if (statusBtn.dataset.action === "delete") {
-        statusBtn.closest<HTMLDivElement>("li")?.remove();
-        deleteConcern(id);
+    // Save changes inside popup
+    const saveBtn = target.closest(
+      ".save-status-popup-btn",
+    ) as HTMLButtonElement;
+    if (saveBtn) {
+      const textarea = document.querySelector(
+        ".concern-response-textarea",
+      ) as HTMLTextAreaElement;
+      const selectedBtn = document.querySelector(
+        ".status-btn.selected",
+      ) as HTMLButtonElement;
 
-        // refresh opened aside concern status for UI update
-        const vc = document.querySelector(
-          ".concern-view-controls",
-        ) as HTMLElement;
-        const asideSelected = vc.querySelector(".selected") as HTMLElement;
-        const asideOpenedStatus = asideSelected?.dataset
-          .status as Concern["status"];
-        await openAsideConcernStatus(asideOpenedStatus);
+      if (!selectedBtn || !textarea) return;
 
-        return;
-      }
+      const status = selectedBtn.dataset.action as Concern["status"];
+      const response = textarea.value;
 
-      const newStatus = statusBtn.dataset.action as Concern["status"];
-
-      if (!id || !newStatus) {
-        console.log("datasets not found.");
+      const rawId = sessionStorage.getItem("currentConcernId");
+      const concernId = rawId ? Number(rawId) : null;
+      if (concernId === null || isNaN(concernId)) {
+        console.log("No current concern ID found in sessionStorage.");
         return;
       }
 
       try {
-        await updateConcernStatusToDB(id, newStatus);
-        highlighSelectedStatusBtn(statusBtn);
-
-        // refresh opened aside concern status for UI update
-        const vc = document.querySelector(
-          ".concern-view-controls",
-        ) as HTMLElement;
-        const asideSelected = vc.querySelector(".selected") as HTMLElement;
-        const asideOpenedStatus = asideSelected?.dataset
-          .status as Concern["status"];
-        await openAsideConcernStatus(asideOpenedStatus);
+        await updateConcernDetails(concernId, response, status);
+        await loadDOM(); // relfect changes
+        closePopup();
+        const cit = document.querySelector(
+          ".concern-item-header",
+        ) as HTMLSpanElement;
+        if (cit)
+          cit.innerHTML = `${renderCurrentStatus(status)}  ${formatStatus(status)}`;
       } catch (err) {
         console.error(err);
-        highlighSelectedStatusBtn(statusBtn, "revertUI");
+        notifyError("Something went wrong please try again.");
+        closePopup();
+      }
+
+      const overlay = document.querySelector(".status-details-popup-overlay");
+      overlay?.classList.remove("show");
+    }
+
+    // Delete concern
+    const dc = target.closest<HTMLElement>(".del-concern");
+    if (dc) {
+      const id = dc.dataset.statusId;
+      if (!id) return;
+
+      dc.closest<HTMLDivElement>("li.concern-item")?.remove();
+
+      const asideItem = document.querySelector(
+        `.aside-concern-item[data-status-id="${id}"]`,
+      );
+      asideItem?.remove();
+
+      try {
+        await deleteConcern(Number(id));
+      } catch (err) {
+        console.error("Failed to delete concern:", err);
+        notifyError("Failed to delete. Please try again.");
       }
     }
 
@@ -116,6 +123,7 @@ async function initEvents() {
       const viewControls = asideBtn.closest(
         ".concern-view-controls",
       ) as HTMLDivElement;
+
       if (!viewControls) return;
 
       const prev = viewControls.querySelector(".selected");
@@ -128,4 +136,31 @@ async function initEvents() {
     }
   });
 }
-export { initEvents, highlightStatusBtnsOnLoad, openAsideConcernStatus };
+
+// WARN: this is where i left. gon fix this tomm
+// also ig put the aside style (css) into util class so that the other page can use it
+async function openAsideConcernStatus(status: Concern["status"]) {
+  try {
+    const concerns: Concern[] = await fetchAllConcerns();
+
+    const viewStatusContainer = document.querySelector(
+      ".aside-concern-view-status",
+    ) as HTMLElement;
+    viewStatusContainer.innerHTML = "";
+
+    viewStatusContainer.innerHTML = `
+      ${renderAsideList(concerns, status)}
+      `;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const refreshAside = async () => {
+  const vc = document.querySelector(".concern-view-controls") as HTMLElement;
+  const asideSelected = vc.querySelector(".selected") as HTMLElement;
+  const asideOpenedStatus = asideSelected?.dataset.status as Concern["status"];
+  await openAsideConcernStatus(asideOpenedStatus);
+};
+
+export { initEvents, openAsideConcernStatus };

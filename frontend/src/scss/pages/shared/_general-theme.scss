@@ -14,8 +14,16 @@
     box-shadow: 0px -1px 1px rgba(255, 255, 255, 0.1);
   }
 
+  .border-bottom-thin {
+    border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  }
+
   .border-top-thin {
     border-top: 1px solid rgb(255 255 255 / 0.2);
+  }
+
+  .border {
+    border: 1px solid rgb(255 255 255);
   }
 
   .border-thin {
@@ -30,12 +38,20 @@
     box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.1) !important;
   }
 
+  .border-bottom-thin {
+    border-bottom: 1px solid rgb(0 0 0 / 0.2);
+  }
+
   .border-top-thin {
     border-top: 1px solid rgb(0 0 0 / 0.2);
   }
 
   .border-thin {
     border: 1px solid rgb(0 0 0 / 0.2);
+  }
+
+  .border {
+    border: 1px solid rgb(0 0 0);
   }
 }
 
@@ -48,6 +64,10 @@ body {
 
 .border-accent {
   border: 1px solid var(--accent);
+}
+
+.border-accent-thin {
+  border: 1px solid rgb(var(--accent) / 0.2);
 }
 
 .gradient-text {

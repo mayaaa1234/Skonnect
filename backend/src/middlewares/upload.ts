@@ -1,5 +1,4 @@
 import multer from "multer";
-// import path from "path";
 
 // Storage configuration
 const storage = multer.memoryStorage(); // Stores files in memory as buffer
@@ -25,7 +24,8 @@ const fileFilter = (
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 15 * 1024 * 1024 }, // 15MB file size limit
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB file size limit
+  // limits: { fileSize: 15 * 1024 * 1024 }, // 15MB file size limit
 });
 
 // NOTE:

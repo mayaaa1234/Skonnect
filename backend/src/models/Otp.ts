@@ -31,7 +31,7 @@ export default class Otp {
 
   static async send(email: string): Promise<OtpRecord> {
     const otp = this.generateNumericOTP();
-    // console.log("otp sent: ", otp);
+    console.log("otp sent: ", otp);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     // couple of validations before sending otp

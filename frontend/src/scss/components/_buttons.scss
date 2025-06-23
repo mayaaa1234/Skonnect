@@ -1,3 +1,130 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+@use "sass:color";
+
+/// Base placeholder for all buttons
+%btn-base {
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  outline: none;
+  color: var(--foreground);
+
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+/// Standard button mixin
+@mixin btn($bg-color: #fff) {
+  @extend %btn-base;
+  background-color: $bg-color;
+}
+
+/// Outlined button mixin
+@mixin btn-outlined($color) {
+  @include btn(#fff);
+  border: $base-border-thickness solid $color;
+  &:hover {
+    background-color: $color;
+  }
+}
+
+/// Generate light & dark variants for a given color
+/// $name: modifier key suffix
+/// $color: base color
+/// $levels: number of steps
+/// $step: lightness change per step (percentage)
+@mixin generate-variants($name, $color, $levels: 9, $step: 5%) {
+  @for $i from 1 through $levels {
+    $delta: $i * $step;
+
+    // Light variants
+    .btn-#{$name}-light-#{$i} {
+      @include btn(color.adjust($color, $lightness: $delta));
+      &:hover {
+        background-color: color.adjust($color, $lightness: ($delta + $step));
+      }
+    }
+    .btn-#{$name}-light-#{$i}-no-hover {
+      @include btn(color.adjust($color, $lightness: $delta));
+    }
+
+    // Dark variants
+    $neg-delta: -$delta;
+    .btn-#{$name}-dark-#{$i} {
+      @include btn(color.adjust($color, $lightness: $neg-delta));
+      &:hover {
+        background-color: color.adjust(
+          $color,
+          $lightness: ($neg-delta + $step)
+        );
+      }
+    }
+    .btn-#{$name}-dark-#{$i}-no-hover {
+      @include btn(color.adjust($color, $lightness: $neg-delta));
+    }
+  }
+}
+
+// Default base button
+.btn {
+  @extend %btn-base;
+}
+
+// Outlined no-hover utility
+.btn-no-hover {
+  @include btn(transparent);
+  @include mobile {
+    &:hover {
+      -webkit-tap-highlight-color: transparent;
+      background-color: transparent !important;
+    }
+  }
+}
+
+// GENERIC BUTTON COLORS
+@each $key, $val in $colors {
+  // Filled style
+  .btn-#{$key} {
+    @include btn($val);
+    &:hover {
+      background-color: color.adjust($val, $lightness: 5%);
+    }
+  }
+
+  // Outlined style
+  .btn-outlined-#{$key} {
+    @include btn-outlined($val);
+  }
+
+  // Variants
+  @include generate-variants($key, $val);
+}
+
+// CLASS-BASED THEMING
+@each $theme, $values in $themes {
+  @each $variant, $color in $values {
+    .btn-#{$theme}-#{$variant} {
+      @include btn($color);
+      &:hover {
+        background-color: color.adjust($color, $lightness: 5%);
+      }
+    }
+
+    .btn-outlined-#{$theme}-#{$variant} {
+      @include btn(transparent);
+      border: $base-border-thickness solid $color !important;
+      &:hover {
+        background-color: $color !important;
+      }
+    }
+  }
+}
+
 // @use "../abstracts/variables" as *;
 // @use "../abstracts/mixins" as *;
 // @use "sass:color";
@@ -144,130 +271,3 @@
 //     // }
 //   }
 // }
-
-@use "../abstracts/variables" as *;
-@use "../abstracts/mixins" as *;
-@use "sass:color";
-
-/// Base placeholder for all buttons
-%btn-base {
-  cursor: pointer;
-  display: inline-block;
-  border: 0;
-  outline: none;
-  color: var(--foreground);
-
-  @include mobile {
-    &:hover {
-      -webkit-tap-highlight-color: transparent !important;
-      background-color: transparent !important;
-    }
-  }
-}
-
-/// Standard button mixin
-@mixin btn($bg-color: #fff) {
-  @extend %btn-base;
-  background-color: $bg-color;
-}
-
-/// Outlined button mixin
-@mixin btn-outlined($color) {
-  @include btn(#fff);
-  border: $base-border-thickness solid $color;
-  &:hover {
-    background-color: $color;
-  }
-}
-
-/// Generate light & dark variants for a given color
-/// $name: modifier key suffix
-/// $color: base color
-/// $levels: number of steps
-/// $step: lightness change per step (percentage)
-@mixin generate-variants($name, $color, $levels: 9, $step: 5%) {
-  @for $i from 1 through $levels {
-    $delta: $i * $step;
-
-    // Light variants
-    .btn-#{$name}-light-#{$i} {
-      @include btn(color.adjust($color, $lightness: $delta));
-      &:hover {
-        background-color: color.adjust($color, $lightness: ($delta + $step));
-      }
-    }
-    .btn-#{$name}-light-#{$i}-no-hover {
-      @include btn(color.adjust($color, $lightness: $delta));
-    }
-
-    // Dark variants
-    $neg-delta: -$delta;
-    .btn-#{$name}-dark-#{$i} {
-      @include btn(color.adjust($color, $lightness: $neg-delta));
-      &:hover {
-        background-color: color.adjust(
-          $color,
-          $lightness: ($neg-delta + $step)
-        );
-      }
-    }
-    .btn-#{$name}-dark-#{$i}-no-hover {
-      @include btn(color.adjust($color, $lightness: $neg-delta));
-    }
-  }
-}
-
-// Default base button
-.btn {
-  @extend %btn-base;
-}
-
-// Outlined no-hover utility
-.btn-no-hover {
-  @include btn(transparent);
-  @include mobile {
-    &:hover {
-      -webkit-tap-highlight-color: transparent;
-      background-color: transparent !important;
-    }
-  }
-}
-
-// GENERIC BUTTON COLORS
-@each $key, $val in $colors {
-  // Filled style
-  .btn-#{$key} {
-    @include btn($val);
-    &:hover {
-      background-color: color.adjust($val, $lightness: 5%);
-    }
-  }
-
-  // Outlined style
-  .btn-outlined-#{$key} {
-    @include btn-outlined($val);
-  }
-
-  // Variants
-  @include generate-variants($key, $val);
-}
-
-// CLASS-BASED THEMING
-@each $theme, $values in $themes {
-  @each $variant, $color in $values {
-    .btn-#{$theme}-#{$variant} {
-      @include btn($color);
-      &:hover {
-        background-color: color.adjust($color, $lightness: 5%);
-      }
-    }
-
-    .btn-outlined-#{$theme}-#{$variant} {
-      @include btn(transparent);
-      border: $base-border-thickness solid $color !important;
-      &:hover {
-        background-color: $color !important;
-      }
-    }
-  }
-}

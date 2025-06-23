@@ -51,8 +51,9 @@ async function submitConcern(message: string): Promise<void> {
   }
 }
 
-async function updateConcernStatusToDB(
+async function updateConcernDetails(
   id: number,
+  response: string | null = null, // response is optional
   newStatus: string,
 ): Promise<void> {
   const res = await fetch(`/api/v1/concerns/status/${id}`, {
@@ -61,21 +62,20 @@ async function updateConcernStatusToDB(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ newStatus }),
+    body: JSON.stringify({ newStatus, response }),
   });
 
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
   }
 
-  console.log({ id, newStatus });
   console.log("concern status update successful");
 }
 
 export {
   filterConcerns,
-  updateConcernStatusToDB,
+  updateConcernDetails,
   submitConcern,
   fetchAllConcerns,
-  deleteConcern
+  deleteConcern,
 };

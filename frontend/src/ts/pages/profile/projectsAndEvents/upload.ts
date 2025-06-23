@@ -1,5 +1,6 @@
 import { notifyError, notifySuccess, notifyInfo } from "@utils/showNotif.ts";
 import initProjectsAndEventsPage from "./initProjectsAndEvents.ts";
+import { hideLoading, showLoading } from "@components/loadingSpinner.ts";
 
 export default function uploadEventListener() {
   const overlay = document.getElementById("projects-upload-popup-overlay")!;
@@ -96,6 +97,13 @@ export default function uploadEventListener() {
       console.log(`${k}:`, v);
     }
 
+    const uploadBtn = document.querySelector(
+      ".upload-btn",
+    ) as HTMLButtonElement;
+    if (!uploadBtn) return;
+    uploadBtn.disabled = true;
+    showLoading(uploadBtn, "small");
+
     try {
       const res = await fetch("api/v1/slides", {
         method: "POST",
@@ -109,6 +117,8 @@ export default function uploadEventListener() {
       }
 
       // Success?? reload page to reflect new val
+      uploadBtn.disabled = false;
+      uploadBtn.innerText = "Upload";
       await initProjectsAndEventsPage();
 
       // clear input vals

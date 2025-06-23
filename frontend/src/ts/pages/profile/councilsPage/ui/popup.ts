@@ -30,7 +30,7 @@ const uploadPopup = (): string => {
               <div class="img-preview-container"></div>
             </div>
 
-            <button class="br-20" type="submit">Upload</button>
+            <button class="upload-btn br-20" type="submit">Upload</button>
           </form>
         </div>
       </div>

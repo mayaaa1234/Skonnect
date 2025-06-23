@@ -77,7 +77,7 @@ export const submitConcern = async (
 // PATCH / - update concern status
 export async function updateConcernStatus(req: Request, res: Response) {
   const { id } = req.params;
-  const { newStatus, adminResponse } = req.body;
+  const { newStatus, response } = req.body;
 
   console.log("DEBUG newStatus:", newStatus);
 
@@ -99,6 +99,7 @@ export async function updateConcernStatus(req: Request, res: Response) {
     "in_progress",
     "resolved",
   ];
+
   if (!validStatuses.includes(newStatus)) {
     throw mkCustomError({ status: 400, msg: "Invalid Status" });
   }
@@ -109,15 +110,12 @@ export async function updateConcernStatus(req: Request, res: Response) {
     SET status = ?, response = ?
     WHERE concern_id = ?
     `,
-    [newStatus, adminResponse ?? null, id],
+    [newStatus, response ?? null, id],
   );
 
   res.json({ msg: "success" });
 }
 
 export async function deleteConcern(req: Request, _res: Response) {
-  await pool.execute(
-    `DELETE FROM concerns WHERE id = ?`,
-    [req.params.id],
-  )
+  await pool.execute(`DELETE FROM concerns WHERE id = ?`, [req.params.id]);
 }

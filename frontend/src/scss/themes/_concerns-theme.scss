@@ -1,3 +1,6 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
 body[data-page="concerns"],
 .concerns-container {
   .concerns-box {
@@ -38,10 +41,6 @@ body[data-page="concerns"],
   form {
     background-color: var(--secondary);
 
-    // .form-header {
-    // background-color: var(--neutral-light-2);
-    // }
-
     .form-body {
       textarea {
         color: var(--foreground);
@@ -49,9 +48,42 @@ body[data-page="concerns"],
         background-color: var(--secondary);
       }
     }
+  }
 
-    // .form-footer {
-    // }
+  .more-popup {
+    background-color: var(--secondary);
+
+    & > ul > li {
+      &:hover:not(.del) {
+        background-color: var(--accent);
+        // background-color: gray;
+      }
+    }
+    li.del:hover {
+      border: 1px solid red;
+    }
+  }
+}
+
+.status-details-popup {
+  background-color: var(--secondary);
+
+  textarea {
+    resize: none;
+    background-color: var(--primary);
+    color: var(--foreground);
+    padding: 12px;
+    outline: none;
+  }
+
+  .delete-status {
+    border: $base-border-thickness solid red;
+    background-color: transparent;
+    color: red;
+    &:hover {
+      background-color: red;
+      color: var(--foreground);
+    }
   }
 }
 

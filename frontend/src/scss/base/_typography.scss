@@ -130,6 +130,14 @@ $letter-spacing: (
   }
 }
 
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;

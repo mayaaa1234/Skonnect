@@ -3,6 +3,7 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import pool from "../db/pool.ts";
 import bcrypt from "bcrypt";
 import mkCustomError from "../errors/CustomError.ts";
+import { warn } from "console";
 
 const emailRegex = new RegExp(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -110,7 +111,7 @@ export default class User {
     });
   }
 
-  static async find(
+  static async findAll(
     filter?: Partial<{
       id: number;
       username: string;
@@ -143,4 +144,33 @@ export default class User {
     console.log("findById rows[0]: ", rows[0]);
     return rows.length ? rows[0] : null;
   }
+
+  static changePassword = async (
+    currentPass: string,
+    newPass: string,
+    id: number,
+  ): Promise<boolean> => {
+    const user = await this.findById(id);
+    // console.log(user);
+    if (!user) throw mkCustomError({ status: 404, msg: "user not found" });
+    const { password: hashedPass } = user;
+
+    const isMatch = await bcrypt.compare(currentPass, hashedPass);
+    if (!isMatch)
+      throw mkCustomError({
+        status: 400,
+        msg: "Wrong password please try again.",
+      });
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPass = await bcrypt.hash(newPass, salt);
+
+    await pool.execute("UPDATE users SET password = ? WHERE id = ?", [
+      hashedNewPass,
+      id,
+    ]);
+
+    console.log("pass change success");
+    return true;
+  };
 }

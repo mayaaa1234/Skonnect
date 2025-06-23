@@ -1,6 +1,6 @@
 const DEFAULT_CONCERN_STATUS = "default";
 
-const STATUS_BUTTONS = [
+const STATUSES = [
   { action: "default", label: "Default" },
   { action: "rejected", label: "Reject" },
   { action: "acknowledged", label: "Acknowledge" },
@@ -16,4 +16,4 @@ const ASIDE_SECTIONS = [
   { action: "resolved", label: "Resolve" },
 ] as const;
 
-export { DEFAULT_CONCERN_STATUS, STATUS_BUTTONS, ASIDE_SECTIONS };
+export { DEFAULT_CONCERN_STATUS, STATUSES, ASIDE_SECTIONS };

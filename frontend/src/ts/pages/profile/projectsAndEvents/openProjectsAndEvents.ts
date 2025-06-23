@@ -1,5 +1,6 @@
 const container = document.getElementById("data-container") as HTMLElement;
 
+import html from "@utils/htmlTemp.ts";
 import {
   Slideshow,
   fetchAllSlideShows,
@@ -20,7 +21,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       .map((s) => {
         const imagesDOM = s.images
           .map((img, idx) => {
-            return `
+            return html`
               <div
                 class="slides fade "
                 data-slide-id="${s.id}"
@@ -29,7 +30,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
               >
                 <img
                   src="${img.url}"
-                  class="br-5" 
+                  class="br-5"
                   style="height: 300px; width: 100%"
                 />
               </div>
@@ -74,14 +75,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       })
       .join("");
 
-    // <button
-    //   id="btn-edit-slideshows"
-    //   class="p-1 br-40 btn-dark-accent edit-btn control-btn"
-    // >
-    //   Edit
-    // </button>
-    const controlBtns = `
-    <div class="control-btn-container">
+    const controlBtns = html` <div class="control-btn-container">
       <button
         id="btn-open-upload-popup"
         class="p-1 br-40 btn-outlined-dark-accent control-btn"
@@ -90,7 +84,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
       </button>
     </div>`;
 
-    const uploadPopup = `
+    const uploadPopup = html`
       <div class="upload-popup-overlay" id="projects-upload-popup-overlay">
         <div class="upload-popup">
           <div class="popup-header">
@@ -112,6 +106,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
                 name="caption"
                 type="text"
                 placeholder="Caption"
+                required
               />
             </div>
 
@@ -127,7 +122,7 @@ export default async function openProjectsAndEventsData(): Promise<void> {
               <div class="img-preview-container"></div>
             </div>
 
-            <button class="br-20" type="submit">Upload</button>
+            <button class="br-20 upload-btn" type="submit">Upload</button>
           </form>
         </div>
       </div>

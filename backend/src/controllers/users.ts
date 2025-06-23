@@ -13,7 +13,7 @@ export const info = async (req: Request, res: Response) => {
 export const getAllUsers = async (req: Request, res: Response) => {
   if (!req.user) throw mkCustomError({ status: 404, msg: "User not found." });
 
-  const users = await User.find();
+  const users = await User.findAll();
   if (!users) throw mkCustomError({ status: 404, msg: "No users found." });
   res.status(200).json(users);
 };
@@ -24,4 +24,17 @@ export const status = async (req: Request, res: Response) => {
   res.status(200).json({
     isAuthenticated: true,
   });
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  const user = req.user;
+  if (!user) throw mkCustomError({ status: 404, msg: "User not found." });
+
+  const { currentPassword, newPassword, id } = req.body;
+  const curr = currentPassword.trim();
+  const next = newPassword.trim();
+
+  const users = await User.changePassword(curr, next, user.userId);
+
+  res.json({ msg: "OK" });
 };

@@ -10,7 +10,7 @@ async function initBudgetAllocationDOM() {
   const year = new Date().getFullYear();
 
   const h1 = document.querySelector("header h1") as HTMLElement;
-  h1.innerText = `Annual Budget Youth Invesment Plan ${year} Itemization`;
+  h1.innerText = `Annual Budget Youth Invesment Plan ${year}`;
 
   const container = document.querySelector(".table-container")!;
 

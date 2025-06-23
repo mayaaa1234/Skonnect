@@ -32,20 +32,6 @@ body[data-page="landing"] {
       height: calc(100dvh - #{$nav-height} + 5px) !important;
     }
 
-    // @include md {
-    //   grid-template: auto 1fr / repeat(3, auto);
-    //   grid-template-areas:
-    //     "logo1 info logo2"
-    //     "bottom bottom bottom";
-    // }
-
-    // "xs": 0,
-    // "sm": 475px,
-    // "md": 640px,
-    // "lg": 760px,
-    // "xl": 1024px,
-    // "xxl": 1536px,
-
     .hero-top {
       grid-row: 1;
       display: grid;
@@ -153,6 +139,9 @@ body[data-page="landing"] {
         display: grid;
         justify-items: center;
         justify-content: center;
+
+        width: 100%;
+        max-width: 1200px;
 
         .card-text-container {
           // border: 1px solid rgba(white, 0.3);

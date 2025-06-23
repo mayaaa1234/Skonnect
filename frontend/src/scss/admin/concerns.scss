@@ -1,9 +1,54 @@
 @use "../abstracts/mixins" as *;
 @use "../abstracts/variables" as *;
-// @use "../layout/nav" as *;
 
 // body[data-page="profile"] {
-// #data-container {
+#data-container {
+  .concern-popup-circle {
+    border-radius: 50%;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+  }
+
+  .status-details-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9998;
+    place-items: center;
+  }
+
+  .status-details-popup-overlay.show {
+    display: grid;
+  }
+
+  .status-details-popup {
+    height: 620px;
+    width: 780px;
+
+    .popup-header {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    .status-btn.selected {
+      border-radius: 20px;
+      border: 1px solid var(--accent);
+    }
+
+    .status-btn:not(.selected) {
+      opacity: 0.6;
+      color: gray !important;
+
+      .concern-popup-circle {
+        color: gray !important;
+      }
+    }
+  }
+}
+
 .concerns-container {
   width: min(100%, 1800px);
 
@@ -26,7 +71,31 @@
     }
 
     .status-btn:not(.selected) {
-      opacity: 0.6;
+      opacity: 0.6 !important;
+    }
+
+    // more icon
+
+    .more-wrapper {
+      position: relative;
+      display: inline-block;
+
+      .more-popup {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        display: none;
+
+        & > ul > li {
+          cursor: pointer;
+          padding-left: 5px;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .more-wrapper:hover .more-popup {
+      display: block;
     }
   }
 
@@ -38,12 +107,25 @@
     display: block !important;
     padding-left: 0 !important;
 
-    .concern-view-controls {
+    .concern {
+      .msg {
+        flex-grow: 1;
+      }
     }
 
-    // .aside-box-concern {
-    //   border-bottom: 1px solid var(--foreground-soft);
-    // }
+    .response-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .response-content.show {
+      visibility: visible;
+      max-height: 4000px;
+      opacity: 1;
+      padding-top: 12px;
+    }
   }
 }
 
@@ -52,6 +134,7 @@
     flex-wrap: wrap;
   }
 }
+
 @include xl {
   .concerns-container {
     gap: 40px;
